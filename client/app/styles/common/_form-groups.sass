@@ -1,0 +1,64 @@
+.form-group
+  display: grid
+  position: relative
+  align-content: end
+  width: 100%
+  margin-top: 10px
+
+  // common
+  input, textarea, .input
+    padding: 5px 10px
+    border: none
+    color: $titlegrey
+    background-color: $lightgrey
+
+  > .title
+    justify-self: start
+    margin-bottom: 5px
+    text-transform: uppercase
+    letter-spacing: 2px
+    color: $titlegrey
+
+  > .description
+    height: 100px
+    resize: none
+
+
+  > .select
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    box-sizing: content-box
+    padding: 5px 10px 2px
+    background: none
+    border: 2px solid $buttongrey
+    border-radius: 20px
+    font-size: $m
+    color: $grey
+    transition: 300ms al
+
+    > .title
+      position: absolute
+      top: 0%
+      width: 100%
+      color: $need-blue-text
+      font: 600 14px Amiko, Helvetica, sans-serif
+
+    > .text
+      position: absolute
+      width: 100%
+      margin: 0
+      padding: 5px 0 0
+      top: 24%
+      vertical-align: center
+      color: $off-white
+      font: 400 20px Amiko, Helvetica, sans-serif
+    
+    > .subtext
+      position: absolute
+      top: 58%
+      margin: 0
+      width: 100%
+      text-transform: uppercase
+      color: $need-blue-dark
+      font: 600 12px Amiko, Helvetica, sans-serif

@@ -1,0 +1,97 @@
+a
+  text-decoration: none
+  color: black
+
+.nav-header
+  display: flex
+  justify-content: center
+  align-items: center
+  margin: 10px 25px
+
+  .alerts
+    font-size: 24px
+
+    @media (min-width: 1600px)
+      font-size: 28px
+
+  .nav-username
+    font-size: 24px
+    margin-right: 22px
+
+    @media (min-width: 1600px)
+      font-size: 28px
+
+
+  .fa-angle-down
+    font-size: 28px
+
+    @media (min-width: 1600px)
+      margin-right: 25px
+      font-size: 24px
+
+  .settings
+    font-size: 22px
+
+    @media (min-width: 1600px)
+      font-size: 24px
+
+  .logout
+    font-size: 22px
+
+    @media (min-width: 1600px)
+      font-size: 24px
+
+
+.search-group
+  position: relative
+  margin: 0 auto
+  width: max-content
+
+  .icon
+    top: 15px
+    left: 18px
+    position: absolute
+    color: darken($hover-select-grey, 15%)
+
+    @media (min-width: 1600px)
+      top: 20px
+      left: 23px
+      font-size: 24px
+
+  .input
+    width: 35vw
+    font-size: 24px
+    padding: 5px 10px
+    padding-left: 50px
+    border-radius: 8px
+    border: none
+    color: $td-text
+
+    &::placeholder
+      color: darken($hover-select-grey, 45%)
+
+    @media (min-width: 1600px)
+      padding: 5px 10px
+      padding-left: 70px
+      font-size: 26px
+
+  &:hover
+    transform: translateY(-2px)
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)
+    transition: all .3s
+
+  @media (min-width: 1600px)
+    font-size: 36px
+
+.navbar-toggle
+  display: inline-block
+  border: none
+  height: 17px
+  width: 22px
+  padding: 0
+  outline: none
+  background-color: transparent
+
+
+.bars, .seam-sm
+  display: none

@@ -1,0 +1,410 @@
+
+
+.page-header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 80%
+  min-width: 860px
+  margin: 20px auto 20px
+  font-weight: 500
+  font-size: 4rem
+
+  h1
+    margin: 0
+
+.page-title
+  font-weight: 500
+  font-size: 4rem
+
+.nothing-to-show
+  width: 80%
+  margin: 0 auto
+  font-size: 24px
+
+.reimburse-table
+  width: 80%
+  margin: 0 auto 60px
+  border: 1px solid $br-grey
+  border-radius: 5px
+  border-collapse: collapse
+  background-color: $white
+  // table-layout: fixed
+
+  tbody
+    max-height: 10vh
+    padding: 25px
+    // display: block
+    overflow-y: scroll
+    &::-webkit-scrollbar
+      // size
+      width: 7px
+      // background
+      -webkit-box-shadow: none
+
+    &::-webkit-scrollbar-thumb
+      // bar color
+      background-color: $br-grey
+      // bar curve
+      border-radius: 25px
+
+  tr
+    &:first-of-type
+      
+    &:not(:first-of-type)
+      border-bottom: 1px solid $br-grey
+
+    th
+      padding: 50px 50px 5px
+      text-align: left
+      text-transform: uppercase
+      letter-spacing: 1px
+      font-size: 2.2rem
+      font-weight: 600
+      color: $td-text
+
+    td
+      font-size: 2.2rem
+      padding: 20px 50px
+      text-align: left
+      color: $td-text
+
+      &:first-of-type
+
+
+.reimburse-headers
+  text-align: left
+
+.reimburse-row
+  transition: all .3s
+
+  &:hover
+    background-color: $hover-select-grey
+
+.selected-row
+  background-color: $hover-select-grey
+
+.button-group
+  display: flex
+  justify-content: flex-end
+  width: 80%
+  margin: 0 auto 10px
+
+.button
+  width: 150px
+  padding: 10px 15px
+  outline: none
+  border: none
+  border-radius: 5px
+  text-transform: uppercase
+  letter-spacing: 1.5px
+  font-size: 1.8rem
+  font-weight: 600
+  color: white
+
+  &:hover
+    filter: brightness(94%)
+    transform: translateY(-1px)
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08)
+    transition: all .3s
+
+.approve
+  background-color: $approve-green
+  margin-right: 15px
+
+.deny
+  background-color: $deny-red
+
+.new
+  background-color: $create-blue
+
+.upload
+  color: $td-text
+  background-color: $hover-select-grey
+
+.fa-plus
+  margin-right: 10px
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.main-body
+  margin: 0 25px 0 75px
+  // position: relative
+
+
+// margin-top is react inline-style
+.edit-title
+  display: grid
+  grid-template-columns: 1fr max-content
+  align-items: center
+
+  .title
+    width: 100%
+    text-align: center
+    margin: 0
+
+  .save
+    justify-self: end
+    padding: 3px 10px
+    margin-right: 150px
+    border: none
+    color: $white
+    background-color: $need-blue-text
+
+
+.divvy-container
+  display: grid
+  grid-template-columns: repeat(3, max-content)
+  grid-column-gap: 10px
+  align-items: center
+
+  .input
+    width: 25vw
+    padding: 5px 15px
+    border: none
+    background-color: $lightgrey
+    color: $titlegrey
+
+  .button
+    padding: 5px 25px
+    border: none
+    color: $white
+    background-color: $want-green
+    transition: 300ms all
+    &:hover
+      background-color: darken($want-green, 10%)
+    &:disabled
+      background-color: darken($lightgrey, 10%)
+      color: $white
+
+
+.header
+  display: grid
+  grid-template-columns: repeat(2, max-content)
+  grid-column-gap: 10px
+  align-items: center
+  margin: 10px 0 5px
+
+  > h2
+    margin: 0
+    padding: 0
+    font: 700 24px Amiko, Helvetica, sans-serif
+
+  > p
+    margin: 0
+    padding: 0
+    font: 600 18px Amiko, Helvetica, sans-serif
+
+
+.empty-container
+  height: 200px
+
+
+.slider-container
+  position: relative
+  width: 89%
+
+  .nav-arrow
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    font-size: 48px
+    color: darken($lightgrey, 10%)
+    transition: 300ms all
+    z-index: 100
+    &:hover
+      color: darken($lightgrey, 20%)
+
+  .want-arrow-left
+    left: -50px
+
+  .want-arrow-right
+    right: -50px
+
+.slider
+  overflow-x: scroll
+  overflow-y: hidden
+  white-space: nowrap
+  &::-webkit-scrollbar
+    display: none
+
+  > .container
+    display: grid
+    grid-auto-flow: column
+    grid-template-columns: repeat(auto-fit, 1fr)
+    grid-gap: 25px
+
+
+.container
+  display: grid
+  grid-template-columns: repeat(5, 1fr)
+  grid-gap: 25px
+
+  &:last-of-type
+    margin-right: 50px
+    border: 1px
+  
+.card
+  display: block
+  height: 210px
+  width: max-content
+  box-sizing: border-box
+  border: 1px solid transparent
+  filter: drop-shadow(0 5px 3px rgba(0, 0, 0, .2))
+  transition: 1s all
+  &:hover
+    filter: brightness(90%) drop-shadow(0 5px 3px rgba(0, 0, 0, .3))
+
+.top
+  display: block
+  position: relative
+  height: 113px
+  width: 200px
+
+  > .ribbon
+    position: absolute
+    top: -5px
+    left: 10px
+    height: 30px
+    width: 25px
+    background-color: gold
+    &:before
+      content: ''
+      position: absolute
+      top: 20px
+      left: 13px
+      width: 0
+      height: 0
+      border-top: 10px solid transparent
+      border-bottom: 15px solid transparent
+      border-right: 12px solid gold
+    &:after
+      content: ''
+      position: absolute
+      top: 20px
+      width: 0
+      height: 0
+      border-top: 10px solid transparent
+      border-bottom: 15px solid transparent
+      border-left: 12px solid gold
+      
+
+  > .image
+    height: 100%
+    width: 100%
+    filter: brightness(70%)
+
+  > .percent
+    position: absolute
+    top: 50%
+    left: 50%
+    width: max-content
+    transform: translate(-50%, -50%)
+    align-content: center
+    align-items: center
+    color: $white
+
+    > .text
+      display: inline-block
+      position: relative
+      margin: 0 0 0 25px
+      font: 700 $xl Amiko, Helvetica, sans-serif
+
+    > .-done
+      margin: 10px auto 0
+      letter-spacing: 2px
+      text-transform: uppercase
+      font: 600 24px Amiko, Helvetica, sans-serif
+
+    > .symbol
+      display: inline
+      position: relative
+      padding-left: 4px
+      margin: 0 20px 0 0
+      vertical-align: 50%
+      font: 400 $m Amiko, Helvetica, sans-serif
+
+    > .angleleft, .angleright
+      font-size: $l
+
+  
+  > .name
+    position: absolute
+    margin: 0
+    left: 15px
+    bottom: 10px
+    letter-spacing: 1px
+    font: 400 $m Amiko, Helvetica, sans-serif
+    text-transform: capitalize
+    color: $white
+
+.want
+  .meta
+    color: $want-green-text
+    background-color: $want-green-bg
+
+.need
+  .meta
+    color: $need-blue-text
+    background-color: $need-blue-bg
+
+
+.meta.-done 
+  color: $done-gold-text
+  background-color: $done-gold-bg
+
+.meta
+  display: grid
+  grid-template-columns: repeat(2, auto-fit)
+  grid-template-rows: repeat(2, auto-fit)
+  align-items: center
+  justify-items: center
+  text-align: center
+
+  > .progress-container
+    grid-row: 1
+    grid-column: 1 / 3
+    width: 100%
+    height: 10px
+
+    > .progress
+      vertical-align: top // removes arbitrary margin
+
+
+  > .block
+    &:first-of-type
+      grid-row: 2
+      grid-column: 1
+
+    &:last-of-type
+      grid-row: 2
+      grid-column: 2
+
+    > h3
+      margin: 10px 0 3px
+      letter-spacing: .5px
+      text-transform: uppercase
+      font: 200 12px Amiko, Helvetica, sans-serif
+
+    > p
+      margin: 0 0 10px
+      font: 600 24px Amiko, Helvetica, sans-serif
+
+  .dollar-symbol
+    vertical-align: 15%
+    padding-right: 3px
+    font-size: $m
+

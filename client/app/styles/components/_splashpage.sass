@@ -1,0 +1,85 @@
+.splash-nav
+  display: flex
+  padding: 25px
+
+  > .item
+    margin: 0 10px
+    
+  > .hook
+    margin-left: auto
+
+.splash-body
+  display: grid
+  padding: 25px 75px
+
+  .block
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+
+    &:not(:first-of-type)
+      margin: 75px 0
+
+.block.-top
+  display: grid
+  grid-column: 1 / -1
+
+  > .title
+    grid-column: 1 / span 3
+    padding: 0 100px 0 0
+    margin: 50px 0 0
+    font: 700 90px Amiko, Helvetica, sans-serif
+    color: $darkgrey
+
+  > .subtitle
+    display: inline
+    grid-column: 1 / span 3
+    margin: 15px 0
+    padding: 0 400px 0 0
+    font: 300 36px/1.5 'Source Sans', Helvetica, sans-serif
+    color: darken($buttongrey, 10%)
+  
+  > .cta
+    grid-column: 1 / span 3
+    justify-self: start
+    margin: 35px 0 0
+    padding: 15px
+    border-radius: 5px
+    font: 300 24px 'Source Sans', Helvetica, sans-serif
+    color: $white
+    background-color: $want-green
+    transition: 300ms all
+    &:hover
+      cursor: pointer
+      background-color: darken($want-green, 5%)
+
+
+  
+.block.-middle
+  grid-column: 1 / -1
+
+  > .title
+    grid-column: 3 / span 2
+    margin: 0
+    font: 700 55px Amiko, Helvetica, sans-serif
+  
+  > .list
+    grid-column: 3 / span 2
+    margin: 0
+
+
+.block.-bottom
+  grid-column: 1 / -1
+
+  > .title
+    grid-column: 1 / span 2
+    margin: 0
+    font: 700 55px Amiko, Helvetica, sans-serif
+
+  > .subtitle
+    grid-column: 1 / span 2
+    margin: 0
+  
+  > .text
+    grid-column: 1 / span 2
+    margin: 0
+

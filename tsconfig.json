@@ -1,0 +1,65 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    // this one was important. When set as es6, stopped recognizing imports
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types"],
+    "target": "es6",
+    "jsx": "react", // or try preserve
+    "lib": ["es2018", "es6", "dom"]
+  }
+
+  // NEWEST
+  //     "compilerOptions": {
+  //         "module": "es6",
+  //         "target": "es6",
+  //         "lib": ["es6", "dom"],
+  //         "moduleResolution": "node",
+  //         "sourceMap": true,
+  //         "jsx": "preserve",
+  //         "rootDir": "src",
+  //         "allowSyntheticDefaultImports": true
+  //     },
+  //     "exclude": [
+  //         "node_modules"
+  //     ]
+  // }
+
+  // WORKING
+  // "include": ["./client/**/*"]
+  // "compilerOptions": {
+  //   "outDir": "./dist/",
+  //   "sourceMap": true,
+  //   "noImplicitAny": false,
+  //   "allowSyntheticDefaultImports": true,
+  //   "module": "es6",
+  //   "esModuleInterop": true,
+  //   "moduleResolution": "node",
+  //   "target": "es6",
+  //   "jsx": "react",
+  //   "lib": ["dom", "es2018", "es2015.promise"]
+  // },
+  // "include": ["./client/**/*"]
+  // VERY ORIGINAL — DONT USE
+  // {
+  //   "compilerOptions": {
+  //     "module": "commonjs",
+  //     "esModuleInterop": true,
+  //     "noImplicitAny": false,
+  //     "moduleResolution": "node",
+  //     "sourceMap": true,
+  //     "outDir": "dist",
+  //     "baseUrl": ".",
+  //     "paths": {
+  //       "*": ["node_modules/", "src/types/*"]
+  //     },
+  //     "watch": true
+  //   },
+  //   "include": ["src/**/*"]
+  // }
+}
