@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "14444087cf1aa75edc03"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "800787c49fc91579064f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -931,6 +931,7 @@ exports.startLogin = credentials => dispatch => api_1.default.user.login(credent
     });
 });
 exports.startSignup = dossier => dispatch => api_1.default.user.signup(dossier).then(user => {
+    console.log('back from lambda!');
     localStorage.ers = user.token;
     dispatch(exports.login(user));
 });
@@ -989,6 +990,8 @@ exports.startUpdatePassword = data => dispatch => __awaiter(_this, void 0, void 
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
+// const aws = require('aws-sdk')
+// const docClient = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 
 (function () {
     var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
@@ -1000,6 +1003,29 @@ var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// exports.handler = async (event) => {
+//     const signup = async () => {
+//         const params = {
+//             TableName: 'wa-users',
+//             Item: {
+//                 username: 'igloo',
+//                 password: '123123'
+//             }
+//         }
+//         return await docClient.put(params).promise()
+//     }
+//     signup().then(() => ({
+//         statusCode: 200, 
+//         body: JSON.stringify({
+//             "result": "done"
+//         }), 
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Access-Control-Allow-Origin': "*"
+//         }   
+//     }))
+//     // return await docClient.put(params).promise()
+// };
 const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 exports.getToken = () => {
     console.log('getting token...');
@@ -1007,10 +1033,10 @@ exports.getToken = () => {
     //headers must be an object
     return { token };
 };
+const signupUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/auth';
 exports.default = {
     user: {
-        // createTable: () => axios.post('/create').then(res => console.log(res)),
-        signup: dossier => axios_1.default.post('/signup', { dossier }).then(res => res.data),
+        signup: dossier => axios_1.default.post(signupUrl, { dossier }).then(res => res.data),
         login: credentials => axios_1.default.post('/login', { credentials }).then(res => res.data),
         persistUser: identity => axios_1.default.post('/persist', { identity }, { headers: exports.getToken() }).then(res => res.data),
         submitReimbursement: reimbursement => {
@@ -1042,6 +1068,7 @@ exports.default = {
 
     reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
     reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
+    reactHotLoader.register(signupUrl, "signupUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
     leaveModule(module);
 })();
 
@@ -1855,13 +1882,6 @@ class SignupPage extends react_1.Component {
         this.promiseState = state => __awaiter(this, void 0, void 0, function* () {
             return new Promise(resolve => this.setState(state, resolve));
         });
-        // promiseState({...})
-        //     .then(() => promiseState({...})
-        //     .then(() => {
-        //         ...  // other code
-        //         return promiseState({...});
-        //     })
-        //     .then(() => {...});
         // accessibility
         this.listenKeyboard = e => {
             // gta v cheat code
@@ -1920,8 +1940,8 @@ class SignupPage extends react_1.Component {
                 firstname: personName[0],
                 lastname: personName[personName.length - 1],
                 username: this.state.username,
-                password: this.state.password,
-                role: admin ? 'admin' : 'employee'
+                password: this.state.password
+                // role: admin ? 'admin' : 'employee'
             };
             // passed down from connect
             this.props.startSignup(data).then(() => {
@@ -3069,7 +3089,7 @@ exports.configureStore = () => {
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206768
+      // 1529441942685
       var cssReload = __webpack_require__(/*! ../../../node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -13164,7 +13184,7 @@ module.exports.InvalidTokenError = InvalidTokenError;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370207313
+      // 1529441943416
       var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43243,7 +43263,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206610
+      // 1529441942568
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43261,7 +43281,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206693
+      // 1529441942588
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43279,7 +43299,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206659
+      // 1529441942602
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43297,7 +43317,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206630
+      // 1529441942593
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43315,7 +43335,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206635
+      // 1529441942617
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43333,7 +43353,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206617
+      // 1529441942580
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43351,7 +43371,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206643
+      // 1529441942637
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43369,7 +43389,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206623
+      // 1529441942575
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43387,7 +43407,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206648
+      // 1529441942613
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43405,7 +43425,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206654
+      // 1529441942627
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43423,7 +43443,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206687
+      // 1529441942608
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43441,7 +43461,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206664
+      // 1529441942632
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43459,7 +43479,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206671
+      // 1529441942622
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43477,7 +43497,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529370206681
+      // 1529441942642
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
