@@ -44,14 +44,6 @@ export class SignupPage extends Component<ClassProps, ClassState> {
   promiseState = async state =>
     new Promise(resolve => this.setState(state, resolve))
 
-  // promiseState({...})
-  //     .then(() => promiseState({...})
-  //     .then(() => {
-  //         ...  // other code
-  //         return promiseState({...});
-  //     })
-  //     .then(() => {...});
-
   // accessibility
   listenKeyboard = e => {
     // gta v cheat code
@@ -179,8 +171,8 @@ export class SignupPage extends Component<ClassProps, ClassState> {
       firstname: personName[0],
       lastname: personName[personName.length - 1],
       username: this.state.username,
-      password: this.state.password,
-      role: admin ? 'admin' : 'employee'
+      password: this.state.password
+      // role: admin ? 'admin' : 'employee'
     }
 
     // passed down from connect

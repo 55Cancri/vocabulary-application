@@ -34,6 +34,7 @@ export const startLogin = credentials => dispatch =>
 
 export const startSignup = dossier => dispatch =>
   api.user.signup(dossier).then(user => {
+    console.log('back from lambda!')
     localStorage.ers = user.token
     dispatch(login(user))
   })

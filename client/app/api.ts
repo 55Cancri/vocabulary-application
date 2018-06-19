@@ -1,3 +1,43 @@
+
+
+
+
+
+
+
+// const aws = require('aws-sdk')
+// const docClient = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
+
+// exports.handler = async (event) => {
+    
+//     const signup = async () => {
+//         const params = {
+//             TableName: 'wa-users',
+//             Item: {
+//                 username: 'igloo',
+//                 password: '123123'
+//             }
+//         }
+//         return await docClient.put(params).promise()
+//     }
+
+//     signup().then(() => ({
+//         statusCode: 200, 
+//         body: JSON.stringify({
+//             "result": "done"
+//         }), 
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Access-Control-Allow-Origin': "*"
+//         }   
+//     }))
+
+//     // return await docClient.put(params).promise()
+// };
+
+
+
+
 import axios from 'axios'
 
 export let getToken = () => {
@@ -6,11 +46,13 @@ export let getToken = () => {
   //headers must be an object
   return { token }
 }
+
+const signupUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/auth'
+
 export default {
   user: {
-    // createTable: () => axios.post('/create').then(res => console.log(res)),
-
-    signup: dossier => axios.post('/signup', { dossier }).then(res => res.data),
+    signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
 
     login: credentials =>
       axios.post('/login', { credentials }).then(res => res.data),
