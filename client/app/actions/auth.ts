@@ -24,8 +24,13 @@ export const startPersist = identity => {
 }
 
 export const startLogin = credentials => dispatch =>
-  api.user.login(credentials).then(user => {
-    localStorage.ers = user.token
+  api.user.login(credentials).then(userData => {
+    const user = {
+      ...userData,
+      token: credentials.token
+    }
+    localStorage.wa = credentials.token
+    // localStorage.ers = user.token
     dispatch({
       type: 'LOGIN',
       user
@@ -34,8 +39,8 @@ export const startLogin = credentials => dispatch =>
 
 export const startSignup = dossier => dispatch =>
   api.user.signup(dossier).then(user => {
-    console.log('back from lambda!')
-    localStorage.ers = user.token
+    localStorage.wa = dossier.token
+    // localStorage.ers = user.token
     dispatch(login(user))
   })
 
@@ -44,7 +49,7 @@ export const logout = () => ({
 })
 
 export const startLogout = () => dispatch => {
-  localStorage.removeItem('ers')
+  localStorage.removeItem('wa')
   dispatch(logout())
 }
 

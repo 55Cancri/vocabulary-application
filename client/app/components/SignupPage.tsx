@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js'
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js'
+
 import { connect } from 'react-redux'
 import { startSignup } from '../actions/auth'
-
-// TODO: FINISH GTAV CHEAT CODE CHECK. IT ENABLES YOU TO CONTINUE ADDING
-// WRONG LETTERS ON I THINK > AND < CHARACTERS. MAYBE OTHERS...
 
 interface ClassProps extends RouteComponentProps<any> {
   startSignup(data: {}): any
@@ -159,14 +159,17 @@ export class SignupPage extends Component<ClassProps, ClassState> {
     } as any)
   }
 
+  // user: Eric1529523007809 pass: a12345678
+
   // startSignup will also have dispatch with it
   onSubmit = e => {
     e.preventDefault()
     const personName = this.state.fullname.split(' ')
 
+    // single variable used in cognito signup
     const { email, username, password, admin } = this.state
 
-    const data = {
+    const clientData = {
       email: this.state.email,
       firstname: personName[0],
       lastname: personName[personName.length - 1],
@@ -175,16 +178,82 @@ export class SignupPage extends Component<ClassProps, ClassState> {
       // role: admin ? 'admin' : 'employee'
     }
 
-    // passed down from connect
-    this.props
-      .startSignup(data)
-      .then(() => {
-        this.props.history.push('/dashboard')
+    // start of cognito logic
+    const poolData = {
+      UserPoolId: 'us-east-2_LfGmk9qIA',
+      ClientId: '5lmmpid5kd4v4vibmvifhcm3re'
+    }
+
+    // initialize pool of users
+    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData)
+
+    const attributeList = []
+
+    const dataEmail = {
+      Name: 'email',
+      Value: email
+    }
+
+    console.log('state email ', email)
+    console.log('data email ', dataEmail)
+
+    // add attribute to user
+    // TODO: where is this stored in wizard?
+    const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(
+      dataEmail
+    )
+
+    attributeList.push(attributeEmail)
+
+    // creates user
+    userPool.signUp(username, password, attributeList, null, (err, result) => {
+      if (err) {
+        return console.log('there was an error.', err)
+      }
+
+      // authenticate user after signup and autoConfirm trigger happens in cognito
+      const authenticationData = {
+        Username: username,
+        Password: password
+      }
+      const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
+        authenticationData
+      )
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData)
+      const userData = {
+        Username: username,
+        Pool: userPool
+      }
+      const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
+
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: result => {
+          const accessToken = result.getAccessToken().getJwtToken()
+
+          console.log('token we get back from cognito: ', accessToken)
+
+          const data = {
+            ...clientData,
+            token: accessToken
+          }
+
+          this.props
+            .startSignup(data)
+            .then(() => {
+              this.props.history.push('/dashboard')
+            })
+            .catch(err => {
+              this.setState({ errors: err.response.data.errors })
+            })
+          /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer*/
+          // const idToken = result.idToken.jwtToken
+        },
+
+        onFailure: err => {
+          console.log('the err: ', err)
+        }
       })
-      .catch(err => {
-        console.log('Error on submit in signup page: ', err)
-        this.setState({ errors: err.response.data.errors })
-      })
+    })
   }
 
   render() {

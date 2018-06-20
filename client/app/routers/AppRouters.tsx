@@ -15,15 +15,16 @@ interface IPayload {
   username: string
 }
 
-if (localStorage.ers) {
-  const payload: IPayload = decode(localStorage.ers)
-  const user = {
-    username: payload.username,
-    token: localStorage.ers
-  }
-  // @ts-ignore
-  store.dispatch(startPersist(user))
-}
+// TODO: data persistence from localhost
+// if (localStorage.ers) {
+//   const payload: IPayload = decode(localStorage.ers)
+//   const user = {
+//     username: payload.username,
+//     token: localStorage.ers
+//   }
+//   // @ts-ignore
+//   store.dispatch(startPersist(user))
+// }
 
 export class AppRouter extends Component {
   // @ts-ignore

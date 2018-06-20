@@ -16,6 +16,9 @@ import ReimbursePage from '../components/ReimbursePage'
 
 import NotFoundPage from '../components/NotFoundPage'
 
+// binophilip123@gmail.com
+// sm.scottkmoore@gmail.com
+
 export const history = createHistory()
 const mql = window.matchMedia(`(min-width: 800px)`)
 
@@ -32,21 +35,21 @@ interface IState {
 // sidebar content
 const sidebar = <SidebarContent />
 
-const publicRoutes = (
-  <Switch>
-    <PublicRoute exact path="/" component={SignupPage} />
-    <PublicRoute path="/signup" component={SignupPage} />
-    <PublicRoute path="/login" component={LoginPage} />
-  </Switch>
-)
+// const publicRoutes = (
+//   <Switch>
+//     <PublicRoute exact path="/" component={SignupPage} />
+//     <PublicRoute path="/signup" component={SignupPage} />
+//     <PublicRoute path="/login" component={LoginPage} />
+//   </Switch>
+// )
 
-const privateRoutes = (
-  <Switch>
-    <PrivateRoute path="/settings" component={SettingsPage} />
-    <PrivateRoute path="/dashboard" component={DashboardPage} />
-    <PrivateRoute path="/create" component={ReimbursePage} />
-  </Switch>
-)
+// const privateRoutes = (
+//   <Switch>
+//     <PrivateRoute path="/settings" component={SettingsPage} />
+//     <PrivateRoute path="/dashboard" component={DashboardPage} />
+//     <PrivateRoute path="/create" component={ReimbursePage} />
+//   </Switch>
+// )
 // const routes = (
 //   <Switch>
 //     <PublicRoute exact path="/" component={SignupPage} />
@@ -92,8 +95,9 @@ export class Pages extends Component<IProps, IState> {
   }
 
   // @ts-ignore
-  shouldComponentUpdate = () => false
+  // shouldComponentUpdate = () => false
 
+  // convert sidebar routes back to PrivateRoute
   // @ts-ignore
   render = () => {
     return (
