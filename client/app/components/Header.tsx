@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 import { startLogout } from '../actions/auth'
