@@ -55,14 +55,15 @@ export const ReimburseItem = props => {
           this.fileInput.click()
         }}
       >
-        <FontAwesomeIcon icon="upload" size="xs" className="fa-upload" />Upload
+        {/* <FontAwesomeIcon icon="upload" size="xs" className="fa-upload" /> */}
+        Upload
       </button>
 
-      <FontAwesomeIcon
+      {/* <FontAwesomeIcon
         icon="times"
         className="fa-times"
         onClick={el => handleRemoveItem(uid)}
-      />
+      /> */}
     </div>
   )
 }
