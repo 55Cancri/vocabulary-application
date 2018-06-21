@@ -1,0 +1,83 @@
+
+.login-page
+  display: grid
+  align-content: center
+  justify-content: center
+  height: 100vh
+
+  .login-bg
+    position: absolute
+    height: 100vh
+    width: 100vw
+    // background: url("https://image.ibb.co/jqyfVJ/blur_businesswoman_close_up_407237.jpg") no-repeat
+    background-size: cover
+    background-position: 6%
+    -webkit-filter: grayscale(100%) brightness(100%)
+    -moz-filter: grayscale(100%) brightness(100%)
+    -o-filter: grayscale(100%) brightness(100%)
+    -ms-filter: grayscale(100%) brightness(100%)
+    filter: grayscale(100%) brightness(100%)
+    opacity: 1
+    z-index: -1
+
+  .login-form
+    width: 35vw
+    max-width: 600px
+    padding: 30px 55px 45px
+    border-radius: 10px
+    background-color: rgba(255, 255, 255, .8)
+  
+    .input-group
+      margin: 20px 0
+
+      .title
+        padding-bottom: 5px
+        text-transform: uppercase
+        letter-spacing: 1px
+        font-size: 18px
+        font-weight: 600
+        color: $titlegrey
+
+        &:last-of-type
+          padding: 10px 0 5px
+      
+      input
+        height: 42px
+        border-radius: 5px
+        font-size: 24px
+        background-color: lighten($buttongrey, 6%)
+        color: $sidebar-black
+        opacity: .8
+
+    .global-errors
+      padding: 5px 0
+      margin: 15px 0 0
+      text-align: center
+      font-size: 21px
+      font-weight: 700
+      color: $error-red
+      border-left: 4px solid $error-red
+      background-color: $error-red-bg
+        
+    .inline-errors
+      margin: 5px 0 0
+      color: $error-red
+      font-size: 18px
+
+    .login-button
+      margin: 15px 0 0
+      width: 100%
+      background-color: $create-blue
+
+    .switch-auth-form
+      display: flex
+      align-items: center
+      font-size: 18px
+      color: $td-text
+
+    p
+      margin: 0
+
+    .signup-link
+      margin: 0
+      color: $create-blue

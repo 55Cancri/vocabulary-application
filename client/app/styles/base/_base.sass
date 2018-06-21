@@ -1,0 +1,32 @@
+*
+  box-sizing: border-box
+
+html
+  font-size: 62.5%
+
+body
+  color: $darkgrey
+  font-family: camphor, montserrat, Amiko, Helvetica, Arial, sans-serif
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  font-size: $m
+  line-height: 1.6
+  letter-spacing: .7px
+  background-color: $off-white
+
+button
+  cursor: pointer
+
+button:disabled
+  cursor: default
+
+.is-active
+  font-weight: bold
+
+.spinner
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translateX(-50%) translateY(-50%)
+  transform: scale(1.6)

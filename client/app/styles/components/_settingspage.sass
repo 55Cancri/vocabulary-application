@@ -1,0 +1,64 @@
+
+
+.settings-page
+  display: grid
+  grid-template-columns: 1fr 3fr
+
+.settings-side-menu
+  > p
+    margin: 30px 0
+    width: max-content
+    &:hover
+      cursor: pointer
+
+.settings-form
+  display: grid
+  grid-row-gap: 20px
+  
+  > .input-group
+    display: grid
+    position: relative
+    align-items: center
+    grid-template-columns: 1fr 5fr
+    grid-column-gap: 10px
+
+    > input
+      padding: 5px 15px
+
+    > .save
+      justify-self: start
+      grid-column: 2
+      padding: 5px 15px
+      border: none
+      color: $white
+      background-color: $need-blue-text
+      transition: 300ms all
+      &:hover
+        background-color: darken($need-blue-text, 5%)
+
+
+
+.photo-container
+  position: relative
+  width: max-content
+  transition: 300ms all
+  &:hover
+    cursor: pointer
+    filter: brightness(80%)
+
+  > .photo
+    height: 50px
+    width: 50px
+    border-radius: 50%
+    text-align: center
+    filter: brightness(50%)
+
+  > .text
+    position: absolute
+    top: 10%
+    left: 50%
+    transform: translateX(-50%)
+    text-align: center
+    font-size: $s
+    color: $white
+

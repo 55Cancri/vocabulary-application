@@ -1,0 +1,73 @@
+.form
+  display: grid
+  position: absolute
+  top: 0
+  left: 5vw
+  grid-row-gap: 15px
+  width: 40vw
+  min-width: max-content
+  max-width: 450px
+  padding: 20px 50px 40px
+  box-sizing: border-box
+  border-radius: 0 0 5px 5px
+  background-color: $white
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5))
+
+  > .errors-global
+    position: absolute
+    text-align: center
+    margin: 0
+    padding: 5px 0
+    width: 100%
+    color: $white
+    background-color: $delete-red-bg
+
+  > .header
+    margin: 0
+    justify-self: center
+    text-align: center
+    color: $headergrey
+
+    > .form-group
+      box-sizing: border-box
+
+    > .title
+      text-transform: uppercase
+      letter-spacing: .8px
+      color: $titlegrey
+
+    > .inline-errors
+      position: absolute
+      top: 55px
+      right: 10px
+      font-style: italic
+      color: $delete-red-bg
+
+    input
+      padding: 5px 10px
+      border: none
+      color: $titlegrey
+      background-color: $lightgrey
+
+  .submit
+    padding: 6px 0
+    margin-top: 10px
+    border: none
+    color: $white
+    background-color: coral
+    transition: 300ms
+    &:hover
+      filter: brightness(90%)
+
+.other-page
+  display: flex
+
+  > .text
+    margin: 0
+    color: $grey
+
+  > .link
+    color: dodgerblue
+    &:hover
+      text-decoration: underline
+      color: darken(dodgerblue, 10%)
