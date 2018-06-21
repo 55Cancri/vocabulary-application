@@ -4,7 +4,7 @@ import { RouteProps } from 'react-router'
 import ReimburseItem from './ReimburseItem'
 import { generateUuid } from '../../helpers/helpers'
 import { startSubmitReimbursement } from '../../actions/app'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 interface IProps extends RouteProps {
@@ -240,11 +240,11 @@ export class ReimburseForm extends Component<IProps> {
           <label htmlFor="type" className="type-label">
             type
           </label>
-          {/* <FontAwesomeIcon
+          <FontAwesomeIcon
             icon="angle-down"
             size="xs"
             className="fa-angle-down"
-          /> */}
+          />
           <select
             name="type"
             value={type}

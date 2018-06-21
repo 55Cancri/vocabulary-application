@@ -1,5 +1,5 @@
 import React, { Component, SFC } from 'react'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 export const ReimburseItem = props => {
@@ -55,15 +55,15 @@ export const ReimburseItem = props => {
           this.fileInput.click()
         }}
       >
-        {/* <FontAwesomeIcon icon="upload" size="xs" className="fa-upload" /> */}
+        <FontAwesomeIcon icon="upload" size="xs" className="fa-upload" />
         Upload
       </button>
 
-      {/* <FontAwesomeIcon
+      <FontAwesomeIcon
         icon="times"
         className="fa-times"
-        onClick={el => handleRemoveItem(uid)}
-      /> */}
+        // onClick={el => handleRemoveItem(uid)}
+      />
     </div>
   )
 }
