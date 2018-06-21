@@ -27,6 +27,15 @@ export class DashboardPage extends Component<IProps> {
     return (
       <div>
         <h1>Dashboard</h1>
+        <ol className="word-list" >
+          <li>
+            <div className="word-object" >
+              <h2>hard-coded</h2>
+              <h4>demonstration, testing</h4>
+              <p>Hard-coded describes when an item on a web page is simply built from static HTML, instead of pulled from some database</p>
+            </div>
+          </li>
+        </ol>
       </div>
     )
   }
