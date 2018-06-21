@@ -1,0 +1,61 @@
+.remaining-accounts
+  margin: 10px 0
+  text-align: center
+
+.buy-modal
+  padding: 25px
+
+.buy-modal_header
+  display: grid
+  grid-template-columns: 1fr
+  
+  .close
+    justify-self: end
+    color: $grey
+    &:hover
+      color: $darkgrey
+
+// form
+.buy-form
+  display: grid
+
+  .annotation
+    justify-self: start
+    margin: 8px 0
+    font: italic 400 $s Amiko, Helvetica, sans-serif
+    color: darken($buttongrey, 5%)
+
+// percent and goal
+.split-card-data
+  display: grid
+  grid-template-columns: max-content 1fr
+  grid-column-gap: 30px
+
+
+// buttons
+.buy-modal_buttons
+  display: grid
+  grid-template-columns: repeat(2, max-content)
+  grid-gap: 10px
+  justify-self: end
+  margin: 35px 0 0
+
+  > .cancel
+    border: none
+    background: none
+    color: $grey
+    &:hover
+      transition: 300ms
+      filter: brightness(80%)
+
+  > .submit
+    padding: 5px 15px
+    border: none
+    color: $white
+    background: $need-blue-text
+    transition: 300ms all
+    &:hover
+      transition: 300ms
+      filter: brightness(95%)
+    &:disabled
+      background-color: $buttongrey

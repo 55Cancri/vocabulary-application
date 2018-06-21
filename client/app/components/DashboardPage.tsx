@@ -7,9 +7,9 @@ import Spinner from 'react-spinkit'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-// new change
+import { loadModal } from '../actions/modal'
 
-const status = true
+import { NEW_WORD_MODAL } from '../constants/modaltypes'
 
 // extend RouteComponentProps to get access to history object
 interface IProps extends RouteComponentProps<any> {
@@ -19,6 +19,7 @@ interface IProps extends RouteComponentProps<any> {
     username: string
     // token: string
   }
+  loadModal: (string) => void
 }
 
 export class DashboardPage extends Component<IProps> {
@@ -26,11 +27,14 @@ export class DashboardPage extends Component<IProps> {
     words: []
   }
 
+  showNewWordModal = () => this.props.loadModal(NEW_WORD_MODAL)
+
   // @ts-ignore
   render = () => {
     return (
       <div>
         <h1>Dashboard</h1>
+        <button onClick={this.showNewWordModal}>New word</button>
       </div>
     )
   }
@@ -41,4 +45,7 @@ const mapStateToProps = state => ({
   dataIsHere: state.mis.dataIsHere
 })
 
-export default connect(mapStateToProps)(DashboardPage)
+export default connect(
+  mapStateToProps,
+  { loadModal }
+)(DashboardPage as any)

@@ -3,6 +3,7 @@ import { Route, Redirect, RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as H from 'history'
 import Header from '../components/Header'
+import ModalContainer from '../components/ModalContainer'
 import { startPersist } from '../actions/auth'
 
 interface RouteProps {
@@ -49,6 +50,7 @@ class PrivateRoute extends Component<Props> {
             <div>
               <Header />
               <Component {...props} />
+              <ModalContainer />
             </div>
           ) : (
             <Redirect to="/login" />

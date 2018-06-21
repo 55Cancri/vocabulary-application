@@ -1,0 +1,1 @@
+export const NEW_WORD_MODAL = 'NEW_WORD_MODAL'

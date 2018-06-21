@@ -3,8 +3,8 @@ import 'react-redux'
 import thunk from 'redux-thunk'
 
 import { authorizationReducer } from '../reducers/authorization'
-import { reimburseReducer } from '../reducers/reimbursements'
 import { miscellaneousReducer } from '../reducers/miscellaneous'
+import { modalReducer } from '../reducers/modal'
 import { startLogout } from '../actions/auth'
 import jwtDecode from 'jwt-decode'
 
@@ -30,7 +30,7 @@ export const configureStore = () => {
     combineReducers({
       mis: miscellaneousReducer,
       auth: authorizationReducer,
-      reimbursements: reimburseReducer
+      modal: modalReducer
     }),
     composeEnhancers(applyMiddleware(thunk, checkTokenExpirationMiddleware))
   )
