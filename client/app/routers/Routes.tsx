@@ -12,7 +12,6 @@ import LoginPage from '../components/LoginPage'
 import SignupPage from '../components/SignupPage'
 import SettingsPage from '../components/SettingsPage'
 import DashboardPage from '../components/DashboardPage'
-import ReimbursePage from '../components/ReimbursePage'
 import NotFoundPage from '../components/NotFoundPage'
 
 // binophilip123@gmail.com
@@ -113,7 +112,6 @@ export class Pages extends Component<IProps, IState> {
             sidebarClassName="sidebar"
             transitions={false}
           >
-            <PrivateRoute path="/create" component={ReimbursePage} />
             <PrivateRoute path="/dashboard" component={DashboardPage} />
             <PrivateRoute path="/settings" component={SettingsPage} />
           </Sidebar>
