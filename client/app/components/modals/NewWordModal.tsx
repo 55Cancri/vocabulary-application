@@ -9,7 +9,7 @@ import api from "../../api";
 
 interface IProps extends RouteComponentProps<any> {
   hideModal: () => void
-  startCreateWord: any,
+  submitWord: any,
   onChange: any,
   username: string
 }
@@ -39,10 +39,12 @@ export class NewWordModal extends Component<IProps, IState> {
     } as any)
   }
 
-  addWord = () => {
+  handleSubmit = e => {
+    e.preventDefault()
+    console.log("Preparing to create word")
     let {word, tags, topic, definition} = this.state
     let tagList = tags.split(' ')
-    let id = generateUuid
+    let id = generateUuid()
     let nextWord = {
       uid: id,
       word: word,
@@ -51,8 +53,9 @@ export class NewWordModal extends Component<IProps, IState> {
       topic: '',
       owner: this.props.username
     }
-    this.props.startCreateWord(word)
-    this.props.history.push('/dashboard')
+    console.log(nextWord)
+    this.props.submitWord(nextWord)
+      // .then(this.props.history.push('/dashboard'))
   }
 
   // @ts-ignore
@@ -60,7 +63,7 @@ export class NewWordModal extends Component<IProps, IState> {
     const {word, tags, topic, definition} = this.state
     return(
     <Modal onClose={this.onClose}>
-      <form onSubmit={this.addWord}
+      <form onSubmit={this.handleSubmit}
         onChange={this.onFieldChange} >
         <div className="input-group" >
           <label htmlFor="word">Name</label>
@@ -94,7 +97,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   hideModal: () => dispatch(hideModal()),
-  startCreateWord: (word) => startCreateWord(word)
+  submitWord: (word) => startCreateWord(word, dispatch)
 })
 // mapStateToProps -- to read from the store
 // mapDispatchToProps -- to write to the store
