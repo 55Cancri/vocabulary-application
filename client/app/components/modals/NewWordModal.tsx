@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Modal from '../Modal'
 import { hideModal } from '../../actions/modal'
+import { generateUuid } from '../../helpers/helpers';
 
 interface IProps {
   hideModal: () => void
-  onChange: any
+  onChange: any,
+  username: string
 }
 
 interface IState {
@@ -36,6 +38,16 @@ export class NewWordModal extends Component<IProps, IState> {
   addWord = () => {
     let {word, tags, topic, definition} = this.state
     let tagList = tags.split(' ')
+    let id = generateUuid
+    let nextWord = {
+      uid: id,
+      word: word,
+      definition: definition,
+      tags: tagList,
+      topic: topic,
+      owner: this.props.username
+    }
+    
   }
 
   // @ts-ignore
@@ -71,11 +83,13 @@ export class NewWordModal extends Component<IProps, IState> {
   )}
 }
 
+const mapStateToProps = state => ({
+  username: state.auth.username
+})
+
 const mapDispatchToProps = dispatch => ({
   hideModal: () => dispatch(hideModal())
 })
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewWordModal)
+// mapStateToProps -- to read from the store
+// mapDispatchToProps -- to write to the store
+export default connect(mapStateToProps, mapDispatchToProps)(NewWordModal)
