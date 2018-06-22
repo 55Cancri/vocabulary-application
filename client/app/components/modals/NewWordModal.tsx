@@ -17,6 +17,8 @@ export class NewWordModal extends Component<IProps> {
       <input type="text" name="word" />
       <label htmlFor="definition">Definition</label>
       <textarea name="definition" />
+      <label htmlFor="tags">Add tags</label>
+      <textarea name="tags" />
       <p onClick={this.onClose}>click to close modal</p>
     </Modal>
   )
