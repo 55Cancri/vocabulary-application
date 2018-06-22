@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome": "latest",
     "@fortawesome/fontawesome-free-solid": "latest",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/react-fontawesome": "latest",
     "amazon-cognito-identity-js": "^2.0.9",
     "aws-sdk": "latest",

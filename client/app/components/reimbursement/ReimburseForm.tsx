@@ -4,8 +4,8 @@ import { RouteProps } from 'react-router'
 import ReimburseItem from './ReimburseItem'
 import { generateUuid } from '../../helpers/helpers'
 import { startSubmitReimbursement } from '../../actions/app'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface IProps extends RouteProps {
   role: string

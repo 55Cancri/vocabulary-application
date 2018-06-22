@@ -1,6 +1,6 @@
 import React, { Component, SFC } from 'react'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export const ReimburseItem = props => {
   const {
@@ -61,6 +61,7 @@ export const ReimburseItem = props => {
       <FontAwesomeIcon
         icon="times"
         className="fa-times"
+        // @ts-ignore
         onClick={el => handleRemoveItem(uid)}
       />
     </div>
