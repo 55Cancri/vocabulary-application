@@ -26,6 +26,9 @@ const signupUrl =
 const loginUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/login'
 
+const addWordUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word'
+
 export default {
   user: {
     signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
