@@ -44,10 +44,10 @@ export class NewWordModal extends Component<IProps, IState> {
       word: word,
       definition: definition,
       tags: tagList,
-      topic: topic,
+      topic: '',
       owner: this.props.username
     }
-    
+
   }
 
   // @ts-ignore
@@ -65,10 +65,10 @@ export class NewWordModal extends Component<IProps, IState> {
           <label htmlFor="tags">Add tags</label>
           <input type="text" name="tags" value={tags} />
         </div>
-        <div className="input-group" >
+        {/* <div className="input-group" >
           <label htmlFor="topic">Add topic</label>
           <input type="text" name="topic" value={topic} />
-        </div>
+        </div> */}
         <div className="input-group" >
           <label htmlFor="definition">Definition</label>
           <textarea name="definition" value={definition} />

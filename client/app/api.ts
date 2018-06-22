@@ -92,5 +92,8 @@ export default {
       axios
         .post('/api/nuke', email, { headers: getToken() })
         .then(res => res.data)
+  },
+  modal: {
+    addWord: word => axios.post(addWordUrl, {word}).then(res => res.data)
   }
 }
