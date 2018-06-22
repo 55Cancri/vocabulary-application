@@ -1,26 +1,8 @@
 import React from 'react'
 import api from '../api'
 
-export const submitReimbursement = data => ({
-  type: 'SUBMIT',
-  data
-})
-
-export const startSubmitReimbursement = data => dispatch =>
-  api.user
-    .submitReimbursement(data)
-    .then(user => dispatch(submitReimbursement(user)))
-
-export const updateReimbursements = updateReimbursements => ({
-  pendingTickets: updateReimbursements,
-  type: 'VERDICTS'
-})
-
-export const startVerdicts = verdict => dispatch =>
-  api.user.issueVerdicts(verdict).then(withNewReimbursements => {
-    console.log('now about to dispatch...', withNewReimbursements)
-    return dispatch(updateReimbursements(withNewReimbursements))
-  })
+export const startCreateWord = word => dispatch =>
+  api.modal.addWord(word)
 
 export const deleteAccount = user => ({
   type: 'DELETE',

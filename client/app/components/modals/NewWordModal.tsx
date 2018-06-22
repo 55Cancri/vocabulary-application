@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import Modal from '../Modal'
-import { hideModal, addWord } from '../../actions/modal'
+import { hideModal } from '../../actions/modal'
+import { startCreateWord } from '../../actions/app'
 import { generateUuid } from '../../helpers/helpers';
 import api from "../../api";
 
 interface IProps extends RouteComponentProps<any> {
   hideModal: () => void
-  addWord: (word) => void,
+  startCreateWord: any,
   onChange: any,
   username: string
 }
@@ -50,7 +51,7 @@ export class NewWordModal extends Component<IProps, IState> {
       topic: '',
       owner: this.props.username
     }
-    this.props.addWord(word)
+    this.props.startCreateWord(word)
     this.props.history.push('/dashboard')
   }
 
@@ -93,8 +94,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   hideModal: () => dispatch(hideModal()),
-  addWord: (word) => dispatch(addWord(word))
+  startCreateWord: (word) => startCreateWord(word)
 })
 // mapStateToProps -- to read from the store
 // mapDispatchToProps -- to write to the store
-export default connect(mapStateToProps, mapDispatchToProps)(NewWordModal)
+export default connect<any, any>(mapStateToProps, mapDispatchToProps)(NewWordModal)

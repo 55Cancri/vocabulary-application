@@ -5,11 +5,11 @@ export const loadModal = modalType => ({
   modalType
 })
 
-export const addWord = word => dispatch =>
-  api.modal.addWord(word).then(
-    dispatch(hideModal())
-  )
-  .catch(err => console.log(err))
+// export const addWord = word => dispatch =>
+//   api.modal.addWord(word).then(
+//     dispatch(hideModal())
+//   )
+//   .catch(err => console.log(err))
 
 // set modalType to null in redux store
 export const hideModal = () => ({
