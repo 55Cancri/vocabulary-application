@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 import { startLogout } from '../actions/auth'
@@ -72,7 +72,9 @@ export class Header extends Component<Props> {
             }}
           >
             <DropdownItem className="dropdown-item">
-              <Link to="/settings" className="settings">Settings</Link>
+              <Link to="/settings" className="settings">
+                Settings
+              </Link>
             </DropdownItem>
             <DropdownItem
               className="dropdown-item"

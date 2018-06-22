@@ -45,6 +45,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-fontawesome": "^1.6.3",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-redux": "latest",
     "@types/react-router-dom": "latest",
