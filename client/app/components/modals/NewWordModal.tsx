@@ -34,7 +34,8 @@ export class NewWordModal extends Component<IProps, IState> {
   }
 
   addWord = () => {
-
+    let {word, tags, topic, definition} = this.state
+    let tagList = tags.split(' ')
   }
 
   // @ts-ignore
