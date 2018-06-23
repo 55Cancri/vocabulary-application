@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import fontawesome from '@fortawesome/fontawesome'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AddTopicField } from './AddTopicField';
 
 interface IProps {
   // toggle: any
@@ -47,11 +48,7 @@ export class SidebarContent extends Component<IProps, IState> {
               </button>
             </div>
           : <div>
-              <input type="text" />
-              <button type="submit"
-                className="btn btn-primary btn-circle">
-                <FontAwesomeIcon icon="paper-plane" className="fa-paper-plane" />
-              </button>
+              <AddTopicField/>
               <button className="btn btn-danger btn-circle"
                 onClick={this.toggle} >
                 <FontAwesomeIcon icon="times" className="fa-times" />
