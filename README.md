@@ -1,3 +1,3 @@
-## Word App
+## Vocabulary
 
-should be updated
+This application allows users to collect and share interesting words that they come across in books, movies, conversations and anywhere else where words are the medium of exchange for information. Users can sort the words they find into topics and build lists that categorize their words in ways other than their meaning. When users find a word they like and would like to add to their collection, they must provide their own definition. The reason for this is so that users can phrase the definition of the word in a way that makes sense to them. The alternative would be to query the api of another dictionary application for a definition that may potentially be arcane or unhelpful in its explanation. The downside to this approach is that there is no built-in error correcting mechanism to access the veracity of a user's definition. In the future, we plan to incorporate a ranking system for definitions so that the accuracy of a definition can be determined by consesus.
