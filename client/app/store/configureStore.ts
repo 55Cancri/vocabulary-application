@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 
 import { authorizationReducer } from '../reducers/authorization'
 import { miscellaneousReducer } from '../reducers/miscellaneous'
+import { sidebarReducer } from '../reducers/sidebar'
 import { modalReducer } from '../reducers/modal'
 import { startLogout } from '../actions/auth'
 import jwtDecode from 'jwt-decode'
@@ -29,6 +30,7 @@ export const configureStore = () => {
   const store = createStore(
     combineReducers({
       mis: miscellaneousReducer,
+      side: sidebarReducer,
       auth: authorizationReducer,
       modal: modalReducer
     }),
