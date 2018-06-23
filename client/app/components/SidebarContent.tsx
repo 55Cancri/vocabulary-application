@@ -19,12 +19,6 @@ export class SidebarContent extends Component<IProps, IState> {
   }
 
   toggle = e => {
-    
-    // this.state.isEditing = !this.state.isEditing
-    // let {name, value}: {name: keyof IState; value: string} = e.target
-    // this.setState({
-    //   [name]: value
-    // } as any)
     this.setState({isEditing: !this.state.isEditing})
     console.log(`Switch state to ${this.state.isEditing}`)
   }
@@ -68,8 +62,4 @@ export class SidebarContent extends Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = state => {
-  state.side.isEditing
-}
-
-export default connect(mapStateToProps, null)(SidebarContent)
+export default SidebarContent
