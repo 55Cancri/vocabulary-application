@@ -39,11 +39,11 @@ export class SidebarContent extends Component<IProps, IState> {
   handleSubmit = e => {
     e.preventDefault()
     let name = this.state.topic
-    let id = generateUuid
+    let id = generateUuid()
     let username = this.props.username
     let nextTopic = {
       uid: id,
-      username: username,
+      owner: username,
       name: name
     }
     console.log('next topic ', nextTopic)

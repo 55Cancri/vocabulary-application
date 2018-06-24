@@ -31,7 +31,7 @@ const addWordUrl =
 
 const addTopicUrl = 
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
-
+  
 export default {
   user: {
     signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
@@ -104,6 +104,7 @@ export default {
   },
   sidebar: {
     addTopic: topic => {
+      console.log('Stepping into the api')
       axios.post(addTopicUrl, {topic}).then(res => res.data)
     }
   }
