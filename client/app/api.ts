@@ -29,6 +29,9 @@ const loginUrl =
 const addWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word'
 
+const addTopicUrl = 
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
+
 export default {
   user: {
     signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
@@ -97,6 +100,11 @@ export default {
     addWord: wordObject => {
       console.log(`Posting ${wordObject.word}`)
       axios.post(addWordUrl, {wordObject}).then(res => res.data)
+    }
+  },
+  sidebar: {
+    addTopic: topic => {
+      axios.post(addTopicUrl, {topic}).then(res => res.data)
     }
   }
 }
