@@ -2,16 +2,9 @@ import React from 'react'
 import api from '../api'
 
 export const startCreateWord = (nextWord, dispatch) => {
-  console.log("Stepped into app.ts to addWord")
+  console.log('Stepped into app.ts to addWord')
   api.modal.addWord(nextWord)
 }
-export const deleteAccount = user => ({
-  type: 'DELETE',
-  user
-})
-
-export const startDeleteAccount = data => dispatch =>
-  api.user.deleteAccount(data).then(user => dispatch(deleteAccount(user)))
 
 export const nuke = user => ({
   type: 'NUKE',

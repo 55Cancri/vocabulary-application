@@ -47,9 +47,8 @@ export default {
         .then(res => res.data)
   },
   modal: {
-    addWord: nextWord => {
-      console.log(`Posting ${nextWord.word}`)
-      axios.post(addWordUrl, {nextWord}).then(res => res.data)
+    addWord: wordObject => {
+      axios.post(addWordUrl, { wordObject }).then(res => res.data)
     }
   }
 }

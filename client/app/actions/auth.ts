@@ -52,26 +52,3 @@ export const startLogout = () => dispatch => {
   localStorage.removeItem('wa')
   dispatch(logout())
 }
-
-export const updateGeneral = data => ({
-  type: 'GENERAL',
-  data
-})
-
-export const startUpdateGeneral = data => async dispatch => {
-  api.user.updateGeneral(data).then(user => dispatch(updateGeneral(user)))
-  // const user = await api.user.updateGeneral(data)
-
-  // dispatch(user)
-}
-
-export const updatePassword = data => ({
-  type: 'PASSWORD',
-  data
-})
-
-export const startUpdatePassword = data => async dispatch => {
-  const user = await api.user.updatePassword(data)
-
-  // dispatch(user)
-}
