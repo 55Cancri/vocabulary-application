@@ -29,6 +29,9 @@ const loginUrl =
 const addWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word'
 
+const addTopicUrl = 
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
+  
 export default {
   user: {
     signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
@@ -48,7 +51,18 @@ export default {
   },
   modal: {
     addWord: wordObject => {
+<<<<<<< HEAD
       axios.post(addWordUrl, { wordObject }).then(res => res.data)
+=======
+      console.log(`Posting ${wordObject.word}`)
+      axios.post(addWordUrl, {wordObject}).then(res => res.data)
+    }
+  },
+  sidebar: {
+    addTopic: topic => {
+      console.log('Stepping into the api')
+      axios.post(addTopicUrl, {topic}).then(res => res.data)
+>>>>>>> 38ca98a3bc5866823da2399f01e976b143b0e599
     }
   }
 }
