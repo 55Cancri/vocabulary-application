@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
+import Textbar from './Textbar'
 import moment from 'moment'
 import numeral from 'numeral'
 import Spinner from 'react-spinkit'
-import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { loadModal } from '../actions/modal'
 
@@ -32,9 +31,13 @@ export class DashboardPage extends Component<IProps> {
   // @ts-ignore
   render = () => {
     return (
-      <div>
-        <h1>Dashboard</h1>
-        <button onClick={this.showNewWordModal}>New word</button>
+      <div className="dashboard-page">
+        <Textbar />
+        <div>
+          <h1>Topics</h1>
+
+          <button onClick={this.showNewWordModal}>New word</button>
+        </div>
       </div>
     )
   }
@@ -42,7 +45,7 @@ export class DashboardPage extends Component<IProps> {
 
 const mapStateToProps = state => ({
   identity: state.auth,
-  dataIsHere: state.mis.dataIsHere
+  dataIsHere: state.app.dataIsHere
 })
 
 export default connect(
