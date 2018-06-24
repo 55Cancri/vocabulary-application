@@ -5,7 +5,7 @@ export const startCreateWord = (nextWord, dispatch) => {
   console.log("Stepped into app.ts to addWord")
   api.modal.addWord(nextWord)
 }
-// Comment here
+
 export const startSubmitTopic = (nextTopic, dispatch) => {
   api.sidebar.addTopic(nextTopic)
 }
