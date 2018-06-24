@@ -14,9 +14,6 @@ export const deleteAccount = user => ({
   user
 })
 
-export const startDeleteAccount = data => dispatch =>
-  api.user.deleteAccount(data).then(user => dispatch(deleteAccount(user)))
-
 export const nuke = user => ({
   type: 'NUKE',
   user
