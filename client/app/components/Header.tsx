@@ -32,6 +32,17 @@ export class Header extends Component<Props> {
   toggleDropdown = () =>
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
+  onFieldChange = e => {
+    let value = e.target.value
+    this.setState({
+      searchTerm: value
+    } as any)
+  }
+
+  handleSubmit = () => {
+
+  }
+
   render() {
     const { isAuthenticated, startLogout } = this.props
     const searchTerm = this.state.searchTerm
@@ -44,7 +55,12 @@ export class Header extends Component<Props> {
         </Link>
         <div className="search-group">
           <FontAwesomeIcon icon="search" className="icon" />
-          <input type="text" className="input" placeholder="Search" value={searchTerm} />
+          <input type="text"
+            className="input"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={this.onFieldChange}
+            onSubmit={this.handleSubmit} />
         </div>
 
         <FontAwesomeIcon icon="bell" className="alerts" />
