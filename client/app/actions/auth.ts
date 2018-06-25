@@ -17,7 +17,11 @@ export const startPersist = identity => {
   return dispatch => {
     dispatch(persist(identity))
 
-    return api.user.persistUser(identity).then(user => {
+    return api.user.persistUser(identity).then(data => {
+      const user = {
+        ...data,
+        token: identity.token
+      }
       return dispatch(login(user))
     })
   }
@@ -40,7 +44,6 @@ export const startLogin = credentials => dispatch =>
 export const startSignup = dossier => dispatch =>
   api.user.signup(dossier).then(user => {
     localStorage.wa = dossier.token
-    // localStorage.ers = user.token
     dispatch(login(user))
   })
 
@@ -50,5 +53,29 @@ export const logout = () => ({
 
 export const startLogout = () => dispatch => {
   localStorage.removeItem('wa')
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.LastAuthUser'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.accessToken'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.clockDrift'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.deviceGroupKey'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.deviceKey'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.idToken'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.randomPasswordKey'
+  )
+  localStorage.removeItem(
+    'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.refreshToken'
+  )
   dispatch(logout())
 }

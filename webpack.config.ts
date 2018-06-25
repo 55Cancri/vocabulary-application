@@ -18,8 +18,7 @@ const config: webpack.Configuration = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'cheap-module-source-map',
-
+  devtool: 'source-map',
   mode: 'development',
 
   resolve: {
@@ -52,7 +51,6 @@ const config: webpack.Configuration = {
       {
         test: /\.(sa|c)ss$/,
         use: [
-          // MiniCSSExtractPlugin.loader,
           ExtractCssChunks.loader,
           {
             loader: 'css-loader',
@@ -77,7 +75,7 @@ const config: webpack.Configuration = {
       template: './client/public/index.html',
       inject: 'body'
     }),
-    // new ExtractTextPlugin({
+
     new ExtractCssChunks({
       filename: 'css/style.css'
     })
