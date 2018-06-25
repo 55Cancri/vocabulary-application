@@ -25,7 +25,8 @@ type Props = StateProps & DispatchProps
 
 export class Header extends Component<Props> {
   state = {
-    dropdownOpen: false
+    dropdownOpen: false,
+    searchTerm: ''
   }
 
   toggleDropdown = () =>
@@ -33,6 +34,7 @@ export class Header extends Component<Props> {
 
   render() {
     const { isAuthenticated, startLogout } = this.props
+    const searchTerm = this.state.searchTerm
 
     return (
       <header className="nav-header">
@@ -42,7 +44,7 @@ export class Header extends Component<Props> {
         </Link>
         <div className="search-group">
           <FontAwesomeIcon icon="search" className="icon" />
-          <input type="text" className="input" placeholder="Search" />
+          <input type="text" className="input" placeholder="Search" value={searchTerm} />
         </div>
 
         <FontAwesomeIcon icon="bell" className="alerts" />
