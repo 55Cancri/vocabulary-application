@@ -32,6 +32,10 @@ const addWordUrl =
 const addTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
 
+// Hard code. Fix this later
+const getEverythingUrl = 
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/get-everything/scottkm'
+
 export default {
   user: {
     signup: dossier => axios.post(signupUrl, { dossier }).then(res => res.data),
@@ -59,6 +63,12 @@ export default {
     addTopic: topic => {
       console.log('Stepping into the api')
       axios.post(addTopicUrl, { topic }).then(res => res.data)
+    }
+  },
+  header: {
+    getEverything: username => {
+      console.log('API reached')
+      axios.get(getEverythingUrl).then(res => res.data)
     }
   }
 }

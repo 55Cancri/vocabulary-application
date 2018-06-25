@@ -10,6 +10,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { loadModal } from '../actions/modal'
 
 import { NEW_WORD_MODAL } from '../constants/modaltypes'
+import { startGetEverything } from '../actions/app';
 
 // extend RouteComponentProps to get access to history object
 interface IProps extends RouteComponentProps<any> {
@@ -20,6 +21,8 @@ interface IProps extends RouteComponentProps<any> {
     // token: string
   }
   loadModal: (string) => void
+  startGetEverything: (string) => void
+  everything: any
 }
 
 export class DashboardPage extends Component<IProps> {
@@ -28,6 +31,12 @@ export class DashboardPage extends Component<IProps> {
   }
 
   showNewWordModal = () => this.props.loadModal(NEW_WORD_MODAL)
+
+  //@ts-ignore
+  componentDidMount = () => {
+    let everything = this.props.startGetEverything('scottkm')
+    console.log(everything)
+  }
 
   // @ts-ignore
   render = () => {
@@ -42,10 +51,11 @@ export class DashboardPage extends Component<IProps> {
 
 const mapStateToProps = state => ({
   identity: state.auth,
-  dataIsHere: state.mis.dataIsHere
+  dataIsHere: state.mis.dataIsHere,
+  everything: state.everything
 })
 
 export default connect(
   mapStateToProps,
-  { loadModal }
+  { loadModal, startGetEverything }
 )(DashboardPage as any)

@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 import { startLogout } from '../actions/auth'
+import { startGetEverything } from '../actions/app'
 
 interface StateProps {
   isAuthenticated: Boolean
@@ -18,7 +19,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  startLogout: () => void
+  startLogout: () => void,
+  startGetEverything: (username) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -31,6 +33,12 @@ export class Header extends Component<Props> {
 
   toggleDropdown = () =>
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
+
+  // Probably will only use this for testing
+  //@ts-ignore
+  // componentDidMount = () => {
+  //   this.props.startGetEverything('scottkm')
+  // }
 
   onFieldChange = e => {
     let value = e.target.value
@@ -117,6 +125,7 @@ const mapStateToProps = (state): StateProps => {
 export default connect<StateProps, DispatchProps>(
   mapStateToProps,
   {
-    startLogout
+    startLogout,
+    startGetEverything
   }
 )(Header)

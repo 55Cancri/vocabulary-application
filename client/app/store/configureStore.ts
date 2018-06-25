@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import { authorizationReducer } from '../reducers/authorization'
 import { miscellaneousReducer } from '../reducers/miscellaneous'
 import { modalReducer } from '../reducers/modal'
+import { everythingReducer } from '../reducers/everything'
 import { startLogout } from '../actions/auth'
 import jwtDecode from 'jwt-decode'
 
@@ -30,7 +31,8 @@ export const configureStore = () => {
     combineReducers({
       mis: miscellaneousReducer,
       auth: authorizationReducer,
-      modal: modalReducer
+      modal: modalReducer,
+      everything: everythingReducer
     }),
     composeEnhancers(applyMiddleware(thunk, checkTokenExpirationMiddleware))
   )
