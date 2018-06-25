@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Textbar from './Textbar'
 import Spinner from 'react-spinkit'
 
@@ -19,10 +20,10 @@ export class GlossaryPage extends Component<IProps> {
           {words === undefined && <Spinner name="ball-scale-ripple-multiple" />}
           {words !== undefined &&
             words.map(word => (
-              <div>
+              <Link to={`/word/${word.word}`} key={word.uid}>
                 <h2>{word.word}</h2>
                 <p>{word.definition}</p>
-              </div>
+              </Link>
             ))}
         </div>
       </div>
