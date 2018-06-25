@@ -1,6 +1,11 @@
 import React from 'react'
 
-export const appReducer = (state = {}, action = {} as any) => {
+const initialState = {
+  dataIsHere: false,
+  textbar: 'topics'
+}
+
+export const appReducer = (state = initialState, action = {} as any) => {
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -11,6 +16,6 @@ export const appReducer = (state = {}, action = {} as any) => {
       return {}
 
     default:
-      return state
+      return initialState
   }
 }

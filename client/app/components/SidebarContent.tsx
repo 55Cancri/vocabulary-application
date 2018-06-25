@@ -3,13 +3,16 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import fontawesome from '@fortawesome/fontawesome'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { generateUuid } from '../helpers/helpers'
 import { startSubmitTopic } from '../actions/app'
+import { loadModal } from '../actions/modal'
+import { NEW_WORD_MODAL } from '../constants/modaltypes'
 
 interface IProps {
-  // toggle: any
   username?: string
-  submitTopic?: (nextTopic: any) => void
+  startSubmitTopic?: (nextTopic: any) => any
+  loadModal?: (string) => void
 }
 
 interface IState {
@@ -23,8 +26,6 @@ export class SidebarContent extends Component<IProps, IState> {
   }
 
   onFieldChange = e => {
-    // let value: string = e.target
-    // this.setState({topic: value} as any)
     let { name, value }: { name: keyof IState; value: string } = e.target
     this.setState({
       [name]: value
@@ -41,8 +42,10 @@ export class SidebarContent extends Component<IProps, IState> {
       owner: username,
       name: name
     }
-    this.props.submitTopic(nextTopic)
+    this.props.startSubmitTopic(nextTopic)
   }
+
+  spawnWordModal = () => this.props.loadModal(NEW_WORD_MODAL)
 
   toggle = e => {
     this.setState({ isEditing: !this.state.isEditing })
@@ -55,13 +58,13 @@ export class SidebarContent extends Component<IProps, IState> {
         <Link to="/dashboard" className="link">
           <FontAwesomeIcon icon="home" className="icon fa-home" />
         </Link>
-        <Link to="/dashboard" className="link">
+        <Link to="/dashboard" className="link" onClick={this.spawnWordModal}>
           <FontAwesomeIcon icon="plus" className="icon fa-plus" />
         </Link>
         <Link to="/dashboard" className="link">
           <FontAwesomeIcon icon="tags" className="icon fa-tags" />
         </Link>
-        <Link to="/dashboard" className="link">
+        <Link to="/glossary" className="link">
           <FontAwesomeIcon icon="list" className="icon fa-list" />
         </Link>
         <Link to="/dashboard" className="link">
@@ -70,33 +73,6 @@ export class SidebarContent extends Component<IProps, IState> {
         <Link to="/settings" className="link">
           <FontAwesomeIcon icon="cog" className="icon fa-cog" />
         </Link>
-
-        {/* {!this.state.isEditing ? (
-          <div>
-            <p>Add topic</p>
-            <button
-              className="btn btn-success btn-circle"
-              onClick={this.toggle}
-            >
-              <FontAwesomeIcon icon="plus" className="fa-plus" />
-            </button>
-          </div>
-        ) : (
-          <div>
-            <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
-              <input type="text" name="topic" value={topic} />
-              <button type="submit" className="btn btn-primary btn-circle">
-                <FontAwesomeIcon
-                  icon="paper-plane"
-                  className="fa-paper-plane"
-                />
-              </button>
-            </form>
-            <button className="btn btn-danger btn-circle" onClick={this.toggle}>
-              <FontAwesomeIcon icon="times" className="fa-times" />
-            </button>
-          </div>
-        )} */}
       </div>
     )
   }
@@ -106,11 +82,7 @@ const mapStateToProps = state => ({
   username: state.auth.username
 })
 
-const mapDispatchToProps = dispatch => ({
-  submitTopic: topic => startSubmitTopic(topic, dispatch)
-})
-
-export default connect(
+export default connect<any, any>(
   mapStateToProps,
-  mapDispatchToProps
+  { loadModal, startSubmitTopic }
 )(SidebarContent)

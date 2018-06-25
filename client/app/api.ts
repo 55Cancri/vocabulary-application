@@ -52,14 +52,11 @@ export default {
         .then(res => res.data)
   },
   modal: {
-    addWord: wordObject => {
-      console.log(`Posting ${wordObject.word}`)
+    addWord: wordObject =>
       axios.post(addWordUrl, { wordObject }).then(res => res.data)
-    }
   },
   sidebar: {
     addTopic: topic => {
-      console.log('Stepping into the api')
       axios.post(addTopicUrl, { topic }).then(res => res.data)
     }
   }

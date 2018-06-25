@@ -12,10 +12,9 @@ import LoginPage from '../components/LoginPage'
 import SignupPage from '../components/SignupPage'
 import SettingsPage from '../components/SettingsPage'
 import DashboardPage from '../components/DashboardPage'
+import GlossaryPage from '../components/GlossaryPage'
+import WordPage from '../components/WordPage'
 import NotFoundPage from '../components/NotFoundPage'
-
-// binophilip123@gmail.com
-// sm.scottkmoore@gmail.com
 
 export const history = createHistory()
 const mql = window.matchMedia(`(min-width: 800px)`)
@@ -113,6 +112,8 @@ export class Pages extends Component<IProps, IState> {
             transitions={false}
           >
             <PrivateRoute path="/dashboard" component={DashboardPage} />
+            <PrivateRoute path="/glossary" component={GlossaryPage} />
+            <PrivateRoute path="/word/:name" component={WordPage} />
             <PrivateRoute path="/settings" component={SettingsPage} />
           </Sidebar>
 
