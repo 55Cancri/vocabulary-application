@@ -13,18 +13,22 @@ const store = configureStore()
 
 interface IPayload {
   username: string
+  email: string
+  token: string
+  split: any
 }
 
 // TODO: data persistence from localhost
-// if (localStorage.ers) {
-//   const payload: IPayload = decode(localStorage.ers)
-//   const user = {
-//     username: payload.username,
-//     token: localStorage.ers
-//   }
-//   // @ts-ignore
-//   store.dispatch(startPersist(user))
-// }
+if (localStorage.wa) {
+  const payload: IPayload = decode(localStorage.wa)
+  const user = {
+    email: payload.email,
+    token: localStorage.wa
+  }
+
+  // @ts-ignore
+  store.dispatch(startPersist(user))
+}
 
 export class AppRouter extends Component {
   // @ts-ignore

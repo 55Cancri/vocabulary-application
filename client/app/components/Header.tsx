@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
 import { startLogout } from '../actions/auth'
-import { startGetEverything } from '../actions/app'
+// import { startGetEverything } from '../actions/app'
 
 interface StateProps {
   isAuthenticated: Boolean
@@ -20,7 +20,7 @@ interface StateProps {
 
 interface DispatchProps {
   startLogout: () => void,
-  startGetEverything: (username) => void
+  // startGetEverything: (username) => void
 }
 
 type Props = StateProps & DispatchProps
@@ -125,7 +125,7 @@ const mapStateToProps = (state): StateProps => {
 export default connect<StateProps, DispatchProps>(
   mapStateToProps,
   {
-    startLogout,
-    startGetEverything
+    startLogout
+    // startGetEverything
   }
 )(Header)

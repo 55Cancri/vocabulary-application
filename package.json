@@ -29,6 +29,7 @@
     "react-hot-loader": "^4.0.0",
     "react-redux": "latest",
     "react-router-dom": "latest",
+    "react-router-hash-link": "^1.2.0",
     "react-sidebar": "^2.3.2",
     "react-spinkit": "^3.0.0",
     "reactstrap": "latest",
