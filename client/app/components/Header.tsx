@@ -16,6 +16,8 @@ import { startLogout } from '../actions/auth'
 interface StateProps {
   isAuthenticated: Boolean
   name: string
+  words: any
+  results: any
 }
 
 interface DispatchProps {
@@ -47,8 +49,23 @@ export class Header extends Component<Props> {
     } as any)
   }
 
-  handleSubmit = () => {
-
+  handleSubmit = e => {
+    e.preventDefault()
+    console.log('Reached submit')
+    console.log(this.props.words)
+    const matches = this.props.words.filter(word => word.word === this.state.searchTerm)
+    console.log(this.state.searchTerm)
+    // console.log(match)
+    // let matches = []
+    let results = this.props.results
+    // matches.push(match)
+    console.log(matches[0])
+    this.setState({
+      results: matches
+    } as any)
+    console.log('Results', this.props.results)
+    
+    // alert('Found match' + match[0].word)
   }
 
   render() {
@@ -63,12 +80,13 @@ export class Header extends Component<Props> {
         </Link>
         <div className="search-group">
           <FontAwesomeIcon icon="search" className="icon" />
-          <input type="text"
-            className="input"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={this.onFieldChange}
-            onSubmit={this.handleSubmit} />
+          <form className="submit" onSubmit={this.handleSubmit} >
+            <input type="text"
+              className="input"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={this.onFieldChange} />
+          </form>
         </div>
 
         <FontAwesomeIcon icon="bell" className="alerts" />
@@ -118,7 +136,9 @@ export class Header extends Component<Props> {
 const mapStateToProps = (state): StateProps => {
   return {
     isAuthenticated: !!state.auth.token,
-    name: state.auth.name
+    name: state.auth.name,
+    words: state.lexica.words,
+    results: state.lexica.results
   }
 }
 

@@ -5,7 +5,8 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
     case 'LOGIN':
       return {
         words: action.user.words,
-        topics: [...new Set(action.user.words.map(word => word.topic))]
+        topics: [...new Set(action.user.words.map(word => word.topic))],
+        results: []
       }
 
     case 'LOGOUT':
@@ -13,8 +14,15 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
 
     case 'NEW_WORD':
       return {
+        ...state,
         words: action.words,
         topics: [...new Set(action.words.map(word => word.topic))]
+      }
+
+    case 'SEARCH':
+      return {
+        ...state,
+        results: []
       }
 
     default:
