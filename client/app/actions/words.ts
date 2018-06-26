@@ -8,3 +8,8 @@ export const updateWords = words => ({
 
 export const startUpdateWord = (nextWord, dispatch) =>
   api.modal.addWord(nextWord).then(data => dispatch(updateWords(data)))
+
+export const setCurrentWord = word => ({
+  type: 'CURRENT',
+  word
+})

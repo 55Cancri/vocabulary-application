@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Spinner from 'react-spinkit'
 import { TopicsListWord } from './TopicsListWord'
+import { setCurrentWord } from '../actions/words'
 
 interface IProps {
   words: any
   topics: string[]
+  setCurrentWord: (any) => void
 }
 
 export class TopicsList extends Component<IProps> {
@@ -20,9 +22,11 @@ export class TopicsList extends Component<IProps> {
     console.log('scroll event: ', window.scrollY)
   }
 
+  handleCurrent = word => this.props.setCurrentWord(word)
+
   // @ts-ignore
   render = () => {
-    const { words, topics } = this.props
+    const { words, topics, setCurrentWord } = this.props
     return (
       <div className="topics-list">
         {topics === undefined && <Spinner name="ball-scale-ripple-multiple" />}
@@ -32,7 +36,13 @@ export class TopicsList extends Component<IProps> {
               <h2>{topic}</h2>
               {words.map(word => {
                 if (word.topic === topic)
-                  return <TopicsListWord key={word.uid} word={word} />
+                  return (
+                    <TopicsListWord
+                      key={word.uid}
+                      word={word}
+                      setWord={this.handleCurrent}
+                    />
+                  )
               })}
             </div>
           ))}
@@ -47,4 +57,7 @@ const mapStateToProps = state => ({
   dataIsHere: state.app.dataIsHere
 })
 
-export default connect(mapStateToProps)(TopicsList as any)
+export default connect(
+  mapStateToProps,
+  { setCurrentWord }
+)(TopicsList as any)

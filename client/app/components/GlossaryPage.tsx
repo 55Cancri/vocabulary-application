@@ -16,7 +16,6 @@ export class GlossaryPage extends Component<IProps> {
       <div className="glossary-page">
         <Textbar />
         <div>
-          <h1>Glossary</h1>
           {words === undefined && <Spinner name="ball-scale-ripple-multiple" />}
           {words !== undefined &&
             words.map(word => (

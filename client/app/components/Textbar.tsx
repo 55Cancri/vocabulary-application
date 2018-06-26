@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import { HashLink as Link } from 'react-router-hash-link'
-import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import { generateUuid } from '../helpers/helpers'
 import { startSubmitTopic } from '../actions/app'
 
+{
+  /* <p>{results.length > 0 && results.pool.map(result => <p>{result.word}</p>)}</p> */
+}
+
 interface IProps {
   words: any
   topics: string[]
+  tags: string[]
   username: string
   startSubmitTopic: (any) => void
   dataIsHere: boolean
+  match?: any
 }
 
 interface IState {
@@ -49,47 +54,79 @@ export class Textbar extends Component<IProps, IState> {
   }
 
   // @ts-ignore
+  componentDidMount = () => console.log('props: ', this.props)
+
+  // @ts-ignore
   render = () => {
-    const { words, topics } = this.props
+    const { words, topics, tags, match } = this.props
     const { editing, topicName } = this.state
     return (
       <div className="textbar-container">
-        <div className="textbar">
-          <p className="title">Topics</p>
-          <p className="subhead">
-            {topics !== undefined && topics.length} topics
-          </p>
-          <div className="list">
-            {topics !== undefined &&
-              topics.map((topic, i) => (
-                <Link
-                  to={`#${topic}`}
-                  key={words[i].uid}
-                  smooth="true"
-                  scroll={el =>
-                    el.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start'
-                    })
-                  }
+        {match.path === '/dashboard' && (
+          <div className="textbar">
+            <p className="title">Topics</p>
+            <p className="subhead">
+              {topics !== undefined && topics.length} topics
+            </p>
+            <div className="list">
+              {topics !== undefined &&
+                topics.map((topic, i) => (
+                  <Link
+                    to={`#${topic}`}
+                    key={words[i].uid}
+                    smooth="true"
+                    scroll={el =>
+                      el.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                      })
+                    }
+                  >
+                    <p>{topic}</p>
+                    {
+                      words.filter(word => {
+                        if (word.topic === topic) return word
+                      }).length
+                    }&nbsp;words
+                  </Link>
+                ))}
+              {!editing ? (
+                <p onClick={this.handleToggle}>+ Add topic</p>
+              ) : (
+                <form
+                  onSubmit={this.handleSubmit}
+                  onChange={this.handleChange}
+                  onBlur={this.handleToggle}
                 >
-                  <p>{topic}</p>
-                  {
-                    words.filter(word => {
-                      if (word.topic === topic) return word
-                    }).length
-                  }&nbsp;words
-                </Link>
-              ))}
-            {!editing ? (
-              <p onClick={this.handleToggle}>+ Add topic</p>
-            ) : (
-              <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-                <input type="text" name="topicName" value={topicName} />
-              </form>
-            )}
+                  <input type="text" name="topicName" value={topicName} />
+                </form>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+        {match.path === '/glossary' && (
+          <div className="textbar">
+            <p className="title">Glossary</p>
+            <p className="subhead">
+              {words !== undefined && words.length} words
+            </p>
+          </div>
+        )}
+        {match.path === '/tags' && (
+          <div className="textbar">
+            <p className="title">Tags</p>
+            <p className="subhead">
+              {words !== undefined && words.length} tags
+              {tags !== undefined &&
+                tags.map(tag => (
+                  <p>{`${tag} (${
+                    words.filter(word => word.tags.includes(tag)).length
+                  })`}</p>
+                ))}
+            </p>
+            {}
+          </div>
+        )}
       </div>
     )
   }
@@ -98,11 +135,14 @@ export class Textbar extends Component<IProps, IState> {
 const mapStateToProps = state => ({
   words: state.lexica.words,
   topics: state.lexica.topics,
+  tags: state.lexica.tags,
   username: state.auth.username,
   dataIsHere: state.app.dataIsHere
 })
 
-export default connect(
-  mapStateToProps,
-  { startSubmitTopic }
-)(Textbar)
+export default withRouter<any>(
+  connect(
+    mapStateToProps,
+    { startSubmitTopic }
+  )(Textbar)
+)
