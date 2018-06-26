@@ -20,6 +20,14 @@ const matchFound = term => {
     }
 }
 
+const keywordFound = term => {
+    return (
+        term.includes(':') &&
+            (term.substring(0, term.indexOf(':')) === 'tags' ||
+            term.substring(0, term.indexOf(':')) === 'topic')
+    )
+}
+
 export class SearchResults extends Component<IProps, IState> {
     
     state = {
@@ -43,7 +51,7 @@ export class SearchResults extends Component<IProps, IState> {
                 searchTerm: props.term 
                 
             } as any)
-            // console.log(this.state.searchTerm)
+            console.log(keywordFound(this.state.searchTerm))
             // this.state.resultPool = props.words.filter(wordList => wordList.word === this.state.searchTerm)
             // console.log('Words in state: ', this.state.words)
         }

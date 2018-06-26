@@ -33,7 +33,7 @@ export class Header extends Component<Props> {
   state = {
     dropdownOpen: false,
     searchTerm: '',
-    showSearch: true
+    showSearch: false
   }
 
   toggleDropdown = () =>
