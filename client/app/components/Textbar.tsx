@@ -54,9 +54,6 @@ export class Textbar extends Component<IProps, IState> {
   }
 
   // @ts-ignore
-  componentDidMount = () => console.log('props: ', this.props)
-
-  // @ts-ignore
   render = () => {
     const { words, topics, tags, match } = this.props
     const { editing, topicName } = this.state

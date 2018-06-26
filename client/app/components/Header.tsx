@@ -33,26 +33,36 @@ export class Header extends Component<Props> {
   state = {
     dropdownOpen: false,
     searchTerm: '',
-    searchInFocus: false
+    showSearch: true
   }
 
   toggleDropdown = () =>
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
   // Probably will only use this for testing
+  // @ts-ignore
+  componentDidMount = () => document.addEventListener("click", this.determineSelection, false)
+
   //@ts-ignore
-  // componentDidMount = () => {
-  //   this.props.startGetEverything('scottkm')
-  // }
+  componentWillUnmount = () => document.removeEventListener("click", this.determineSelection)
+
+  determineSelection = ({target}) => {
+    console.log('target: ', target)
+
+    // if you click outside, some code runs
+    if (!target.closest('.section') && !target.dataset.search) this.searchBlur()
+
+    // else if you click inside, some other code runs
+  }
 
   searchFocus = () => {
-    this.setState({ searchInFocus: true })
-    console.log('Search bar is in focus')
+    this.setState({ showSearch: true })
+    console.log('focused')
   }
 
   searchBlur = () => {
-    this.setState({ searchInFocus: false })
-    console.log('Search bar is out of focus')
+    this.setState({ showSearch: false })
+    console.log('blurred')
   }
 
   onFieldChange = e => {
@@ -64,19 +74,17 @@ export class Header extends Component<Props> {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log('Reached submit')
-    console.log(this.props.words)
+    // console.log('Reached submit')
+    // console.log(this.props.words)
     const matches = this.props.words.filter(word => word.word === this.state.searchTerm)
-    console.log(this.state.searchTerm)
-    // console.log(match)
-    // let matches = []
+    // console.log(this.state.searchTerm)
+
     let results = this.props.results
-    // matches.push(match)
-    console.log(matches[0])
+    // console.log(matches[0])
     this.setState({
       results: matches
     } as any)
-    console.log('Results', this.props.results)
+    // console.log('Results', this.props.results)
     
     // alert('Found match' + match[0].word)
   }
@@ -88,7 +96,7 @@ export class Header extends Component<Props> {
     return (
       <header className="nav-header">
         <SearchResults term={searchTerm}
-        inputState={this.state.searchInFocus}
+        inputState={this.state.showSearch}
         
         />
         <FontAwesomeIcon icon="bars" className="bars" />
@@ -99,12 +107,13 @@ export class Header extends Component<Props> {
           <FontAwesomeIcon icon="search" className="icon" />
           <form className="submit" onSubmit={this.handleSubmit} >
             <input type="text"
-              className="input"
+              className="input spawnSearch"
               placeholder="Search"
               value={searchTerm}
+              data-search={true}
               onChange={this.onFieldChange}
               onFocus={this.searchFocus}
-              onBlur={this.searchBlur}
+              // onBlur={this.searchBlur}
               />
           </form>
         </div>

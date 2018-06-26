@@ -31,21 +31,21 @@ export class SearchResults extends Component<IProps, IState> {
     
     //@ts-ignore
     componentDidMount = () => {
-        console.log(this.state.words)
+        // console.log(this.state.words)
     }
 
     //@ts-ignore
     componentWillReceiveProps = (props, nextProps) => {
-        console.log('Input so far: ', props.term)
+        // console.log('Input so far: ', props.term)
         const wait = async () => {
             await this.setState({
                 
                 searchTerm: props.term 
                 
             } as any)
-            console.log(this.state.searchTerm)
+            // console.log(this.state.searchTerm)
             // this.state.resultPool = props.words.filter(wordList => wordList.word === this.state.searchTerm)
-            console.log('Words in state: ', this.state.words)
+            // console.log('Words in state: ', this.state.words)
         }
         wait();
         
@@ -70,7 +70,10 @@ export class SearchResults extends Component<IProps, IState> {
 
     render() {
         return(
-            <div className={this.props.inputState? 'focus' : 'blur'} >
+            <section className={this.props.inputState? 'section focus' : 'section blur'} >
+                <div className="search-results-bg">
+                    
+                </div>
                 <div className='search-results'
                 >
                     <h1>Results</h1>
@@ -83,10 +86,8 @@ export class SearchResults extends Component<IProps, IState> {
                         </div>
                     )}
                 </div>
-                <div className="search-results-bg">
-                    
-                </div>
-            </div>
+                
+            </section>
         )
     }
 }
