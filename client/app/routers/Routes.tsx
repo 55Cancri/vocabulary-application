@@ -13,6 +13,7 @@ import SignupPage from '../components/SignupPage'
 import SettingsPage from '../components/SettingsPage'
 import DashboardPage from '../components/DashboardPage'
 import GlossaryPage from '../components/GlossaryPage'
+import TagsPage from '../components/TagsPage'
 import WordPage from '../components/WordPage'
 import NotFoundPage from '../components/NotFoundPage'
 
@@ -113,7 +114,8 @@ export class Pages extends Component<IProps, IState> {
           >
             <PrivateRoute path="/dashboard" component={DashboardPage} />
             <PrivateRoute path="/glossary" component={GlossaryPage} />
-            <PrivateRoute path="/word/:name" component={WordPage} />
+            <PrivateRoute path="/tags" component={TagsPage} />
+            <PrivateRoute path="/word/:uid" component={WordPage} />
             <PrivateRoute path="/settings" component={SettingsPage} />
           </Sidebar>
 

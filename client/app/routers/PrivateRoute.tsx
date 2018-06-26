@@ -27,7 +27,6 @@ interface RouteProps {
 
 interface StateProps {
   isAuthenticated?: boolean
-  reimbursements: any
   identity: any
 }
 
@@ -64,7 +63,6 @@ class PrivateRoute extends Component<Props> {
 const mapStateToProps = state => ({
   email: state.auth.email,
   isAuthenticated: !!state.auth.token,
-  reimbursements: state.reimbursements,
   identity: state.auth
 })
 

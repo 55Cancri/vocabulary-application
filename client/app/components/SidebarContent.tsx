@@ -61,7 +61,7 @@ export class SidebarContent extends Component<IProps, IState> {
         <Link to="/dashboard" className="link" onClick={this.spawnWordModal}>
           <FontAwesomeIcon icon="plus" className="icon fa-plus" />
         </Link>
-        <Link to="/dashboard" className="link">
+        <Link to="/tags" className="link">
           <FontAwesomeIcon icon="tags" className="icon fa-tags" />
         </Link>
         <Link to="/glossary" className="link">
