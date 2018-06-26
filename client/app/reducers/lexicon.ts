@@ -6,9 +6,6 @@ export const lexiconReducer = (state = { current: {} }, action = {} as any) => {
       return {
         words: action.user.words,
         topics: [...new Set(action.user.words.map(word => word.topic))],
-<<<<<<< HEAD
-        results: []
-=======
         tags: [
           ...new Set(
             action.user.words
@@ -16,7 +13,6 @@ export const lexiconReducer = (state = { current: {} }, action = {} as any) => {
               .reduce((append, nextArray) => append.concat(nextArray), [])
           )
         ]
->>>>>>> 5551b81529d82bfd3dab722600b3ed12cf871b5f
       }
 
     case 'LOGOUT':
