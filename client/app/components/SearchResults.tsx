@@ -5,12 +5,16 @@ import { Link } from 'react-router-dom'
 
 interface IState {
     words: any,
+    topics: any,
+    tags: any
     // results: any
 }
 
 interface IProps {
     term: string,
     words?: any,
+    topics?: any,
+    tags?: any,
     inputState: any
 }
 
@@ -28,18 +32,22 @@ const keywordFound = term => {
     )
 }
 
+
+
 export class SearchResults extends Component<IProps, IState> {
     
     state = {
         searchTerm: '',
         // resultPool: this.state.words,
         words: this.props.words,
+        topics: this.props.topics,
+        tags: this.props.tags,
         resultElements: []
     }
     
     //@ts-ignore
     componentDidMount = () => {
-        // console.log(this.state.words)
+        // console.log(this.state.tags)
     }
 
     //@ts-ignore
@@ -51,7 +59,8 @@ export class SearchResults extends Component<IProps, IState> {
                 searchTerm: props.term 
                 
             } as any)
-            console.log(keywordFound(this.state.searchTerm))
+            keywordFound(this.props.term)
+            console.log(keywordFound(this.props.term))
             // this.state.resultPool = props.words.filter(wordList => wordList.word === this.state.searchTerm)
             // console.log('Words in state: ', this.state.words)
         }
@@ -62,6 +71,34 @@ export class SearchResults extends Component<IProps, IState> {
         //     results: resultPool
         // }))
         
+    }
+
+    keyFilter = (term) => {
+        console.log('Stepped into keyFilter')
+        let keyword = term.substring(0, term.indexOf(':'))
+        let words = this.props.words
+        let termItems = term.substring((term.indexOf(':')+2),term.length).split(' ')
+        let results = []
+        switch (keyword){
+            case 'tags':
+                // Some logic
+                for (let t of termItems) {
+                    results.concat(words.filter(word => word.tags.includes(t)))
+                }
+                // To remove duplicate words
+                for(let i=0; i<results.length; ++i) {
+                    for(let j=i+1; j<results.length; ++j) {
+                        if(results[i] === results[j])
+                            results.splice(j--, 1);
+                    }
+                }
+            case 'topic':
+                // More logic
+                return words
+            default:
+                // Do nothing
+                return words
+        }
     }
 
     // buildResults = () => {
@@ -85,7 +122,17 @@ export class SearchResults extends Component<IProps, IState> {
                 <div className='search-results'
                 >
                     <h1>Results</h1>
-                    {this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
+                    {
+                        keywordFound(this.props.term) ?
+                        this.props.words !== undefined && this.keyFilter(this.props.term).map(word =>
+                            <div key={word.uid} >
+                                <Link to={`/word/${word.uid}`}>
+                                    <p>{word.word}</p>
+                                </Link>
+                                {/* <TopicsListWord key={word.uid} word={word} /> */}
+                            </div>
+                        ) :
+                        this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
                         <div key={word.uid} >
                             <Link to={`/word/${word.uid}`}>
                                 <p>{word.word}</p>
@@ -103,6 +150,8 @@ export class SearchResults extends Component<IProps, IState> {
 const mapStateToProps = (state): IState => {
     return {
       words: state.lexica.words,
+      topics: state.lexica.topics,
+      tags: state.lexica.tags
     //   results: state.lexica.results
     }
   }
