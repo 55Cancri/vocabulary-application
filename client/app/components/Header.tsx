@@ -32,7 +32,8 @@ type Props = StateProps & DispatchProps
 export class Header extends Component<Props> {
   state = {
     dropdownOpen: false,
-    searchTerm: ''
+    searchTerm: '',
+    searchInFocus: false
   }
 
   toggleDropdown = () =>
@@ -43,6 +44,16 @@ export class Header extends Component<Props> {
   // componentDidMount = () => {
   //   this.props.startGetEverything('scottkm')
   // }
+
+  searchFocus = () => {
+    this.setState({ searchInFocus: true })
+    console.log('Search bar is in focus')
+  }
+
+  searchBlur = () => {
+    this.setState({ searchInFocus: false })
+    console.log('Search bar is out of focus')
+  }
 
   onFieldChange = e => {
     let value = e.target.value
@@ -76,7 +87,10 @@ export class Header extends Component<Props> {
 
     return (
       <header className="nav-header">
-        <SearchResults term={searchTerm} />
+        <SearchResults term={searchTerm}
+        inputState={this.state.searchInFocus}
+        
+        />
         <FontAwesomeIcon icon="bars" className="bars" />
         <Link to="/dashboard" className="seam-sm">
           Seam
@@ -88,7 +102,10 @@ export class Header extends Component<Props> {
               className="input"
               placeholder="Search"
               value={searchTerm}
-              onChange={this.onFieldChange} />
+              onChange={this.onFieldChange}
+              onFocus={this.searchFocus}
+              onBlur={this.searchBlur}
+              />
           </form>
         </div>
 

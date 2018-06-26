@@ -10,7 +10,8 @@ interface IState {
 
 interface IProps {
     term: string,
-    words?: any
+    words?: any,
+    inputState: any
 }
 
 const matchFound = term => {
@@ -69,8 +70,9 @@ export class SearchResults extends Component<IProps, IState> {
 
     render() {
         return(
-            <div>
-                <div className="search-results">
+            <div className={this.props.inputState? 'focus' : 'blur'} >
+                <div className='search-results'
+                >
                     <h1>Results</h1>
                     {this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
                         <div key={word.uid} >
