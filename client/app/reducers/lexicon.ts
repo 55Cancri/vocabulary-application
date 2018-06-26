@@ -22,7 +22,7 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
     case 'SEARCH':
       return {
         ...state,
-        results: []
+        results: action.search
       }
 
     default:

@@ -10,6 +10,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 
+import SearchResults from './SearchResults'
+
 import { startLogout } from '../actions/auth'
 // import { startGetEverything } from '../actions/app'
 
@@ -74,6 +76,7 @@ export class Header extends Component<Props> {
 
     return (
       <header className="nav-header">
+        <SearchResults term={searchTerm} />
         <FontAwesomeIcon icon="bars" className="bars" />
         <Link to="/dashboard" className="seam-sm">
           Seam
