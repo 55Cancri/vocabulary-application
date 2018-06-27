@@ -27,7 +27,7 @@
     "numeral": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-dropzone": "^4.2.11",
+    "react-dropzone": "^4.2.12",
     "react-hot-loader": "^4.0.0",
     "react-input-autosize": "^2.2.1",
     "react-redux": "latest",

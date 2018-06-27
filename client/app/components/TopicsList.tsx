@@ -38,7 +38,7 @@ export class TopicsList extends Component<IProps> {
 
   // @ts-ignore
   componentDidMount = () => {
-    this.props.topics.map((topic, i) => {
+    this.props.topics && this.props.topics.map((topic, i) => {
       const withEdit = {
         ...topic,
         editing: false

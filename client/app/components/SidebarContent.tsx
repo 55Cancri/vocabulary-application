@@ -34,13 +34,13 @@ export class SidebarContent extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
-    let name = this.state.topic
+    let topic = this.state.topic
     let id = generateUuid()
     let username = this.props.username
     let nextTopic = {
       uid: id,
       owner: username,
-      name: name
+      topic: topic
     }
     this.props.startSubmitTopic(nextTopic)
   }

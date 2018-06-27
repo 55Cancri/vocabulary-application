@@ -42,10 +42,10 @@ export class Textbar extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { topicName: name } = this.state
+    const { topicName: topic } = this.state
     const { username: owner, startSubmitTopic } = this.props
     const uid = generateUuid()
-    const nextTopic = { uid, owner, name }
+    const nextTopic = { uid, owner, topic }
     startSubmitTopic(nextTopic)
   }
 
