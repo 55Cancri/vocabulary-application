@@ -32,7 +32,7 @@ export class NewWordModal extends Component<IProps, IState> {
 
   //@ts-ignore
   componentDidMount = () => {
-    console.log(this.state.topic)
+    console.log(this.props.topics)
     // console.log(this.state.topics)
   }
 
