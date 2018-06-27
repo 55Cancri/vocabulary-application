@@ -32,17 +32,38 @@ type Props = StateProps & DispatchProps
 export class Header extends Component<Props> {
   state = {
     dropdownOpen: false,
-    searchTerm: ''
+    searchTerm: '',
+    showSearch: false
   }
 
   toggleDropdown = () =>
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
   // Probably will only use this for testing
+  // @ts-ignore
+  componentDidMount = () => document.addEventListener("click", this.determineSelection, false)
+
   //@ts-ignore
-  // componentDidMount = () => {
-  //   this.props.startGetEverything('scottkm')
-  // }
+  componentWillUnmount = () => document.removeEventListener("click", this.determineSelection)
+
+  determineSelection = ({target}) => {
+    // console.log('target: ', target)
+
+    // if you click outside, some code runs
+    if (!target.closest('.section') && !target.dataset.search) this.searchBlur()
+
+    // else if you click inside, some other code runs
+  }
+
+  searchFocus = () => {
+    this.setState({ showSearch: true })
+    console.log('focused')
+  }
+
+  searchBlur = () => {
+    this.setState({ showSearch: false })
+    console.log('blurred')
+  }
 
   onFieldChange = e => {
     let value = e.target.value
@@ -53,19 +74,17 @@ export class Header extends Component<Props> {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log('Reached submit')
-    console.log(this.props.words)
+    // console.log('Reached submit')
+    // console.log(this.props.words)
     const matches = this.props.words.filter(word => word.word === this.state.searchTerm)
-    console.log(this.state.searchTerm)
-    // console.log(match)
-    // let matches = []
+    // console.log(this.state.searchTerm)
+
     let results = this.props.results
-    // matches.push(match)
-    console.log(matches[0])
+    // console.log(matches[0])
     this.setState({
       results: matches
     } as any)
-    console.log('Results', this.props.results)
+    // console.log('Results', this.props.results)
     
     // alert('Found match' + match[0].word)
   }
@@ -76,7 +95,10 @@ export class Header extends Component<Props> {
 
     return (
       <header className="nav-header">
-        <SearchResults term={searchTerm} />
+        <SearchResults term={searchTerm}
+        inputState={this.state.showSearch}
+        
+        />
         <FontAwesomeIcon icon="bars" className="bars" />
         <Link to="/dashboard" className="seam-sm">
           Seam
@@ -85,10 +107,14 @@ export class Header extends Component<Props> {
           <FontAwesomeIcon icon="search" className="icon" />
           <form className="submit" onSubmit={this.handleSubmit} >
             <input type="text"
-              className="input"
+              className="input spawnSearch"
               placeholder="Search"
               value={searchTerm}
-              onChange={this.onFieldChange} />
+              data-search={true}
+              onChange={this.onFieldChange}
+              onFocus={this.searchFocus}
+              // onBlur={this.searchBlur}
+              />
           </form>
         </div>
 
@@ -121,6 +147,11 @@ export class Header extends Component<Props> {
             <DropdownItem className="dropdown-item">
               <Link to="/settings" className="settings">
                 Settings
+              </Link>
+            </DropdownItem>
+            <DropdownItem className="dropdown-item">
+              <Link to="/profile" className="profile">
+                Profile
               </Link>
             </DropdownItem>
             <DropdownItem

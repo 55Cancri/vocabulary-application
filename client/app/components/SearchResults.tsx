@@ -5,12 +5,17 @@ import { Link } from 'react-router-dom'
 
 interface IState {
     words: any,
+    topics: any,
+    tags: any
     // results: any
 }
 
 interface IProps {
     term: string,
-    words?: any
+    words?: any,
+    topics?: any,
+    tags?: any,
+    inputState: any
 }
 
 const matchFound = term => {
@@ -19,32 +24,45 @@ const matchFound = term => {
     }
 }
 
+const keywordFound = term => {
+    return (
+        term.includes(':') &&
+            (term.substring(0, term.indexOf(':')) === 'tags' ||
+            term.substring(0, term.indexOf(':')) === 'topic')
+    )
+}
+
+
+
 export class SearchResults extends Component<IProps, IState> {
     
     state = {
         searchTerm: '',
         // resultPool: this.state.words,
         words: this.props.words,
+        topics: this.props.topics,
+        tags: this.props.tags,
         resultElements: []
     }
     
     //@ts-ignore
     componentDidMount = () => {
-        console.log(this.state.words)
+        // console.log(this.state.tags)
     }
 
     //@ts-ignore
     componentWillReceiveProps = (props, nextProps) => {
-        console.log('Input so far: ', props.term)
+        // console.log('Input so far: ', props.term)
         const wait = async () => {
             await this.setState({
                 
                 searchTerm: props.term 
                 
             } as any)
-            console.log(this.state.searchTerm)
+            keywordFound(this.props.term)
+            console.log(keywordFound(this.props.term))
             // this.state.resultPool = props.words.filter(wordList => wordList.word === this.state.searchTerm)
-            console.log('Words in state: ', this.state.words)
+            // console.log('Words in state: ', this.state.words)
         }
         wait();
         
@@ -53,6 +71,51 @@ export class SearchResults extends Component<IProps, IState> {
         //     results: resultPool
         // }))
         
+    }
+
+    keyFilter = (term) => {
+        console.log('Stepped into keyFilter')
+        let keyword = term.substring(0, term.indexOf(':'))
+        let words = this.props.words
+        let termItems = term.substring((term.indexOf(':')+2),term.length).split(' ')
+        let allResults = []
+        let finalResults = []
+        // console.log(keyword)
+        // console.log(words)
+        // console.log('Tags to search: ', termItems)
+        // console.log('Results: ', results)
+        switch (keyword){
+            case 'tags':
+                // Some logic
+                for (let t of termItems) {
+                    // console.log(words[0].tags)
+                    // console.log(words.filter(word => word.tags.includes(t)))
+                    allResults.push(words.filter(word => word.tags.includes(t)))
+                }
+                console.log(allResults)
+                for (let i = 0; i < allResults.length; i++) {
+                    for (let j of allResults[i]) {
+                        if (!finalResults.includes(j)) {
+                            finalResults.push(j)
+                        }
+                    }
+                }
+                return finalResults
+                // console.log(finalResults)
+                // To remove duplicate words
+                // for(let i=0; i<results.length; ++i) {
+                //     for(let j=i+1; j<results.length; ++j) {
+                //         if(results[i] === results[j])
+                //             results.splice(j--, 1);
+                //     }
+                // }
+            case 'topic':
+                // More logic
+                return words
+            default:
+                // Do nothing
+                return words
+        }
     }
 
     // buildResults = () => {
@@ -69,10 +132,24 @@ export class SearchResults extends Component<IProps, IState> {
 
     render() {
         return(
-            <div>
-                <div className="search-results">
+            <section className={this.props.inputState? 'section focus' : 'section blur'} >
+                <div className="search-results-bg">
+                    
+                </div>
+                <div className='search-results'
+                >
                     <h1>Results</h1>
-                    {this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
+                    {
+                        keywordFound(this.props.term) ?
+                        this.props.words !== undefined && this.keyFilter(this.props.term).map(word =>
+                            <div key={word.uid} >
+                                <Link to={`/word/${word.uid}`}>
+                                    <p>{word.word}</p>
+                                </Link>
+                                {/* <TopicsListWord key={word.uid} word={word} /> */}
+                            </div>
+                        ) :
+                        this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
                         <div key={word.uid} >
                             <Link to={`/word/${word.uid}`}>
                                 <p>{word.word}</p>
@@ -81,10 +158,8 @@ export class SearchResults extends Component<IProps, IState> {
                         </div>
                     )}
                 </div>
-                <div className="search-results-bg">
-                    
-                </div>
-            </div>
+                
+            </section>
         )
     }
 }
@@ -92,6 +167,8 @@ export class SearchResults extends Component<IProps, IState> {
 const mapStateToProps = (state): IState => {
     return {
       words: state.lexica.words,
+      topics: state.lexica.topics,
+      tags: state.lexica.tags
     //   results: state.lexica.results
     }
   }
