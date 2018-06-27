@@ -4,14 +4,14 @@ import { withRouter } from 'react-router'
 import { HashLink as Link } from 'react-router-hash-link'
 
 import { generateUuid } from '../helpers/helpers'
-import { startSubmitTopic } from '../actions/app'
+import { startAddTopic } from '../actions/words'
 
 interface IProps {
   words: any
   topics: any
   tags: string[]
   username: string
-  startSubmitTopic: (any) => void
+  startAddTopic: (any) => any
   dataIsHere: boolean
   match?: any
 }
@@ -43,10 +43,10 @@ export class Textbar extends Component<IProps, IState> {
   handleSubmit = e => {
     e.preventDefault()
     const { topicName: name } = this.state
-    const { username: owner, startSubmitTopic } = this.props
+    const { username: owner, startAddTopic } = this.props
     const uid = generateUuid()
     const nextTopic = { uid, owner, name }
-    startSubmitTopic(nextTopic)
+    startAddTopic(nextTopic)
   }
 
   // @ts-ignore
@@ -158,6 +158,6 @@ const mapStateToProps = state => ({
 export default withRouter<any>(
   connect(
     mapStateToProps,
-    { startSubmitTopic }
+    { startAddTopic }
   )(Textbar)
 )
