@@ -31,6 +31,12 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
         // ]
       }
 
+    case 'SEARCH':
+      return {
+        ...state,
+        results: action.search
+      }
+
     default:
       return state
   }

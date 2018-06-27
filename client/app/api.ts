@@ -70,5 +70,11 @@ export default {
     addTopic: topic => {
       axios.post(addTopicUrl, { topic }).then(res => res.data)
     }
-  }
+  },
+  // header: {
+  //   getEverything: username => {
+  //     console.log('API reached')
+  //     axios.get(getEverythingUrl).then(res => res.data)
+  //   }
+  // }
 }

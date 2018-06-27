@@ -14,3 +14,8 @@ export const startEditWord = word => dispatch =>
 
 export const startDeleteWord = word => dispatch =>
   api.lexica.deleteWord(word).then(data => dispatch(updateWords(data)))
+
+export const search = results => ({
+  type: 'SEARCH',
+  results
+})
