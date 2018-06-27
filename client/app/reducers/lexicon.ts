@@ -20,6 +20,7 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
 
     case 'NEW_WORD':
       return {
+        ...state,
         words: action.user.words,
         topics: action.user.topics
         // tags: [
@@ -34,7 +35,7 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
     case 'NEW_TOPIC':
       return {
         ...state,
-        topics: action.topics
+        topics: action.user.topics
       }
 
     case 'SEARCH':

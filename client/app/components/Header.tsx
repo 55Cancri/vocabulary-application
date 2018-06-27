@@ -19,6 +19,7 @@ interface StateProps {
   name: string
   words: any
   results: any
+  photo: string
 }
 
 interface DispatchProps {
@@ -88,7 +89,7 @@ export class Header extends Component<Props> {
   }
 
   render() {
-    const { isAuthenticated, startLogout } = this.props
+    const { isAuthenticated, startLogout, photo } = this.props
     const searchTerm = this.state.searchTerm
 
     return (
@@ -124,11 +125,9 @@ export class Header extends Component<Props> {
           <DropdownToggle className="dropdown-toggle">
             <div
               className="image"
-              style={
-                {
-                  // background: `url(${photo}) center / cover no-repeat`
-                }
-              }
+              style={{
+                background: `url(${photo}) center / cover no-repeat`
+              }}
             />
             <p className="nav-username">{this.props.name}</p>
             <FontAwesomeIcon icon="angle-down" className="icon fa-angle-down" />
@@ -168,7 +167,8 @@ const mapStateToProps = (state): StateProps => {
     isAuthenticated: !!state.auth.token,
     name: state.auth.name,
     words: state.lexica.words,
-    results: state.lexica.results
+    results: state.lexica.results,
+    photo: state.auth.profileImage
   }
 }
 
