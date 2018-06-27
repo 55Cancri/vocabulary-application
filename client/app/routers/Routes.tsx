@@ -100,6 +100,7 @@ export class Pages extends Component<IProps, IState> {
   render = () => {
     return (
       <Router history={history}>
+        
         <Switch>
           <PublicRoute exact path="/" component={SignupPage} />
           <PublicRoute path="/signup" component={SignupPage} />

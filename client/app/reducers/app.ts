@@ -2,7 +2,8 @@ import React from 'react'
 
 const initialState = {
   dataIsHere: false,
-  textbar: 'topics'
+  textbar: 'topics',
+  // showSearch:
 }
 
 export const appReducer = (state = initialState, action = {} as any) => {
