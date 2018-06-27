@@ -11,6 +11,7 @@ interface IProps extends RouteComponentProps<any> {
   startAddWord: any
   onChange: any
   username: string
+  topics: any
 }
 
 interface IState {
@@ -25,7 +26,14 @@ export class NewWordModal extends Component<IProps, IState> {
     topic: '',
     word: '',
     definition: '',
-    tags: ''
+    tags: '',
+    topics: this.props.topics
+  }
+
+  //@ts-ignore
+  componentDidMount = () => {
+    console.log(this.props.topics)
+    console.log(this.state.topics)
   }
 
   onClose = () => this.props.hideModal()
@@ -53,9 +61,11 @@ export class NewWordModal extends Component<IProps, IState> {
   // @ts-ignore
   render = () => {
     const { word, tags, topic, definition } = this.state
+    const topics = this.props.topics
     return (
       <Modal onClose={this.onClose}>
         <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
+          <p>{this.props.topics[0].topic}}</p>
           <div className="input-group">
             <label htmlFor="word">Name</label>
             <input type="text" name="word" value={word} />
@@ -67,6 +77,18 @@ export class NewWordModal extends Component<IProps, IState> {
           <div className="input-group">
             <label htmlFor="topic">Add topic</label>
             <input type="text" name="topic" value={topic} />
+          </div>
+          <div className="input-group">
+            <label htmlFor="topic">Select Topic</label>
+            <select name="topic-list">
+              {
+                topics.map(topicItem =>
+                  <div key={topicItem.uid} >
+                    <p>{topicItem.topic}</p>
+                  </div>
+                )
+              }
+            </select>
           </div>
           <div className="input-group">
             <label htmlFor="definition">Definition</label>
@@ -84,7 +106,8 @@ export class NewWordModal extends Component<IProps, IState> {
 }
 
 const mapStateToProps = state => ({
-  username: state.auth.username
+  username: state.auth.username,
+  topics: state.lexica.topics
 })
 
 // mapStateToProps -- to read from the store
