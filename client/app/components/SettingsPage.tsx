@@ -43,12 +43,6 @@ export class SettingsPage extends Component<ClassProps> {
 
     const { username } = this.props
 
-    // let formData = new FormData()
-    // formData.append('file', selectedFile)
-    // formData.append('email', email)
-    // formData.append('username', formUsername)
-    // formData.append('newEmail', formEmail)
-
     const toS3 = {
       file,
       url,
@@ -57,22 +51,18 @@ export class SettingsPage extends Component<ClassProps> {
       username
     }
 
-    Axios.post(
-      'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
-      toS3
-    )
-      .then(resp => {
-        Axios.put(url, file)
-        .then(resp => {
-          console.log(resp.status)
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    // this.props
-    //   .startUpdateGeneral(formData)
-    //   .then(() => this.props.history.push('/dashboard'))
+    // Axios.post(
+    //   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+    //   toS3
+    // )
+    //   .then(resp => {
+    Axios.put(url, file).then(resp => {
+      console.log(resp.status)
+    })
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
   }
 
   onDrop = (files: any) => {

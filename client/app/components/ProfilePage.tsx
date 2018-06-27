@@ -13,28 +13,13 @@ interface Iprops {
 }
 
 export class ProfilePage extends Component<Iprops> {
-  // public componentDidMount() {
-  //   Axios
-  //     .get(
-  //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/files/profile.jpg'
-  //     )
-  //     .then(resp => {
-  //       this.setState({
-  //         url: resp.data
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-
   render() {
     return (
-      <div>
-        <div>
+      <div className="profile-page">
+        <div className="input-group">
           Profile Picture:
           <p>
-            <img src={this.props.profileImage} />
+            <img className="profile-image" src={this.props.profileImage} />
             {/* <img src={this.state.url} /> */}
           </p>
         </div>
@@ -42,13 +27,10 @@ export class ProfilePage extends Component<Iprops> {
           <p className="title">
             Name: {this.props.firstname} {this.props.lastname}
           </p>
-        </div>
-        <div className="input-group">
           <p className="title">Username: {this.props.username}</p>
-        </div>
-        <div className="input-group">
           <p className="title">Email: {this.props.email}</p>
         </div>
+        <div className="test-col">heloooooooooooo</div>
       </div>
     )
   }
