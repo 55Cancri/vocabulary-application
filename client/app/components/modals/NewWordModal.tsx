@@ -27,13 +27,13 @@ export class NewWordModal extends Component<IProps, IState> {
     word: '',
     definition: '',
     tags: '',
-    topics: this.props.topics
+    
   }
 
   //@ts-ignore
   componentDidMount = () => {
-    console.log(this.props.topics)
-    console.log(this.state.topics)
+    console.log(this.state.topic)
+    // console.log(this.state.topics)
   }
 
   onClose = () => this.props.hideModal()
@@ -45,16 +45,27 @@ export class NewWordModal extends Component<IProps, IState> {
     } as any)
   }
 
+  selectTopic = e => {
+    console.log(e.target.value)
+    // console.log(this.state.topic)
+    this.setState({topic: e.target.value})
+    // console.log(this.state.topic)
+  }
+
   handleSubmit = e => {
     e.preventDefault()
     const { word, definition, topic, tags: stateTags } = this.state
     const { username: owner, startAddWord } = this.props
+    const defaultUid = this.props.topics.find(topic => topic.topic === 'uncategorized').uid
+    const activeTopic = this.props.topics.find(topicItem => topicItem.topic === topic)
+    
     // split tags by: [comma] / space
     const tags = stateTags.split(',')
     const uid = generateUuid()
-    const topicUid = generateUuid()
+    let topicUid
+    activeTopic ? topicUid = activeTopic.uid : topicUid = defaultUid
     const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
-
+    
     startAddWord(nextWord).then(() => this.onClose())
   }
 
@@ -65,27 +76,26 @@ export class NewWordModal extends Component<IProps, IState> {
     return (
       <Modal onClose={this.onClose}>
         <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
-          <p>{this.props.topics[0].topic}}</p>
+          <h3>New Word</h3>
           <div className="input-group">
             <label htmlFor="word">Name</label>
             <input type="text" name="word" value={word} />
           </div>
           <div className="input-group">
-            <label htmlFor="tags">Add tags</label>
+            <label htmlFor="tags">Add tags. Use commas to separate them.</label>
             <input type="text" name="tags" value={tags} />
           </div>
-          <div className="input-group">
+          {/* <div className="input-group">
             <label htmlFor="topic">Add topic</label>
             <input type="text" name="topic" value={topic} />
-          </div>
+          </div> */}
           <div className="input-group">
             <label htmlFor="topic">Select Topic</label>
-            <select name="topic-list">
+            <select name="topic-list" onChange={this.selectTopic} >
+              <option></option>
               {
                 topics.map(topicItem =>
-                  <div key={topicItem.uid} >
-                    <p>{topicItem.topic}</p>
-                  </div>
+                  topicItem.topic !== 'uncategorized' && <option key={topicItem.uid} value={topicItem.topic} >{topicItem.topic}</option>
                 )
               }
             </select>
