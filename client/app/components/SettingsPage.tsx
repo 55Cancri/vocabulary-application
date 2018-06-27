@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Dropzone from 'react-dropzone'
-import Axios from 'axios'
+import axios from 'axios'
+import { startUpdateUser } from '../actions/auth'
 
 interface ClassProps {
   email: string
   username: string
   photo: string
+  firstname: string
+  lastname: string
   file
+  startUpdateUser: (any) => any
 }
 
 export class SettingsPage extends Component<ClassProps> {
   state = {
     page: 'General',
-    firstname: '',
+    fullname: `${this.props.firstname} ${this.props.lastname}`,
     email: '',
     url: '',
     file: ''
@@ -36,38 +40,48 @@ export class SettingsPage extends Component<ClassProps> {
   fileSelectedHandler = ({ target }) =>
     this.setState({ selectedFile: target.files[0] })
 
-  generalUploadHandler = e => {
+  generalUploadHandler = async e => {
     e.preventDefault()
 
-    const { file, url, firstname, email } = this.state
+    const { file, url, fullname: name, email } = this.state
 
-    const { username } = this.props
+    const { username, startUpdateUser } = this.props
 
-    const toS3 = {
-      file,
-      url,
+    const fullname = name.split(' ')
+
+    const data = {
+      username,
+      firstname: fullname[0],
+      lastname: fullname[1],
       email,
-      firstname,
-      username
+      url
+    }
+    try {
+      // send file to s3 bucket
+      const s3upload = await axios.put(url, file)
+    } catch (e) {
+      console.log('error uploading to s3', e)
     }
 
-    // Axios.post(
-    //   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
-    //   toS3
-    // )
-    //   .then(resp => {
-    Axios.put(url, file).then(resp => {
-      console.log(resp.status)
-    })
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
+    try {
+      const dynamoUpload = await axios
+        .post(
+          'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+          data
+        )
+        .then(res => res.data)
+
+      startUpdateUser(data)
+    } catch (e) {
+      console.log('error uploading to lambda', e)
+    }
   }
 
   onDrop = (files: any) => {
+    // get most recent file
     const file = files[0]
-    console.log('file:', file)
+
+    // build url to s3 bucket
     const profileUrl =
       'http://vocab-app-pics.s3.amazonaws.com/' +
       this.props.username +
@@ -78,27 +92,11 @@ export class SettingsPage extends Component<ClassProps> {
       file,
       url: profileUrl
     })
-    // demoAxios
-    //   .get(
-    //     'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/upload-picture/' +
-    //       file.name,
-    //     this.props.username
-    //   )
-    //   .then(resp => {
-    //     console.log('response URL from axios get', resp.data)
-    //     this.setState({
-    //       url: resp.data
-    //     })
-
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
   }
 
   render() {
     const { email, username, photo } = this.props
-    let { page } = this.state
+    let { page, fullname } = this.state
     page = page.toLowerCase()
 
     return (
@@ -160,8 +158,8 @@ export class SettingsPage extends Component<ClassProps> {
                   />
                 </div>
                 <div className="input-group">
-                  <label htmlFor="username">Username</label>
-                  <input type="text" name="username" placeholder={username} />
+                  <label htmlFor="fullname">Full Name</label>
+                  <input type="text" name="fullname" placeholder={fullname} />
                 </div>
                 <div className="input-group">
                   <label htmlFor="email">Email</label>
@@ -227,14 +225,14 @@ export class SettingsPage extends Component<ClassProps> {
 }
 
 const mapStateToProps = state => ({
+  firstname: state.auth.name,
+  lastname: state.auth.last,
   username: state.auth.username,
   email: state.auth.email,
   photo: state.auth.photo
 })
 
-const mapDispatchToProps = data => dispatch => ({})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { startUpdateUser }
 )(SettingsPage)

@@ -32,6 +32,7 @@ export const startLogin = credentials => dispatch =>
       ...userData,
       token: credentials.token
     }
+    localStorage.uid = userData.uid
     localStorage.wa = credentials.token
     dispatch(login(user))
   })
@@ -43,15 +44,24 @@ export const startSignup = dossier => dispatch =>
       ...data,
       token: dossier.token
     }
+    localStorage.uid = data.uid
     localStorage.wa = dossier.token
     dispatch(login(user))
   })
+
+export const updateUser = user => ({
+  type: 'UPDATE_USER',
+  user
+})
+
+export const startUpdateUser = user => dispatch => dispatch(updateUser(user))
 
 export const logout = () => ({
   type: 'LOGOUT'
 })
 
 export const startLogout = () => dispatch => {
+  localStorage.removeItem('uid')
   localStorage.removeItem('wa')
   localStorage.removeItem(
     'CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.LastAuthUser'
