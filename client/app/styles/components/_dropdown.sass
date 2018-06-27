@@ -6,6 +6,7 @@
   background-color: $white
   filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.2))
   border-radius: 5px
+  z-index: 100
 
 .dropdown-toggle
   display: flex
@@ -24,18 +25,19 @@
 .dropdown-item
   display: grid
   width: 100%
-  padding: 15px 30px 15px 30px
+  padding: 20px
+  // padding: 15px 30px 15px 30px
   text-align: left
   border: none
   background: none
   white-space: nowrap
   transition: all .2s
   
-  &:first-of-type
-    padding-top: 25px
+  // &:first-of-type
+  //   padding-top: 25px
 
-  &:last-of-type
-    padding-bottom: 25px
+  // &:last-of-type
+  //   padding-bottom: 25px
   
   &:hover
     background: $lightgrey
@@ -43,13 +45,13 @@
   .logout
     margin: 0
 
-  @media (min-width: 1400px)
-    font-size: 22px
+  // @media (min-width: 1400px)
+  //   font-size: 22px
 
-  @media (min-width: 1600px)
-    font-size: 32px
-    &:first-of-type
-      padding: 45px 45px 25px
+  // @media (min-width: 1600px)
+  //   font-size: 32px
+  //   &:first-of-type
+  //     padding: 45px 45px 25px
 
-    &:last-of-type
-      padding: 25px 45px 45px
+  //   &:last-of-type
+  //     padding: 25px 45px 45px

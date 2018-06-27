@@ -1,20 +1,44 @@
 .word-page
   display: grid
-  grid-template-columns: max-content 1fr
-
+  grid-template-columns: max-content 60vw
+  justify-content: space-between
+  
   .header
-    display: grid
-    position: relative
+    div
+      display: grid
+      position: relative
+      grid-template-columns: max-content 1fr
+      align-items: center
 
-    .title
-      &:hover + .ellipsis
-        opacity: 1
+      .title
+        width: max-content
+        &:hover + .ellipsis-container .dropdown-toggle .ellipsis
+          opacity: 1
 
-    .ellipsis
-      position: absolute
-      top: 33px
-      left: 90px
-      opacity: 0
+      .ellipsis-container
+        display: flex
+        position: relative
+        height: 50px
+        width: 50px
 
-      &:hover
-        opacity: 1
+        &:hover .ellipsis
+          opacity: 1
+
+        .menu-delete
+          padding: 20px 25px
+          font-size: 20px
+
+        .dropdown-toggle
+          position: absolute
+          opacity: 1
+          color: black
+          z-index: 1000
+
+          &:hover .ellipsis
+            opacity: 1
+
+          .ellipsis
+            opacity: 0
+
+            &:hover
+              opacity: 1

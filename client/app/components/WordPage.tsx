@@ -3,6 +3,12 @@ import { connect } from 'react-redux'
 import Textbar from './Textbar'
 import Spinner from 'react-spinkit'
 import AutosizeInput from 'react-input-autosize'
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { startEditWord, startDeleteWord } from '../actions/words'
 
@@ -12,20 +18,51 @@ interface IProps {
   word: string
   username: string
   startEditWord: (any) => any
+  startDeleteWord: (any) => any
 }
 
 export class WordPage extends Component<IProps> {
   state = {
     word: this.props.chosen !== undefined && this.props.chosen.word,
     definition: this.props.chosen !== undefined && this.props.chosen.definition,
+    dropdownOpen: false,
     editingWord: false,
     editingDefinition: false
   }
+
+  listenKeyboard = e =>
+    (e.key === 'Escape' || e.keyCode === 27) &&
+    this.setState({ editingWord: false, editingDefinition: false })
+
+  // @ts-ignore
+  componentDidMount = () =>
+    window.addEventListener('keydown', this.listenKeyboard)
+
+  // @ts-ignore
+  componentWillUnmount = () =>
+    window.removeEventListener('keydown', this.listenKeyboard)
+
+  toggleDropdown = () =>
+    this.setState({ dropdownOpen: !this.state.dropdownOpen })
 
   handleChange = e => {
     const type = e.target.dataset.type
     type === 'word' && this.setState({ word: e.target.value })
     type === 'definition' && this.setState({ definition: e.target.value })
+  }
+
+  handleDelete = async () => {
+    const { chosen, username, startDeleteWord } = this.props
+
+    const word = {
+      username,
+      word: chosen.word,
+      uid: chosen.uid
+    }
+
+    await startDeleteWord(word)
+    // this.props.history.push('/')
+    // updateWord, createWord, Login, persistUser,
   }
 
   handleSubmit = async e => {
@@ -75,7 +112,43 @@ export class WordPage extends Component<IProps> {
                   >
                     {checkChosen && chosen.word}
                   </h1>
-                  <FontAwesomeIcon icon="ellipsis-h" className="ellipsis" />
+                  <div className="ellipsis-container">
+                    <Dropdown
+                      isOpen={this.state.dropdownOpen}
+                      toggle={this.toggleDropdown}
+                      className="dropdown-root options"
+                    >
+                      <DropdownToggle className="dropdown-toggle">
+                        <FontAwesomeIcon
+                          icon="ellipsis-h"
+                          className="ellipsis"
+                        />
+                      </DropdownToggle>
+                      <DropdownMenu
+                        left="true"
+                        className="dropdown-menu"
+                        style={{
+                          display:
+                            this.state.dropdownOpen === false ? 'none' : 'block'
+                        }}
+                      >
+                        {/* {!completed && (
+                          <DropdownItem
+                            className="dropdown-item"
+                            onClick={this.activateEditMode}
+                          >
+                            Edit
+                          </DropdownItem>
+                        )} */}
+                        <DropdownItem
+                          className="dropdown-item menu-delete"
+                          onClick={this.handleDelete}
+                        >
+                          Delete
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </div>
                 </div>
               )}
               {editingWord && (
