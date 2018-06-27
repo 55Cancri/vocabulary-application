@@ -5,9 +5,9 @@ export const updateWords = user => ({
   type: 'NEW_WORD',
   user
 })
-export const updateTopics = topics => ({
+export const updateTopics = user => ({
   type: 'NEW_TOPIC',
-  topics
+  user
 })
 
 export const startAddWord = word => dispatch =>
