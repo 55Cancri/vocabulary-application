@@ -18,8 +18,10 @@ export class GlossaryPage extends Component<IProps> {
         <div>
           {words === undefined && <Spinner name="ball-scale-ripple-multiple" />}
           {words !== undefined &&
+            words.length === 0 && <p>You have not added any words yet.</p>}
+          {words !== undefined &&
             words.map(word => (
-              <Link to={`/word/${word.word}`} key={word.uid}>
+              <Link to={`/word/${word.uid}`} key={word.uid}>
                 <h2>{word.word}</h2>
                 <p>{word.definition}</p>
               </Link>

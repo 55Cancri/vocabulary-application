@@ -9,7 +9,8 @@ export const authReducer = (state = {}, action: any = {}) => {
         email: action.user.email,
         name: action.user.firstname,
         last: action.user.lastname,
-        username: action.user.username
+        username: action.user.username,
+        profileImage: action.user.profileImage
       }
 
     case 'PERSIST':

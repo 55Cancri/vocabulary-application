@@ -29,6 +29,7 @@
     "react-dom": "latest",
     "react-dropzone": "^4.2.11",
     "react-hot-loader": "^4.0.0",
+    "react-input-autosize": "^2.2.1",
     "react-redux": "latest",
     "react-router-dom": "latest",
     "react-router-hash-link": "^1.2.0",

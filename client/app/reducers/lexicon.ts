@@ -1,11 +1,11 @@
 import React from 'react'
 
-export const lexiconReducer = (state = { current: {} }, action = {} as any) => {
+export const lexiconReducer = (state = {}, action = {} as any) => {
   switch (action.type) {
     case 'LOGIN':
       return {
         words: action.user.words,
-        topics: [...new Set(action.user.words.map(word => word.topic))],
+        topics: action.user.topics,
         tags: [
           ...new Set(
             action.user.words
@@ -20,22 +20,15 @@ export const lexiconReducer = (state = { current: {} }, action = {} as any) => {
 
     case 'NEW_WORD':
       return {
-        ...state,
-        words: action.words,
-        topics: [...new Set(action.words.map(word => word.topic))],
-        tags: [
-          ...new Set(
-            action.user.words
-              .map(word => word.tags)
-              .reduce((append, nextArray) => append.concat(nextArray), [])
-          )
-        ]
-      }
-
-    case 'CURRENT':
-      return {
-        ...state,
-        current: action.word
+        words: action.user.words,
+        topics: action.user.topics
+        // tags: [
+        //   ...new Set(
+        //     action.words
+        //       .map(word => word.tags)
+        //       .reduce((append, nextArray) => append.concat(nextArray), [])
+        //   )
+        // ]
       }
 
     case 'SEARCH':

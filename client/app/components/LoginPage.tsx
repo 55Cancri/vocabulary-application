@@ -87,7 +87,6 @@ export class LoginPage extends Component<IProps, IState> {
 
     // check password is not blank
     if (this.state.password.length === 0) {
-      console.log('set blank password')
       this.setState(prevState => ({
         errors: {
           username: prevState.errors.username,

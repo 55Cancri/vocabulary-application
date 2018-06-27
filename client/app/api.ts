@@ -32,6 +32,11 @@ const persistUrl =
 const addWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word'
 
+const updateWordUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word'
+
+const deleteWordUrl = ''
+
 const addTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
 
@@ -51,9 +56,15 @@ export default {
         .post('/api/nuke', email, { headers: getToken() })
         .then(res => res.data)
   },
-  modal: {
+  lexica: {
     addWord: wordObject =>
-      axios.post(addWordUrl, { wordObject }).then(res => res.data)
+      axios.post(addWordUrl, { wordObject }).then(res => res.data),
+
+    updateWord: word =>
+      axios.post(updateWordUrl, { word }).then(res => res.data),
+
+    deleteWord: word =>
+      axios.post(deleteWordUrl, { word }).then(res => res.data)
   },
   sidebar: {
     addTopic: topic => {

@@ -2,26 +2,112 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Textbar from './Textbar'
 import Spinner from 'react-spinkit'
+import AutosizeInput from 'react-input-autosize'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { startEditWord, startDeleteWord } from '../actions/words'
 
 interface IProps {
-  currentWord: any
+  chosen: any
+  uid: string
+  word: string
+  username: string
+  startEditWord: (any) => any
 }
 
 export class WordPage extends Component<IProps> {
+  state = {
+    word: this.props.chosen !== undefined && this.props.chosen.word,
+    definition: this.props.chosen !== undefined && this.props.chosen.definition,
+    editingWord: false,
+    editingDefinition: false
+  }
+
+  handleChange = e => {
+    const type = e.target.dataset.type
+    type === 'word' && this.setState({ word: e.target.value })
+    type === 'definition' && this.setState({ definition: e.target.value })
+  }
+
+  handleSubmit = async e => {
+    if (e.charCode === 13 || e.key.toLowerCase() === 'enter') {
+      const type = e.target.dataset.type
+      const word = {
+        uid: this.props.chosen.uid,
+        owner: this.props.username,
+        value: e.target.value,
+        type
+      }
+
+      await this.props.startEditWord(word)
+
+      // this.toggleEdit(e)
+    }
+  }
+
+  toggleEdit = e => {
+    const type = e.target.dataset.type
+    type === 'word' && this.setState({ editingWord: !this.state.editingWord })
+    type === 'definition' &&
+      this.setState({ editingDefinition: !this.state.editingDefinition })
+  }
+
   // @ts-ignore
   render = () => {
-    const { currentWord: word } = this.props
+    const { chosen } = this.props
+    const { word, definition, editingWord, editingDefinition } = this.state
+    const checkChosen = chosen !== undefined
+    const checkDefinition =
+      chosen !== undefined && chosen.definition !== undefined
+    const checkTags = chosen !== undefined && chosen.tags !== undefined
     return (
       <div className="word-page">
         <Textbar />
         {word === undefined && <Spinner name="ball-scale-ripple-multiple" />}
         {word !== undefined && (
           <div>
-            <h1>{word.word}</h1>
-            <p>{word.definition}</p>
-            <p>tags</p>
-            {word.tags !== undefined &&
-              word.tags.map(tag => <p key={tag}>{tag}</p>)}
+            <div className="header">
+              {!editingWord && (
+                <div>
+                  <h1
+                    className="title"
+                    data-type="word"
+                    onDoubleClick={this.toggleEdit}
+                  >
+                    {checkChosen && chosen.word}
+                  </h1>
+                  <FontAwesomeIcon icon="ellipsis-h" className="ellipsis" />
+                </div>
+              )}
+              {editingWord && (
+                <AutosizeInput
+                  className="edit-word"
+                  data-type="word"
+                  value={word}
+                  onChange={this.handleChange}
+                  onKeyPress={this.handleSubmit}
+                  style={{ fontSize: 24 }}
+                />
+              )}
+            </div>
+            <div className="tag-section">
+              {checkTags && chosen.tags.join(' ')}
+              <FontAwesomeIcon icon="plus" className="add-tag" />
+            </div>
+            {!editingDefinition && (
+              <p data-type="definition" onDoubleClick={this.toggleEdit}>
+                {checkDefinition && chosen.definition}
+              </p>
+            )}
+            {editingDefinition && (
+              <AutosizeInput
+                className="edit-definition"
+                data-type="definition"
+                value={definition}
+                onChange={this.handleChange}
+                onKeyPress={this.handleSubmit}
+                style={{ fontSize: 24 }}
+              />
+            )}
           </div>
         )}
       </div>
@@ -30,9 +116,13 @@ export class WordPage extends Component<IProps> {
 }
 
 const mapStateToProps = (state, props) => ({
-  currentWord:
+  chosen:
     state.lexica.words !== undefined &&
-    state.lexica.words.find(word => word.uid === props.match.params.uid)
+    state.lexica.words.find(word => word.uid === props.match.params.uid),
+  username: state.auth.username
 })
 
-export default connect(mapStateToProps)(WordPage)
+export default connect(
+  mapStateToProps,
+  { startEditWord, startDeleteWord }
+)(WordPage)
