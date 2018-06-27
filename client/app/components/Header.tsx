@@ -140,11 +140,6 @@ export class Header extends Component<Props> {
             }}
           >
             <DropdownItem className="dropdown-item">
-              <Link to="/settings" className="settings">
-                Settings
-              </Link>
-            </DropdownItem>
-            <DropdownItem className="dropdown-item">
               <Link to="/profile" className="profile">
                 Profile
               </Link>
