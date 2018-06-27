@@ -8,11 +8,7 @@ import { startEditTopic } from '../actions/words'
 interface IProps {
   words: any
   topics: any
-<<<<<<< HEAD
-  activeTag: any
-=======
   startEditTopic: (any) => any
->>>>>>> 6dc21955ac8a1cd2ff748398eb280fd15036cbca
 }
 
 export class TopicsList extends Component<IProps> {
@@ -53,19 +49,6 @@ export class TopicsList extends Component<IProps> {
   }
 
   // @ts-ignore
-<<<<<<< HEAD
-  componentDidMount = () => {
-    this.props.topics && this.props.topics.map((topic, i) => {
-      const withEdit = {
-        ...topic,
-        editing: false
-      }
-      this.setState((prevState: any) => ({
-        topics: [...prevState.topics, withEdit]
-      }))
-    })
-  }
-=======
   componentDidMount = () =>
     this.props.topics !== undefined &&
     this.setState({ topics: this.props.topics })
@@ -79,7 +62,6 @@ export class TopicsList extends Component<IProps> {
   //   }))
   //     })
   // }
->>>>>>> 6dc21955ac8a1cd2ff748398eb280fd15036cbca
 
   // @ts-ignore
   render = () => {
