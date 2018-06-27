@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Dropzone from 'react-dropzone'
+import Axios from 'axios'
 
 interface ClassProps {
   email: string
   username: string
   photo: string
+  file
 }
 
 export class SettingsPage extends Component<ClassProps> {
   state = {
     page: 'General',
-    username: '',
+    firstname: '',
     email: '',
-    selectedFile: null
+    url: '',
+    file: ''
   }
 
   // declare ref
@@ -35,22 +39,71 @@ export class SettingsPage extends Component<ClassProps> {
   generalUploadHandler = e => {
     e.preventDefault()
 
-    const {
-      selectedFile,
-      username: formUsername,
-      email: formEmail
-    } = this.state
-    const { email } = this.props
+    const { file, url, firstname, email } = this.state
 
-    let formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('email', email)
-    formData.append('username', formUsername)
-    formData.append('newEmail', formEmail)
+    const { username } = this.props
 
+    // let formData = new FormData()
+    // formData.append('file', selectedFile)
+    // formData.append('email', email)
+    // formData.append('username', formUsername)
+    // formData.append('newEmail', formEmail)
+
+    const toS3 = {
+      file,
+      url,
+      email,
+      firstname,
+      username
+    }
+
+    Axios.post(
+      'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+      toS3
+    )
+      .then(resp => {
+        Axios.put(url, file)
+        .then(resp => {
+          console.log(resp.status)
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
     // this.props
     //   .startUpdateGeneral(formData)
     //   .then(() => this.props.history.push('/dashboard'))
+  }
+
+  onDrop = (files: any) => {
+    const file = files[0]
+    console.log('file:', file)
+    const profileUrl =
+      'http://vocab-app-pics.s3.amazonaws.com/' +
+      this.props.username +
+      '/' +
+      file.name
+
+    this.setState({
+      file,
+      url: profileUrl
+    })
+    // demoAxios
+    //   .get(
+    //     'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/upload-picture/' +
+    //       file.name,
+    //     this.props.username
+    //   )
+    //   .then(resp => {
+    //     console.log('response URL from axios get', resp.data)
+    //     this.setState({
+    //       url: resp.data
+    //     })
+
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
   }
 
   render() {
@@ -95,12 +148,15 @@ export class SettingsPage extends Component<ClassProps> {
                     className="photo-container"
                     onClick={() => this.photoUpload.click()}
                   >
-                    <div
+                    <Dropzone onDrop={this.onDrop}>
+                      <p>drop files here:</p>
+                    </Dropzone>
+                    {/* <div
                       className="photo"
                       style={{
                         background: `url(${photo}) center / cover no-repeat`
                       }}
-                    />
+                    /> */}
                     <p className="text">Edit</p>
                   </div>
                   <input
@@ -188,4 +244,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = data => dispatch => ({})
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsPage)
