@@ -1,15 +1,16 @@
 import React from 'react'
 import api from '../api'
 
-export const updateWords = words => ({
+export const updateWords = user => ({
   type: 'NEW_WORD',
-  words
+  user
 })
 
-export const startUpdateWord = (nextWord, dispatch) =>
-  api.modal.addWord(nextWord).then(data => dispatch(updateWords(data)))
+export const startAddWord = word => dispatch =>
+  api.lexica.addWord(word).then(data => dispatch(updateWords(data)))
 
-export const setCurrentWord = word => ({
-  type: 'CURRENT',
-  word
-})
+export const startEditWord = word => dispatch =>
+  api.lexica.updateWord(word).then(data => dispatch(updateWords(data)))
+
+export const startDeleteWord = word => dispatch =>
+  api.lexica.deleteWord(word).then(data => dispatch(updateWords(data)))

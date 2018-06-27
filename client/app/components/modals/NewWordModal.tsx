@@ -3,14 +3,12 @@ import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import Modal from '../Modal'
 import { hideModal } from '../../actions/modal'
-import { startUpdateWord } from '../../actions/words'
+import { startAddWord } from '../../actions/words'
 import { generateUuid } from '../../helpers/helpers'
-import api from '../../api'
-import { constants } from 'zlib'
 
 interface IProps extends RouteComponentProps<any> {
   hideModal: () => void
-  submitWord: any
+  startAddWord: any
   onChange: any
   username: string
 }
@@ -42,12 +40,14 @@ export class NewWordModal extends Component<IProps, IState> {
   handleSubmit = e => {
     e.preventDefault()
     const { word, definition, topic, tags: stateTags } = this.state
-    const { username: owner } = this.props
-    const tags = stateTags.split(' ')
+    const { username: owner, startAddWord } = this.props
+    // split tags by: [comma] / space
+    const tags = stateTags.split(',')
     const uid = generateUuid()
-    const nextWord = { uid, word, definition, tags, topic, owner }
+    const topicUid = generateUuid()
+    const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
 
-    this.props.submitWord(nextWord).then(() => this.onClose())
+    startAddWord(nextWord).then(() => this.onClose())
   }
 
   // @ts-ignore
@@ -87,13 +87,9 @@ const mapStateToProps = state => ({
   username: state.auth.username
 })
 
-const mapDispatchToProps = dispatch => ({
-  hideModal: () => dispatch(hideModal()),
-  submitWord: word => startUpdateWord(word, dispatch)
-})
 // mapStateToProps -- to read from the store
 // mapDispatchToProps -- to write to the store
 export default connect<any, any>(
   mapStateToProps,
-  mapDispatchToProps
+  { startAddWord, hideModal }
 )(NewWordModal)

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Spinner from 'react-spinkit'
 import Textbar from './Textbar'
-import { faDivide } from '@fortawesome/fontawesome-free-solid'
+import TopicsListWord from './TopicsListWord'
 
 interface IProps {
   words: any
@@ -16,13 +17,17 @@ export class TagsPage extends Component<IProps> {
       <div className="tags-page">
         <Textbar />
         <div>
+          {tags === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+          {tags !== undefined &&
+            tags.length === 0 && <p>You have not created any tags yet.</p>}
           {tags !== undefined &&
             tags.map(tag => (
-              <div>
-                <h1>{tag}</h1>
+              <div key={tag}>
+                <h2 id={tag}>{tag}</h2>
                 {words !== undefined &&
                   words.map(word => {
-                    if (word.tags.includes(tag)) return <p>{word.word}</p>
+                    if (word.tags.includes(tag))
+                      return <TopicsListWord key={word.uid} word={word} />
                   })}
               </div>
             ))}

@@ -6,13 +6,9 @@ import { HashLink as Link } from 'react-router-hash-link'
 import { generateUuid } from '../helpers/helpers'
 import { startSubmitTopic } from '../actions/app'
 
-{
-  /* <p>{results.length > 0 && results.pool.map(result => <p>{result.word}</p>)}</p> */
-}
-
 interface IProps {
   words: any
-  topics: string[]
+  topics: any
   tags: string[]
   username: string
   startSubmitTopic: (any) => void
@@ -54,9 +50,6 @@ export class Textbar extends Component<IProps, IState> {
   }
 
   // @ts-ignore
-  componentDidMount = () => console.log('props: ', this.props)
-
-  // @ts-ignore
   render = () => {
     const { words, topics, tags, match } = this.props
     const { editing, topicName } = this.state
@@ -72,8 +65,8 @@ export class Textbar extends Component<IProps, IState> {
               {topics !== undefined &&
                 topics.map((topic, i) => (
                   <Link
-                    to={`#${topic}`}
-                    key={words[i].uid}
+                    to={`#${topic.uid}`}
+                    key={topic.uid}
                     smooth="true"
                     scroll={el =>
                       el.scrollIntoView({
@@ -82,10 +75,10 @@ export class Textbar extends Component<IProps, IState> {
                       })
                     }
                   >
-                    <p>{topic}</p>
+                    <p>{topic.topic}</p>
                     {
                       words.filter(word => {
-                        if (word.topic === topic) return word
+                        if (word.topic === topic.uid) return word
                       }).length
                     }&nbsp;words
                   </Link>
@@ -117,14 +110,36 @@ export class Textbar extends Component<IProps, IState> {
             <p className="title">Tags</p>
             <p className="subhead">
               {words !== undefined && words.length} tags
-              {tags !== undefined &&
-                tags.map(tag => (
-                  <p>{`${tag} (${
-                    words.filter(word => word.tags.includes(tag)).length
-                  })`}</p>
-                ))}
             </p>
-            {}
+
+            {tags !== undefined &&
+              tags.map((tag, i) => (
+                <Link
+                  to={`#${tag}`}
+                  key={tag}
+                  smooth="true"
+                  scroll={el =>
+                    el.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }
+                >
+                  <p>{`${tag} (${
+                    words.filter(word => {
+                      if (word.tags.includes(tag)) return word.word
+                    }).length
+                  })`}</p>
+                </Link>
+              ))}
+          </div>
+        )}
+        {match.path.includes('/word/') && (
+          <div className="textbar">
+            <p className="title">word</p>
+            {/* <button>+ Add example</button>
+            <button>+ Add images</button>
+            <button>delete word</button> */}
           </div>
         )}
       </div>

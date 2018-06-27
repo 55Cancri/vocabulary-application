@@ -1,3 +1,20 @@
 .word-page
   display: grid
   grid-template-columns: max-content 1fr
+
+  .header
+    display: grid
+    position: relative
+
+    .title
+      &:hover + .ellipsis
+        opacity: 1
+
+    .ellipsis
+      position: absolute
+      top: 33px
+      left: 90px
+      opacity: 0
+
+      &:hover
+        opacity: 1
