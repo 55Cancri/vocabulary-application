@@ -21,7 +21,7 @@ export let getToken = () => {
 }
 
 const signupUrl =
-  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/auth'
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/signup'
 
 const loginUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/login'
