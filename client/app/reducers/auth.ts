@@ -8,6 +8,7 @@ export const authReducer = (state = {}, action: any = {}) => {
         token: action.user.token,
         email: action.user.email,
         name: action.user.firstname,
+        last: action.user.lastname,
         username: action.user.username
       }
 

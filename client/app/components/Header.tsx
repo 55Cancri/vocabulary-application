@@ -149,6 +149,11 @@ export class Header extends Component<Props> {
                 Settings
               </Link>
             </DropdownItem>
+            <DropdownItem className="dropdown-item">
+              <Link to="/profile" className="profile">
+                Profile
+              </Link>
+            </DropdownItem>
             <DropdownItem
               className="dropdown-item"
               onClick={() => startLogout()}

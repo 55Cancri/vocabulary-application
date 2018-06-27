@@ -16,6 +16,7 @@ import GlossaryPage from '../components/GlossaryPage'
 import TagsPage from '../components/TagsPage'
 import WordPage from '../components/WordPage'
 import NotFoundPage from '../components/NotFoundPage'
+import ProfilePage from '../components/ProfilePage'
 
 export const history = createHistory()
 const mql = window.matchMedia(`(min-width: 800px)`)
@@ -118,8 +119,8 @@ export class Pages extends Component<IProps, IState> {
             <PrivateRoute path="/tags" component={TagsPage} />
             <PrivateRoute path="/word/:uid" component={WordPage} />
             <PrivateRoute path="/settings" component={SettingsPage} />
+            <PrivateRoute path="/profile" component={ProfilePage} />
           </Sidebar>
-
           <Route component={NotFoundPage} />
         </Switch>
       </Router>
