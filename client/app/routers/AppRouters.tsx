@@ -23,7 +23,8 @@ if (localStorage.wa) {
   const payload: IPayload = decode(localStorage.wa)
   const user = {
     email: payload.email,
-    token: localStorage.wa
+    token: localStorage.wa,
+    uid: localStorage.uid
   }
 
   // @ts-ignore

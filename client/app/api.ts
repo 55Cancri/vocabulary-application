@@ -35,7 +35,8 @@ const addWordUrl =
 const updateWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word'
 
-const deleteWordUrl = ''
+const deleteWordUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word'
 
 const addTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'

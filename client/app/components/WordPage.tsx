@@ -17,6 +17,7 @@ interface IProps {
   uid: string
   word: string
   username: string
+  history
   startEditWord: (any) => any
   startDeleteWord: (any) => any
 }
@@ -59,10 +60,11 @@ export class WordPage extends Component<IProps> {
       word: chosen.word,
       uid: chosen.uid
     }
+    console.log('deleting word: ', word)
 
     await startDeleteWord(word)
-    // this.props.history.push('/')
-    // updateWord, createWord, Login, persistUser,
+    this.props.history.push('/dashboard')
+    // updateWord, createWord, Login, persistUser
   }
 
   handleSubmit = async e => {
@@ -76,8 +78,6 @@ export class WordPage extends Component<IProps> {
       }
 
       await this.props.startEditWord(word)
-
-      // this.toggleEdit(e)
     }
   }
 

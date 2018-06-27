@@ -5,6 +5,7 @@ import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js'
 
 import { connect } from 'react-redux'
 import { startSignup } from '../actions/auth'
+import { generateUuid } from '../helpers/helpers'
 
 interface ClassProps extends RouteComponentProps<any> {
   startSignup(data: {}): any
@@ -174,7 +175,8 @@ export class SignupPage extends Component<ClassProps, ClassState> {
       firstname: personName[0],
       lastname: personName[personName.length - 1],
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      uid: generateUuid()
       // role: admin ? 'admin' : 'employee'
     }
 
