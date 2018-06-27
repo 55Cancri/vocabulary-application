@@ -6,6 +6,11 @@ export const updateWords = words => ({
   words
 })
 
+export const search = results => ({
+  type: 'SEARCH',
+  results
+})
+
 export const startUpdateWord = (nextWord, dispatch) =>
   api.modal.addWord(nextWord).then(data => dispatch(updateWords(data)))
 

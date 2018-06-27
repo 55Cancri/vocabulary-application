@@ -6,6 +6,7 @@ import { appReducer } from '../reducers/app'
 import { authReducer } from '../reducers/auth'
 import { lexiconReducer } from '../reducers/lexicon'
 import { modalReducer } from '../reducers/modal'
+import { everythingReducer } from '../reducers/everything'
 import { startLogout } from '../actions/auth'
 import jwtDecode from 'jwt-decode'
 

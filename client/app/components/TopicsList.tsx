@@ -54,6 +54,7 @@ export class TopicsList extends Component<IProps> {
 const mapStateToProps = state => ({
   words: state.lexica.words,
   topics: state.lexica.topics,
+  results: state.lexica.results,
   dataIsHere: state.app.dataIsHere
 })
 
