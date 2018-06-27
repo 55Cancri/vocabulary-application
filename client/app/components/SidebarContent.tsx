@@ -5,13 +5,13 @@ import fontawesome from '@fortawesome/fontawesome'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { generateUuid } from '../helpers/helpers'
-import { startSubmitTopic } from '../actions/app'
+import { startAddTopic } from '../actions/words'
 import { loadModal } from '../actions/modal'
 import { NEW_WORD_MODAL } from '../constants/modaltypes'
 
 interface IProps {
   username?: string
-  startSubmitTopic?: (nextTopic: any) => any
+  startAddTopic?: (nextTopic: any) => any
   loadModal?: (string) => void
 }
 
@@ -42,7 +42,7 @@ export class SidebarContent extends Component<IProps, IState> {
       owner: username,
       topic: topic
     }
-    this.props.startSubmitTopic(nextTopic)
+    this.props.startAddTopic(nextTopic)
   }
 
   spawnWordModal = () => this.props.loadModal(NEW_WORD_MODAL)
@@ -84,5 +84,5 @@ const mapStateToProps = state => ({
 
 export default connect<any, any>(
   mapStateToProps,
-  { loadModal, startSubmitTopic }
+  { loadModal, startAddTopic }
 )(SidebarContent)

@@ -9,24 +9,12 @@ interface Iprops {
   firstname
   lastname
   email
+  profileImage
 }
 
-interface IState {
-  url
-  filename
-}
-
-export class ProfilePage extends Component<Iprops, IState> {
-  public constructor(props: any) {
-    super(props)
-    this.state = {
-      url: '',
-      filename: ''
-    }
-  }
-
+export class ProfilePage extends Component<Iprops> {
   // public componentDidMount() {
-  //   demoAxios
+  //   Axios
   //     .get(
   //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/files/profile.jpg'
   //     )
@@ -40,43 +28,14 @@ export class ProfilePage extends Component<Iprops, IState> {
   //     })
   // }
 
-  public onDrop = (files: any) => {
-    const file = files[0]
-    console.log('file:', file)
-
-    demoAxios
-      .get(
-        'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/upload-picture/' +
-          file.name
-      )
-      .then(resp => {
-        console.log('response URL from axios get', resp.data.signedUrl)
-        // this.setState({
-        //   url: resp.data
-        // })
-        Axios.put(resp.data, file)
-          .then(uploadResp => {
-            console.log(uploadResp.status)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   render() {
     return (
       <div>
         <div>
           Profile Picture:
-          <Dropzone onDrop={this.onDrop}>
-            <p>drop files here:</p>
-          </Dropzone>
           <p>
-            <img src={this.state.url} />
+            <img src={this.props.profileImage} />
+            {/* <img src={this.state.url} /> */}
           </p>
         </div>
         <div className="input-group">
@@ -100,7 +59,7 @@ const mapStateToProps = state => ({
   email: state.auth.email,
   firstname: state.auth.name,
   lastname: state.auth.last,
-  test: 'test'
+  profileImage: state.auth.profileImage
 })
 
 export default connect(mapStateToProps)(ProfilePage)

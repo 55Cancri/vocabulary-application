@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Dropzone from 'react-dropzone'
+import axios from 'axios'
+import { startUpdateUser } from '../actions/auth'
 
 interface ClassProps {
   email: string
   username: string
   photo: string
+  firstname: string
+  lastname: string
+  file
+  startUpdateUser: (any) => any
 }
 
 export class SettingsPage extends Component<ClassProps> {
   state = {
     page: 'General',
-    username: '',
+    fullname: `${this.props.firstname} ${this.props.lastname}`,
     email: '',
-    selectedFile: null
+    url: '',
+    file: ''
   }
 
   // declare ref
@@ -32,30 +40,63 @@ export class SettingsPage extends Component<ClassProps> {
   fileSelectedHandler = ({ target }) =>
     this.setState({ selectedFile: target.files[0] })
 
-  generalUploadHandler = e => {
+  generalUploadHandler = async e => {
     e.preventDefault()
 
-    const {
-      selectedFile,
-      username: formUsername,
-      email: formEmail
-    } = this.state
-    const { email } = this.props
+    const { file, url, fullname: name, email } = this.state
 
-    let formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('email', email)
-    formData.append('username', formUsername)
-    formData.append('newEmail', formEmail)
+    const { username, startUpdateUser } = this.props
 
-    // this.props
-    //   .startUpdateGeneral(formData)
-    //   .then(() => this.props.history.push('/dashboard'))
+    const fullname = name.split(' ')
+
+    const data = {
+      username,
+      firstname: fullname[0],
+      lastname: fullname[1],
+      email,
+      url
+    }
+    try {
+      // send file to s3 bucket
+      const s3upload = await axios.put(url, file)
+    } catch (e) {
+      console.log('error uploading to s3', e)
+    }
+
+    try {
+      const dynamoUpload = await axios
+        .post(
+          'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+          data
+        )
+        .then(res => res.data)
+
+      startUpdateUser(data)
+    } catch (e) {
+      console.log('error uploading to lambda', e)
+    }
+  }
+
+  onDrop = (files: any) => {
+    // get most recent file
+    const file = files[0]
+
+    // build url to s3 bucket
+    const profileUrl =
+      'http://vocab-app-pics.s3.amazonaws.com/' +
+      this.props.username +
+      '/' +
+      file.name
+
+    this.setState({
+      file,
+      url: profileUrl
+    })
   }
 
   render() {
     const { email, username, photo } = this.props
-    let { page } = this.state
+    let { page, fullname } = this.state
     page = page.toLowerCase()
 
     return (
@@ -95,12 +136,15 @@ export class SettingsPage extends Component<ClassProps> {
                     className="photo-container"
                     onClick={() => this.photoUpload.click()}
                   >
-                    <div
+                    <Dropzone onDrop={this.onDrop}>
+                      <p>drop files here:</p>
+                    </Dropzone>
+                    {/* <div
                       className="photo"
                       style={{
                         background: `url(${photo}) center / cover no-repeat`
                       }}
-                    />
+                    /> */}
                     <p className="text">Edit</p>
                   </div>
                   <input
@@ -114,8 +158,8 @@ export class SettingsPage extends Component<ClassProps> {
                   />
                 </div>
                 <div className="input-group">
-                  <label htmlFor="username">Username</label>
-                  <input type="text" name="username" placeholder={username} />
+                  <label htmlFor="fullname">Full Name</label>
+                  <input type="text" name="fullname" placeholder={fullname} />
                 </div>
                 <div className="input-group">
                   <label htmlFor="email">Email</label>
@@ -181,11 +225,14 @@ export class SettingsPage extends Component<ClassProps> {
 }
 
 const mapStateToProps = state => ({
+  firstname: state.auth.name,
+  lastname: state.auth.last,
   username: state.auth.username,
   email: state.auth.email,
   photo: state.auth.photo
 })
 
-const mapDispatchToProps = data => dispatch => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage)
+export default connect(
+  mapStateToProps,
+  { startUpdateUser }
+)(SettingsPage)

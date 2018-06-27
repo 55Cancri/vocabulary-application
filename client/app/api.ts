@@ -35,10 +35,14 @@ const addWordUrl =
 const updateWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word'
 
-const deleteWordUrl = ''
+const deleteWordUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word'
 
 const addTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic'
+
+const updateTopicUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-topic'
 
 // TODO: require token passed in header
 export default {
@@ -56,6 +60,7 @@ export default {
         .post('/api/nuke', email, { headers: getToken() })
         .then(res => res.data)
   },
+
   lexica: {
     addWord: wordObject =>
       axios.post(addWordUrl, { wordObject }).then(res => res.data),
@@ -64,13 +69,13 @@ export default {
       axios.post(updateWordUrl, { word }).then(res => res.data),
 
     deleteWord: word =>
-      axios.post(deleteWordUrl, { word }).then(res => res.data)
-  },
-  sidebar: {
-    addTopic: topic => {
-      axios.post(addTopicUrl, { topic }).then(res => res.data)
-    }
-  },
+      axios.post(deleteWordUrl, { word }).then(res => res.data),
+
+    addTopic: topic => axios.post(addTopicUrl, { topic }).then(res => res.data),
+
+    updateTopic: topic =>
+      axios.post(updateTopicUrl, { topic }).then(res => res.data)
+  }
   // header: {
   //   getEverything: username => {
   //     console.log('API reached')

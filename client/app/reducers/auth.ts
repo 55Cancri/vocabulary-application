@@ -6,6 +6,7 @@ export const authReducer = (state = {}, action: any = {}) => {
     case 'LOGIN':
       return {
         token: action.user.token,
+        uid: action.user.uid,
         email: action.user.email,
         name: action.user.firstname,
         last: action.user.lastname,
@@ -16,7 +17,18 @@ export const authReducer = (state = {}, action: any = {}) => {
     case 'PERSIST':
       return {
         email: action.identity.email,
-        token: action.identity.token
+        token: action.identity.token,
+        uid: action.identity.uid
+      }
+
+    case 'UPDATE_USER':
+      console.log('now updating user in reducer')
+      return {
+        ...state,
+        email: action.user.email,
+        name: action.user.firstname,
+        last: action.user.lastname,
+        profileImage: action.user.url
       }
 
     case 'LOGOUT':
