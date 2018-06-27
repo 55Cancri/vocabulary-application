@@ -2,7 +2,7 @@ import React from 'react'
 
 const initialState = {
   dataIsHere: false,
-  textbar: 'topics',
+  textbar: 'topic'
   // showSearch:
 }
 

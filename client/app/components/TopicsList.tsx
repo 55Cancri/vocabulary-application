@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import Spinner from 'react-spinkit'
 import AutosizeInput from 'react-input-autosize'
 import { TopicsListWord } from './TopicsListWord'
+import { startEditTopic } from '../actions/words'
 
 interface IProps {
   words: any
   topics: any
+  startEditTopic: (any) => any
 }
 
 export class TopicsList extends Component<IProps> {
@@ -17,7 +19,8 @@ export class TopicsList extends Component<IProps> {
 
   setToEditing = e => {
     const state = this.state.topics
-    console.log(e.target)
+    // sets editing = to double clicked word
+    this.setState({ editing: e.target.id })
   }
 
   handleChange = ({ target }) => {
@@ -34,26 +37,36 @@ export class TopicsList extends Component<IProps> {
     this.setState({ topics: newTopics })
   }
 
-  handleSubmit = () => console.log('coming soon.')
+  handleSubmit = async e => {
+    if (e.charCode === 13 || e.key.toLowerCase() === 'enter') {
+      const uid = e.target.id
+      const updatedTopic = this.state.topics.filter(
+        topic => topic.uid === uid
+      )[0]
+      console.log('updated topic: ', updatedTopic)
+      this.props.startEditTopic(updatedTopic)
+    }
+  }
 
   // @ts-ignore
-  componentDidMount = () => {
-    this.props.topics.map((topic, i) => {
-      const withEdit = {
-        ...topic,
-        editing: false
-      }
-      this.setState((prevState: any) => ({
-        topics: [...prevState.topics, withEdit]
-      }))
-    })
-  }
+  componentDidMount = () =>
+    this.props.topics !== undefined &&
+    this.setState({ topics: this.props.topics })
+  // this.props.topics.map((topic, i) => {
+  //   const withEdit = {
+  //     ...topic,
+  //     editing: false
+  //   }
+  //   this.setState((prevState: any) => ({
+  //     topics: [...prevState.topics, withEdit]
+  //   }))
+  //     })
+  // }
 
   // @ts-ignore
   render = () => {
     const { words, topics } = this.props
     const { editing } = this.state
-    // topics !== undefined && this.updateState()
     return (
       <div className="topics-list">
         {topics === undefined && <Spinner name="ball-scale-ripple-multiple" />}
@@ -70,9 +83,10 @@ export class TopicsList extends Component<IProps> {
               {editing === topic.uid && (
                 <AutosizeInput
                   // className="edit-definition"
-                  value={this.state.topics.filter(
-                    compare => compare.uid === topic.uid
-                  )}
+                  id={topic.uid}
+                  value={this.state.topics
+                    .filter(compare => compare.uid === topic.uid)
+                    .map(topic => topic.topic)}
                   onChange={this.handleChange}
                   onKeyPress={this.handleSubmit}
                   style={{ fontSize: 24 }}
@@ -97,4 +111,7 @@ const mapStateToProps = state => ({
   dataIsHere: state.app.dataIsHere
 })
 
-export default connect(mapStateToProps)(TopicsList as any)
+export default connect(
+  mapStateToProps,
+  { startEditTopic }
+)(TopicsList as any)

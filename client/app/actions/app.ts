@@ -1,12 +1,6 @@
 import React from 'react'
 import api from '../api'
 
-export const startSubmitTopic = (nextTopic, dispatch) => {
-  api.sidebar.addTopic(nextTopic)
-}
-// export const startGetEverything = (username) => {
-//   api.header.getEverything(username)
-// }
 export const deleteAccount = user => ({
   type: 'DELETE',
   user
