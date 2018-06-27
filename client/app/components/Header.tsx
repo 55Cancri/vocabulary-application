@@ -47,7 +47,7 @@ export class Header extends Component<Props> {
   componentWillUnmount = () => document.removeEventListener("click", this.determineSelection)
 
   determineSelection = ({target}) => {
-    console.log('target: ', target)
+    // console.log('target: ', target)
 
     // if you click outside, some code runs
     if (!target.closest('.section') && !target.dataset.search) this.searchBlur()

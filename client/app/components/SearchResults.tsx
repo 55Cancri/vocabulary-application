@@ -78,20 +78,37 @@ export class SearchResults extends Component<IProps, IState> {
         let keyword = term.substring(0, term.indexOf(':'))
         let words = this.props.words
         let termItems = term.substring((term.indexOf(':')+2),term.length).split(' ')
-        let results = []
+        let allResults = []
+        let finalResults = []
+        // console.log(keyword)
+        // console.log(words)
+        // console.log('Tags to search: ', termItems)
+        // console.log('Results: ', results)
         switch (keyword){
             case 'tags':
                 // Some logic
                 for (let t of termItems) {
-                    results.concat(words.filter(word => word.tags.includes(t)))
+                    // console.log(words[0].tags)
+                    // console.log(words.filter(word => word.tags.includes(t)))
+                    allResults.push(words.filter(word => word.tags.includes(t)))
                 }
-                // To remove duplicate words
-                for(let i=0; i<results.length; ++i) {
-                    for(let j=i+1; j<results.length; ++j) {
-                        if(results[i] === results[j])
-                            results.splice(j--, 1);
+                console.log(allResults)
+                for (let i = 0; i < allResults.length; i++) {
+                    for (let j of allResults[i]) {
+                        if (!finalResults.includes(j)) {
+                            finalResults.push(j)
+                        }
                     }
                 }
+                return finalResults
+                // console.log(finalResults)
+                // To remove duplicate words
+                // for(let i=0; i<results.length; ++i) {
+                //     for(let j=i+1; j<results.length; ++j) {
+                //         if(results[i] === results[j])
+                //             results.splice(j--, 1);
+                //     }
+                // }
             case 'topic':
                 // More logic
                 return words
