@@ -19,7 +19,7 @@ import NotFoundPage from '../components/NotFoundPage'
 import ProfilePage from '../components/ProfilePage'
 
 export const history = createHistory()
-const mql = window.matchMedia(`(min-width: 800px)`)
+const mql = window.matchMedia(`(min-width: 100px)`)
 
 interface IProps {
   history?: any
@@ -101,7 +101,6 @@ export class Pages extends Component<IProps, IState> {
   render = () => {
     return (
       <Router history={history}>
-        
         <Switch>
           <PublicRoute exact path="/" component={SignupPage} />
           <PublicRoute path="/signup" component={SignupPage} />
