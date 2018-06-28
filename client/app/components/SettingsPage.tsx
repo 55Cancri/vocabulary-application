@@ -119,7 +119,7 @@ export class SettingsPage extends Component<ClassProps> {
               className={page === 'transfers' ? 'is-active' : null}
               onClick={this.setPage}
             >
-              Transfers
+              Themes
             </p>
           </aside>
           {this.state.page.toLowerCase() == 'general' && (
@@ -197,18 +197,13 @@ export class SettingsPage extends Component<ClassProps> {
               </form>
             </div>
           )}
-          {this.state.page.toLowerCase() == 'transfers' && (
+          {this.state.page.toLowerCase() == 'themes' && (
             <div>
-              <h2>Transfers</h2>
+              <h2>Themes</h2>
               <form className="settings-form" onChange={this.onFieldChange}>
                 <div className="input-group">
-                  <label htmlFor="interest">Charge interest?</label>
+                  <label htmlFor="interest">Change website theme:</label>
                   <input type="text" name="interest" />
-                </div>
-                <div className="input-group">
-                  <label htmlFor="amount">Interest amount</label>
-                  <input type="email" name="amount" />
-                  <span>%</span>
                 </div>
                 <div className="input-group">
                   <button className="save" type="submit">
