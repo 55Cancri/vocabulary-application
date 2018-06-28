@@ -6,4 +6,4 @@ In order for users to add words to their collections, they must provide their ow
 
 More to come!
 
-a test for jenkins
+a test for jenky
