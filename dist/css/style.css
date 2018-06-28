@@ -3176,20 +3176,57 @@ a {
   display: block;
   padding: 25px 60px;
   min-width: 80px;
-  width: 10vw;
-  border: 1px solid red; }
+  width: 10vw; }
   .textbar-container .textbar {
     position: fixed;
     top: 100px;
     left: 100px;
     height: 80vh;
+    max-width: 110px;
     overflow-y: scroll;
-    padding: 0 25px;
-    border: 1px solid green; }
+    padding: 0 25px; }
+    .textbar-container .textbar::-webkit-scrollbar {
+      width: 7px;
+      -webkit-box-shadow: none; }
+    .textbar-container .textbar::-webkit-scrollbar-thumb {
+      background-color: #BCB6B6;
+      border-radius: 25px; }
     .textbar-container .textbar .title {
       font-weight: bold; }
     .textbar-container .textbar .subhead {
       font-style: italic; }
+    .textbar-container .textbar .list .topic-group-in-textbar {
+      transition: .3s all; }
+      .textbar-container .textbar .list .topic-group-in-textbar:hover .topic-name {
+        color: #118df0; }
+      .textbar-container .textbar .list .topic-group-in-textbar:hover .topic-count {
+        color: #89c6f8; }
+      .textbar-container .textbar .list .topic-group-in-textbar .topic-name {
+        margin: 0;
+        margin-top: 15px;
+        font: normal 18px "Roboto Condensed", sans-serif;
+        color: #212121; }
+      .textbar-container .textbar .list .topic-group-in-textbar .topic-count {
+        margin: 0;
+        font: normal 14px montserrat, sans-serif;
+        color: #a3a3a3; }
+    .textbar-container .textbar .list .add-topic-button {
+      font: italic 14px roboto, sans-serif;
+      color: #a3a3a3;
+      transition: .4s all; }
+      .textbar-container .textbar .list .add-topic-button:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: #212121; }
+    .textbar-container .textbar .list .enter-topic-name {
+      margin: 15px 0 0;
+      width: 100%;
+      outline: none;
+      border: none;
+      border-bottom: 2px solid #b7b7b7; }
+      .textbar-container .textbar .list .enter-topic-name::placeholder {
+        font: normal 14px roboto, sans-serif;
+        color: #a3a3a3; }
     .textbar-container .textbar .list .active {
       font-style: bold;
       font-size: 18px;
@@ -3326,16 +3363,12 @@ a {
     .buy-modal_buttons > .submit:disabled {
       background-color: #bdbdbd; }
 
-.topics-list {
-  border: 1px solid red; }
+.topics-list .topic-section {
+  display: grid;
+  align-items: center;
+  margin: 10px 0 0; }
   .topics-list .topic-section:not(:first-of-type) {
-    margin: 50px 0;
-    padding-top: 20px; }
-    .topics-list .topic-section:not(:first-of-type):first-of-type {
-      margin-top: 50px; }
-    .topics-list .topic-section:not(:first-of-type) .topic-list-word:not(:first-of-type) {
-      margin: 50px 0;
-      height: max-content; }
+    margin: 30px 0; }
   .topics-list .topic-section .topic-header {
     display: grid;
     grid-template-columns: repeat(2, max-content);
@@ -3345,11 +3378,35 @@ a {
     .topics-list .topic-section .topic-header:hover .trash {
       opacity: 1; }
     .topics-list .topic-section .topic-header .trash {
+      margin-top: 5px;
       color: lightgrey;
       opacity: 0; }
       .topics-list .topic-section .topic-header .trash:hover {
         cursor: pointer;
         color: #f52549; }
+    .topics-list .topic-section .topic-header .topic-name-in-main-list {
+      margin: 0;
+      padding: 0 0 0 30px;
+      font: bold 32px "Roboto Condensed", sans-serif; }
+  .topics-list .topic-section .word-empty {
+    margin: 10px 0;
+    padding: 0 0 0 30px;
+    font: normal 18px monsterrat, sans-serif;
+    color: #212121; }
+  .topics-list .topic-section .word-group-in-main-list {
+    margin: 5px 0;
+    padding: 20px 30px;
+    transition: .5s all; }
+    .topics-list .topic-section .word-group-in-main-list:hover {
+      background-color: rgba(0, 0, 0, 0.03); }
+    .topics-list .topic-section .word-group-in-main-list .word-name {
+      margin: 0 0 10px;
+      color: #212121;
+      font: 700 20px montserrat, sans-serif; }
+    .topics-list .topic-section .word-group-in-main-list .word-definition {
+      margin: 0;
+      color: #212121;
+      font: normal 18px monsterrat, sans-serif; }
 
 .search-results {
   position: absolute;
@@ -3381,12 +3438,11 @@ a {
 
 .dashboard-page {
   display: grid;
-  grid-template-columns: max-content 60vw;
-  justify-content: space-between; }
+  grid-template-columns: minmax(250px, max-content) 1fr; }
 
 .word-page {
   display: grid;
-  grid-template-columns: max-content 60vw;
+  grid-template-columns: minmax(280px, max-content) 60vw;
   justify-content: space-between; }
   .word-page .header div {
     display: grid;
@@ -3421,12 +3477,12 @@ a {
 
 .glossary-page {
   display: grid;
-  grid-template-columns: max-content 60vw;
+  grid-template-columns: minmax(280px, max-content) 60vw;
   justify-content: space-between; }
 
 .tags-page {
   display: grid;
-  grid-template-columns: max-content 60vw;
+  grid-template-columns: minmax(280px, max-content) 60vw;
   justify-content: space-between; }
 
 

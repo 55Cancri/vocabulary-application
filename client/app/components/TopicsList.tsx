@@ -23,6 +23,7 @@ interface IProps {
 export class TopicsList extends Component<IProps> {
   state = {
     topics: [],
+    dragging: false,
     editing: null
   }
 
@@ -32,8 +33,11 @@ export class TopicsList extends Component<IProps> {
     this.setState({ editing: e.target.id })
   }
 
+  private stepInput: React.RefObject<HTMLInputElement>
+
   handleScroll = e => {
-    // console.log('scroll y', this.list.scrollTop)
+    // this.getBoundingClientRect().top
+    // console.log('scroll', this.stepInput.current)
     // const el = e.target
     // console.log(el)
     // const minPixel = el.offsetTop
@@ -49,9 +53,9 @@ export class TopicsList extends Component<IProps> {
     this.props.topics !== undefined &&
       this.setState({ topics: this.props.topics })
 
-    this.props.topics !== undefined && console.log('refs', this.refs)
-
     window.addEventListener('scroll', this.handleScroll, true)
+
+    this.setState(this.state)
   }
 
   // @ts-ignore
@@ -61,8 +65,13 @@ export class TopicsList extends Component<IProps> {
   handleTextbar = ({ currentTarget }) => {
     const { startUpdateTextbar } = this.props
     const uid = currentTarget.id
-    console.log('uid: ', uid)
-    // startUpdateTextbar(uid)
+    // console.log('uid: ', uid)
+    startUpdateTextbar(uid)
+  }
+
+  handleDrag = e => {
+    console.log('dragging...')
+    this.setState({ dragging: true })
   }
 
   handleChange = ({ target }) => {
@@ -100,7 +109,7 @@ export class TopicsList extends Component<IProps> {
   // @ts-ignore
   render = () => {
     const { words, topics } = this.props
-    const { editing } = this.state
+    const { editing, dragging } = this.state
     return (
       <div className="topics-list">
         {topics === undefined && <Spinner name="ball-scale-ripple-multiple" />}
@@ -113,11 +122,15 @@ export class TopicsList extends Component<IProps> {
               id={topic.uid}
               className="topic-section"
               onMouseEnter={this.handleTextbar}
-              // ref={word => (this[`word${i}`] = word)}
+              ref={div => (this[`topic${topic.uid}`] = div)}
             >
               {editing !== topic.uid && (
                 <div className="topic-header" id={topic.uid}>
-                  <h2 id={topic.uid} onDoubleClick={this.setToEditing}>
+                  <h2
+                    id={topic.uid}
+                    className="topic-name-in-main-list"
+                    onDoubleClick={this.setToEditing}
+                  >
                     {topic.topic}
                   </h2>
                   <div
@@ -143,25 +156,39 @@ export class TopicsList extends Component<IProps> {
                 />
               )}
               {!words.some(word => word.topic === topic.uid) && (
-                <p>No words yet.</p>
+                <p className="word-empty">No words yet.</p>
               )}
               {words.map(word => {
                 if (word.topic === topic.uid)
-                  return <TopicsListWord key={word.uid} word={word} />
-              })}
-              {words.some(word => word.topic === 0) && (
-                <div className="topic-header">
-                  <h2 id={'0'}>Uncategorized</h2>
-                </div>
-              )}
-              {words.filter(
-                word =>
-                  word.topic === 0 && (
-                    <TopicsListWord key={word.uid} word={word} />
+                  return (
+                    <TopicsListWord
+                      key={word.uid}
+                      word={word}
+                      draggable="true"
+                      onDragStart={e => this.handleDrag(e)}
+                      className={dragging ? 'drag' : ''}
+                    />
                   )
-              )}
+              })}
             </div>
           ))}
+        <div id="0" className="topic-section" onMouseEnter={this.handleTextbar}>
+          {words !== undefined &&
+            words.some(word => word.topic === 0) && (
+              <div className="topic-header">
+                <h2 id="0" className="topic-name-in-main-list">
+                  Uncategorized
+                </h2>
+              </div>
+            )}
+          {words !== undefined &&
+            words.map(
+              word =>
+                word.topic === 0 && (
+                  <TopicsListWord key={word.uid} word={word} />
+                )
+            )}
+        </div>
       </div>
     )
   }

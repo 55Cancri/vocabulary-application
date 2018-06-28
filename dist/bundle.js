@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "dbc26208075f7361ba34"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7dbfa594b0b95429e2db"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -999,16 +999,21 @@ exports.updatedWords = user => ({
     type: 'UPDATED_WORD',
     user
 });
-exports.updateTopics = user => ({
+exports.updatedTopics = user => ({
     type: 'NEW_TOPIC',
+    user
+});
+exports.deleteTopic = user => ({
+    type: 'DELETE_TOPIC',
     user
 });
 exports.startAddWord = word => dispatch => api_1.default.lexica.addWord(word).then(data => dispatch(exports.addedWords(data)));
 exports.startEditWord = word => dispatch => api_1.default.lexica.updateWord(word).then(data => dispatch(exports.updatedWords(data)));
 exports.startDeleteWord = word => dispatch => api_1.default.lexica.deleteWord(word).then(data => dispatch(exports.updatedWords(data)));
-exports.startAddTopic = topic => dispatch => api_1.default.lexica.addTopic(topic).then(data => dispatch(exports.updateTopics(data)));
-exports.startEditTopic = topic => dispatch => api_1.default.lexica.updateTopic(topic).then(data => dispatch(exports.updateTopics(data)));
-exports.startDeleteTopic = topic => dispatch => api_1.default.lexica.deleteTopic(topic).then(data => dispatch(exports.updateTopics(data)));
+exports.startAddImageToWord = image => dispatch => api_1.default.lexica.addImage(image).then(data => dispatch(exports.updatedTopics(data)));
+exports.startAddTopic = topic => dispatch => api_1.default.lexica.addTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
+exports.startEditTopic = topic => dispatch => api_1.default.lexica.updateTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
+exports.startDeleteTopic = topic => dispatch => api_1.default.lexica.deleteTopic(topic).then(data => dispatch(exports.deleteTopic(data)));
 exports.search = results => ({
     type: 'SEARCH',
     results
@@ -1077,10 +1082,11 @@ const loginUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/lo
 const persistUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/persist-user';
 const addWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word';
 const updateWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word';
+const addWordImageUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/store-image';
 const deleteWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word';
 const addTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic';
 const updateTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-topic';
-const deleteTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word';
+const deleteTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-topic';
 // TODO: require token passed in header
 exports.default = {
     user: {
@@ -1093,6 +1099,7 @@ exports.default = {
         addWord: wordObject => axios_1.default.post(addWordUrl, { wordObject }).then(res => res.data),
         updateWord: word => axios_1.default.post(updateWordUrl, { word }).then(res => res.data),
         deleteWord: word => axios_1.default.post(deleteWordUrl, { word }).then(res => res.data),
+        addImage: image => axios_1.default.post(addWordImageUrl, { image }).then(res => res.data),
         addTopic: topic => axios_1.default.post(addTopicUrl, { topic }).then(res => res.data),
         updateTopic: topic => axios_1.default.post(updateTopicUrl, { topic }).then(res => res.data),
         deleteTopic: topic => axios_1.default.post(deleteTopicUrl, { topic }).then(res => res.data)
@@ -1122,6 +1129,7 @@ exports.default = {
     reactHotLoader.register(persistUrl, "persistUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     reactHotLoader.register(addWordUrl, "addWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     reactHotLoader.register(updateWordUrl, "updateWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     reactHotLoader.register(addTopicUrl, "addTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
@@ -2770,7 +2778,12 @@ class Textbar extends react_1.Component {
                 [name]: value
             });
         };
-        this.handleToggle = () => this.setState({ editing: !this.state.editing });
+        this.handleAddTopic = () => {
+            this.setState({ editing: true });
+        };
+        this.handleBlur = e => {
+            this.setState({ editing: false });
+        };
         this.handleSubmit = e => {
             e.preventDefault();
             const { topicName: topic } = this.state;
@@ -2780,7 +2793,13 @@ class Textbar extends react_1.Component {
             startAddTopic(nextTopic);
         };
         // @ts-ignore
-        this.componentDidMount = () => window.addEventListener('keydown', this.listenKeyboard);
+        this.componentDidMount = () => {
+            window.addEventListener('keydown', this.listenKeyboard);
+            // 3. example typescript ref
+            // this.inputEl !== undefined && this.inputEl.focus()
+        };
+        // 1. example typescript ref
+        // inputEl!: any  
         // @ts-ignore
         this.render = () => {
             const { words, topics, tags, match, position } = this.props;
@@ -2794,14 +2813,14 @@ class Textbar extends react_1.Component {
             // {topics !== undefined &&
             topics.map((topic, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${topic.uid}`,
                 // href={`#${topic.uid}`}
-                key: topic.uid, smooth: "true", scroll: el => el.scrollIntoView({
+                key: topic.uid, className: "topic-group-in-textbar", smooth: "true", scroll: el => el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
-                }) }, react_1.default.createElement("p", { className: position === topic.uid ? 'active' : '' }, topic.topic), words.filter(word => {
+                }) }, react_1.default.createElement("p", { className: position === topic.uid ? 'active topic-name' : 'topic-name' }, topic.topic), react_1.default.createElement("p", { className: "topic-count" }, words.filter(word => {
                 if (word.topic === topic.uid) return word;
-            }).length, "\u00A0words")
+            }).length, "\u00A0words"))
             // </ScrollSpy>
-            ), ")}", !editing && react_1.default.createElement("p", { onClick: this.handleToggle }, "+ Add topic"), editing && react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.handleChange, onBlur: this.handleToggle }, react_1.default.createElement("input", { type: "text", name: "topicName", value: topicName })))), match.path === '/glossary' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Glossary"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " words")), match.path === '/tags' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Tags"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " tags"), tags !== undefined && tags.map((tag, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${tag}`, key: tag, smooth: "true", scroll: el => el.scrollIntoView({
+            ), !editing && react_1.default.createElement("p", { onClick: this.handleAddTopic, className: "add-topic-button" }, "+ Add topic"), editing && react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.handleChange }, react_1.default.createElement("input", { type: "text", name: "topicName", value: topicName, className: "enter-topic-name", placeholder: "Enter topic", onBlur: this.handleBlur, autoFocus: true })))), match.path === '/glossary' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Glossary"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " words")), match.path === '/tags' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Tags"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " tags"), tags !== undefined && tags.map((tag, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${tag}`, key: tag, smooth: "true", scroll: el => el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 }) }, react_1.default.createElement("p", null, `${tag} (${words.filter(word => {
@@ -2915,6 +2934,7 @@ class TopicsList extends react_1.Component {
         super(...arguments);
         this.state = {
             topics: [],
+            dragging: false,
             editing: null
         };
         this.setToEditing = e => {
@@ -2923,7 +2943,8 @@ class TopicsList extends react_1.Component {
             this.setState({ editing: e.target.id });
         };
         this.handleScroll = e => {
-            // console.log('scroll y', this.list.scrollTop)
+            // this.getBoundingClientRect().top
+            // console.log('scroll', this.stepInput.current)
             // const el = e.target
             // console.log(el)
             // const minPixel = el.offsetTop
@@ -2936,8 +2957,8 @@ class TopicsList extends react_1.Component {
         // @ts-ignore
         this.componentDidMount = () => {
             this.props.topics !== undefined && this.setState({ topics: this.props.topics });
-            this.props.topics !== undefined && console.log('refs', this.refs);
             window.addEventListener('scroll', this.handleScroll, true);
+            this.setState(this.state);
         };
         // @ts-ignore
         this.componentWillUnmount = () => window.removeEventListener('scroll', this.handleScroll);
@@ -2946,6 +2967,10 @@ class TopicsList extends react_1.Component {
             const uid = currentTarget.id;
             console.log('uid: ', uid);
             // startUpdateTextbar(uid)
+        };
+        this.handleDrag = e => {
+            console.log('dragging...');
+            this.setState({ dragging: true });
         };
         this.handleChange = ({ target }) => {
             const uid = target.id;
@@ -2974,14 +2999,14 @@ class TopicsList extends react_1.Component {
         // @ts-ignore
         this.render = () => {
             const { words, topics } = this.props;
-            const { editing } = this.state;
-            return react_1.default.createElement("div", { className: "topics-list" }, topics === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), topics !== undefined && topics.length === 0 && react_1.default.createElement("p", null, "You have not created any topics yet."), topics !== undefined && topics.map((topic, i) => react_1.default.createElement("div", { key: topic.uid, id: topic.uid, className: "topic-section", onMouseEnter: this.handleTextbar }, editing !== topic.uid && react_1.default.createElement("div", { className: "topic-header", id: topic.uid }, react_1.default.createElement("h2", { id: topic.uid, onDoubleClick: this.setToEditing }, topic.topic), react_1.default.createElement("div", { className: "trash-container", id: topic.uid, "data-owner": topic.owner, onClick: this.handleDelete }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "trash-alt", className: "trash" }))), editing === topic.uid && react_1.default.createElement(react_input_autosize_1.default
+            const { editing, dragging } = this.state;
+            return react_1.default.createElement("div", { className: "topics-list" }, topics === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), topics !== undefined && topics.length === 0 && react_1.default.createElement("p", null, "You have not created any topics yet."), topics !== undefined && topics.map((topic, i) => react_1.default.createElement("div", { key: topic.uid, id: topic.uid, className: "topic-section", onMouseEnter: this.handleTextbar, ref: div => this[`topic${topic.uid}`] = div }, editing !== topic.uid && react_1.default.createElement("div", { className: "topic-header", id: topic.uid }, react_1.default.createElement("h2", { id: topic.uid, className: "topic-name-in-main-list", onDoubleClick: this.setToEditing }, topic.topic), react_1.default.createElement("div", { className: "trash-container", id: topic.uid, "data-owner": topic.owner, onClick: this.handleDelete }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "trash-alt", className: "trash" }))), editing === topic.uid && react_1.default.createElement(react_input_autosize_1.default
             // className="edit-definition"
             , {
                 // className="edit-definition"
-                id: topic.uid, value: this.state.topics.filter(compare => compare.uid === topic.uid).map(topic => topic.topic), onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), !words.some(word => word.topic === topic.uid) && react_1.default.createElement("p", null, "No words yet."), words.map(word => {
-                if (word.topic === topic.uid) return react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word });
-            }), words.some(word => word.topic === 0) && react_1.default.createElement("div", { className: "topic-header" }, react_1.default.createElement("h2", { id: '0' }, "Uncategorized")), words.filter(word => word.topic === 0 && react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word })))));
+                id: topic.uid, value: this.state.topics.filter(compare => compare.uid === topic.uid).map(topic => topic.topic), onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), !words.some(word => word.topic === topic.uid) && react_1.default.createElement("p", { className: "word-empty" }, "No words yet."), words.map(word => {
+                if (word.topic === topic.uid) return react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word, draggable: "true", onDragStart: e => this.handleDrag(e), className: dragging ? 'drag' : '' });
+            }))), react_1.default.createElement("div", { id: "0", className: "topic-section", onMouseEnter: this.handleTextbar }, words !== undefined && words.some(word => word.topic === 0) && react_1.default.createElement("div", { className: "topic-header" }, react_1.default.createElement("h2", { id: "0", className: "topic-name-in-main-list" }, "Uncategorized")), words !== undefined && words.map(word => word.topic === 0 && react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word }))));
         };
     }
 
@@ -3051,7 +3076,7 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 exports.TopicsListWord = props => {
     const { word } = props;
-    return react_1.default.createElement("div", { key: word.uid, className: "topic-list-word" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("h3", null, word.word), react_1.default.createElement("p", null, word.definition)));
+    return react_1.default.createElement("div", { key: word.uid, className: "word-group-in-main-list" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("h3", { className: "word-name" }, word.word), react_1.default.createElement("p", { className: "word-definition" }, word.definition)));
 };
 exports.default = exports.TopicsListWord;
 ;
@@ -3132,6 +3157,8 @@ const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client
 const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
 const react_input_autosize_1 = __importDefault(__webpack_require__(/*! react-input-autosize */ "./node_modules/react-input-autosize/lib/AutosizeInput.js"));
 const reactstrap_1 = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/dist/reactstrap.es.js");
+const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+const react_dropzone_1 = __importDefault(__webpack_require__(/*! react-dropzone */ "./node_modules/react-dropzone/dist/es/index.js"));
 const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
 class WordPage extends react_1.Component {
@@ -3155,6 +3182,34 @@ class WordPage extends react_1.Component {
             type === 'word' && this.setState({ word: e.target.value });
             type === 'definition' && this.setState({ definition: e.target.value });
         };
+        this.handleDrop = files => __awaiter(this, void 0, void 0, function* () {
+            const { username, chosen, startAddImageToWord } = this.props;
+            const wordOwner = chosen.uid;
+            // get dropped file
+            const file = files[0];
+            // build url to s3 bucket
+            const url = `http://vocab-app-pics.s3.amazonaws.com/${username}/${wordOwner}/${file.name}`;
+            const dynamoData = { username, wordOwner, url };
+            // upload file to s3 bucket
+            try {
+                const s3upload = yield axios_1.default.put(url, file);
+            } catch (e) {
+                console.log('error uploading to s3 bucket', e);
+            }
+            // send to dynamoDb
+            startAddImageToWord(dynamoData);
+            // try {
+            //   const dynamoUpload = await axios
+            //     .post(
+            //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+            //       dynamoData
+            //     )
+            //     .then(res => res.data)
+            //     .then(user => startAddImageToWord(user))
+            // } catch (e) {
+            //   console.log('error uploading to lambda', e)
+            // }
+        });
         this.handleDelete = () => __awaiter(this, void 0, void 0, function* () {
             const { chosen, username, startDeleteWord } = this.props;
             const word = {
@@ -3165,7 +3220,6 @@ class WordPage extends react_1.Component {
             console.log('deleting word: ', word);
             yield startDeleteWord(word);
             this.props.history.push('/dashboard');
-            // updateWord, createWord, Login, persistUser
         });
         this.handleSubmit = e => __awaiter(this, void 0, void 0, function* () {
             if (e.charCode === 13 || e.key.toLowerCase() === 'enter') {
@@ -3193,7 +3247,7 @@ class WordPage extends react_1.Component {
             const checkTags = chosen !== undefined && chosen.tags !== undefined;
             return react_1.default.createElement("div", { className: "word-page" }, react_1.default.createElement(Textbar_1.default, null), word === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), word !== undefined && react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "header" }, !editingWord && react_1.default.createElement("div", null, react_1.default.createElement("h1", { className: "title", "data-type": "word", onDoubleClick: this.toggleEdit }, checkChosen && chosen.word), react_1.default.createElement("div", { className: "ellipsis-container" }, react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root options" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "ellipsis-h", className: "ellipsis" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { left: "true", className: "dropdown-menu", style: {
                     display: this.state.dropdownOpen === false ? 'none' : 'block'
-                } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item menu-delete", onClick: this.handleDelete }, "Delete"))))), editingWord && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-word", "data-type": "word", value: word, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })), react_1.default.createElement("div", { className: "tag-section" }, checkTags && chosen.tags.join(' '), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "add-tag" })), !editingDefinition && react_1.default.createElement("p", { "data-type": "definition", onDoubleClick: this.toggleEdit }, checkDefinition && chosen.definition), editingDefinition && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-definition", "data-type": "definition", value: definition, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })));
+                } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item menu-delete", onClick: this.handleDelete }, "Delete"))))), editingWord && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-word", "data-type": "word", value: word, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })), react_1.default.createElement("div", { className: "tag-section" }, checkTags && chosen.tags.join(' '), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "add-tag" })), !editingDefinition && react_1.default.createElement("p", { "data-type": "definition", onDoubleClick: this.toggleEdit }, checkDefinition && chosen.definition), editingDefinition && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-definition", "data-type": "definition", value: definition, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), react_1.default.createElement(react_dropzone_1.default, { onDrop: this.handleDrop }, react_1.default.createElement("p", null, "drop files here:"))));
         };
     }
 
@@ -3209,7 +3263,7 @@ const mapStateToProps = (state, props) => ({
     chosen: state.lexica.words !== undefined && state.lexica.words.find(word => word.uid === props.match.params.uid),
     username: state.auth.username
 });
-exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_1.startEditWord, startDeleteWord: words_1.startDeleteWord })(WordPage);
+exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_1.startEditWord, startDeleteWord: words_1.startDeleteWord, startAddImageToWord: words_1.startAddImageToWord })(WordPage);
 ;
 
 (function () {
@@ -3228,6 +3282,8 @@ exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_
     reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     reactHotLoader.register(WordPage, "WordPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     leaveModule(module);
@@ -3593,8 +3649,9 @@ exports.lexiconReducer = (state = {}, action = {}) => {
         case 'UPDATED_WORD':
             return Object.assign({}, state, { words: action.user.words });
         case 'NEW_TOPIC':
-            console.log('action data', action);
             return Object.assign({}, state, { topics: action.user.topics });
+        case 'DELETE_TOPIC':
+            return Object.assign({}, state, { words: action.user.words, topics: action.user.topics });
         case 'SEARCH':
             return Object.assign({}, state, { results: action.search });
         default:
@@ -3940,7 +3997,7 @@ const WordPage_1 = __importDefault(__webpack_require__(/*! ../components/WordPag
 const NotFoundPage_1 = __importDefault(__webpack_require__(/*! ../components/NotFoundPage */ "./client/app/components/NotFoundPage.tsx"));
 const ProfilePage_1 = __importDefault(__webpack_require__(/*! ../components/ProfilePage */ "./client/app/components/ProfilePage.tsx"));
 exports.history = createBrowserHistory_1.default();
-const mql = window.matchMedia(`(min-width: 800px)`);
+const mql = window.matchMedia(`(min-width: 100px)`);
 // sidebar content
 const sidebar = react_1.default.createElement(SidebarContent_1.default, null);
 // const publicRoutes = (
@@ -4136,7 +4193,7 @@ exports.configureStore = () => {
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145073517
+      // 1530197466556
       var cssReload = __webpack_require__(/*! ../../../node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -23202,7 +23259,7 @@ module.exports.InvalidTokenError = InvalidTokenError;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145073104
+      // 1530197464798
       var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55047,7 +55104,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072289
+      // 1530197463863
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55065,7 +55122,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072307
+      // 1530197463874
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55083,7 +55140,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072312
+      // 1530197463885
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55101,7 +55158,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072317
+      // 1530197463891
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55119,7 +55176,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072324
+      // 1530197463895
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55137,7 +55194,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072301
+      // 1530197463869
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55155,7 +55212,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072330
+      // 1530197463902
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55173,7 +55230,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072296
+      // 1530197463933
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55191,7 +55248,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072341
+      // 1530197463907
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55209,7 +55266,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072336
+      // 1530197463911
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55227,7 +55284,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072351
+      // 1530197463916
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55245,7 +55302,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072363
+      // 1530197463924
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55263,7 +55320,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072356
+      // 1530197463928
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55281,7 +55338,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530145072368
+      // 1530197463938
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
