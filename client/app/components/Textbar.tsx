@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { HashLink as Link } from 'react-router-hash-link'
+// import ScrollSpy from 'react-scrollspy'
 
 import { generateUuid } from '../helpers/helpers'
 import { startAddTopic } from '../actions/words'
@@ -13,6 +14,7 @@ interface IProps {
   username: string
   startAddTopic: (any) => any
   dataIsHere: boolean
+  position: string
   match?: any
 }
 
@@ -31,6 +33,11 @@ export class Textbar extends Component<IProps, IState> {
     editing: false
   }
 
+  listenKeyboard = e => {
+    if (e.keyCode === 27 || e.key === 'Escape')
+      this.setState({ editing: false })
+  }
+
   handleChange = e => {
     let { name, value }: { name: keyof IState; value: string } = e.target
     this.setState({
@@ -42,16 +49,20 @@ export class Textbar extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { topicName: name } = this.state
+    const { topicName: topic } = this.state
     const { username: owner, startAddTopic } = this.props
     const uid = generateUuid()
-    const nextTopic = { uid, owner, name }
+    const nextTopic = { uid, owner, topic }
     startAddTopic(nextTopic)
   }
 
   // @ts-ignore
+  componentDidMount = () =>
+    window.addEventListener('keydown', this.listenKeyboard)
+
+  // @ts-ignore
   render = () => {
-    const { words, topics, tags, match } = this.props
+    const { words, topics, tags, match, position } = this.props
     const { editing, topicName } = this.state
     return (
       <div className="textbar-container">
@@ -63,9 +74,16 @@ export class Textbar extends Component<IProps, IState> {
             </p>
             <div className="list">
               {topics !== undefined &&
+                // <ScrollSpy
+                //   items={[...topics.map(topic => topic.uid)]}
+                //   currentClassName="active"
+                //   // componentTag="div"
+                // >
+                // {topics !== undefined &&
                 topics.map((topic, i) => (
                   <Link
                     to={`#${topic.uid}`}
+                    // href={`#${topic.uid}`}
                     key={topic.uid}
                     smooth="true"
                     scroll={el =>
@@ -75,17 +93,20 @@ export class Textbar extends Component<IProps, IState> {
                       })
                     }
                   >
-                    <p>{topic.topic}</p>
+                    <p className={position === topic.uid ? 'active' : ''}>
+                      {topic.topic}
+                    </p>
                     {
                       words.filter(word => {
                         if (word.topic === topic.uid) return word
                       }).length
                     }&nbsp;words
                   </Link>
+                  // </ScrollSpy>
                 ))}
-              {!editing ? (
-                <p onClick={this.handleToggle}>+ Add topic</p>
-              ) : (
+              )}
+              {!editing && <p onClick={this.handleToggle}>+ Add topic</p>}
+              {editing && (
                 <form
                   onSubmit={this.handleSubmit}
                   onChange={this.handleChange}
@@ -152,7 +173,8 @@ const mapStateToProps = state => ({
   topics: state.lexica.topics,
   tags: state.lexica.tags,
   username: state.auth.username,
-  dataIsHere: state.app.dataIsHere
+  dataIsHere: state.app.dataIsHere,
+  position: state.app.position
 })
 
 export default withRouter<any>(

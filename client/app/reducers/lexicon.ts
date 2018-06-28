@@ -39,6 +39,7 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
       }
 
     case 'NEW_TOPIC':
+      console.log('action data', action)
       return {
         ...state,
         topics: action.user.topics

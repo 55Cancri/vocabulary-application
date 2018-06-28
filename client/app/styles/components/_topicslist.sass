@@ -12,5 +12,24 @@
       margin: 50px 0
       height: max-content
 
+  .topic-section
+    .topic-header
+      display: grid
+      grid-template-columns: repeat(2, max-content)
+      grid-column-gap: 10px
+      align-items: center
+      transition: .5s all
+
+      &:hover .trash
+        opacity: 1
+      
+      .trash
+        color: lightgrey
+        opacity: 0
+
+        &:hover
+          cursor: pointer
+          color: $deny-red
+
       // &:last-of-type
       //   margin-bottom: 0

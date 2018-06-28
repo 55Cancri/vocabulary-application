@@ -44,6 +44,9 @@ const addTopicUrl =
 const updateTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-topic'
 
+const deleteTopicUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word'
+
 // TODO: require token passed in header
 export default {
   user: {
@@ -74,7 +77,10 @@ export default {
     addTopic: topic => axios.post(addTopicUrl, { topic }).then(res => res.data),
 
     updateTopic: topic =>
-      axios.post(updateTopicUrl, { topic }).then(res => res.data)
+      axios.post(updateTopicUrl, { topic }).then(res => res.data),
+
+    deleteTopic: topic =>
+      axios.post(deleteTopicUrl, { topic }).then(res => res.data)
   }
   // header: {
   //   getEverything: username => {
