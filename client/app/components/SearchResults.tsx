@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom'
 interface IState {
     words: any,
     topics: any,
-    tags: any
+    tags: any,
+    activeTag: any
     // results: any
 }
 
@@ -38,7 +39,7 @@ export class SearchResults extends Component<IProps, IState> {
     
     state = {
         searchTerm: '',
-        // resultPool: this.state.words,
+        activeTag: '',
         words: this.props.words,
         topics: this.props.topics,
         tags: this.props.tags,
@@ -77,7 +78,9 @@ export class SearchResults extends Component<IProps, IState> {
         console.log('Stepped into keyFilter')
         let keyword = term.substring(0, term.indexOf(':'))
         let words = this.props.words
-        let termItems = term.substring((term.indexOf(':')+2),term.length).split(' ')
+        let tags = this.props.tags
+        let termContents = term.substring((term.indexOf(':')+2),term.length)
+        let termItems = termContents.split(',')
         let allResults = []
         let finalResults = []
         // console.log(keyword)
@@ -109,6 +112,21 @@ export class SearchResults extends Component<IProps, IState> {
                 //             results.splice(j--, 1);
                 //     }
                 // }
+            case 'tagSearch':
+                
+                    // console.log(words[0].tags)
+                    // console.log(words.filter(word => word.tags.includes(t)))
+                return tags.filter(tags.toLowerCase.includes(termContents.toLowerCase))
+                
+                // console.log(allResults)
+                // for (let i = 0; i < allResults.length; i++) {
+                //     for (let j of allResults[i]) {
+                //         if (!finalResults.includes(j)) {
+                //             finalResults.push(j)
+                //         }
+                //     }
+                // }
+                // return finalResults
             case 'topic':
                 // More logic
                 return words
@@ -148,7 +166,14 @@ export class SearchResults extends Component<IProps, IState> {
                                 </Link>
                                 {/* <TopicsListWord key={word.uid} word={word} /> */}
                             </div>
-                        ) :
+                        )
+                        // ||
+                        // this.props.term.includes('tagSearch:') && this.props.tags.filter(tag => this.props.term.substring(11, this.props.term.length).toLowerCase().includes(tag.toLowerCase) || !this.props.term.substring(11, this.props.term.length)).map( tag =>
+                        //     <div key={tag} >
+                        //         <p>{tag}</p>
+                        //     </div>
+                        // ) 
+                        :
                         this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word =>
                         <div key={word.uid} >
                             <Link to={`/word/${word.uid}`}>
@@ -156,7 +181,7 @@ export class SearchResults extends Component<IProps, IState> {
                             </Link>
                             {/* <TopicsListWord key={word.uid} word={word} /> */}
                         </div>
-                    )}
+                    ).slice(0,7)}
                 </div>
                 
             </section>
@@ -168,7 +193,8 @@ const mapStateToProps = (state): IState => {
     return {
       words: state.lexica.words,
       topics: state.lexica.topics,
-      tags: state.lexica.tags
+      tags: state.lexica.tags,
+      activeTag: state.lexica.activeTag
     //   results: state.lexica.results
     }
   }
