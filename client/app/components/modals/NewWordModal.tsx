@@ -56,14 +56,14 @@ export class NewWordModal extends Component<IProps, IState> {
     e.preventDefault()
     const { word, definition, topic, tags: stateTags } = this.state
     const { username: owner, startAddWord } = this.props
-    const defaultUid = this.props.topics.find(topic => topic.topic === 'uncategorized').uid
+    // const defaultUid = this.props.topics.find(topic => topic.topic === 'uncategorized').uid
     const activeTopic = this.props.topics.find(topicItem => topicItem.topic === topic)
     
     // split tags by: [comma] / space
     const tags = stateTags.split(',')
     const uid = generateUuid()
     let topicUid
-    activeTopic ? topicUid = activeTopic.uid : topicUid = defaultUid
+    activeTopic ? topicUid = activeTopic.uid : topicUid = 0
     const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
     
     startAddWord(nextWord).then(() => this.onClose())
