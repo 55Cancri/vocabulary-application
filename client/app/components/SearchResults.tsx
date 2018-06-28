@@ -80,7 +80,7 @@ export class SearchResults extends Component<IProps, IState> {
         let words = this.props.words
         let tags = this.props.tags
         let termContents = term.substring((term.indexOf(':')+2),term.length)
-        let termItems = termContents.split(' ')
+        let termItems = termContents.split(',')
         let allResults = []
         let finalResults = []
         // console.log(keyword)
