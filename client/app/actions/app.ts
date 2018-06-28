@@ -1,6 +1,14 @@
 import React from 'react'
 import api from '../api'
 
+export const updateTextbar = uid => ({
+  type: 'TEXTBAR',
+  uid
+})
+
+export const startUpdateTextbar = uid => dispatch =>
+  dispatch(updateTextbar(uid))
+
 export const deleteAccount = user => ({
   type: 'DELETE',
   user

@@ -31,6 +31,9 @@ export const startAddTopic = topic => dispatch =>
 export const startEditTopic = topic => dispatch =>
   api.lexica.updateTopic(topic).then(data => dispatch(updateTopics(data)))
 
+export const startDeleteTopic = topic => dispatch =>
+  api.lexica.deleteTopic(topic).then(data => dispatch(updateTopics(data)))
+
 export const search = results => ({
   type: 'SEARCH',
   results
