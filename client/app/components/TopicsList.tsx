@@ -65,8 +65,8 @@ export class TopicsList extends Component<IProps> {
   handleTextbar = ({ currentTarget }) => {
     const { startUpdateTextbar } = this.props
     const uid = currentTarget.id
-    console.log('uid: ', uid)
-    // startUpdateTextbar(uid)
+    // console.log('uid: ', uid)
+    startUpdateTextbar(uid)
   }
 
   handleDrag = e => {

@@ -69,7 +69,7 @@ export class Textbar extends Component<IProps, IState> {
     // this.inputEl !== undefined && this.inputEl.focus()
   }
   // 1. example typescript ref
-  // inputEl!: any  
+  // inputEl!: any
 
   // @ts-ignore
   render = () => {
