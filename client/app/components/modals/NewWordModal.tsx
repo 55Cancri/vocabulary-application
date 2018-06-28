@@ -54,18 +54,18 @@ export class NewWordModal extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { word, definition, topic, tags: stateTags } = this.state
+    const { word, definition, topic : stateTopic, tags: stateTags } = this.state
     const { username: owner, startAddWord } = this.props
     // const defaultUid = this.props.topics.find(topic => topic.topic === 'uncategorized').uid
-    const activeTopic = this.props.topics.find(topicItem => topicItem.topic === topic)
+    // const activeTopic = this.props.topics.find(topicItem => topicItem.topic === topic)
     
     // split tags by: [comma] / space
     const tags = stateTags.split(',')
     const uid = generateUuid()
-    let topicUid
-    activeTopic ? topicUid = activeTopic.uid : topicUid = 0
-    const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
-    
+    const topic = stateTopic.length === 0 ? 0 : stateTopic
+    // activeTopic ? topicUid = activeTopic.uid : topicUid = '0'
+    const nextWord = { uid, word, definition, tags, topic, owner }
+    console.log(nextWord)
     startAddWord(nextWord).then(() => this.onClose())
   }
 
@@ -92,10 +92,10 @@ export class NewWordModal extends Component<IProps, IState> {
           <div className="input-group">
             <label htmlFor="topic">Select Topic</label>
             <select name="topic-list" onChange={this.selectTopic} >
-              <option></option>
+              <option value={this.state.topic} ></option>
               {
                 topics.map(topicItem =>
-                  topicItem.topic !== 'uncategorized' && <option key={topicItem.uid} value={topicItem.topic} >{topicItem.topic}</option>
+                  topicItem.topic !== 'uncategorized' && <option key={topicItem.uid} value={topicItem.uid} >{topicItem.topic}</option>
                 )
               }
             </select>
