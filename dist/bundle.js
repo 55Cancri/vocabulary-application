@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "800787c49fc91579064f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7dbfa594b0b95429e2db"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -812,24 +812,15 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = __importDefault(__webpack_require__(/*! ../api */ "./client/app/api.ts"));
-exports.submitReimbursement = data => ({
-    type: 'SUBMIT',
-    data
+exports.updateTextbar = uid => ({
+    type: 'TEXTBAR',
+    uid
 });
-exports.startSubmitReimbursement = data => dispatch => api_1.default.user.submitReimbursement(data).then(user => dispatch(exports.submitReimbursement(user)));
-exports.updateReimbursements = updateReimbursements => ({
-    pendingTickets: updateReimbursements,
-    type: 'VERDICTS'
-});
-exports.startVerdicts = verdict => dispatch => api_1.default.user.issueVerdicts(verdict).then(withNewReimbursements => {
-    console.log('now about to dispatch...', withNewReimbursements);
-    return dispatch(exports.updateReimbursements(withNewReimbursements));
-});
+exports.startUpdateTextbar = uid => dispatch => dispatch(exports.updateTextbar(uid));
 exports.deleteAccount = user => ({
     type: 'DELETE',
     user
 });
-exports.startDeleteAccount = data => dispatch => api_1.default.user.deleteAccount(data).then(user => dispatch(exports.deleteAccount(user)));
 exports.nuke = user => ({
     type: 'NUKE',
     user
@@ -848,8 +839,8 @@ exports.startNuke = email => dispatch => api_1.default.user.nuke(email).then(use
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/actions/app.ts");
-    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/actions/app.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
     leaveModule(module);
 })();
 
@@ -868,49 +859,21 @@ exports.startNuke = email => dispatch => api_1.default.user.nuke(email).then(use
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _this = this;
-
 (function () {
     var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
 
     enterModule && enterModule(module);
 })();
 
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) {
-            try {
-                step(generator.next(value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-        function rejected(value) {
-            try {
-                step(generator["throw"](value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-        function step(result) {
-            result.done ? resolve(result.value) : new P(function (resolve) {
-                resolve(result.value);
-            }).then(fulfilled, rejected);
-        }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = __importDefault(__webpack_require__(/*! ../api */ "./client/app/api.ts"));
-exports.login = user => {
-    return {
-        type: 'LOGIN',
-        user
-    };
-};
+exports.login = user => ({
+    type: 'LOGIN',
+    user
+});
 exports.persist = identity => ({
     type: 'PERSIST',
     identity
@@ -918,46 +881,142 @@ exports.persist = identity => ({
 exports.startPersist = identity => {
     return dispatch => {
         dispatch(exports.persist(identity));
-        return api_1.default.user.persistUser(identity).then(user => {
+        return api_1.default.user.persistUser(identity).then(data => {
+            const user = Object.assign({}, data, { token: identity.token });
             return dispatch(exports.login(user));
         });
     };
 };
-exports.startLogin = credentials => dispatch => api_1.default.user.login(credentials).then(user => {
-    localStorage.ers = user.token;
-    dispatch({
-        type: 'LOGIN',
-        user
-    });
-});
-exports.startSignup = dossier => dispatch => api_1.default.user.signup(dossier).then(user => {
-    console.log('back from lambda!');
-    localStorage.ers = user.token;
+exports.startLogin = credentials => dispatch => api_1.default.user.login(credentials).then(userData => {
+    // appends token to data from server
+    const user = Object.assign({}, userData, { token: credentials.token });
+    localStorage.uid = userData.uid;
+    localStorage.wa = credentials.token;
     dispatch(exports.login(user));
 });
+exports.startSignup = dossier => dispatch => api_1.default.user.signup(dossier).then(data => {
+    // appends token to data from server
+    const user = Object.assign({}, data, { token: dossier.token });
+    localStorage.uid = data.uid;
+    localStorage.wa = dossier.token;
+    dispatch(exports.login(user));
+});
+exports.updateUser = user => ({
+    type: 'UPDATE_USER',
+    user
+});
+exports.startUpdateUser = user => dispatch => dispatch(exports.updateUser(user));
 exports.logout = () => ({
     type: 'LOGOUT'
 });
 exports.startLogout = () => dispatch => {
-    localStorage.removeItem('ers');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('wa');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.LastAuthUser');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.accessToken');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.clockDrift');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.deviceGroupKey');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.deviceKey');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.idToken');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.randomPasswordKey');
+    localStorage.removeItem('CognitoIdentityServiceProvider.5lmmpid5kd4v4vibmvifhcm3re.malin1.refreshToken');
     dispatch(exports.logout());
 };
-exports.updateGeneral = data => ({
-    type: 'GENERAL',
-    data
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/actions/modal.ts":
+/*!*************************************!*\
+  !*** ./client/app/actions/modal.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.loadModal = modalType => ({
+    type: 'SHOW_MODAL',
+    modalType
 });
-exports.startUpdateGeneral = data => dispatch => __awaiter(_this, void 0, void 0, function* () {
-    api_1.default.user.updateGeneral(data).then(user => dispatch(exports.updateGeneral(user)));
-    // const user = await api.user.updateGeneral(data)
-    // dispatch(user)
+// export const addWord = word => dispatch =>
+//   api.modal.addWord(word).then(
+//     dispatch(hideModal())
+//   )
+//   .catch(err => console.log(err))
+// set modalType to null in redux store
+exports.hideModal = () => ({
+    type: 'HIDE_MODAL'
 });
-exports.updatePassword = data => ({
-    type: 'PASSWORD',
-    data
+
+/***/ }),
+
+/***/ "./client/app/actions/words.ts":
+/*!*************************************!*\
+  !*** ./client/app/actions/words.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const api_1 = __importDefault(__webpack_require__(/*! ../api */ "./client/app/api.ts"));
+exports.addedWords = user => ({
+    type: 'NEW_WORD',
+    user
 });
-exports.startUpdatePassword = data => dispatch => __awaiter(_this, void 0, void 0, function* () {
-    const user = yield api_1.default.user.updatePassword(data);
-    // dispatch(user)
+exports.updatedWords = user => ({
+    type: 'UPDATED_WORD',
+    user
+});
+exports.updatedTopics = user => ({
+    type: 'NEW_TOPIC',
+    user
+});
+exports.deleteTopic = user => ({
+    type: 'DELETE_TOPIC',
+    user
+});
+exports.startAddWord = word => dispatch => api_1.default.lexica.addWord(word).then(data => dispatch(exports.addedWords(data)));
+exports.startEditWord = word => dispatch => api_1.default.lexica.updateWord(word).then(data => dispatch(exports.updatedWords(data)));
+exports.startDeleteWord = word => dispatch => api_1.default.lexica.deleteWord(word).then(data => dispatch(exports.updatedWords(data)));
+exports.startAddImageToWord = image => dispatch => api_1.default.lexica.addImage(image).then(data => dispatch(exports.updatedTopics(data)));
+exports.startAddTopic = topic => dispatch => api_1.default.lexica.addTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
+exports.startEditTopic = topic => dispatch => api_1.default.lexica.updateTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
+exports.startDeleteTopic = topic => dispatch => api_1.default.lexica.deleteTopic(topic).then(data => dispatch(exports.deleteTopic(data)));
+exports.search = results => ({
+    type: 'SEARCH',
+    results
 });
 ;
 
@@ -970,9 +1029,8 @@ exports.startUpdatePassword = data => dispatch => __awaiter(_this, void 0, void 
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/actions/auth.ts");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/actions/auth.ts");
-    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/actions/auth.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
     leaveModule(module);
 })();
 
@@ -990,8 +1048,6 @@ exports.startUpdatePassword = data => dispatch => __awaiter(_this, void 0, void 
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
-// const aws = require('aws-sdk')
-// const docClient = new aws.DynamoDB.DocumentClient({ region: 'us-east-2' })
 
 (function () {
     var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
@@ -1003,58 +1059,57 @@ var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// exports.handler = async (event) => {
-//     const signup = async () => {
-//         const params = {
-//             TableName: 'wa-users',
-//             Item: {
-//                 username: 'igloo',
-//                 password: '123123'
-//             }
-//         }
-//         return await docClient.put(params).promise()
-//     }
-//     signup().then(() => ({
-//         statusCode: 200, 
-//         body: JSON.stringify({
-//             "result": "done"
-//         }), 
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Access-Control-Allow-Origin': "*"
-//         }   
-//     }))
-//     // return await docClient.put(params).promise()
-// };
 const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+// attaches token to every path that uses this object
+const authAxios = axios_1.default.create();
+authAxios.interceptors.request.use(config => {
+    config.headers.Authorization = localStorage.token;
+    return config;
+});
+// signup: dossier => axios.post(signupUrl, { dossier }, {
+//   headers: {
+//     Authorization: localStorage.ers
+//   }
+// }).then(res => res.data),
 exports.getToken = () => {
     console.log('getting token...');
     const token = localStorage.getItem('ers');
     //headers must be an object
     return { token };
 };
-const signupUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/auth';
+const signupUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/signup';
+const loginUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/login';
+const persistUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/persist-user';
+const addWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-word';
+const updateWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word';
+const addWordImageUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/store-image';
+const deleteWordUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word';
+const addTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/create-topic';
+const updateTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-topic';
+const deleteTopicUrl = 'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-topic';
+// TODO: require token passed in header
 exports.default = {
     user: {
         signup: dossier => axios_1.default.post(signupUrl, { dossier }).then(res => res.data),
-        login: credentials => axios_1.default.post('/login', { credentials }).then(res => res.data),
-        persistUser: identity => axios_1.default.post('/persist', { identity }, { headers: exports.getToken() }).then(res => res.data),
-        submitReimbursement: reimbursement => {
-            return axios_1.default.post('/submit', { reimbursement }, { headers: exports.getToken() }).then(res => res.data);
-        },
-        issueVerdicts: verdict => {
-            return axios_1.default.post('/verdicts', { verdict }, { headers: exports.getToken() }).then(res => res.data);
-        },
-        updateGeneral: file => axios_1.default.post('/api/general_settings', file, { headers: exports.getToken() }).then(res => res.data),
-        updatePassword: file => axios_1.default.post('/api/password_settings', file, { headers: exports.getToken() }).then(res => res.data),
-        updateTransfer: file => axios_1.default.post('/api/transfer_settings', file, { headers: exports.getToken() }).then(res => res.data),
-        deleteAccount: data => axios_1.default.post('/api/delete', data, { headers: exports.getToken() }).then(res => res.data),
-        updateAccounts: data => axios_1.default.post('/api/update', data, { headers: exports.getToken() }).then(res => res.data),
-        getUser: email => axios_1.default.post('/api/get_user', email, { headers: exports.getToken() }).then(res => res.data),
-        deleteImage: data => axios_1.default.post('/api/delete_image', data, { headers: exports.getToken() }).then(res => res.data),
+        login: credentials => axios_1.default.post(loginUrl, { credentials }).then(res => res.data),
+        persistUser: identity => axios_1.default.post(persistUrl, { identity }).then(res => res.data),
         nuke: email => axios_1.default.post('/api/nuke', email, { headers: exports.getToken() }).then(res => res.data)
-    }
-};
+    },
+    lexica: {
+        addWord: wordObject => axios_1.default.post(addWordUrl, { wordObject }).then(res => res.data),
+        updateWord: word => axios_1.default.post(updateWordUrl, { word }).then(res => res.data),
+        deleteWord: word => axios_1.default.post(deleteWordUrl, { word }).then(res => res.data),
+        addImage: image => axios_1.default.post(addWordImageUrl, { image }).then(res => res.data),
+        addTopic: topic => axios_1.default.post(addTopicUrl, { topic }).then(res => res.data),
+        updateTopic: topic => axios_1.default.post(updateTopicUrl, { topic }).then(res => res.data),
+        deleteTopic: topic => axios_1.default.post(deleteTopicUrl, { topic }).then(res => res.data)
+        // header: {
+        //   getEverything: username => {
+        //     console.log('API reached')
+        //     axios.get(getEverythingUrl).then(res => res.data)
+        //   }
+        // }
+    } };
 ;
 
 (function () {
@@ -1066,9 +1121,19 @@ exports.default = {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
-    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
-    reactHotLoader.register(signupUrl, "signupUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/api.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(authAxios, "authAxios", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(signupUrl, "signupUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(loginUrl, "loginUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(persistUrl, "persistUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addWordUrl, "addWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(updateWordUrl, "updateWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addTopicUrl, "addTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(deleteTopicUrl, "deleteTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     leaveModule(module);
 })();
 
@@ -1116,10 +1181,10 @@ react_dom_1.render(react_1.default.createElement(AppRouters_1.default, null), do
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/app.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/app.tsx");
-    reactHotLoader.register(AppRouters_1, "AppRouters_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/app.tsx");
-    reactHotLoader.register(fontawesome_1, "fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/app.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(AppRouters_1, "AppRouters_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(fontawesome_1, "fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
     leaveModule(module);
 })();
 
@@ -1144,12 +1209,54 @@ react_dom_1.render(react_1.default.createElement(AppRouters_1.default, null), do
     enterModule && enterModule(module);
 })();
 
-var __rest = this && this.__rest || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
-    return t;
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client/app/components/Textbar.tsx"));
+const TopicsList_1 = __importDefault(__webpack_require__(/*! ./TopicsList */ "./client/app/components/TopicsList.tsx"));
+exports.DashboardPage = props => react_1.default.createElement("div", { className: "dashboard-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement(TopicsList_1.default, null));
+exports.default = exports.DashboardPage;
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(TopicsList_1, "TopicsList_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/GlossaryPage.tsx":
+/*!************************************************!*\
+  !*** ./client/app/components/GlossaryPage.tsx ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
 var __importStar = this && this.__importStar || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -1163,90 +1270,31 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client/app/components/Textbar.tsx"));
 const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
-const react_fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js"));
-const ReimbursementList_1 = __importDefault(__webpack_require__(/*! ./dashboard/ReimbursementList */ "./client/app/components/dashboard/ReimbursementList.tsx"));
-const AdminReimbursementList_1 = __importDefault(__webpack_require__(/*! ./dashboard/AdminReimbursementList */ "./client/app/components/dashboard/AdminReimbursementList.tsx"));
-const app_1 = __webpack_require__(/*! ../actions/app */ "./client/app/actions/app.ts");
-class DashboardPage extends react_1.Component {
+class GlossaryPage extends react_1.Component {
     constructor() {
         super(...arguments);
-        this.state = {
-            // on data load, map to array of objects with clickState prop set to false
-            reimbursements: []
-        };
-        // convert any function to asynchronous and return a promise
-        // makeAsync = async func =>
-        //   new Promise(resolve => func(resolve).then(() => resolve()))
-        this.startReimbursement = () => this.props.history.push('/create');
-        // @ts-ignore
-        this.componentDidMount = () => {
-            const { dataIsHere, everyReimbursement } = this.props;
-            if (dataIsHere && everyReimbursement) {
-                const updatedArray = everyReimbursement.map((item, i) => {
-                    return Object.assign({}, item, { clicked: false });
-                });
-                this.setState({ reimbursements: updatedArray });
-            }
-        };
-        this.submitAdminDecision = ({ target }) => {
-            const { reimbursements } = this.state;
-            const { identity, startVerdicts } = this.props;
-            const approver = identity.name;
-            const verdict = target.dataset.verdict === 'deny' ? 'denied' : 'approved';
-            // add clicked reimbursements to array, then map out the clicked property
-            const selected = reimbursements.filter(item => item.clicked === true).map(item => {
-                let { clicked } = item,
-                    clean = __rest(item, ["clicked"]);
-                return clean;
-            });
-            console.log(approver, verdict, selected);
-            const verdicts = {
-                approver,
-                verdict,
-                selected
-            };
-            startVerdicts(verdicts);
-        };
-        this.updateClicks = ({ target }) => {
-            // time submitted
-            const time = target.nodeName === 'TD' ? target.parentNode.dataset.key : target.dataset.key;
-            const updatedArray = this.state.reimbursements.map(item => {
-                if (item.timeSubmitted !== time) return item;
-                return Object.assign({}, item, { clicked: !item.clicked });
-            });
-            this.setState({ reimbursements: updatedArray });
-        };
         // @ts-ignore
         this.render = () => {
-            const { identity, reimbursements, everyReimbursement, dataIsHere } = this.props;
-            return react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "page-header" }, react_1.default.createElement("div", { style: {
-                    display: 'flex',
-                    alignItems: 'center'
-                } }, react_1.default.createElement("h1", { className: "page-title" }, "Dashboard"), identity.role === 'admin' && react_1.default.createElement("img", { src: "https://png.icons8.com/color/160/crown.png", style: {
-                    display: 'inline',
-                    height: '50px',
-                    width: '50px',
-                    marginLeft: '20px'
-                } })), identity.role !== 'undefined' && identity.role === 'employee' && react_1.default.createElement("button", { onClick: this.startReimbursement, className: "button new" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "plus", className: "fa-plus" }), "New"), identity.role !== 'undefined' && identity.role === 'admin' && react_1.default.createElement("div", { className: "button-group" }, react_1.default.createElement("button", { className: "button approve", "data-verdict": "approve", onClick: this.submitAdminDecision }, "Approve"), react_1.default.createElement("button", { className: "button deny", "data-verdict": "deny", onClick: this.submitAdminDecision }, "Deny"))), identity.role !== 'undefined' && react_1.default.createElement("div", null, identity.role === 'employee' ? react_1.default.createElement("div", null, reimbursements !== undefined && react_1.default.createElement(ReimbursementList_1.default, { reimbursements: reimbursements }), reimbursements === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-spin-fade-loader", className: "spinner", fadeIn: "none", color: "darkgray" })) :
-            // admin dashboard
-            react_1.default.createElement("div", null, everyReimbursement !== undefined ? react_1.default.createElement(AdminReimbursementList_1.default, { updateClicks: this.updateClicks, submitAdminDecision: this.submitAdminDecision, everyReimbursement: everyReimbursement, state: this.state.reimbursements }) : react_1.default.createElement(react_spinkit_1.default, { name: "ball-spin-fade-loader", className: "spinner", fadeIn: "none", color: "darkgray" }))));
+            const { words } = this.props;
+            return react_1.default.createElement("div", { className: "glossary-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, words === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), words !== undefined && words.length === 0 && react_1.default.createElement("p", null, "You have not added any words yet."), words !== undefined && words.map(word => react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}`, key: word.uid }, react_1.default.createElement("h2", null, word.word), react_1.default.createElement("p", null, word.definition)))));
         };
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
 }
-exports.DashboardPage = DashboardPage;
+exports.GlossaryPage = GlossaryPage;
 const mapStateToProps = state => ({
-    identity: state.auth,
-    dataIsHere: state.mis.dataIsHere,
-    reimbursements: state.reimbursements.reimbursements,
-    everyReimbursement: state.reimbursements.everyReimbursement
+    words: state.lexica.words
 });
-exports.default = react_redux_1.connect(mapStateToProps, { startVerdicts: app_1.startVerdicts })(DashboardPage);
+exports.default = react_redux_1.connect(mapStateToProps)(GlossaryPage);
 ;
 
 (function () {
@@ -1258,16 +1306,13 @@ exports.default = react_redux_1.connect(mapStateToProps, { startVerdicts: app_1.
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(react_fontawesome_1, "react_fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(ReimbursementList_1, "ReimbursementList_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(AdminReimbursementList_1, "AdminReimbursementList_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(DashboardPage, "DashboardPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(GlossaryPage, "GlossaryPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
     leaveModule(module);
 })();
 
@@ -1307,26 +1352,68 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const reactstrap_1 = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/dist/reactstrap.es.js");
-const react_fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js"));
+const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+const SearchResults_1 = __importDefault(__webpack_require__(/*! ./SearchResults */ "./client/app/components/SearchResults.tsx"));
 const auth_1 = __webpack_require__(/*! ../actions/auth */ "./client/app/actions/auth.ts");
 class Header extends react_1.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            dropdownOpen: false
+            dropdownOpen: false,
+            searchTerm: '',
+            showSearch: false
         };
         this.toggleDropdown = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
+        // Probably will only use this for testing
+        // @ts-ignore
+        this.componentDidMount = () => document.addEventListener('click', this.determineSelection, false);
+        //@ts-ignore
+        this.componentWillUnmount = () => document.removeEventListener('click', this.determineSelection);
+        this.determineSelection = ({ target }) => {
+            // if you click outside, some code runs
+            if (!target.closest('.section') && !target.dataset.search) this.searchBlur();
+            // else if you click inside, some other code runs
+        };
+        this.searchFocus = () => {
+            this.setState({ showSearch: true });
+        };
+        this.searchBlur = () => {
+            this.setState({ showSearch: false });
+        };
+        this.onFieldChange = e => {
+            let value = e.target.value;
+            this.setState({
+                searchTerm: value
+            });
+        };
+        this.handleSubmit = e => {
+            e.preventDefault();
+            // console.log('Reached submit')
+            // console.log(this.props.words)
+            const matches = this.props.words.filter(word => word.word === this.state.searchTerm);
+            // console.log(this.state.searchTerm)
+            let results = this.props.results;
+            // console.log(matches[0])
+            this.setState({
+                results: matches
+            });
+            // console.log('Results', this.props.results)
+            // alert('Found match' + match[0].word)
+        };
     }
     render() {
-        const { isAuthenticated, startLogout } = this.props;
-        return react_1.default.createElement("header", { className: "nav-header" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "bars", className: "bars" }), react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "seam-sm" }, "Seam"), react_1.default.createElement("div", { className: "search-group" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "search", className: "icon" }), react_1.default.createElement("input", { type: "text", className: "input", placeholder: "Search" })), react_1.default.createElement(react_fontawesome_1.default, { icon: "bell", className: "alerts" }), react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement("div", { className: "image", style: {
-                // background: `url(${photo}) center / cover no-repeat`
-            } }), react_1.default.createElement("p", { className: "nav-username" }, this.props.name), react_1.default.createElement(react_fontawesome_1.default, { icon: "angle-down", className: "icon fa-angle-down" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { right: true, className: "dropdown-menu", style: {
+        const { isAuthenticated, startLogout, photo } = this.props;
+        const searchTerm = this.state.searchTerm;
+        return react_1.default.createElement("header", { className: "nav-header" }, react_1.default.createElement(SearchResults_1.default, { term: searchTerm, inputState: this.state.showSearch }), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "bars", className: "bars" }), react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "seam-sm" }, "Seam"), react_1.default.createElement("div", { className: "search-group" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "search", className: "icon" }), react_1.default.createElement("form", { className: "submit", onSubmit: this.handleSubmit }, react_1.default.createElement("input", { type: "text", className: "input spawnSearch", placeholder: "Search", value: searchTerm, "data-search": true, onChange: this.onFieldChange, onFocus: this.searchFocus }))), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "bell", className: "alerts" }), react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement("div", { className: "image", style: {
+                background: `url(${photo}) center / cover no-repeat`
+            } }), react_1.default.createElement("p", { className: "nav-username" }, this.props.name), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "angle-down", className: "icon fa-angle-down" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { right: true, className: "dropdown-menu", style: {
                 display: this.state.dropdownOpen === false ? 'none' : 'block'
-            } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item" }, react_1.default.createElement(react_router_dom_1.Link, { to: "/settings", className: "settings" }, "Settings")), react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item", onClick: () => startLogout() }, isAuthenticated ? react_1.default.createElement("p", { className: "logout" }, "Logout") : null))));
+            } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item" }, react_1.default.createElement(react_router_dom_1.Link, { to: "/profile", className: "profile" }, "Profile")), react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item", onClick: () => startLogout() }, isAuthenticated ? react_1.default.createElement("p", { className: "logout" }, "Logout") : null))));
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -1335,11 +1422,15 @@ exports.Header = Header;
 const mapStateToProps = state => {
     return {
         isAuthenticated: !!state.auth.token,
-        name: state.auth.name
+        name: state.auth.name,
+        words: state.lexica.words,
+        results: state.lexica.results,
+        photo: state.auth.profileImage
     };
 };
 exports.default = react_redux_1.connect(mapStateToProps, {
     startLogout: auth_1.startLogout
+    // startGetEverything
 })(Header);
 ;
 
@@ -1352,12 +1443,12 @@ exports.default = react_redux_1.connect(mapStateToProps, {
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
-    reactHotLoader.register(react_fontawesome_1, "react_fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
-    reactHotLoader.register(Header, "Header", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/Header.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(SearchResults_1, "SearchResults_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(Header, "Header", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
     leaveModule(module);
 })();
 
@@ -1393,6 +1484,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const awsCognito = __importStar(__webpack_require__(/*! amazon-cognito-identity-js */ "./node_modules/amazon-cognito-identity-js/es/index.js"));
 const auth_1 = __webpack_require__(/*! ../actions/auth */ "./client/app/actions/auth.ts");
 // include both prop types and state types with class
 class LoginPage extends react_1.Component {
@@ -1419,7 +1511,7 @@ class LoginPage extends react_1.Component {
         };
         this.onSubmit = e => {
             e.preventDefault();
-            const data = {
+            const initialData = {
                 username: this.state.username,
                 password: this.state.password
             };
@@ -1451,7 +1543,6 @@ class LoginPage extends react_1.Component {
             // }
             // check password is not blank
             if (this.state.password.length === 0) {
-                console.log('set blank password');
                 this.setState(prevState => ({
                     errors: {
                         username: prevState.errors.username,
@@ -1469,25 +1560,77 @@ class LoginPage extends react_1.Component {
             }
             // if checks pass, send user data to the server
             if (this.state.username.length > 0 && this.state.password.length > 0) {
-                this.props.startLogin(data).then(() => {
-                    this.props.history.push('/dashboard');
-                }).catch(err => {
-                    console.log('front end error', err);
-                    return this.setState({ errors: err.response.data.errors });
+                const { username, password } = this.state;
+                // gets credentials
+                const credentials = { username, password };
+                const authenticationData = {
+                    Password: credentials.password,
+                    Username: credentials.username
+                };
+                // store credentials in amazon object
+                const authenticationDetails = new awsCognito.AuthenticationDetails(authenticationData);
+                // data defined in cognito
+                const poolData = {
+                    ClientId: '5lmmpid5kd4v4vibmvifhcm3re',
+                    UserPoolId: 'us-east-2_LfGmk9qIA' // Your user pool id here
+                };
+                // access user pool with pool data
+                const userPool = new awsCognito.CognitoUserPool(poolData);
+                // access user from user pool
+                const userData = {
+                    Pool: userPool,
+                    Username: credentials.username
+                };
+                // create user from previous object buids
+                const cognitoUser = new awsCognito.CognitoUser(userData);
+                // and authenticate them
+                cognitoUser.authenticateUser(authenticationDetails, {
+                    onSuccess: result => {
+                        const token = result.getIdToken().getJwtToken();
+                        const data = Object.assign({}, initialData, { token });
+                        this.props.startLogin(data).then(() => {
+                            this.props.history.push('/dashboard');
+                        }).catch(err => {
+                            console.log('front end error', err);
+                            return this.setState({ errors: err.response.data.errors });
+                        });
+                        // this.props.setToken(token)
+                        // add token to localstorage
+                        // localStorage.setItem('token', token)
+                        // console.log(userPool.getCurrentUser())
+                        // console.log(result.getIdToken().decodePayload())
+                        // const idtok: any = result.getIdToken();
+                        // console.log(idtok.payload['cognito:groups']) //payload has the user info on it
+                    },
+                    onFailure: err => {
+                        console.log(err);
+                        if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException') {
+                            console.log('Invalid Credentials, try again.');
+                            // this.props.updateError('Invalid Credentials, try again.')
+                        } else {
+                            console.log('Unable to login at this time, please try again later');
+                            // this.props.updateError(
+                            //   'Unable to login at this time, please try again later'
+                            // )
+                        }
+                    }
                 });
             }
         };
-    }
-    render() {
-        const { errors } = this.state;
-        return react_1.default.createElement("div", { className: "login-page" }, react_1.default.createElement("div", { className: "login-bg" }), react_1.default.createElement("form", { className: "login-form", onChange: this.onFieldChange, onSubmit: this.onSubmit }, errors.global && react_1.default.createElement("p", { className: "global-errors" }, errors.global), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { className: "title" }, "username"), react_1.default.createElement("input", { type: "text", name: "username", style: {
-                border: !!errors.username ? '2px solid #e87c7c' : 'none'
-            } }), errors.username && react_1.default.createElement("p", { className: "inline-errors" }, errors.username)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { className: "title" }, "password"), react_1.default.createElement("input", { type: "password", name: "password", style: {
-                border: !!errors.password ? '2px solid #e87c7c' : 'none'
-            } }), errors.password && react_1.default.createElement("p", { className: "inline-errors" }, errors.password)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { type: "submit", className: "login-button button" }, "Login")), react_1.default.createElement("div", { className: "switch-auth-form" }, react_1.default.createElement("p", { className: "text" }, "Don't have an account?"), react_1.default.createElement(react_router_dom_1.Link, { to: "/signup", className: "signup-link" }, "\u00A0Signup"))), react_1.default.createElement("div", { className: "overlay" }), react_1.default.createElement("div", { className: "bg" }));
+        // @ts-ignore
+        this.render = () => {
+            const { errors } = this.state;
+            return react_1.default.createElement("div", { className: "login-page" }, react_1.default.createElement("div", { className: "login-bg" }), react_1.default.createElement("form", { className: "login-form", onChange: this.onFieldChange, onSubmit: this.onSubmit }, errors.global && react_1.default.createElement("p", { className: "global-errors" }, errors.global), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { className: "title" }, "username"), react_1.default.createElement("input", { type: "text", name: "username", style: {
+                    border: !!errors.username ? '2px solid #e87c7c' : 'none'
+                } }), errors.username && react_1.default.createElement("p", { className: "inline-errors" }, errors.username)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { className: "title" }, "password"), react_1.default.createElement("input", { type: "password", name: "password", style: {
+                    border: !!errors.password ? '2px solid #e87c7c' : 'none'
+                } }), errors.password && react_1.default.createElement("p", { className: "inline-errors" }, errors.password)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { type: "submit", className: "login-button button" }, "Login")), react_1.default.createElement("div", { className: "switch-auth-form" }, react_1.default.createElement("p", { className: "text" }, "Don't have an account?"), react_1.default.createElement(react_router_dom_1.Link, { to: "/signup", className: "signup-link" }, "\u00A0Signup"))), react_1.default.createElement("div", { className: "overlay" }), react_1.default.createElement("div", { className: "bg" }));
+        };
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -1505,9 +1648,163 @@ exports.default = react_redux_1.connect(undefined, { startLogin: auth_1.startLog
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(LoginPage, "LoginPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(awsCognito, "awsCognito", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(LoginPage, "LoginPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/Modal.tsx":
+/*!*****************************************!*\
+  !*** ./client/app/components/Modal.tsx ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+class Modal extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        // accessibility
+        this.listenKeyboard = e => {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                this.props.onClose();
+            }
+        };
+        // @ts-ignore
+        this.componentDidMount = () => {
+            if (this.props.onClose) {
+                window.addEventListener('keydown', this.listenKeyboard, true);
+            }
+        };
+        // prevent memory leaks
+        // @ts-ignore
+        this.componentWillUnmount = () => {
+            if (this.props.onClose) {
+                window.removeEventListener('keydown', this.listenKeyboard, true);
+            }
+        };
+        // close modal when whole page overlay is clicked
+        this.onOverlayClick = () => this.props.onClose();
+        // prevents closing modal if click within modal
+        // (because closes when whole page overlay is clicked )
+        this.onDialogClick = e => e.stopPropagation();
+        // @ts-ignore
+        this.render = () => react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "modal-overlay-div" }), react_1.default.createElement("div", { className: "modal-content-div" }, react_1.default.createElement("div", { className: "modal-dialog-div", onClick: this.onDialogClick }, this.props.children)));
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.Modal = Modal;
+exports.default = Modal;
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    reactHotLoader.register(Modal, "Modal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/ModalContainer.tsx":
+/*!**************************************************!*\
+  !*** ./client/app/components/ModalContainer.tsx ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+// import all modal components
+const NewWordModal_1 = __importDefault(__webpack_require__(/*! ./modals/NewWordModal */ "./client/app/components/modals/NewWordModal.tsx"));
+// modal directory based on props.modalType
+const MODAL_COMPONENTS = {
+    NEW_WORD_MODAL: NewWordModal_1.default
+};
+const ModalContainer = props => {
+    // if no modal set in store, do not render one
+    if (!props.modalType) {
+        return null;
+    }
+    // object lookup
+    const SpecificModal = MODAL_COMPONENTS[props.modalType];
+    return react_1.default.createElement(SpecificModal, null);
+};
+const mapStateToProps = state => ({
+    modalType: state.modal.modalType
+});
+exports.default = react_redux_1.connect(mapStateToProps)(ModalContainer);
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(NewWordModal_1, "NewWordModal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(MODAL_COMPONENTS, "MODAL_COMPONENTS", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(ModalContainer, "ModalContainer", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
     leaveModule(module);
 })();
 
@@ -1550,9 +1847,9 @@ exports.default = NotFoundPage;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(NotFoundPage, "NotFoundPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(NotFoundPage, "NotFoundPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
     leaveModule(module);
 })();
 
@@ -1561,10 +1858,10 @@ exports.default = NotFoundPage;
 
 /***/ }),
 
-/***/ "./client/app/components/ReimbursePage.tsx":
-/*!*************************************************!*\
-  !*** ./client/app/components/ReimbursePage.tsx ***!
-  \*************************************************/
+/***/ "./client/app/components/ProfilePage.tsx":
+/*!***********************************************!*\
+  !*** ./client/app/components/ProfilePage.tsx ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1584,34 +1881,44 @@ var __importStar = this && this.__importStar || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-const ReimburseForm_1 = __importDefault(__webpack_require__(/*! ./reimbursement/ReimburseForm */ "./client/app/components/reimbursement/ReimburseForm.tsx"));
-// need to pass history object to child components
-// has history object by virtue of being connected to redux
-class ReimbursePage extends react_1.Component {
-    constructor() {
-        super(...arguments);
-        // @ts-ignore
-        this.render = () => {
-            return react_1.default.createElement("div", { className: "reimbursement-page" }, react_1.default.createElement("div", { className: "reimburse-header" }, react_1.default.createElement("h1", { className: "page-title" }, "New reimbursement "), react_1.default.createElement("button", { className: "create-blue button new", form: "reimburse-form" }, "Submit")), react_1.default.createElement(ReimburseForm_1.default, { history: this.props.history }));
-        };
+class ProfilePage extends react_1.Component {
+    // public componentDidMount() {
+    //   Axios
+    //     .get(
+    //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/files/profile.jpg'
+    //     )
+    //     .then(resp => {
+    //       this.setState({
+    //         url: resp.data
+    //       })
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //     })
+    // }
+    render() {
+        return react_1.default.createElement("div", null, react_1.default.createElement("div", null, "Profile Picture:", react_1.default.createElement("p", null, react_1.default.createElement("img", { src: this.props.profileImage }))), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Name: ", this.props.firstname, " ", this.props.lastname)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Username: ", this.props.username)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Email: ", this.props.email)));
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
 }
-exports.ReimbursePage = ReimbursePage;
+exports.ProfilePage = ProfilePage;
 const mapStateToProps = state => ({
-    username: state.auth.username
+    username: state.auth.username,
+    email: state.auth.email,
+    firstname: state.auth.name,
+    lastname: state.auth.last,
+    profileImage: state.auth.profileImage
 });
-exports.default = react_redux_1.connect(mapStateToProps)(ReimbursePage);
+exports.default = react_redux_1.connect(mapStateToProps)(ProfilePage);
 ;
 
 (function () {
@@ -1623,12 +1930,204 @@ exports.default = react_redux_1.connect(mapStateToProps)(ReimbursePage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
-    reactHotLoader.register(ReimburseForm_1, "ReimburseForm_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
-    reactHotLoader.register(ReimbursePage, "ReimbursePage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/ReimbursePage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(ProfilePage, "ProfilePage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/SearchResults.tsx":
+/*!*************************************************!*\
+  !*** ./client/app/components/SearchResults.tsx ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function step(result) {
+            result.done ? resolve(result.value) : new P(function (resolve) {
+                resolve(result.value);
+            }).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const matchFound = term => {
+    return x => {
+        return x.word.toLowerCase().includes(term.toLowerCase()) || !term;
+    };
+};
+const keywordFound = term => {
+    return term.includes(':') && (term.substring(0, term.indexOf(':')) === 'tags' || term.substring(0, term.indexOf(':')) === 'topic');
+};
+class SearchResults extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            searchTerm: '',
+            // resultPool: this.state.words,
+            words: this.props.words,
+            topics: this.props.topics,
+            tags: this.props.tags,
+            resultElements: []
+        };
+        //@ts-ignore
+        this.componentDidMount = () => {
+            // console.log(this.state.tags)
+        };
+        //@ts-ignore
+        this.componentWillReceiveProps = (props, nextProps) => {
+            // console.log('Input so far: ', props.term)
+            const wait = () => __awaiter(this, void 0, void 0, function* () {
+                yield this.setState({
+                    searchTerm: props.term
+                });
+                keywordFound(this.props.term);
+                console.log(keywordFound(this.props.term));
+                // this.state.resultPool = props.words.filter(wordList => wordList.word === this.state.searchTerm)
+                // console.log('Words in state: ', this.state.words)
+            });
+            wait();
+            // this.setState(prevState => ({
+            //     results: resultPool
+            // }))
+        };
+        this.keyFilter = term => {
+            console.log('Stepped into keyFilter');
+            let keyword = term.substring(0, term.indexOf(':'));
+            let words = this.props.words;
+            let termItems = term.substring(term.indexOf(':') + 2, term.length).split(' ');
+            let allResults = [];
+            let finalResults = [];
+            // console.log(keyword)
+            // console.log(words)
+            // console.log('Tags to search: ', termItems)
+            // console.log('Results: ', results)
+            switch (keyword) {
+                case 'tags':
+                    // Some logic
+                    for (let t of termItems) {
+                        // console.log(words[0].tags)
+                        // console.log(words.filter(word => word.tags.includes(t)))
+                        allResults.push(words.filter(word => word.tags.includes(t)));
+                    }
+                    console.log(allResults);
+                    for (let i = 0; i < allResults.length; i++) {
+                        for (let j of allResults[i]) {
+                            if (!finalResults.includes(j)) {
+                                finalResults.push(j);
+                            }
+                        }
+                    }
+                    return finalResults;
+                // console.log(finalResults)
+                // To remove duplicate words
+                // for(let i=0; i<results.length; ++i) {
+                //     for(let j=i+1; j<results.length; ++j) {
+                //         if(results[i] === results[j])
+                //             results.splice(j--, 1);
+                //     }
+                // }
+                case 'topic':
+                    // More logic
+                    return words;
+                default:
+                    // Do nothing
+                    return words;
+            }
+        };
+    }
+    // buildResults = () => {
+    //     this.state.resultPool.forEach(e => {
+    //         console.log('Result object', e)
+    //         this.state.resultElements.push(
+    //             <div>
+    //                 <p>e.word</p>
+    //             </div>
+    //         )
+    //     })
+    //     return this.state.resultElements
+    // }
+    render() {
+        return react_1.default.createElement("section", { className: this.props.inputState ? 'section focus' : 'section blur' }, react_1.default.createElement("div", { className: "search-results-bg" }), react_1.default.createElement("div", { className: 'search-results' }, react_1.default.createElement("h1", null, "Results"), keywordFound(this.props.term) ? this.props.words !== undefined && this.keyFilter(this.props.term).map(word => react_1.default.createElement("div", { key: word.uid }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word)))) : this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word => react_1.default.createElement("div", { key: word.uid }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word))))));
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.SearchResults = SearchResults;
+const mapStateToProps = state => {
+    return {
+        words: state.lexica.words,
+        topics: state.lexica.topics,
+        tags: state.lexica.tags
+        //   results: state.lexica.results
+    };
+};
+exports.default = react_redux_1.connect(mapStateToProps, null)(SearchResults);
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(matchFound, "matchFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(keywordFound, "keywordFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(SearchResults, "SearchResults", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
     leaveModule(module);
 })();
 
@@ -1653,6 +2152,30 @@ exports.default = react_redux_1.connect(mapStateToProps)(ReimbursePage);
     enterModule && enterModule(module);
 })();
 
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function step(result) {
+            result.done ? resolve(result.value) : new P(function (resolve) {
+                resolve(result.value);
+            }).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importStar = this && this.__importStar || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -1660,17 +2183,24 @@ var __importStar = this && this.__importStar || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const react_dropzone_1 = __importDefault(__webpack_require__(/*! react-dropzone */ "./node_modules/react-dropzone/dist/es/index.js"));
+const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+const auth_1 = __webpack_require__(/*! ../actions/auth */ "./client/app/actions/auth.ts");
 class SettingsPage extends react_1.Component {
     constructor() {
         super(...arguments);
         this.state = {
             page: 'General',
-            username: '',
+            fullname: `${this.props.firstname} ${this.props.lastname}`,
             email: '',
-            selectedFile: null
+            url: '',
+            file: ''
         };
         this.setPage = ({ target }) => {
             console.log('target: ', target.textContent);
@@ -1682,43 +2212,66 @@ class SettingsPage extends react_1.Component {
             });
         };
         this.fileSelectedHandler = ({ target }) => this.setState({ selectedFile: target.files[0] });
-        this.generalUploadHandler = e => {
+        this.generalUploadHandler = e => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
-            const { selectedFile, username: formUsername, email: formEmail } = this.state;
-            const { email } = this.props;
-            let formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('email', email);
-            formData.append('username', formUsername);
-            formData.append('newEmail', formEmail);
-            // this.props
-            //   .startUpdateGeneral(formData)
-            //   .then(() => this.props.history.push('/dashboard'))
+            const { file, url, fullname: name, email } = this.state;
+            const { username, startUpdateUser } = this.props;
+            const fullname = name.split(' ');
+            const data = {
+                username,
+                firstname: fullname[0],
+                lastname: fullname[1],
+                email,
+                url
+            };
+            try {
+                // send file to s3 bucket
+                const s3upload = yield axios_1.default.put(url, file);
+            } catch (e) {
+                console.log('error uploading to s3', e);
+            }
+            try {
+                const dynamoUpload = yield axios_1.default.post('https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user', data).then(res => res.data);
+                startUpdateUser(data);
+            } catch (e) {
+                console.log('error uploading to lambda', e);
+            }
+        });
+        this.onDrop = files => {
+            // get most recent file
+            const file = files[0];
+            // build url to s3 bucket
+            const profileUrl = 'http://vocab-app-pics.s3.amazonaws.com/' + this.props.username + '/' + file.name;
+            this.setState({
+                file,
+                url: profileUrl
+            });
         };
     }
     render() {
         const { email, username, photo } = this.props;
-        let { page } = this.state;
+        let { page, fullname } = this.state;
         page = page.toLowerCase();
-        return react_1.default.createElement("div", { className: "main-body" }, react_1.default.createElement("div", { className: "settings-page" }, react_1.default.createElement("aside", { className: "settings-side-menu" }, react_1.default.createElement("p", { className: page === 'general' ? 'is-active' : null, onClick: this.setPage }, "General"), react_1.default.createElement("p", { className: page === 'password' ? 'is-active' : null, onClick: this.setPage }, "Password"), react_1.default.createElement("p", { className: page === 'transfers' ? 'is-active' : null, onClick: this.setPage }, "Transfers")), this.state.page.toLowerCase() == 'general' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Settings"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange, onSubmit: this.generalUploadHandler }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "photo" }, "Photo"), react_1.default.createElement("div", { className: "photo-container", onClick: () => this.photoUpload.click() }, react_1.default.createElement("div", { className: "photo", style: {
-                background: `url(${photo}) center / cover no-repeat`
-            } }), react_1.default.createElement("p", { className: "text" }, "Edit")), react_1.default.createElement("input", { className: "file-upload", style: { display: 'none' }, name: "file", type: "file", onChange: this.fileSelectedHandler, ref: photoUpload => this.photoUpload = photoUpload, "data-cloudinary-field": "image_id" // ?
-        })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "username" }, "Username"), react_1.default.createElement("input", { type: "text", name: "username", placeholder: username })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "email" }, "Email"), react_1.default.createElement("input", { type: "email", name: "email", placeholder: email })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'password' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Reset Password"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "old" }, "Old Password"), react_1.default.createElement("input", { type: "text", name: "old" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "new" }, "New Password"), react_1.default.createElement("input", { type: "text", name: "new" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "retype" }, "Retype Password"), react_1.default.createElement("input", { type: "text", name: "retype" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'transfers' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Transfers"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "interest" }, "Charge interest?"), react_1.default.createElement("input", { type: "text", name: "interest" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "amount" }, "Interest amount"), react_1.default.createElement("input", { type: "email", name: "amount" }), react_1.default.createElement("span", null, "%")), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes"))))));
+        return react_1.default.createElement("div", { className: "main-body" }, react_1.default.createElement("div", { className: "settings-page" }, react_1.default.createElement("aside", { className: "settings-side-menu" }, react_1.default.createElement("p", { className: page === 'general' ? 'is-active' : null, onClick: this.setPage }, "General"), react_1.default.createElement("p", { className: page === 'password' ? 'is-active' : null, onClick: this.setPage }, "Password"), react_1.default.createElement("p", { className: page === 'transfers' ? 'is-active' : null, onClick: this.setPage }, "Transfers")), this.state.page.toLowerCase() == 'general' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Settings"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange, onSubmit: this.generalUploadHandler }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "photo" }, "Photo"), react_1.default.createElement("div", { className: "photo-container", onClick: () => this.photoUpload.click() }, react_1.default.createElement(react_dropzone_1.default, { onDrop: this.onDrop }, react_1.default.createElement("p", null, "drop files here:")), react_1.default.createElement("p", { className: "text" }, "Edit")), react_1.default.createElement("input", { className: "file-upload", style: { display: 'none' }, name: "file", type: "file", onChange: this.fileSelectedHandler, ref: photoUpload => this.photoUpload = photoUpload, "data-cloudinary-field": "image_id" // ?
+        })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "fullname" }, "Full Name"), react_1.default.createElement("input", { type: "text", name: "fullname", placeholder: fullname })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "email" }, "Email"), react_1.default.createElement("input", { type: "email", name: "email", placeholder: email })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'password' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Reset Password"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "old" }, "Old Password"), react_1.default.createElement("input", { type: "text", name: "old" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "new" }, "New Password"), react_1.default.createElement("input", { type: "text", name: "new" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "retype" }, "Retype Password"), react_1.default.createElement("input", { type: "text", name: "retype" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'transfers' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Transfers"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "interest" }, "Charge interest?"), react_1.default.createElement("input", { type: "text", name: "interest" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "amount" }, "Interest amount"), react_1.default.createElement("input", { type: "email", name: "amount" }), react_1.default.createElement("span", null, "%")), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes"))))));
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
 }
 exports.SettingsPage = SettingsPage;
 const mapStateToProps = state => ({
+    firstname: state.auth.name,
+    lastname: state.auth.last,
     username: state.auth.username,
     email: state.auth.email,
     photo: state.auth.photo
 });
-const mapDispatchToProps = data => dispatch => ({});
-exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
+exports.default = react_redux_1.connect(mapStateToProps, { startUpdateUser: auth_1.startUpdateUser })(SettingsPage);
 ;
 
 (function () {
@@ -1730,11 +2283,14 @@ exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Set
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(SettingsPage, "SettingsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(mapDispatchToProps, "mapDispatchToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(SettingsPage, "SettingsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
     leaveModule(module);
 })();
 
@@ -1766,25 +2322,62 @@ var __importStar = this && this.__importStar || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-const react_fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js"));
+const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+const helpers_1 = __webpack_require__(/*! ../helpers/helpers */ "./client/app/helpers/helpers.ts");
+const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
+const modal_1 = __webpack_require__(/*! ../actions/modal */ "./client/app/actions/modal.ts");
+const modaltypes_1 = __webpack_require__(/*! ../constants/modaltypes */ "./client/app/constants/modaltypes.js");
 class SidebarContent extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            isEditing: false,
+            topic: ''
+        };
+        this.onFieldChange = e => {
+            let { name, value } = e.target;
+            this.setState({
+                [name]: value
+            });
+        };
+        this.handleSubmit = e => {
+            e.preventDefault();
+            let name = this.state.topic;
+            let id = helpers_1.generateUuid();
+            let username = this.props.username;
+            let nextTopic = {
+                uid: id,
+                owner: username,
+                name: name
+            };
+            this.props.startAddTopic(nextTopic);
+        };
+        this.spawnWordModal = () => this.props.loadModal(modaltypes_1.NEW_WORD_MODAL);
+        this.toggle = e => {
+            this.setState({ isEditing: !this.state.isEditing });
+        };
+    }
     render() {
-        return react_1.default.createElement("div", { className: "panel" }, react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "link" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "home", className: "fa-home" }), "\u00A0 \u00A0Home"), react_1.default.createElement(react_router_dom_1.Link, { to: "/messages", className: "link" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "globe", className: "fa-globe" }), "\u00A0 \u00A0Messages"), react_1.default.createElement(react_router_dom_1.Link, { to: "/messages", className: "link" }, react_1.default.createElement(react_fontawesome_1.default, { icon: "briefcase", className: "fa-briefcase" }), "\u00A0 \u00A0Analytics"));
+        const { topic } = this.state;
+        return react_1.default.createElement("div", { className: "content" }, react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "link" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "home", className: "icon fa-home" })), react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "link", onClick: this.spawnWordModal }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "icon fa-plus" })), react_1.default.createElement(react_router_dom_1.Link, { to: "/tags", className: "link" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "tags", className: "icon fa-tags" })), react_1.default.createElement(react_router_dom_1.Link, { to: "/glossary", className: "link" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "list", className: "icon fa-list" })), react_1.default.createElement(react_router_dom_1.Link, { to: "/dashboard", className: "link" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "user", className: "icon fa-user" })), react_1.default.createElement(react_router_dom_1.Link, { to: "/settings", className: "link" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "cog", className: "icon fa-cog" })));
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
 }
 exports.SidebarContent = SidebarContent;
-exports.default = SidebarContent;
+const mapStateToProps = state => ({
+    username: state.auth.username
+});
+exports.default = react_redux_1.connect(mapStateToProps, { loadModal: modal_1.loadModal, startAddTopic: words_1.startAddTopic })(SidebarContent);
 ;
 
 (function () {
@@ -1796,11 +2389,10 @@ exports.default = SidebarContent;
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(react_fontawesome_1, "react_fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(SidebarContent, "SidebarContent", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(SidebarContent, "SidebarContent", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
     leaveModule(module);
 })();
 
@@ -1859,8 +2451,10 @@ var __importStar = this && this.__importStar || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const AmazonCognitoIdentity = __importStar(__webpack_require__(/*! amazon-cognito-identity-js */ "./node_modules/amazon-cognito-identity-js/es/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const auth_1 = __webpack_require__(/*! ../actions/auth */ "./client/app/actions/auth.ts");
+const helpers_1 = __webpack_require__(/*! ../helpers/helpers */ "./client/app/helpers/helpers.ts");
 class SignupPage extends react_1.Component {
     constructor() {
         super(...arguments);
@@ -1930,25 +2524,74 @@ class SignupPage extends react_1.Component {
                 [name]: value
             });
         };
+        // user: Eric1529523007809 pass: a12345678
         // startSignup will also have dispatch with it
         this.onSubmit = e => {
             e.preventDefault();
             const personName = this.state.fullname.split(' ');
+            // single variable used in cognito signup
             const { email, username, password, admin } = this.state;
-            const data = {
+            const clientData = {
                 email: this.state.email,
                 firstname: personName[0],
                 lastname: personName[personName.length - 1],
                 username: this.state.username,
-                password: this.state.password
+                password: this.state.password,
+                uid: helpers_1.generateUuid()
                 // role: admin ? 'admin' : 'employee'
             };
-            // passed down from connect
-            this.props.startSignup(data).then(() => {
-                this.props.history.push('/dashboard');
-            }).catch(err => {
-                console.log('Error on submit in signup page: ', err);
-                this.setState({ errors: err.response.data.errors });
+            // start of cognito logic
+            const poolData = {
+                UserPoolId: 'us-east-2_LfGmk9qIA',
+                ClientId: '5lmmpid5kd4v4vibmvifhcm3re'
+            };
+            // initialize pool of users
+            const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            const attributeList = [];
+            const dataEmail = {
+                Name: 'email',
+                Value: email
+            };
+            console.log('state email ', email);
+            console.log('data email ', dataEmail);
+            // add attribute to user
+            // TODO: where is this stored in wizard?
+            const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+            attributeList.push(attributeEmail);
+            // creates user
+            userPool.signUp(username, password, attributeList, null, (err, result) => {
+                if (err) {
+                    return console.log('there was an error.', err);
+                }
+                // authenticate user after signup and autoConfirm trigger happens in cognito
+                const authenticationData = {
+                    Username: username,
+                    Password: password
+                };
+                const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+                const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+                const userData = {
+                    Username: username,
+                    Pool: userPool
+                };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+                cognitoUser.authenticateUser(authenticationDetails, {
+                    onSuccess: result => {
+                        const accessToken = result.getAccessToken().getJwtToken();
+                        console.log('token we get back from cognito: ', accessToken);
+                        const data = Object.assign({}, clientData, { token: accessToken });
+                        this.props.startSignup(data).then(() => {
+                            this.props.history.push('/dashboard');
+                        }).catch(err => {
+                            this.setState({ errors: err.response.data.errors });
+                        });
+                        /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer*/
+                        // const idToken = result.idToken.jwtToken
+                    },
+                    onFailure: err => {
+                        console.log('the err: ', err);
+                    }
+                });
             });
         };
     }
@@ -1969,7 +2612,9 @@ class SignupPage extends react_1.Component {
             } }), react_1.default.createElement("div", { className: "signup-bg" }), react_1.default.createElement("form", { autoComplete: "off", className: "signup-form", onChange: this.onFieldChange, onSubmit: this.onSubmit }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "email", className: "title" }, "email"), react_1.default.createElement("input", { type: "email", name: "email" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "fullname", className: "title" }, "full name"), react_1.default.createElement("input", { type: "text", name: "fullname" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "username", className: "title" }, "username"), react_1.default.createElement("input", { type: "text", name: "username" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "password", className: "title" }, "password"), react_1.default.createElement("input", { type: "password", name: "password", autoComplete: "new-password" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { type: "submit", className: "signup-button button" }, "Signup")), react_1.default.createElement("div", { className: "switch-auth-form" }, react_1.default.createElement("p", { className: "text" }, "Already have an account?"), react_1.default.createElement(react_router_dom_1.Link, { to: "/login", className: "login-link" }, "\u00A0Login"))), !!errors.global && react_1.default.createElement("p", null, errors.global), message && react_1.default.createElement("div", { className: "message" }, message), react_1.default.createElement("div", { className: "signup-overlay" }), react_1.default.createElement("div", { className: "signup-bg" }));
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -1987,10 +2632,11 @@ exports.default = react_redux_1.connect(undefined, { startSignup: auth_1.startSi
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(SignupPage, "SignupPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(AmazonCognitoIdentity, "AmazonCognitoIdentity", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(SignupPage, "SignupPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
     leaveModule(module);
 })();
 
@@ -1999,10 +2645,10 @@ exports.default = react_redux_1.connect(undefined, { startSignup: auth_1.startSi
 
 /***/ }),
 
-/***/ "./client/app/components/dashboard/AdminReimbursementList.tsx":
-/*!********************************************************************!*\
-  !*** ./client/app/components/dashboard/AdminReimbursementList.tsx ***!
-  \********************************************************************/
+/***/ "./client/app/components/TagsPage.tsx":
+/*!********************************************!*\
+  !*** ./client/app/components/TagsPage.tsx ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2015,16 +2661,47 @@ exports.default = react_redux_1.connect(undefined, { startSignup: auth_1.startSi
     enterModule && enterModule(module);
 })();
 
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-exports.AdminReimbursementList = props => react_1.default.createElement("div", null, react_1.default.createElement("table", { cellSpacing: "0", className: "reimburse-table" }, react_1.default.createElement("tbody", null, react_1.default.createElement("tr", { className: "reimburse-headers" }, react_1.default.createElement("th", null, "Username"), react_1.default.createElement("th", null, "Total"), react_1.default.createElement("th", null, "Status"), react_1.default.createElement("th", null, "Time Submitted")), props.everyReimbursement.map((reim, i) => {
-    const dayOf = new Date(parseInt(reim.timeSubmitted));
-    return react_1.default.createElement("tr", { key: reim.timeSubmitted, "data-key": reim.timeSubmitted, onClick: props.updateClicks, className: props.state && props.state.length > 0 && props.state[i].clicked ? 'reimburse-row selected-row' : 'reimburse-row' }, react_1.default.createElement("td", null, reim.username), react_1.default.createElement("td", null, reim.items.map(item => parseInt(item.amount)).reduce((total, item) => total + item)), react_1.default.createElement("td", null, reim.status), react_1.default.createElement("td", null, dayOf.getMonth() + 1 + '/' + dayOf.getDate() + '/' + dayOf.getFullYear()));
-}))));
-exports.default = exports.AdminReimbursementList;
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
+const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client/app/components/Textbar.tsx"));
+const TopicsListWord_1 = __importDefault(__webpack_require__(/*! ./TopicsListWord */ "./client/app/components/TopicsListWord.tsx"));
+class TagsPage extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        // @ts-ignore
+        this.render = () => {
+            const { words, tags } = this.props;
+            return react_1.default.createElement("div", { className: "tags-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, tags === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), tags !== undefined && tags.length === 0 && react_1.default.createElement("p", null, "You have not created any tags yet."), tags !== undefined && tags.map(tag => react_1.default.createElement("div", { key: tag }, react_1.default.createElement("h2", { id: tag }, tag), words !== undefined && words.map(word => {
+                if (word.tags.includes(tag)) return react_1.default.createElement(TopicsListWord_1.default, { key: word.uid, word: word });
+            })))));
+        };
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.TagsPage = TagsPage;
+const mapStateToProps = state => ({
+    words: state.lexica.words,
+    tags: state.lexica.tags
+});
+exports.default = react_redux_1.connect(mapStateToProps)(TagsPage);
 ;
 
 (function () {
@@ -2036,20 +2713,26 @@ exports.default = exports.AdminReimbursementList;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/dashboard/AdminReimbursementList.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/dashboard/AdminReimbursementList.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(TopicsListWord_1, "TopicsListWord_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(TagsPage, "TagsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
     leaveModule(module);
 })();
 
 ;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./client/app/components/dashboard/ReimbursementList.tsx":
-/*!***************************************************************!*\
-  !*** ./client/app/components/dashboard/ReimbursementList.tsx ***!
-  \***************************************************************/
+/***/ "./client/app/components/Textbar.tsx":
+/*!*******************************************!*\
+  !*** ./client/app/components/Textbar.tsx ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2062,20 +2745,107 @@ exports.default = exports.AdminReimbursementList;
     enterModule && enterModule(module);
 })();
 
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-exports.ReimbursementList = props => {
-    const { reimbursements } = props;
-    if (reimbursements.length === 0) return react_1.default.createElement("div", { className: "nothing-to-show" }, "You have not created any reimbursements yet.");
-    return react_1.default.createElement("table", { cellSpacing: "0", className: "reimburse-table" }, react_1.default.createElement("tbody", null, react_1.default.createElement("tr", { className: "reimburse-headers" }, react_1.default.createElement("th", null, "Username"), react_1.default.createElement("th", null, "Total"), react_1.default.createElement("th", null, "Status"), react_1.default.createElement("th", null, "Time Submitted")), reimbursements.slice(0).reverse().map(record => {
-        const dayOf = new Date(parseInt(record.timeSubmitted));
-        return react_1.default.createElement("tr", { key: record.timeSubmitted, className: "reimburse-row" }, react_1.default.createElement("td", null, record.username), react_1.default.createElement("td", null, record.items.map(item => parseInt(item.amount)).reduce((total, item) => total + item)), react_1.default.createElement("td", null, record.status), react_1.default.createElement("td", null, dayOf.getMonth() + 1 + '/' + dayOf.getDate() + '/' + dayOf.getFullYear()));
-    })));
-};
-exports.default = exports.ReimbursementList;
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const react_router_1 = __webpack_require__(/*! react-router */ "./node_modules/react-router/es/index.js");
+const react_router_hash_link_1 = __webpack_require__(/*! react-router-hash-link */ "./node_modules/react-router-hash-link/lib/index.js");
+// import ScrollSpy from 'react-scrollspy'
+const helpers_1 = __webpack_require__(/*! ../helpers/helpers */ "./client/app/helpers/helpers.ts");
+const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
+class Textbar extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            topics: [],
+            numberOfTopics: 0,
+            topicName: '',
+            editing: false
+        };
+        this.listenKeyboard = e => {
+            if (e.keyCode === 27 || e.key === 'Escape') this.setState({ editing: false });
+        };
+        this.handleChange = e => {
+            let { name, value } = e.target;
+            this.setState({
+                [name]: value
+            });
+        };
+        this.handleAddTopic = () => {
+            this.setState({ editing: true });
+        };
+        this.handleBlur = e => {
+            this.setState({ editing: false });
+        };
+        this.handleSubmit = e => {
+            e.preventDefault();
+            const { topicName: topic } = this.state;
+            const { username: owner, startAddTopic } = this.props;
+            const uid = helpers_1.generateUuid();
+            const nextTopic = { uid, owner, topic };
+            startAddTopic(nextTopic);
+        };
+        // @ts-ignore
+        this.componentDidMount = () => {
+            window.addEventListener('keydown', this.listenKeyboard);
+            // 3. example typescript ref
+            // this.inputEl !== undefined && this.inputEl.focus()
+        };
+        // 1. example typescript ref
+        // inputEl!: any  
+        // @ts-ignore
+        this.render = () => {
+            const { words, topics, tags, match, position } = this.props;
+            const { editing, topicName } = this.state;
+            return react_1.default.createElement("div", { className: "textbar-container" }, match.path === '/dashboard' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Topics"), react_1.default.createElement("p", { className: "subhead" }, topics !== undefined && topics.length, " topics"), react_1.default.createElement("div", { className: "list" }, topics !== undefined &&
+            // <ScrollSpy
+            //   items={[...topics.map(topic => topic.uid)]}
+            //   currentClassName="active"
+            //   // componentTag="div"
+            // >
+            // {topics !== undefined &&
+            topics.map((topic, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${topic.uid}`,
+                // href={`#${topic.uid}`}
+                key: topic.uid, className: "topic-group-in-textbar", smooth: "true", scroll: el => el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                }) }, react_1.default.createElement("p", { className: position === topic.uid ? 'active topic-name' : 'topic-name' }, topic.topic), react_1.default.createElement("p", { className: "topic-count" }, words.filter(word => {
+                if (word.topic === topic.uid) return word;
+            }).length, "\u00A0words"))
+            // </ScrollSpy>
+            ), !editing && react_1.default.createElement("p", { onClick: this.handleAddTopic, className: "add-topic-button" }, "+ Add topic"), editing && react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.handleChange }, react_1.default.createElement("input", { type: "text", name: "topicName", value: topicName, className: "enter-topic-name", placeholder: "Enter topic", onBlur: this.handleBlur, autoFocus: true })))), match.path === '/glossary' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Glossary"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " words")), match.path === '/tags' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Tags"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " tags"), tags !== undefined && tags.map((tag, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${tag}`, key: tag, smooth: "true", scroll: el => el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                }) }, react_1.default.createElement("p", null, `${tag} (${words.filter(word => {
+                if (word.tags.includes(tag)) return word.word;
+            }).length})`)))), match.path.includes('/word/') && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "word")));
+        };
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.Textbar = Textbar;
+const mapStateToProps = state => ({
+    words: state.lexica.words,
+    topics: state.lexica.topics,
+    tags: state.lexica.tags,
+    username: state.auth.username,
+    dataIsHere: state.app.dataIsHere,
+    position: state.app.position
+});
+exports.default = react_router_1.withRouter(react_redux_1.connect(mapStateToProps, { startAddTopic: words_1.startAddTopic })(Textbar));
 ;
 
 (function () {
@@ -2087,20 +2857,22 @@ exports.default = exports.ReimbursementList;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/dashboard/ReimbursementList.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/dashboard/ReimbursementList.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(Textbar, "Textbar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
     leaveModule(module);
 })();
 
 ;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./client/app/components/reimbursement/ReimburseForm.tsx":
-/*!***************************************************************!*\
-  !*** ./client/app/components/reimbursement/ReimburseForm.tsx ***!
-  \***************************************************************/
+/***/ "./client/app/components/TopicsList.tsx":
+/*!**********************************************!*\
+  !*** ./client/app/components/TopicsList.tsx ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2113,11 +2885,29 @@ exports.default = exports.ReimbursementList;
     enterModule && enterModule(module);
 })();
 
-var __rest = this && this.__rest || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
-    return t;
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function step(result) {
+            result.done ? resolve(result.value) : new P(function (resolve) {
+                resolve(result.value);
+            }).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 var __importStar = this && this.__importStar || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -2132,173 +2922,109 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-const ReimburseItem_1 = __importDefault(__webpack_require__(/*! ./ReimburseItem */ "./client/app/components/reimbursement/ReimburseItem.tsx"));
-const helpers_1 = __webpack_require__(/*! ../../helpers/helpers */ "./client/app/helpers/helpers.ts");
-const app_1 = __webpack_require__(/*! ../../actions/app */ "./client/app/actions/app.ts");
-const react_fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js"));
-class ReimburseForm extends react_1.Component {
+const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
+const react_input_autosize_1 = __importDefault(__webpack_require__(/*! react-input-autosize */ "./node_modules/react-input-autosize/lib/AutosizeInput.js"));
+// import Scroll from 'react-scroll'
+const TopicsListWord_1 = __webpack_require__(/*! ./TopicsListWord */ "./client/app/components/TopicsListWord.tsx");
+const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
+const app_1 = __webpack_require__(/*! ../actions/app */ "./client/app/actions/app.ts");
+const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+class TopicsList extends react_1.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            items: [{
-                uid: '',
-                title: '',
-                amount: '',
-                description: '',
-                receipts: [],
-                timeOfExpense: 0,
-                edited: false
-            }],
-            type: 'lodging',
-            prevIndex: null,
-            errors: ''
+            topics: [],
+            dragging: false,
+            editing: null
         };
-        this.handleSubmit = e => {
-            e.preventDefault();
-            const baseObj = {
-                title: '',
-                amount: '',
-                description: '',
-                timeOfExpense: 0
-            };
-            this.state.items.map(item => {
-                let { uid, receipts, edited } = item,
-                    essentials = __rest(item, ["uid", "receipts", "edited"]);
-                if (JSON.stringify(essentials) === JSON.stringify(baseObj)) return this.setState({ errors: 'Item(s) must not be blank' });
-            });
-            const { username, role, startSubmitReimbursement } = this.props;
-            const data = {
-                items: this.state.items,
-                type: this.state.type,
-                username,
-                role
-            };
-            startSubmitReimbursement(data).then(() => this.props.history.push('/dashboard'));
+        this.setToEditing = e => {
+            const state = this.state.topics;
+            // sets editing = to double clicked word
+            this.setState({ editing: e.target.id });
         };
-        this.handleTypeChange = ({ target }) => {
-            this.setState({ type: target.value });
-        };
-        this.handleItemChange = ({ target }) => {
-            const id = target.parentNode.id;
-            const index = target.parentNode.dataset.position;
-            const { prevIndex } = this.state;
-            const newItems = this.state.items.map(item => {
-                // if passed id !== mapped item id, skip item
-                if (id !== item.uid) return item;
-                // else apply changes
-                switch (target.name) {
-                    case 'title':
-                        return Object.assign({}, item, { title: target.value, edited: true });
-                    case 'amount':
-                        return Object.assign({}, item, { amount: target.value.toString(), edited: true });
-                    case 'description':
-                        return Object.assign({}, item, { description: target.value, edited: true });
-                    case 'receipts':
-                        return Object.assign({}, item, { receipts: [...item.receipts, target.value], edited: true });
-                    default:
-                        return item;
-                }
-            });
-            this.setState({ items: newItems, prevIndex: index });
-        };
-        this.handleRemoveItem = uuid => {
-            // array of all elements
-            const { items } = this.state;
-            // array of all elements except last
-            const minusTerminal = items.slice(0, -1);
-            console.log('full: ', items);
-            console.log('without last: ', minusTerminal);
-            if (uuid) {
-                console.log('here is id: ', uuid);
-                items.length > 1 && this.setState({
-                    items: items.filter((item, i) => item.uid !== uuid)
-                });
-                return;
-            } else this.setState({
-                items: minusTerminal
-            });
-        };
-        this.handleAddItem = ({ target }) => {
-            const { items, prevIndex } = this.state;
-            const index = target.parentNode.dataset.position;
-            const penultPosition = items[items.length - 2];
-            const terminalPosition = items[items.length - 1];
-            let penult;
-            // logs before changes are applied
-            console.log('penult: ', penultPosition);
-            console.log('terminal: ', terminalPosition);
-            // create variable (terminal) with data of last object
-            const { uid, receipts, edited } = terminalPosition,
-                  terminal = __rest(terminalPosition
-            // create variable (penult) with data of second to last object
-            , ["uid", "receipts", "edited"]);
-            // create variable (penult) with data of second to last object
-            if (items.length > 1) {
-                let { uid: uid2, receipts: receipts2, edited: edited2 } = penultPosition,
-                    necessary = __rest(penultPosition
-                // assign important properties to second last variable
-                , ["uid", "receipts", "edited"]);
-                // assign important properties to second last variable
-                penult = necessary;
-            }
-            const generateEmptyItem = () => this.setState({
-                items: [...this.state.items, {
-                    uid: helpers_1.generateUuid(),
-                    title: '',
-                    amount: '',
-                    description: '',
-                    receipts: [],
-                    timeOfExpense: 0
-                }]
-            });
-            // comparison object
-            const baseObj = {
-                title: '',
-                amount: '',
-                description: '',
-                timeOfExpense: 0
-            };
-            console.log('second last = base: ', JSON.stringify(penult) === JSON.stringify(baseObj));
-            console.log('last = base: ', JSON.stringify(terminal) === JSON.stringify(baseObj));
-            if (items.length === 1) return generateEmptyItem();
-            // if editing field on same row, don't do anything
-            // if (prevIndex !== index) return
-            console.log('prev index: ', prevIndex, 'curr index: ', index);
-            // if last object is not empty, generate empty field
-            if (JSON.stringify(terminal) !== JSON.stringify(baseObj) && prevIndex === index) return generateEmptyItem();
-            if (JSON.stringify(penult) !== JSON.stringify(baseObj) && index >= items.length - 1 && index !== prevIndex) return generateEmptyItem();
-            if (JSON.stringify(terminal) === JSON.stringify(baseObj) && JSON.stringify(penult) === JSON.stringify(baseObj) &&
-            // index <= items.length - 1 &&
-            items.length > 2) return this.handleRemoveItem();
+        this.handleScroll = e => {
+            // this.getBoundingClientRect().top
+            // console.log('scroll', this.stepInput.current)
+            // const el = e.target
+            // console.log(el)
+            // const minPixel = el.offsetTop
+            // const maxPixel = minPixel + el.scrollHeight
+            // const value = document.body.scrollTop
+            // // respect bounds of element
+            // let percent = (value - minPixel) / (maxPixel - minPixel)
+            // percent = Math.min(1, Math.max(percent, 0)) * 100
         };
         // @ts-ignore
-        this.componentDidMount = () =>
-        // initialize by generating unique id for each item
-        this.state.items.forEach((item, i) => {
-            const items = [...this.state.items];
-            items[i].uid = helpers_1.generateUuid();
-            this.setState({ items });
+        this.componentDidMount = () => {
+            this.props.topics !== undefined && this.setState({ topics: this.props.topics });
+            window.addEventListener('scroll', this.handleScroll, true);
+            this.setState(this.state);
+        };
+        // @ts-ignore
+        this.componentWillUnmount = () => window.removeEventListener('scroll', this.handleScroll);
+        this.handleTextbar = ({ currentTarget }) => {
+            const { startUpdateTextbar } = this.props;
+            const uid = currentTarget.id;
+            console.log('uid: ', uid);
+            // startUpdateTextbar(uid)
+        };
+        this.handleDrag = e => {
+            console.log('dragging...');
+            this.setState({ dragging: true });
+        };
+        this.handleChange = ({ target }) => {
+            const uid = target.id;
+            const newTopics = this.state.topics.map(topic => {
+                // if passed id !== mapped topic id, skip topic
+                if (uid !== topic.uid) return topic;
+                // else change topic value
+                return Object.assign({}, topic, { topic: target.value });
+            });
+            this.setState({ topics: newTopics });
+        };
+        this.handleDelete = ({ currentTarget }) => __awaiter(this, void 0, void 0, function* () {
+            const uid = currentTarget.id;
+            const owner = currentTarget.dataset.owner;
+            const { startDeleteTopic } = this.props;
+            const topic = { uid, owner };
+            startDeleteTopic(topic);
+        });
+        this.handleSubmit = e => __awaiter(this, void 0, void 0, function* () {
+            if (e.charCode === 13 || e.key.toLowerCase() === 'enter') {
+                const uid = e.target.id;
+                const updatedTopic = this.state.topics.filter(topic => topic.uid === uid)[0];
+                this.props.startEditTopic(updatedTopic);
+            }
         });
         // @ts-ignore
         this.render = () => {
-            const { items, errors, type } = this.state;
-            return react_1.default.createElement("form", { id: "reimburse-form", onSubmit: this.handleSubmit, className: "reimbursement-form" }, react_1.default.createElement("div", { className: "type-header" }, react_1.default.createElement("label", { htmlFor: "type", className: "type-label" }, "type"), react_1.default.createElement(react_fontawesome_1.default, { icon: "angle-down", size: "xs", className: "fa-angle-down" }), react_1.default.createElement("select", { name: "type", value: type, onChange: this.handleTypeChange, className: "select-type" }, react_1.default.createElement("option", { value: "lodging" }, "lodging"), react_1.default.createElement("option", { value: "travel" }, "travel"), react_1.default.createElement("option", { value: "food" }, "food"), react_1.default.createElement("option", { value: "other" }, "other"))), react_1.default.createElement("div", { className: "reimbursement-labels" }, react_1.default.createElement("label", { htmlFor: "title" }, "title"), react_1.default.createElement("label", { htmlFor: "amount" }, "amount"), react_1.default.createElement("label", { htmlFor: "description" }, "description"), react_1.default.createElement("label", { htmlFor: "receipts" }, "receipts")), react_1.default.createElement("div", null), this.state.items.map((item, i) => {
-                return react_1.default.createElement(ReimburseItem_1.default, { key: item.uid, index: i, itemData: this.state.items[i], handleAddItem: this.handleAddItem, handleRemoveItem: this.handleRemoveItem, handleItemChange: this.handleItemChange });
-            }), errors && react_1.default.createElement("p", null, errors));
+            const { words, topics } = this.props;
+            const { editing, dragging } = this.state;
+            return react_1.default.createElement("div", { className: "topics-list" }, topics === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), topics !== undefined && topics.length === 0 && react_1.default.createElement("p", null, "You have not created any topics yet."), topics !== undefined && topics.map((topic, i) => react_1.default.createElement("div", { key: topic.uid, id: topic.uid, className: "topic-section", onMouseEnter: this.handleTextbar, ref: div => this[`topic${topic.uid}`] = div }, editing !== topic.uid && react_1.default.createElement("div", { className: "topic-header", id: topic.uid }, react_1.default.createElement("h2", { id: topic.uid, className: "topic-name-in-main-list", onDoubleClick: this.setToEditing }, topic.topic), react_1.default.createElement("div", { className: "trash-container", id: topic.uid, "data-owner": topic.owner, onClick: this.handleDelete }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "trash-alt", className: "trash" }))), editing === topic.uid && react_1.default.createElement(react_input_autosize_1.default
+            // className="edit-definition"
+            , {
+                // className="edit-definition"
+                id: topic.uid, value: this.state.topics.filter(compare => compare.uid === topic.uid).map(topic => topic.topic), onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), !words.some(word => word.topic === topic.uid) && react_1.default.createElement("p", { className: "word-empty" }, "No words yet."), words.map(word => {
+                if (word.topic === topic.uid) return react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word, draggable: "true", onDragStart: e => this.handleDrag(e), className: dragging ? 'drag' : '' });
+            }))), react_1.default.createElement("div", { id: "0", className: "topic-section", onMouseEnter: this.handleTextbar }, words !== undefined && words.some(word => word.topic === 0) && react_1.default.createElement("div", { className: "topic-header" }, react_1.default.createElement("h2", { id: "0", className: "topic-name-in-main-list" }, "Uncategorized")), words !== undefined && words.map(word => word.topic === 0 && react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word }))));
         };
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
 }
-exports.ReimburseForm = ReimburseForm;
-const mapDispatchToProps = state => ({
-    username: state.auth.username,
-    role: state.auth.role
+exports.TopicsList = TopicsList;
+const mapStateToProps = state => ({
+    words: state.lexica.words,
+    topics: state.lexica.topics,
+    results: state.lexica.results,
+    dataIsHere: state.app.dataIsHere
 });
-exports.default = react_redux_1.connect(mapDispatchToProps, { startSubmitReimbursement: app_1.startSubmitReimbursement })(ReimburseForm);
+exports.default = react_redux_1.connect(mapStateToProps, { startEditTopic: words_1.startEditTopic, startDeleteTopic: words_1.startDeleteTopic, startUpdateTextbar: app_1.startUpdateTextbar })(TopicsList);
 ;
 
 (function () {
@@ -2310,33 +3036,31 @@ exports.default = react_redux_1.connect(mapDispatchToProps, { startSubmitReimbur
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(ReimburseItem_1, "ReimburseItem_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(react_fontawesome_1, "react_fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(ReimburseForm, "ReimburseForm", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
-    reactHotLoader.register(mapDispatchToProps, "mapDispatchToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseForm.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(TopicsList, "TopicsList", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
     leaveModule(module);
 })();
 
 ;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./client/app/components/reimbursement/ReimburseItem.tsx":
-/*!***************************************************************!*\
-  !*** ./client/app/components/reimbursement/ReimburseItem.tsx ***!
-  \***************************************************************/
+/***/ "./client/app/components/TopicsListWord.tsx":
+/*!**************************************************!*\
+  !*** ./client/app/components/TopicsListWord.tsx ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
-
-var _this = this;
 
 (function () {
     var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
@@ -2349,17 +3073,12 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js"));
-exports.ReimburseItem = props => {
-    const { handleAddItem, handleItemChange, handleRemoveItem, index, itemData: { uid, title, type, amount, description, receipts } } = props;
-    return react_1.default.createElement("div", { id: uid, onFocus: handleAddItem, "data-position": index, className: "reimbursement-item" }, react_1.default.createElement("input", { type: "text", name: "title", value: title, placeholder: "title", onChange: handleItemChange }), react_1.default.createElement("input", { type: "text", name: "amount", value: amount, placeholder: "amount", onChange: handleItemChange }), react_1.default.createElement("textarea", { name: "description", value: description, placeholder: "more details", onChange: handleItemChange }), react_1.default.createElement("input", { style: { display: 'none' }, name: "file", type: "file", accept: ".jpg,.jpeg,.png,.webp",
-        // onChange={this.onUploadImage}
-        ref: fileInput => _this.fileInput = fileInput }), react_1.default.createElement("button", { type: "submit", className: "receipts button upload", onClick: e => {
-            e.preventDefault();
-            _this.fileInput.click();
-        } }, react_1.default.createElement(react_fontawesome_1.default, { icon: "upload", size: "xs", className: "fa-upload" }), "Upload"), react_1.default.createElement(react_fontawesome_1.default, { icon: "times", className: "fa-times", onClick: el => handleRemoveItem(uid) }));
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+exports.TopicsListWord = props => {
+    const { word } = props;
+    return react_1.default.createElement("div", { key: word.uid, className: "word-group-in-main-list" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("h3", { className: "word-name" }, word.word), react_1.default.createElement("p", { className: "word-definition" }, word.definition)));
 };
-exports.default = exports.ReimburseItem;
+exports.default = exports.TopicsListWord;
 ;
 
 (function () {
@@ -2371,14 +3090,328 @@ exports.default = exports.ReimburseItem;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseItem.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseItem.tsx");
-    reactHotLoader.register(react_fontawesome_1, "react_fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/components/reimbursement/ReimburseItem.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/WordPage.tsx":
+/*!********************************************!*\
+  !*** ./client/app/components/WordPage.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            } catch (e) {
+                reject(e);
+            }
+        }
+        function step(result) {
+            result.done ? resolve(result.value) : new P(function (resolve) {
+                resolve(result.value);
+            }).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client/app/components/Textbar.tsx"));
+const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
+const react_input_autosize_1 = __importDefault(__webpack_require__(/*! react-input-autosize */ "./node_modules/react-input-autosize/lib/AutosizeInput.js"));
+const reactstrap_1 = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/dist/reactstrap.es.js");
+const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+const react_dropzone_1 = __importDefault(__webpack_require__(/*! react-dropzone */ "./node_modules/react-dropzone/dist/es/index.js"));
+const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
+class WordPage extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            word: this.props.chosen !== undefined && this.props.chosen.word,
+            definition: this.props.chosen !== undefined && this.props.chosen.definition,
+            dropdownOpen: false,
+            editingWord: false,
+            editingDefinition: false
+        };
+        this.listenKeyboard = e => (e.key === 'Escape' || e.keyCode === 27) && this.setState({ editingWord: false, editingDefinition: false });
+        // @ts-ignore
+        this.componentDidMount = () => window.addEventListener('keydown', this.listenKeyboard);
+        // @ts-ignore
+        this.componentWillUnmount = () => window.removeEventListener('keydown', this.listenKeyboard);
+        this.toggleDropdown = () => this.setState({ dropdownOpen: !this.state.dropdownOpen });
+        this.handleChange = e => {
+            const type = e.target.dataset.type;
+            type === 'word' && this.setState({ word: e.target.value });
+            type === 'definition' && this.setState({ definition: e.target.value });
+        };
+        this.handleDrop = files => __awaiter(this, void 0, void 0, function* () {
+            const { username, chosen, startAddImageToWord } = this.props;
+            const wordOwner = chosen.uid;
+            // get dropped file
+            const file = files[0];
+            // build url to s3 bucket
+            const url = `http://vocab-app-pics.s3.amazonaws.com/${username}/${wordOwner}/${file.name}`;
+            const dynamoData = { username, wordOwner, url };
+            // upload file to s3 bucket
+            try {
+                const s3upload = yield axios_1.default.put(url, file);
+            } catch (e) {
+                console.log('error uploading to s3 bucket', e);
+            }
+            // send to dynamoDb
+            startAddImageToWord(dynamoData);
+            // try {
+            //   const dynamoUpload = await axios
+            //     .post(
+            //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+            //       dynamoData
+            //     )
+            //     .then(res => res.data)
+            //     .then(user => startAddImageToWord(user))
+            // } catch (e) {
+            //   console.log('error uploading to lambda', e)
+            // }
+        });
+        this.handleDelete = () => __awaiter(this, void 0, void 0, function* () {
+            const { chosen, username, startDeleteWord } = this.props;
+            const word = {
+                username,
+                word: chosen.word,
+                uid: chosen.uid
+            };
+            console.log('deleting word: ', word);
+            yield startDeleteWord(word);
+            this.props.history.push('/dashboard');
+        });
+        this.handleSubmit = e => __awaiter(this, void 0, void 0, function* () {
+            if (e.charCode === 13 || e.key.toLowerCase() === 'enter') {
+                const type = e.target.dataset.type;
+                const word = {
+                    uid: this.props.chosen.uid,
+                    owner: this.props.username,
+                    value: e.target.value,
+                    type
+                };
+                yield this.props.startEditWord(word);
+            }
+        });
+        this.toggleEdit = e => {
+            const type = e.target.dataset.type;
+            type === 'word' && this.setState({ editingWord: !this.state.editingWord });
+            type === 'definition' && this.setState({ editingDefinition: !this.state.editingDefinition });
+        };
+        // @ts-ignore
+        this.render = () => {
+            const { chosen } = this.props;
+            const { word, definition, editingWord, editingDefinition } = this.state;
+            const checkChosen = chosen !== undefined;
+            const checkDefinition = chosen !== undefined && chosen.definition !== undefined;
+            const checkTags = chosen !== undefined && chosen.tags !== undefined;
+            return react_1.default.createElement("div", { className: "word-page" }, react_1.default.createElement(Textbar_1.default, null), word === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), word !== undefined && react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "header" }, !editingWord && react_1.default.createElement("div", null, react_1.default.createElement("h1", { className: "title", "data-type": "word", onDoubleClick: this.toggleEdit }, checkChosen && chosen.word), react_1.default.createElement("div", { className: "ellipsis-container" }, react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root options" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "ellipsis-h", className: "ellipsis" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { left: "true", className: "dropdown-menu", style: {
+                    display: this.state.dropdownOpen === false ? 'none' : 'block'
+                } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item menu-delete", onClick: this.handleDelete }, "Delete"))))), editingWord && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-word", "data-type": "word", value: word, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })), react_1.default.createElement("div", { className: "tag-section" }, checkTags && chosen.tags.join(' '), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "add-tag" })), !editingDefinition && react_1.default.createElement("p", { "data-type": "definition", onDoubleClick: this.toggleEdit }, checkDefinition && chosen.definition), editingDefinition && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-definition", "data-type": "definition", value: definition, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), react_1.default.createElement(react_dropzone_1.default, { onDrop: this.handleDrop }, react_1.default.createElement("p", null, "drop files here:"))));
+        };
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.WordPage = WordPage;
+const mapStateToProps = (state, props) => ({
+    chosen: state.lexica.words !== undefined && state.lexica.words.find(word => word.uid === props.match.params.uid),
+    username: state.auth.username
+});
+exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_1.startEditWord, startDeleteWord: words_1.startDeleteWord, startAddImageToWord: words_1.startAddImageToWord })(WordPage);
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(WordPage, "WordPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/components/modals/NewWordModal.tsx":
+/*!*******************************************************!*\
+  !*** ./client/app/components/modals/NewWordModal.tsx ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+const Modal_1 = __importDefault(__webpack_require__(/*! ../Modal */ "./client/app/components/Modal.tsx"));
+const modal_1 = __webpack_require__(/*! ../../actions/modal */ "./client/app/actions/modal.ts");
+const words_1 = __webpack_require__(/*! ../../actions/words */ "./client/app/actions/words.ts");
+const helpers_1 = __webpack_require__(/*! ../../helpers/helpers */ "./client/app/helpers/helpers.ts");
+class NewWordModal extends react_1.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            topic: '',
+            word: '',
+            definition: '',
+            tags: ''
+        };
+        this.onClose = () => this.props.hideModal();
+        this.onFieldChange = e => {
+            let { name, value } = e.target;
+            this.setState({
+                [name]: value
+            });
+        };
+        this.handleSubmit = e => {
+            e.preventDefault();
+            const { word, definition, topic, tags: stateTags } = this.state;
+            const { username: owner, startAddWord } = this.props;
+            // split tags by: [comma] / space
+            const tags = stateTags.split(',');
+            const uid = helpers_1.generateUuid();
+            const topicUid = helpers_1.generateUuid();
+            const nextWord = { uid, word, definition, tags, topic, topicUid, owner };
+            startAddWord(nextWord).then(() => this.onClose());
+        };
+        // @ts-ignore
+        this.render = () => {
+            const { word, tags, topic, definition } = this.state;
+            return react_1.default.createElement(Modal_1.default, { onClose: this.onClose }, react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "word" }, "Name"), react_1.default.createElement("input", { type: "text", name: "word", value: word })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "tags" }, "Add tags"), react_1.default.createElement("input", { type: "text", name: "tags", value: tags })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "topic" }, "Add topic"), react_1.default.createElement("input", { type: "text", name: "topic", value: topic })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "definition" }, "Definition"), react_1.default.createElement("textarea", { name: "definition", value: definition })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("input", { type: "submit", name: "submit" }))), react_1.default.createElement("p", { onClick: this.onClose }, "click to close modal"));
+        };
+    }
+
+    // @ts-ignore
+    __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
+        this[key] = eval(code);
+    }
+
+}
+exports.NewWordModal = NewWordModal;
+const mapStateToProps = state => ({
+    username: state.auth.username
+});
+// mapStateToProps -- to read from the store
+// mapDispatchToProps -- to write to the store
+exports.default = react_redux_1.connect(mapStateToProps, { startAddWord: words_1.startAddWord, hideModal: modal_1.hideModal })(NewWordModal);
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(Modal_1, "Modal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(NewWordModal, "NewWordModal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
     leaveModule(module);
 })();
 
 ;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/constants/modaltypes.js":
+/*!********************************************!*\
+  !*** ./client/app/constants/modaltypes.js ***!
+  \********************************************/
+/*! exports provided: NEW_WORD_MODAL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NEW_WORD_MODAL", function() { return NEW_WORD_MODAL; });
+const NEW_WORD_MODAL = 'NEW_WORD_MODAL'
+
 
 /***/ }),
 
@@ -2489,61 +3522,10 @@ exports.compareObjects = (obj1, obj2) => {
 
 /***/ }),
 
-/***/ "./client/app/reducers/authorization.ts":
-/*!**********************************************!*\
-  !*** ./client/app/reducers/authorization.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// login user obj will be placed in auth because of auth reducer
-exports.authorizationReducer = (state = {}, action = {}) => {
-    switch (action.type) {
-        case 'LOGIN':
-            return {
-                username: action.user.username,
-                token: action.user.token,
-                role: action.user.role,
-                email: action.user.email,
-                name: action.user.firstname
-            };
-        case 'PERSIST':
-            return {
-                username: action.identity.username,
-                token: action.identity.token
-            };
-        case 'RESTORE':
-            console.log('restore attempt in auth redu..');
-            return {
-                username: action.user.username,
-                token: action.user.token,
-                role: action.user.role,
-                email: action.user.email
-            };
-        case 'LOGOUT':
-            return {};
-        case 'GENERAL':
-            // console.log('general data: ', action.data)
-            return Object.assign({}, state, {
-                // id: action.data.userId,
-                // token: action.data.token,
-                // confirmed: action.data.verified,
-                username: action.data.username, photo: action.data.photo, email: action.data.email });
-        default:
-            return state;
-    }
-};
-
-/***/ }),
-
-/***/ "./client/app/reducers/miscellaneous.ts":
-/*!**********************************************!*\
-  !*** ./client/app/reducers/miscellaneous.ts ***!
-  \**********************************************/
+/***/ "./client/app/reducers/app.ts":
+/*!************************************!*\
+  !*** ./client/app/reducers/app.ts ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2557,17 +3539,154 @@ exports.authorizationReducer = (state = {}, action = {}) => {
 })();
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const initialState = { dataIsHere: false };
-exports.miscellaneousReducer = (state = initialState, action = {}) => {
+const initialState = {
+    dataIsHere: false,
+    position: ''
+    // textbar: 'topic'
+    // showSearch:
+};
+exports.appReducer = (state = initialState, action = {}) => {
     switch (action.type) {
-        case 'REQUEST':
-            return Object.assign({}, state, { reimbursements: action.reimbursements });
         case 'LOGIN':
             return {
                 dataIsHere: true
             };
+        case 'TEXTBAR':
+            return {
+                position: action.uid.length > 0 && action.uid
+            };
         case 'LOGOUT':
             return {};
+        default:
+            return initialState;
+    }
+};
+;
+
+(function () {
+    var reactHotLoader = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").default;
+
+    var leaveModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(initialState, "initialState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/app.ts");
+    leaveModule(module);
+})();
+
+;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./client/app/reducers/auth.ts":
+/*!*************************************!*\
+  !*** ./client/app/reducers/auth.ts ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// login user obj will be placed in auth because of auth reducer
+exports.authReducer = (state = {}, action = {}) => {
+    switch (action.type) {
+        case 'LOGIN':
+            return {
+                token: action.user.token,
+                uid: action.user.uid,
+                email: action.user.email,
+                name: action.user.firstname,
+                last: action.user.lastname,
+                username: action.user.username,
+                profileImage: action.user.profileImage
+            };
+        case 'PERSIST':
+            return {
+                email: action.identity.email,
+                token: action.identity.token,
+                uid: action.identity.uid
+            };
+        case 'UPDATE_USER':
+            console.log('now updating user in reducer');
+            return Object.assign({}, state, { email: action.user.email, name: action.user.firstname, last: action.user.lastname, profileImage: action.user.url });
+        case 'LOGOUT':
+            return {};
+        default:
+            return state;
+    }
+};
+
+/***/ }),
+
+/***/ "./client/app/reducers/lexicon.ts":
+/*!****************************************!*\
+  !*** ./client/app/reducers/lexicon.ts ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.lexiconReducer = (state = {}, action = {}) => {
+    switch (action.type) {
+        case 'LOGIN':
+            return {
+                words: action.user.words,
+                topics: action.user.topics,
+                tags: [...new Set(action.user.words.map(word => word.tags).reduce((append, nextArray) => append.concat(nextArray), []))]
+            };
+        case 'LOGOUT':
+            return {};
+        case 'NEW_WORD':
+            return Object.assign({}, state, { words: action.user.words, topics: action.user.topics });
+        case 'UPDATED_WORD':
+            return Object.assign({}, state, { words: action.user.words });
+        case 'NEW_TOPIC':
+            return Object.assign({}, state, { topics: action.user.topics });
+        case 'DELETE_TOPIC':
+            return Object.assign({}, state, { words: action.user.words, topics: action.user.topics });
+        case 'SEARCH':
+            return Object.assign({}, state, { results: action.search });
+        default:
+            return state;
+    }
+};
+
+/***/ }),
+
+/***/ "./client/app/reducers/modal.ts":
+/*!**************************************!*\
+  !*** ./client/app/reducers/modal.ts ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+(function () {
+    var enterModule = __webpack_require__(/*! react-hot-loader */ "./node_modules/react-hot-loader/index.js").enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const initialModalState = {
+    modalType: null
+};
+exports.modalReducer = (state = initialModalState, action = {}) => {
+    switch (action.type) {
+        case 'SHOW_MODAL':
+            return Object.assign({}, state, { modalType: action.modalType });
+        case 'HIDE_MODAL':
+            return initialModalState;
         default:
             return state;
     }
@@ -2583,54 +3702,12 @@ exports.miscellaneousReducer = (state = initialState, action = {}) => {
         return;
     }
 
-    reactHotLoader.register(initialState, "initialState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/reducers/miscellaneous.ts");
+    reactHotLoader.register(initialModalState, "initialModalState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/modal.ts");
     leaveModule(module);
 })();
 
 ;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
-
-/***/ }),
-
-/***/ "./client/app/reducers/reimbursements.ts":
-/*!***********************************************!*\
-  !*** ./client/app/reducers/reimbursements.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// login user obj will be placed in auth because of auth reducer
-exports.reimburseReducer = (state = {}, action = {}) => {
-    switch (action.type) {
-        case 'LOGIN':
-            return {
-                reimbursements: action.user.reimbursements,
-                everyReimbursement: action.user.pendingTickets
-            };
-        case 'LOGOUT':
-            return {};
-        case 'VERDICTS':
-            console.log('action', action.pendingTickets);
-            return {
-                everyReimbursement: action.pendingTickets
-            };
-        case 'RESTORE':
-            return {
-                reimbursements: action.user.reimbursements,
-                everyReimbursement: action.user.pendingTickets
-            };
-        case 'SUBMIT':
-            return {
-                reimbursements: action.data.Items
-            };
-        default:
-            return state;
-    }
-};
 
 /***/ }),
 
@@ -2669,11 +3746,13 @@ const Routes_1 = __webpack_require__(/*! ./Routes */ "./client/app/routers/Route
 const auth_1 = __webpack_require__(/*! ../actions/auth */ "./client/app/actions/auth.ts");
 const configureStore_1 = __webpack_require__(/*! ../store/configureStore */ "./client/app/store/configureStore.ts");
 const store = configureStore_1.configureStore();
-if (localStorage.ers) {
-    const payload = jwt_decode_1.default(localStorage.ers);
+// TODO: data persistence from localhost
+if (localStorage.wa) {
+    const payload = jwt_decode_1.default(localStorage.wa);
     const user = {
-        username: payload.username,
-        token: localStorage.ers
+        email: payload.email,
+        token: localStorage.wa,
+        uid: localStorage.uid
     };
     // @ts-ignore
     store.dispatch(auth_1.startPersist(user));
@@ -2687,7 +3766,9 @@ class AppRouter extends react_1.Component {
         };
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -2705,12 +3786,12 @@ exports.default = react_hot_loader_1.hot(module)(AppRouter);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(store, "store", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(AppRouter, "AppRouter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(store, "store", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(AppRouter, "AppRouter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
     leaveModule(module);
 })();
 
@@ -2756,6 +3837,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const Header_1 = __importDefault(__webpack_require__(/*! ../components/Header */ "./client/app/components/Header.tsx"));
+const ModalContainer_1 = __importDefault(__webpack_require__(/*! ../components/ModalContainer */ "./client/app/components/ModalContainer.tsx"));
 class PrivateRoute extends react_1.Component {
     constructor() {
         super(...arguments);
@@ -2764,11 +3846,13 @@ class PrivateRoute extends react_1.Component {
             const _a = this.props,
                   { isAuthenticated, component: Component } = _a,
                   rest = __rest(_a, ["isAuthenticated", "component"]);
-            return react_1.default.createElement(react_router_dom_1.Route, Object.assign({}, rest, { component: props => isAuthenticated ? react_1.default.createElement("div", null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(Component, Object.assign({}, props))) : react_1.default.createElement(react_router_dom_1.Redirect, { to: "/login" }) }));
+            return react_1.default.createElement(react_router_dom_1.Route, Object.assign({}, rest, { component: props => isAuthenticated ? react_1.default.createElement("div", null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(Component, Object.assign({}, props)), react_1.default.createElement(ModalContainer_1.default, null)) : react_1.default.createElement(react_router_dom_1.Redirect, { to: "/login" }) }));
         };
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -2776,7 +3860,6 @@ class PrivateRoute extends react_1.Component {
 const mapStateToProps = state => ({
     email: state.auth.email,
     isAuthenticated: !!state.auth.token,
-    reimbursements: state.reimbursements,
     identity: state.auth
 });
 exports.default = react_redux_1.connect(mapStateToProps, null, null, {
@@ -2793,13 +3876,14 @@ exports.default = react_redux_1.connect(mapStateToProps, null, null, {
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(Header_1, "Header_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(PrivateRoute, "PrivateRoute", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(Header_1, "Header_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(ModalContainer_1, "ModalContainer_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(PrivateRoute, "PrivateRoute", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
     leaveModule(module);
 })();
 
@@ -2856,10 +3940,10 @@ exports.default = react_redux_1.connect(mapStateToProps)(exports.PublicRoute);
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
     leaveModule(module);
 })();
 
@@ -2907,14 +3991,29 @@ const LoginPage_1 = __importDefault(__webpack_require__(/*! ../components/LoginP
 const SignupPage_1 = __importDefault(__webpack_require__(/*! ../components/SignupPage */ "./client/app/components/SignupPage.tsx"));
 const SettingsPage_1 = __importDefault(__webpack_require__(/*! ../components/SettingsPage */ "./client/app/components/SettingsPage.tsx"));
 const DashboardPage_1 = __importDefault(__webpack_require__(/*! ../components/DashboardPage */ "./client/app/components/DashboardPage.tsx"));
-const ReimbursePage_1 = __importDefault(__webpack_require__(/*! ../components/ReimbursePage */ "./client/app/components/ReimbursePage.tsx"));
+const GlossaryPage_1 = __importDefault(__webpack_require__(/*! ../components/GlossaryPage */ "./client/app/components/GlossaryPage.tsx"));
+const TagsPage_1 = __importDefault(__webpack_require__(/*! ../components/TagsPage */ "./client/app/components/TagsPage.tsx"));
+const WordPage_1 = __importDefault(__webpack_require__(/*! ../components/WordPage */ "./client/app/components/WordPage.tsx"));
 const NotFoundPage_1 = __importDefault(__webpack_require__(/*! ../components/NotFoundPage */ "./client/app/components/NotFoundPage.tsx"));
+const ProfilePage_1 = __importDefault(__webpack_require__(/*! ../components/ProfilePage */ "./client/app/components/ProfilePage.tsx"));
 exports.history = createBrowserHistory_1.default();
-const mql = window.matchMedia(`(min-width: 800px)`);
+const mql = window.matchMedia(`(min-width: 100px)`);
 // sidebar content
 const sidebar = react_1.default.createElement(SidebarContent_1.default, null);
-const publicRoutes = react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PublicRoute_1.default, { exact: true, path: "/", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/signup", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/login", component: LoginPage_1.default }));
-const privateRoutes = react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PrivateRoute_1.default, { path: "/settings", component: SettingsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/dashboard", component: DashboardPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/create", component: ReimbursePage_1.default }));
+// const publicRoutes = (
+//   <Switch>
+//     <PublicRoute exact path="/" component={SignupPage} />
+//     <PublicRoute path="/signup" component={SignupPage} />
+//     <PublicRoute path="/login" component={LoginPage} />
+//   </Switch>
+// )
+// const privateRoutes = (
+//   <Switch>
+//     <PrivateRoute path="/settings" component={SettingsPage} />
+//     <PrivateRoute path="/dashboard" component={DashboardPage} />
+//     <PrivateRoute path="/create" component={ReimbursePage} />
+//   </Switch>
+// )
 // const routes = (
 //   <Switch>
 //     <PublicRoute exact path="/" component={SignupPage} />
@@ -2947,10 +4046,11 @@ class Pages extends react_1.Component {
         };
         this.onSetSidebarOpen = () => this.setState({ sidebarOpen: !this.state.sidebarOpen });
         // @ts-ignore
-        this.shouldComponentUpdate = () => false;
+        // shouldComponentUpdate = () => false
+        // convert sidebar routes back to PrivateRoute
         // @ts-ignore
         this.render = () => {
-            return react_1.default.createElement(react_router_dom_1.Router, { history: exports.history }, react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PublicRoute_1.default, { exact: true, path: "/", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/signup", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/login", component: LoginPage_1.default }), react_1.default.createElement(react_sidebar_1.default, { sidebar: sidebar, open: this.state.sidebarOpen, docked: this.state.sidebarDocked, onSetOpen: this.onSetSidebarOpen, sidebarClassName: "sidebar", transitions: false }, react_1.default.createElement(PrivateRoute_1.default, { path: "/create", component: ReimbursePage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/dashboard", component: DashboardPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/settings", component: SettingsPage_1.default })), react_1.default.createElement(react_router_dom_1.Route, { component: NotFoundPage_1.default })));
+            return react_1.default.createElement(react_router_dom_1.Router, { history: exports.history }, react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PublicRoute_1.default, { exact: true, path: "/", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/signup", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/login", component: LoginPage_1.default }), react_1.default.createElement(react_sidebar_1.default, { sidebar: sidebar, open: this.state.sidebarOpen, docked: this.state.sidebarDocked, onSetOpen: this.onSetSidebarOpen, sidebarClassName: "sidebar", transitions: false }, react_1.default.createElement(PrivateRoute_1.default, { path: "/dashboard", component: DashboardPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/glossary", component: GlossaryPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/tags", component: TagsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/word/:uid", component: WordPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/settings", component: SettingsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/profile", component: ProfilePage_1.default })), react_1.default.createElement(react_router_dom_1.Route, { component: NotFoundPage_1.default })));
         };
     }
     componentWillMount() {
@@ -2961,7 +4061,9 @@ class Pages extends react_1.Component {
         this.state.mql.removeListener(this.mediaQueryChanged);
     }
 
+    // @ts-ignore
     __reactstandin__regenerateByEval(key, code) {
+        // @ts-ignore
         this[key] = eval(code);
     }
 
@@ -2982,26 +4084,27 @@ exports.default = react_redux_1.connect(mapStateToProps)(Pages);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(LoginPage_1, "LoginPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SignupPage_1, "SignupPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(ReimbursePage_1, "ReimbursePage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mql, "mql", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(sidebar, "sidebar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(publicRoutes, "publicRoutes", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(privateRoutes, "privateRoutes", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(Pages, "Pages", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(LoginPage_1, "LoginPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SignupPage_1, "SignupPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(GlossaryPage_1, "GlossaryPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(TagsPage_1, "TagsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(WordPage_1, "WordPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(ProfilePage_1, "ProfilePage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mql, "mql", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(sidebar, "sidebar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(Pages, "Pages", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
     leaveModule(module);
 })();
 
@@ -3033,9 +4136,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const redux_1 = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const redux_thunk_1 = __importDefault(__webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js"));
-const authorization_1 = __webpack_require__(/*! ../reducers/authorization */ "./client/app/reducers/authorization.ts");
-const reimbursements_1 = __webpack_require__(/*! ../reducers/reimbursements */ "./client/app/reducers/reimbursements.ts");
-const miscellaneous_1 = __webpack_require__(/*! ../reducers/miscellaneous */ "./client/app/reducers/miscellaneous.ts");
+const app_1 = __webpack_require__(/*! ../reducers/app */ "./client/app/reducers/app.ts");
+const auth_1 = __webpack_require__(/*! ../reducers/auth */ "./client/app/reducers/auth.ts");
+const lexicon_1 = __webpack_require__(/*! ../reducers/lexicon */ "./client/app/reducers/lexicon.ts");
+const modal_1 = __webpack_require__(/*! ../reducers/modal */ "./client/app/reducers/modal.ts");
 // middleware is called every store update
 const checkTokenExpirationMiddleware = store => next => action => {
     // if (localStorage.ers) {
@@ -3047,13 +4151,13 @@ const checkTokenExpirationMiddleware = store => next => action => {
     // }
     next(action);
 };
-// how does it work??
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux_1.compose;
 exports.configureStore = () => {
     const store = redux_1.createStore(redux_1.combineReducers({
-        mis: miscellaneous_1.miscellaneousReducer,
-        auth: authorization_1.authorizationReducer,
-        reimbursements: reimbursements_1.reimburseReducer
+        app: app_1.appReducer,
+        auth: auth_1.authReducer,
+        lexica: lexicon_1.lexiconReducer,
+        modal: modal_1.modalReducer
     }), composeEnhancers(redux_1.applyMiddleware(redux_thunk_1.default, checkTokenExpirationMiddleware)));
     return store;
 };
@@ -3068,10 +4172,10 @@ exports.configureStore = () => {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/store/configureStore.ts");
-    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/store/configureStore.ts");
-    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/store/configureStore.ts");
-    reactHotLoader.register(composeEnhancers, "composeEnhancers", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/frontend/client/app/store/configureStore.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(composeEnhancers, "composeEnhancers", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
     leaveModule(module);
 })();
 
@@ -3089,7 +4193,7 @@ exports.configureStore = () => {
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942685
+      // 1530197466556
       var cssReload = __webpack_require__(/*! ../../../node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -5115,6 +6219,1957 @@ bunker(function () {
 
 /***/ }),
 
+/***/ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@fortawesome/fontawesome-svg-core/index.es.js ***!
+  \********************************************************************/
+/*! exports provided: icon, noAuto, config, toHtml, layer, text, counter, library, dom, parse, findIconDefinition */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "icon", function() { return icon; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noAuto", function() { return noAuto; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toHtml", function() { return toHtml; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "layer", function() { return layer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "text", function() { return text; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "counter", function() { return counter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "library", function() { return library; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dom", function() { return dom; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findIconDefinition", function() { return findIconDefinition; });
+/*!
+ * Font Awesome Free 5.1.0 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+var noop = function noop() {};
+
+var _WINDOW = {};
+var _DOCUMENT = {};
+var _MUTATION_OBSERVER$1 = null;
+var _PERFORMANCE = { mark: noop, measure: noop };
+
+try {
+  if (typeof window !== 'undefined') _WINDOW = window;
+  if (typeof document !== 'undefined') _DOCUMENT = document;
+  if (typeof MutationObserver !== 'undefined') _MUTATION_OBSERVER$1 = MutationObserver;
+  if (typeof performance !== 'undefined') _PERFORMANCE = performance;
+} catch (e) {}
+
+var _ref = _WINDOW.navigator || {};
+var _ref$userAgent = _ref.userAgent;
+var userAgent = _ref$userAgent === undefined ? '' : _ref$userAgent;
+
+var WINDOW = _WINDOW;
+var DOCUMENT = _DOCUMENT;
+var MUTATION_OBSERVER = _MUTATION_OBSERVER$1;
+var PERFORMANCE = _PERFORMANCE;
+
+var IS_DOM = !!DOCUMENT.documentElement && !!DOCUMENT.head && typeof DOCUMENT.addEventListener === 'function' && typeof DOCUMENT.createElement === 'function';
+var IS_IE = ~userAgent.indexOf('MSIE') || ~userAgent.indexOf('Trident/');
+
+var NAMESPACE_IDENTIFIER = '___FONT_AWESOME___';
+var UNITS_IN_GRID = 16;
+var DEFAULT_FAMILY_PREFIX = 'fa';
+var DEFAULT_REPLACEMENT_CLASS = 'svg-inline--fa';
+var DATA_FA_I2SVG = 'data-fa-i2svg';
+var DATA_FA_PSEUDO_ELEMENT = 'data-fa-pseudo-element';
+var DATA_PREFIX = 'data-prefix';
+var DATA_ICON = 'data-icon';
+var HTML_CLASS_I2SVG_BASE_CLASS = 'fontawesome-i2svg';
+var TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS = ['HTML', 'HEAD', 'STYLE', 'SCRIPT'];
+var PRODUCTION = function () {
+  try {
+    return "development" === 'production';
+  } catch (e) {
+    return false;
+  }
+}();
+
+var oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var oneToTwenty = oneToTen.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+
+var ATTRIBUTES_WATCHED_FOR_MUTATION = ['class', 'data-prefix', 'data-icon', 'data-fa-transform', 'data-fa-mask'];
+
+var RESERVED_CLASSES = ['xs', 'sm', 'lg', 'fw', 'ul', 'li', 'border', 'pull-left', 'pull-right', 'spin', 'pulse', 'rotate-90', 'rotate-180', 'rotate-270', 'flip-horizontal', 'flip-vertical', 'stack', 'stack-1x', 'stack-2x', 'inverse', 'layers', 'layers-text', 'layers-counter'].concat(oneToTen.map(function (n) {
+  return n + 'x';
+})).concat(oneToTwenty.map(function (n) {
+  return 'w-' + n;
+}));
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
+var initial = WINDOW.FontAwesomeConfig || {};
+
+function getAttrConfig(attr) {
+  var element = DOCUMENT.querySelector('script[' + attr + ']');
+
+  if (element) {
+    return element.getAttribute(attr);
+  }
+}
+
+function coerce(val) {
+  // Getting an empty string will occur if the attribute is set on the HTML tag but without a value
+  // We'll assume that this is an indication that it should be toggled to true
+  // For example <script data-search-pseudo-elements src="..."></script>
+  if (val === '') return true;
+  if (val === 'false') return false;
+  if (val === 'true') return true;
+  return val;
+}
+
+if (DOCUMENT && typeof DOCUMENT.querySelector === 'function') {
+  var attrs = [['data-family-prefix', 'familyPrefix'], ['data-replacement-class', 'replacementClass'], ['data-auto-replace-svg', 'autoReplaceSvg'], ['data-auto-add-css', 'autoAddCss'], ['data-auto-a11y', 'autoA11y'], ['data-search-pseudo-elements', 'searchPseudoElements'], ['data-observe-mutations', 'observeMutations'], ['data-keep-original-source', 'keepOriginalSource'], ['data-measure-performance', 'measurePerformance'], ['data-show-missing-icons', 'showMissingIcons']];
+
+  attrs.forEach(function (_ref) {
+    var _ref2 = slicedToArray(_ref, 2),
+        attr = _ref2[0],
+        key = _ref2[1];
+
+    var val = coerce(getAttrConfig(attr));
+
+    if (val !== undefined && val !== null) {
+      initial[key] = val;
+    }
+  });
+}
+
+var _default = _extends({
+  familyPrefix: DEFAULT_FAMILY_PREFIX,
+  replacementClass: DEFAULT_REPLACEMENT_CLASS,
+  autoReplaceSvg: true,
+  autoAddCss: true,
+  autoA11y: true,
+  searchPseudoElements: false,
+  observeMutations: true,
+  keepOriginalSource: true,
+  measurePerformance: false,
+  showMissingIcons: true
+}, initial);
+
+if (!_default.autoReplaceSvg) _default.observeMutations = false;
+
+var config = _extends({}, _default);
+
+WINDOW.FontAwesomeConfig = config;
+
+var w = WINDOW || {};
+
+if (!w[NAMESPACE_IDENTIFIER]) w[NAMESPACE_IDENTIFIER] = {};
+if (!w[NAMESPACE_IDENTIFIER].styles) w[NAMESPACE_IDENTIFIER].styles = {};
+if (!w[NAMESPACE_IDENTIFIER].hooks) w[NAMESPACE_IDENTIFIER].hooks = {};
+if (!w[NAMESPACE_IDENTIFIER].shims) w[NAMESPACE_IDENTIFIER].shims = [];
+
+var namespace = w[NAMESPACE_IDENTIFIER];
+
+var functions = [];
+var listener = function listener() {
+  DOCUMENT.removeEventListener('DOMContentLoaded', listener);
+  loaded = 1;
+  functions.map(function (fn) {
+    return fn();
+  });
+};
+
+var loaded = false;
+
+if (IS_DOM) {
+  loaded = (DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/).test(DOCUMENT.readyState);
+
+  if (!loaded) DOCUMENT.addEventListener('DOMContentLoaded', listener);
+}
+
+var domready = function (fn) {
+  if (!IS_DOM) return;
+  loaded ? setTimeout(fn, 0) : functions.push(fn);
+};
+
+var d = UNITS_IN_GRID;
+
+var meaninglessTransform = {
+  size: 16,
+  x: 0,
+  y: 0,
+  rotate: 0,
+  flipX: false,
+  flipY: false
+};
+
+function isReserved(name) {
+  return ~RESERVED_CLASSES.indexOf(name);
+}
+
+
+
+function insertCss(css) {
+  if (!css || !IS_DOM) {
+    return;
+  }
+
+  var style = DOCUMENT.createElement('style');
+  style.setAttribute('type', 'text/css');
+  style.innerHTML = css;
+
+  var headChildren = DOCUMENT.head.childNodes;
+  var beforeChild = null;
+
+  for (var i = headChildren.length - 1; i > -1; i--) {
+    var child = headChildren[i];
+    var tagName = (child.tagName || '').toUpperCase();
+    if (['STYLE', 'LINK'].indexOf(tagName) > -1) {
+      beforeChild = child;
+    }
+  }
+
+  DOCUMENT.head.insertBefore(style, beforeChild);
+
+  return css;
+}
+
+var _uniqueId = 0;
+
+function nextUniqueId() {
+  _uniqueId++;
+
+  return _uniqueId;
+}
+
+function toArray(obj) {
+  var array = [];
+
+  for (var i = (obj || []).length >>> 0; i--;) {
+    array[i] = obj[i];
+  }
+
+  return array;
+}
+
+function classArray(node) {
+  if (node.classList) {
+    return toArray(node.classList);
+  } else {
+    return (node.getAttribute('class') || '').split(' ').filter(function (i) {
+      return i;
+    });
+  }
+}
+
+function getIconName(familyPrefix, cls) {
+  var parts = cls.split('-');
+  var prefix = parts[0];
+  var iconName = parts.slice(1).join('-');
+
+  if (prefix === familyPrefix && iconName !== '' && !isReserved(iconName)) {
+    return iconName;
+  } else {
+    return null;
+  }
+}
+
+function htmlEscape(str) {
+  return ('' + str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function joinAttributes(attributes) {
+  return Object.keys(attributes || {}).reduce(function (acc, attributeName) {
+    return acc + (attributeName + '="' + htmlEscape(attributes[attributeName]) + '" ');
+  }, '').trim();
+}
+
+function joinStyles(styles) {
+  return Object.keys(styles || {}).reduce(function (acc, styleName) {
+    return acc + (styleName + ': ' + styles[styleName] + ';');
+  }, '');
+}
+
+function transformIsMeaningful(transform) {
+  return transform.size !== meaninglessTransform.size || transform.x !== meaninglessTransform.x || transform.y !== meaninglessTransform.y || transform.rotate !== meaninglessTransform.rotate || transform.flipX || transform.flipY;
+}
+
+function transformForSvg(_ref) {
+  var transform = _ref.transform,
+      containerWidth = _ref.containerWidth,
+      iconWidth = _ref.iconWidth;
+
+  var outer = {
+    transform: 'translate(' + containerWidth / 2 + ' 256)'
+  };
+  var innerTranslate = 'translate(' + transform.x * 32 + ', ' + transform.y * 32 + ') ';
+  var innerScale = 'scale(' + transform.size / 16 * (transform.flipX ? -1 : 1) + ', ' + transform.size / 16 * (transform.flipY ? -1 : 1) + ') ';
+  var innerRotate = 'rotate(' + transform.rotate + ' 0 0)';
+  var inner = {
+    transform: innerTranslate + ' ' + innerScale + ' ' + innerRotate
+  };
+  var path = {
+    transform: 'translate(' + iconWidth / 2 * -1 + ' -256)'
+  };
+  return {
+    outer: outer,
+    inner: inner,
+    path: path
+  };
+}
+
+function transformForCss(_ref2) {
+  var transform = _ref2.transform,
+      _ref2$width = _ref2.width,
+      width = _ref2$width === undefined ? UNITS_IN_GRID : _ref2$width,
+      _ref2$height = _ref2.height,
+      height = _ref2$height === undefined ? UNITS_IN_GRID : _ref2$height,
+      _ref2$startCentered = _ref2.startCentered,
+      startCentered = _ref2$startCentered === undefined ? false : _ref2$startCentered;
+
+  var val = '';
+
+  if (startCentered && IS_IE) {
+    val += 'translate(' + (transform.x / d - width / 2) + 'em, ' + (transform.y / d - height / 2) + 'em) ';
+  } else if (startCentered) {
+    val += 'translate(calc(-50% + ' + transform.x / d + 'em), calc(-50% + ' + transform.y / d + 'em)) ';
+  } else {
+    val += 'translate(' + transform.x / d + 'em, ' + transform.y / d + 'em) ';
+  }
+
+  val += 'scale(' + transform.size / d * (transform.flipX ? -1 : 1) + ', ' + transform.size / d * (transform.flipY ? -1 : 1) + ') ';
+  val += 'rotate(' + transform.rotate + 'deg) ';
+
+  return val;
+}
+
+var ALL_SPACE = {
+  x: 0,
+  y: 0,
+  width: '100%',
+  height: '100%'
+};
+
+var makeIconMasking = function (_ref) {
+  var children = _ref.children,
+      attributes = _ref.attributes,
+      main = _ref.main,
+      mask = _ref.mask,
+      transform = _ref.transform;
+  var mainWidth = main.width,
+      mainPath = main.icon;
+  var maskWidth = mask.width,
+      maskPath = mask.icon;
+
+
+  var trans = transformForSvg({ transform: transform, containerWidth: maskWidth, iconWidth: mainWidth });
+
+  var maskRect = {
+    tag: 'rect',
+    attributes: _extends({}, ALL_SPACE, {
+      fill: 'white'
+    })
+  };
+  var maskInnerGroup = {
+    tag: 'g',
+    attributes: _extends({}, trans.inner),
+    children: [{ tag: 'path', attributes: _extends({}, mainPath.attributes, trans.path, { fill: 'black' }) }]
+  };
+  var maskOuterGroup = {
+    tag: 'g',
+    attributes: _extends({}, trans.outer),
+    children: [maskInnerGroup]
+  };
+  var maskId = 'mask-' + nextUniqueId();
+  var clipId = 'clip-' + nextUniqueId();
+  var maskTag = {
+    tag: 'mask',
+    attributes: _extends({}, ALL_SPACE, {
+      id: maskId,
+      maskUnits: 'userSpaceOnUse',
+      maskContentUnits: 'userSpaceOnUse'
+    }),
+    children: [maskRect, maskOuterGroup]
+  };
+  var defs = {
+    tag: 'defs',
+    children: [{ tag: 'clipPath', attributes: { id: clipId }, children: [maskPath] }, maskTag]
+  };
+
+  children.push(defs, { tag: 'rect', attributes: _extends({ fill: 'currentColor', 'clip-path': 'url(#' + clipId + ')', mask: 'url(#' + maskId + ')' }, ALL_SPACE) });
+
+  return {
+    children: children,
+    attributes: attributes
+  };
+};
+
+var makeIconStandard = function (_ref) {
+  var children = _ref.children,
+      attributes = _ref.attributes,
+      main = _ref.main,
+      transform = _ref.transform,
+      styles = _ref.styles;
+
+  var styleString = joinStyles(styles);
+
+  if (styleString.length > 0) {
+    attributes['style'] = styleString;
+  }
+
+  if (transformIsMeaningful(transform)) {
+    var trans = transformForSvg({ transform: transform, containerWidth: main.width, iconWidth: main.width });
+    children.push({
+      tag: 'g',
+      attributes: _extends({}, trans.outer),
+      children: [{
+        tag: 'g',
+        attributes: _extends({}, trans.inner),
+        children: [{
+          tag: main.icon.tag,
+          children: main.icon.children,
+          attributes: _extends({}, main.icon.attributes, trans.path)
+        }]
+      }]
+    });
+  } else {
+    children.push(main.icon);
+  }
+
+  return {
+    children: children,
+    attributes: attributes
+  };
+};
+
+var asIcon = function (_ref) {
+  var children = _ref.children,
+      main = _ref.main,
+      mask = _ref.mask,
+      attributes = _ref.attributes,
+      styles = _ref.styles,
+      transform = _ref.transform;
+
+  if (transformIsMeaningful(transform) && main.found && !mask.found) {
+    var width = main.width,
+        height = main.height;
+
+    var offset = {
+      x: width / height / 2,
+      y: 0.5
+    };
+    attributes['style'] = joinStyles(_extends({}, styles, {
+      'transform-origin': offset.x + transform.x / 16 + 'em ' + (offset.y + transform.y / 16) + 'em'
+    }));
+  }
+
+  return [{
+    tag: 'svg',
+    attributes: attributes,
+    children: children
+  }];
+};
+
+var asSymbol = function (_ref) {
+  var prefix = _ref.prefix,
+      iconName = _ref.iconName,
+      children = _ref.children,
+      attributes = _ref.attributes,
+      symbol = _ref.symbol;
+
+  var id = symbol === true ? prefix + '-' + config.familyPrefix + '-' + iconName : symbol;
+
+  return [{
+    tag: 'svg',
+    attributes: {
+      style: 'display: none;'
+    },
+    children: [{
+      tag: 'symbol',
+      attributes: _extends({}, attributes, { id: id }),
+      children: children
+    }]
+  }];
+};
+
+function makeInlineSvgAbstract(params) {
+  var _params$icons = params.icons,
+      main = _params$icons.main,
+      mask = _params$icons.mask,
+      prefix = params.prefix,
+      iconName = params.iconName,
+      transform = params.transform,
+      symbol = params.symbol,
+      title = params.title,
+      extra = params.extra,
+      _params$watchable = params.watchable,
+      watchable = _params$watchable === undefined ? false : _params$watchable;
+
+  var _ref = mask.found ? mask : main,
+      width = _ref.width,
+      height = _ref.height;
+
+  var widthClass = 'fa-w-' + Math.ceil(width / height * 16);
+  var attrClass = [config.replacementClass, iconName ? config.familyPrefix + '-' + iconName : '', widthClass].filter(function (c) {
+    return extra.classes.indexOf(c) === -1;
+  }).concat(extra.classes).join(' ');
+
+  var content = {
+    children: [],
+    attributes: _extends({}, extra.attributes, {
+      'data-prefix': prefix,
+      'data-icon': iconName,
+      'class': attrClass,
+      'role': 'img',
+      'xmlns': 'http://www.w3.org/2000/svg',
+      'viewBox': '0 0 ' + width + ' ' + height
+    })
+  };
+
+  if (watchable) {
+    content.attributes[DATA_FA_I2SVG] = '';
+  }
+
+  if (title) content.children.push({ tag: 'title', attributes: { id: content.attributes['aria-labelledby'] || 'title-' + nextUniqueId() }, children: [title] });
+
+  var args = _extends({}, content, {
+    prefix: prefix,
+    iconName: iconName,
+    main: main,
+    mask: mask,
+    transform: transform,
+    symbol: symbol,
+    styles: extra.styles
+  });
+
+  var _ref2 = mask.found && main.found ? makeIconMasking(args) : makeIconStandard(args),
+      children = _ref2.children,
+      attributes = _ref2.attributes;
+
+  args.children = children;
+  args.attributes = attributes;
+
+  if (symbol) {
+    return asSymbol(args);
+  } else {
+    return asIcon(args);
+  }
+}
+
+function makeLayersTextAbstract(params) {
+  var content = params.content,
+      width = params.width,
+      height = params.height,
+      transform = params.transform,
+      title = params.title,
+      extra = params.extra,
+      _params$watchable2 = params.watchable,
+      watchable = _params$watchable2 === undefined ? false : _params$watchable2;
+
+
+  var attributes = _extends({}, extra.attributes, title ? { 'title': title } : {}, {
+    'class': extra.classes.join(' ')
+  });
+
+  if (watchable) {
+    attributes[DATA_FA_I2SVG] = '';
+  }
+
+  var styles = _extends({}, extra.styles);
+
+  if (transformIsMeaningful(transform)) {
+    styles['transform'] = transformForCss({ transform: transform, startCentered: true, width: width, height: height });
+    styles['-webkit-transform'] = styles['transform'];
+  }
+
+  var styleString = joinStyles(styles);
+
+  if (styleString.length > 0) {
+    attributes['style'] = styleString;
+  }
+
+  var val = [];
+
+  val.push({
+    tag: 'span',
+    attributes: attributes,
+    children: [content]
+  });
+
+  if (title) {
+    val.push({ tag: 'span', attributes: { class: 'sr-only' }, children: [title] });
+  }
+
+  return val;
+}
+
+function makeLayersCounterAbstract(params) {
+  var content = params.content,
+      title = params.title,
+      extra = params.extra;
+
+
+  var attributes = _extends({}, extra.attributes, title ? { 'title': title } : {}, {
+    'class': extra.classes.join(' ')
+  });
+
+  var styleString = joinStyles(extra.styles);
+
+  if (styleString.length > 0) {
+    attributes['style'] = styleString;
+  }
+
+  var val = [];
+
+  val.push({
+    tag: 'span',
+    attributes: attributes,
+    children: [content]
+  });
+
+  if (title) {
+    val.push({ tag: 'span', attributes: { class: 'sr-only' }, children: [title] });
+  }
+
+  return val;
+}
+
+var noop$2 = function noop() {};
+var p = config.measurePerformance && PERFORMANCE && PERFORMANCE.mark && PERFORMANCE.measure ? PERFORMANCE : { mark: noop$2, measure: noop$2 };
+var preamble = 'FA "5.1.0"';
+
+var begin = function begin(name) {
+  p.mark(preamble + ' ' + name + ' begins');
+  return function () {
+    return end(name);
+  };
+};
+
+var end = function end(name) {
+  p.mark(preamble + ' ' + name + ' ends');
+  p.measure(preamble + ' ' + name, preamble + ' ' + name + ' begins', preamble + ' ' + name + ' ends');
+};
+
+var perf = { begin: begin, end: end };
+
+'use strict';
+
+/**
+ * Internal helper to bind a function known to have 4 arguments
+ * to a given context.
+ */
+var bindInternal4 = function bindInternal4 (func, thisContext) {
+  return function (a, b, c, d) {
+    return func.call(thisContext, a, b, c, d);
+  };
+};
+
+'use strict';
+
+
+
+/**
+ * # Reduce
+ *
+ * A fast object `.reduce()` implementation.
+ *
+ * @param  {Object}   subject      The object to reduce over.
+ * @param  {Function} fn           The reducer function.
+ * @param  {mixed}    initialValue The initial value for the reducer, defaults to subject[0].
+ * @param  {Object}   thisContext  The context for the reducer.
+ * @return {mixed}                 The final result.
+ */
+var reduce = function fastReduceObject (subject, fn, initialValue, thisContext) {
+  var keys = Object.keys(subject),
+      length = keys.length,
+      iterator = thisContext !== undefined ? bindInternal4(fn, thisContext) : fn,
+      i, key, result;
+
+  if (initialValue === undefined) {
+    i = 1;
+    result = subject[keys[0]];
+  }
+  else {
+    i = 0;
+    result = initialValue;
+  }
+
+  for (; i < length; i++) {
+    key = keys[i];
+    result = iterator(result, subject[key], key, subject);
+  }
+
+  return result;
+};
+
+var styles$2 = namespace.styles;
+var shims = namespace.shims;
+
+
+var _byUnicode = {};
+var _byLigature = {};
+var _byOldName = {};
+
+var build = function build() {
+  var lookup = function lookup(reducer) {
+    return reduce(styles$2, function (o, style, prefix) {
+      o[prefix] = reduce(style, reducer, {});
+      return o;
+    }, {});
+  };
+
+  _byUnicode = lookup(function (acc, icon, iconName) {
+    acc[icon[3]] = iconName;
+
+    return acc;
+  });
+
+  _byLigature = lookup(function (acc, icon, iconName) {
+    var ligatures = icon[2];
+
+    acc[iconName] = iconName;
+
+    ligatures.forEach(function (ligature) {
+      acc[ligature] = iconName;
+    });
+
+    return acc;
+  });
+
+  var hasRegular = 'far' in styles$2;
+
+  _byOldName = reduce(shims, function (acc, shim) {
+    var oldName = shim[0];
+    var prefix = shim[1];
+    var iconName = shim[2];
+
+    if (prefix === 'far' && !hasRegular) {
+      prefix = 'fas';
+    }
+
+    acc[oldName] = { prefix: prefix, iconName: iconName };
+
+    return acc;
+  }, {});
+};
+
+build();
+
+function byUnicode(prefix, unicode) {
+  return _byUnicode[prefix][unicode];
+}
+
+function byLigature(prefix, ligature) {
+  return _byLigature[prefix][ligature];
+}
+
+function byOldName(name) {
+  return _byOldName[name] || { prefix: null, iconName: null };
+}
+
+var styles$1 = namespace.styles;
+
+
+var emptyCanonicalIcon = function emptyCanonicalIcon() {
+  return { prefix: null, iconName: null, rest: [] };
+};
+
+function getCanonicalIcon(values) {
+  return values.reduce(function (acc, cls) {
+    var iconName = getIconName(config.familyPrefix, cls);
+
+    if (styles$1[cls]) {
+      acc.prefix = cls;
+    } else if (iconName) {
+      var shim = acc.prefix === 'fa' ? byOldName(iconName) : {};
+
+      acc.iconName = shim.iconName || iconName;
+      acc.prefix = shim.prefix || acc.prefix;
+    } else if (cls !== config.replacementClass && cls.indexOf('fa-w-') !== 0) {
+      acc.rest.push(cls);
+    }
+
+    return acc;
+  }, emptyCanonicalIcon());
+}
+
+function iconFromMapping(mapping, prefix, iconName) {
+  if (mapping && mapping[prefix] && mapping[prefix][iconName]) {
+    return {
+      prefix: prefix,
+      iconName: iconName,
+      icon: mapping[prefix][iconName]
+    };
+  }
+}
+
+function toHtml(abstractNodes) {
+  var tag = abstractNodes.tag,
+      _abstractNodes$attrib = abstractNodes.attributes,
+      attributes = _abstractNodes$attrib === undefined ? {} : _abstractNodes$attrib,
+      _abstractNodes$childr = abstractNodes.children,
+      children = _abstractNodes$childr === undefined ? [] : _abstractNodes$childr;
+
+
+  if (typeof abstractNodes === 'string') {
+    return htmlEscape(abstractNodes);
+  } else {
+    return '<' + tag + ' ' + joinAttributes(attributes) + '>' + children.map(toHtml).join('') + '</' + tag + '>';
+  }
+}
+
+var noop$1 = function noop() {};
+
+function isWatched(node) {
+  var i2svg = node.getAttribute ? node.getAttribute(DATA_FA_I2SVG) : null;
+
+  return typeof i2svg === 'string';
+}
+
+function getMutator() {
+  if (config.autoReplaceSvg === true) {
+    return mutators.replace;
+  }
+
+  var mutator = mutators[config.autoReplaceSvg];
+
+  return mutator || mutators.replace;
+}
+
+var mutators = {
+  replace: function replace(mutation) {
+    var node = mutation[0];
+    var abstract = mutation[1];
+    var newOuterHTML = abstract.map(function (a) {
+      return toHtml(a);
+    }).join('\n');
+
+    if (node.parentNode && node.outerHTML) {
+      node.outerHTML = newOuterHTML + (config.keepOriginalSource && node.tagName.toLowerCase() !== 'svg' ? '<!-- ' + node.outerHTML + ' -->' : '');
+    } else if (node.parentNode) {
+      var newNode = document.createElement('span');
+      node.parentNode.replaceChild(newNode, node);
+      newNode.outerHTML = newOuterHTML;
+    }
+  },
+  nest: function nest(mutation) {
+    var node = mutation[0];
+    var abstract = mutation[1];
+
+    // If we already have a replaced node we do not want to continue nesting within it.
+    // Short-circuit to the standard replacement
+    if (~classArray(node).indexOf(config.replacementClass)) {
+      return mutators.replace(mutation);
+    }
+
+    var forSvg = new RegExp(config.familyPrefix + '-.*');
+
+    delete abstract[0].attributes.style;
+
+    var splitClasses = abstract[0].attributes.class.split(' ').reduce(function (acc, cls) {
+      if (cls === config.replacementClass || cls.match(forSvg)) {
+        acc.toSvg.push(cls);
+      } else {
+        acc.toNode.push(cls);
+      }
+
+      return acc;
+    }, { toNode: [], toSvg: [] });
+
+    abstract[0].attributes.class = splitClasses.toSvg.join(' ');
+
+    var newInnerHTML = abstract.map(function (a) {
+      return toHtml(a);
+    }).join('\n');
+    node.setAttribute('class', splitClasses.toNode.join(' '));
+    node.setAttribute(DATA_FA_I2SVG, '');
+    node.innerHTML = newInnerHTML;
+  }
+};
+
+function perform(mutations, callback) {
+  var callbackFunction = typeof callback === 'function' ? callback : noop$1;
+
+  if (mutations.length === 0) {
+    callbackFunction();
+  } else {
+    var frame = WINDOW.requestAnimationFrame || function (op) {
+      return op();
+    };
+
+    frame(function () {
+      var mutator = getMutator();
+      var mark = perf.begin('mutate');
+
+      mutations.map(mutator);
+
+      mark();
+
+      callbackFunction();
+    });
+  }
+}
+
+var disabled = false;
+
+function disableObservation(operation) {
+  disabled = true;
+  operation();
+  disabled = false;
+}
+
+var mo = null;
+
+function observe(options) {
+  if (!MUTATION_OBSERVER) {
+    return;
+  }
+
+  if (!config.observeMutations) {
+    return;
+  }
+
+  var treeCallback = options.treeCallback,
+      nodeCallback = options.nodeCallback,
+      pseudoElementsCallback = options.pseudoElementsCallback,
+      _options$observeMutat = options.observeMutationsRoot,
+      observeMutationsRoot = _options$observeMutat === undefined ? DOCUMENT.body : _options$observeMutat;
+
+
+  mo = new MUTATION_OBSERVER(function (objects) {
+    if (disabled) return;
+
+    toArray(objects).forEach(function (mutationRecord) {
+      if (mutationRecord.type === 'childList' && mutationRecord.addedNodes.length > 0 && !isWatched(mutationRecord.addedNodes[0])) {
+        if (config.searchPseudoElements) {
+          pseudoElementsCallback(mutationRecord.target);
+        }
+
+        treeCallback(mutationRecord.target);
+      }
+
+      if (mutationRecord.type === 'attributes' && mutationRecord.target.parentNode && config.searchPseudoElements) {
+        pseudoElementsCallback(mutationRecord.target.parentNode);
+      }
+
+      if (mutationRecord.type === 'attributes' && isWatched(mutationRecord.target) && ~ATTRIBUTES_WATCHED_FOR_MUTATION.indexOf(mutationRecord.attributeName)) {
+        if (mutationRecord.attributeName === 'class') {
+          var _getCanonicalIcon = getCanonicalIcon(classArray(mutationRecord.target)),
+              prefix = _getCanonicalIcon.prefix,
+              iconName = _getCanonicalIcon.iconName;
+
+          if (prefix) mutationRecord.target.setAttribute('data-prefix', prefix);
+          if (iconName) mutationRecord.target.setAttribute('data-icon', iconName);
+        } else {
+          nodeCallback(mutationRecord.target);
+        }
+      }
+    });
+  });
+
+  if (!IS_DOM) return;
+
+  mo.observe(observeMutationsRoot, {
+    childList: true, attributes: true, characterData: true, subtree: true
+  });
+}
+
+function disconnect() {
+  if (!mo) return;
+
+  mo.disconnect();
+}
+
+var styleParser = function (node) {
+  var style = node.getAttribute('style');
+
+  var val = [];
+
+  if (style) {
+    val = style.split(';').reduce(function (acc, style) {
+      var styles = style.split(':');
+      var prop = styles[0];
+      var value = styles.slice(1);
+
+      if (prop && value.length > 0) {
+        acc[prop] = value.join(':').trim();
+      }
+
+      return acc;
+    }, {});
+  }
+
+  return val;
+};
+
+function toHex(unicode) {
+  var result = '';
+
+  for (var i = 0; i < unicode.length; i++) {
+    var hex = unicode.charCodeAt(i).toString(16);
+    result += ('000' + hex).slice(-4);
+  }
+
+  return result;
+}
+
+var classParser = function (node) {
+  var existingPrefix = node.getAttribute('data-prefix');
+  var existingIconName = node.getAttribute('data-icon');
+  var innerText = node.innerText !== undefined ? node.innerText.trim() : '';
+
+  var val = getCanonicalIcon(classArray(node));
+
+  if (existingPrefix && existingIconName) {
+    val.prefix = existingPrefix;
+    val.iconName = existingIconName;
+  }
+
+  if (val.prefix && innerText.length > 1) {
+    val.iconName = byLigature(val.prefix, node.innerText);
+  } else if (val.prefix && innerText.length === 1) {
+    val.iconName = byUnicode(val.prefix, toHex(node.innerText));
+  }
+
+  return val;
+};
+
+var parseTransformString = function parseTransformString(transformString) {
+  var transform = {
+    size: 16,
+    x: 0,
+    y: 0,
+    flipX: false,
+    flipY: false,
+    rotate: 0
+  };
+
+  if (!transformString) {
+    return transform;
+  } else {
+    return transformString.toLowerCase().split(' ').reduce(function (acc, n) {
+      var parts = n.toLowerCase().split('-');
+      var first = parts[0];
+      var rest = parts.slice(1).join('-');
+
+      if (first && rest === 'h') {
+        acc.flipX = true;
+        return acc;
+      }
+
+      if (first && rest === 'v') {
+        acc.flipY = true;
+        return acc;
+      }
+
+      rest = parseFloat(rest);
+
+      if (isNaN(rest)) {
+        return acc;
+      }
+
+      switch (first) {
+        case 'grow':
+          acc.size = acc.size + rest;
+          break;
+        case 'shrink':
+          acc.size = acc.size - rest;
+          break;
+        case 'left':
+          acc.x = acc.x - rest;
+          break;
+        case 'right':
+          acc.x = acc.x + rest;
+          break;
+        case 'up':
+          acc.y = acc.y - rest;
+          break;
+        case 'down':
+          acc.y = acc.y + rest;
+          break;
+        case 'rotate':
+          acc.rotate = acc.rotate + rest;
+          break;
+      }
+
+      return acc;
+    }, transform);
+  }
+};
+
+var transformParser = function (node) {
+  return parseTransformString(node.getAttribute('data-fa-transform'));
+};
+
+var symbolParser = function (node) {
+  var symbol = node.getAttribute('data-fa-symbol');
+
+  return symbol === null ? false : symbol === '' ? true : symbol;
+};
+
+var attributesParser = function (node) {
+  var extraAttributes = toArray(node.attributes).reduce(function (acc, attr) {
+    if (acc.name !== 'class' && acc.name !== 'style') {
+      acc[attr.name] = attr.value;
+    }
+    return acc;
+  }, {});
+
+  var title = node.getAttribute('title');
+
+  if (config.autoA11y) {
+    if (title) {
+      extraAttributes['aria-labelledby'] = config.replacementClass + '-title-' + nextUniqueId();
+    } else {
+      extraAttributes['aria-hidden'] = 'true';
+    }
+  }
+
+  return extraAttributes;
+};
+
+var maskParser = function (node) {
+  var mask = node.getAttribute('data-fa-mask');
+
+  if (!mask) {
+    return emptyCanonicalIcon();
+  } else {
+    return getCanonicalIcon(mask.split(' ').map(function (i) {
+      return i.trim();
+    }));
+  }
+};
+
+var blankMeta = {
+  iconName: null,
+  title: null,
+  prefix: null,
+  transform: meaninglessTransform,
+  symbol: false,
+  mask: null,
+  extra: { classes: [], styles: {}, attributes: {} }
+};
+
+function parseMeta(node) {
+  var _classParser = classParser(node),
+      iconName = _classParser.iconName,
+      prefix = _classParser.prefix,
+      extraClasses = _classParser.rest;
+
+  var extraStyles = styleParser(node);
+  var transform = transformParser(node);
+  var symbol = symbolParser(node);
+  var extraAttributes = attributesParser(node);
+  var mask = maskParser(node);
+
+  return {
+    iconName: iconName,
+    title: node.getAttribute('title'),
+    prefix: prefix,
+    transform: transform,
+    symbol: symbol,
+    mask: mask,
+    extra: {
+      classes: extraClasses,
+      styles: extraStyles,
+      attributes: extraAttributes
+    }
+  };
+}
+
+function MissingIcon(error) {
+  this.name = 'MissingIcon';
+  this.message = error || 'Icon unavailable';
+  this.stack = new Error().stack;
+}
+
+MissingIcon.prototype = Object.create(Error.prototype);
+MissingIcon.prototype.constructor = MissingIcon;
+
+var FILL = { fill: 'currentColor' };
+var ANIMATION_BASE = {
+  attributeType: 'XML',
+  repeatCount: 'indefinite',
+  dur: '2s'
+};
+var RING = {
+  tag: 'path',
+  attributes: _extends({}, FILL, {
+    d: 'M156.5,447.7l-12.6,29.5c-18.7-9.5-35.9-21.2-51.5-34.9l22.7-22.7C127.6,430.5,141.5,440,156.5,447.7z M40.6,272H8.5 c1.4,21.2,5.4,41.7,11.7,61.1L50,321.2C45.1,305.5,41.8,289,40.6,272z M40.6,240c1.4-18.8,5.2-37,11.1-54.1l-29.5-12.6 C14.7,194.3,10,216.7,8.5,240H40.6z M64.3,156.5c7.8-14.9,17.2-28.8,28.1-41.5L69.7,92.3c-13.7,15.6-25.5,32.8-34.9,51.5 L64.3,156.5z M397,419.6c-13.9,12-29.4,22.3-46.1,30.4l11.9,29.8c20.7-9.9,39.8-22.6,56.9-37.6L397,419.6z M115,92.4 c13.9-12,29.4-22.3,46.1-30.4l-11.9-29.8c-20.7,9.9-39.8,22.6-56.8,37.6L115,92.4z M447.7,355.5c-7.8,14.9-17.2,28.8-28.1,41.5 l22.7,22.7c13.7-15.6,25.5-32.9,34.9-51.5L447.7,355.5z M471.4,272c-1.4,18.8-5.2,37-11.1,54.1l29.5,12.6 c7.5-21.1,12.2-43.5,13.6-66.8H471.4z M321.2,462c-15.7,5-32.2,8.2-49.2,9.4v32.1c21.2-1.4,41.7-5.4,61.1-11.7L321.2,462z M240,471.4c-18.8-1.4-37-5.2-54.1-11.1l-12.6,29.5c21.1,7.5,43.5,12.2,66.8,13.6V471.4z M462,190.8c5,15.7,8.2,32.2,9.4,49.2h32.1 c-1.4-21.2-5.4-41.7-11.7-61.1L462,190.8z M92.4,397c-12-13.9-22.3-29.4-30.4-46.1l-29.8,11.9c9.9,20.7,22.6,39.8,37.6,56.9 L92.4,397z M272,40.6c18.8,1.4,36.9,5.2,54.1,11.1l12.6-29.5C317.7,14.7,295.3,10,272,8.5V40.6z M190.8,50 c15.7-5,32.2-8.2,49.2-9.4V8.5c-21.2,1.4-41.7,5.4-61.1,11.7L190.8,50z M442.3,92.3L419.6,115c12,13.9,22.3,29.4,30.5,46.1 l29.8-11.9C470,128.5,457.3,109.4,442.3,92.3z M397,92.4l22.7-22.7c-15.6-13.7-32.8-25.5-51.5-34.9l-12.6,29.5 C370.4,72.1,384.4,81.5,397,92.4z'
+  })
+};
+var OPACITY_ANIMATE = _extends({}, ANIMATION_BASE, {
+  attributeName: 'opacity'
+});
+var DOT = {
+  tag: 'circle',
+  attributes: _extends({}, FILL, {
+    cx: '256',
+    cy: '364',
+    r: '28'
+  }),
+  children: [{ tag: 'animate', attributes: _extends({}, ANIMATION_BASE, { attributeName: 'r', values: '28;14;28;28;14;28;' }) }, { tag: 'animate', attributes: _extends({}, OPACITY_ANIMATE, { values: '1;0;1;1;0;1;' }) }]
+};
+var QUESTION = {
+  tag: 'path',
+  attributes: _extends({}, FILL, {
+    opacity: '1',
+    d: 'M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z'
+  }),
+  children: [{ tag: 'animate', attributes: _extends({}, OPACITY_ANIMATE, { values: '1;0;0;0;0;1;' }) }]
+};
+var EXCLAMATION = {
+  tag: 'path',
+  attributes: _extends({}, FILL, {
+    opacity: '0',
+    d: 'M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z'
+  }),
+  children: [{ tag: 'animate', attributes: _extends({}, OPACITY_ANIMATE, { values: '0;0;1;1;0;0;' }) }]
+};
+
+var missing = { tag: 'g', children: [RING, DOT, QUESTION, EXCLAMATION] };
+
+var styles = namespace.styles;
+
+var LAYERS_TEXT_CLASSNAME = 'fa-layers-text';
+var FONT_FAMILY_PATTERN = /Font Awesome 5 (Solid|Regular|Light|Brands|Free|Pro)/;
+var STYLE_TO_PREFIX = {
+  'Solid': 'fas',
+  'Regular': 'far',
+  'Light': 'fal',
+  'Brands': 'fab'
+};
+var FONT_WEIGHT_TO_PREFIX = {
+  '900': 'fas',
+  '400': 'far',
+  '300': 'fal'
+};
+
+function findIcon(iconName, prefix) {
+  var val = {
+    found: false,
+    width: 512,
+    height: 512,
+    icon: missing
+  };
+
+  if (iconName && prefix && styles[prefix] && styles[prefix][iconName]) {
+    var icon = styles[prefix][iconName];
+    var width = icon[0];
+    var height = icon[1];
+    var vectorData = icon.slice(4);
+
+    val = {
+      found: true,
+      width: width,
+      height: height,
+      icon: { tag: 'path', attributes: { fill: 'currentColor', d: vectorData[0] } }
+    };
+  } else if (iconName && prefix && !config.showMissingIcons) {
+    throw new MissingIcon('Icon is missing for prefix ' + prefix + ' with icon name ' + iconName);
+  }
+
+  return val;
+}
+
+function generateSvgReplacementMutation(node, nodeMeta) {
+  var iconName = nodeMeta.iconName,
+      title = nodeMeta.title,
+      prefix = nodeMeta.prefix,
+      transform = nodeMeta.transform,
+      symbol = nodeMeta.symbol,
+      mask = nodeMeta.mask,
+      extra = nodeMeta.extra;
+
+
+  return [node, makeInlineSvgAbstract({
+    icons: {
+      main: findIcon(iconName, prefix),
+      mask: findIcon(mask.iconName, mask.prefix)
+    },
+    prefix: prefix,
+    iconName: iconName,
+    transform: transform,
+    symbol: symbol,
+    mask: mask,
+    title: title,
+    extra: extra,
+    watchable: true
+  })];
+}
+
+function generateLayersText(node, nodeMeta) {
+  var title = nodeMeta.title,
+      transform = nodeMeta.transform,
+      extra = nodeMeta.extra;
+
+
+  var width = null;
+  var height = null;
+
+  if (IS_IE) {
+    var computedFontSize = parseInt(getComputedStyle(node).fontSize, 10);
+    var boundingClientRect = node.getBoundingClientRect();
+    width = boundingClientRect.width / computedFontSize;
+    height = boundingClientRect.height / computedFontSize;
+  }
+
+  if (config.autoA11y && !title) {
+    extra.attributes['aria-hidden'] = 'true';
+  }
+
+  return [node, makeLayersTextAbstract({
+    content: node.innerHTML,
+    width: width,
+    height: height,
+    transform: transform,
+    title: title,
+    extra: extra,
+    watchable: true
+  })];
+}
+
+function generateMutation(node) {
+  var nodeMeta = parseMeta(node);
+
+  if (~nodeMeta.extra.classes.indexOf(LAYERS_TEXT_CLASSNAME)) {
+    return generateLayersText(node, nodeMeta);
+  } else {
+    return generateSvgReplacementMutation(node, nodeMeta);
+  }
+}
+
+function searchPseudoElements(root) {
+  if (!IS_DOM) return;
+
+  var end = perf.begin('searchPseudoElements');
+
+  disableObservation(function () {
+    toArray(root.querySelectorAll('*')).filter(function (n) {
+      return n.parentNode !== document.head && !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(n.tagName.toUpperCase()) && !n.getAttribute(DATA_FA_PSEUDO_ELEMENT) && (!n.parentNode || n.parentNode.tagName !== 'svg');
+    }).forEach(function (node) {
+      [':before', ':after'].forEach(function (pos) {
+        var children = toArray(node.children);
+        var alreadyProcessedPseudoElement = children.filter(function (c) {
+          return c.getAttribute(DATA_FA_PSEUDO_ELEMENT) === pos;
+        })[0];
+
+        var styles = WINDOW.getComputedStyle(node, pos);
+        var fontFamily = styles.getPropertyValue('font-family').match(FONT_FAMILY_PATTERN);
+        var fontWeight = styles.getPropertyValue('font-weight');
+
+        if (alreadyProcessedPseudoElement && !fontFamily) {
+          // If we've already processed it but the current computed style does not result in a font-family,
+          // that probably means that a class name that was previously present to make the icon has been
+          // removed. So we now should delete the icon.
+          node.removeChild(alreadyProcessedPseudoElement);
+        } else if (fontFamily) {
+          var content = styles.getPropertyValue('content');
+          var prefix = ~['Light', 'Regular', 'Solid'].indexOf(fontFamily[1]) ? STYLE_TO_PREFIX[fontFamily[1]] : FONT_WEIGHT_TO_PREFIX[fontWeight];
+          var iconName = byUnicode(prefix, toHex(content.length === 3 ? content.substr(1, 1) : content));
+          // Only convert the pseudo element in this :before/:after position into an icon if we haven't
+          // already done so with the same prefix and iconName
+          if (!alreadyProcessedPseudoElement || alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !== prefix || alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !== iconName) {
+            if (alreadyProcessedPseudoElement) {
+              // Delete the old one, since we're replacing it with a new one
+              node.removeChild(alreadyProcessedPseudoElement);
+            }
+
+            var extra = blankMeta.extra;
+
+            extra.attributes[DATA_FA_PSEUDO_ELEMENT] = pos;
+            var abstract = makeInlineSvgAbstract(_extends({}, blankMeta, {
+              icons: {
+                main: findIcon(iconName, prefix),
+                mask: emptyCanonicalIcon()
+              },
+              prefix: prefix,
+              iconName: iconName,
+              extra: extra,
+              watchable: true
+            }));
+
+            var element = DOCUMENT.createElement('svg');
+
+            if (pos === ':before') {
+              node.insertBefore(element, node.firstChild);
+            } else {
+              node.appendChild(element);
+            }
+
+            element.outerHTML = abstract.map(function (a) {
+              return toHtml(a);
+            }).join('\n');
+          }
+        }
+      });
+    });
+  });
+
+  end();
+}
+
+function onTree(root) {
+  var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  if (!IS_DOM) return;
+
+  var htmlClassList = DOCUMENT.documentElement.classList;
+  var hclAdd = function hclAdd(suffix) {
+    return htmlClassList.add(HTML_CLASS_I2SVG_BASE_CLASS + '-' + suffix);
+  };
+  var hclRemove = function hclRemove(suffix) {
+    return htmlClassList.remove(HTML_CLASS_I2SVG_BASE_CLASS + '-' + suffix);
+  };
+  var prefixes = Object.keys(styles);
+  var prefixesDomQuery = ['.' + LAYERS_TEXT_CLASSNAME + ':not([' + DATA_FA_I2SVG + '])'].concat(prefixes.map(function (p) {
+    return '.' + p + ':not([' + DATA_FA_I2SVG + '])';
+  })).join(', ');
+
+  if (prefixesDomQuery.length === 0) {
+    return;
+  }
+
+  var candidates = toArray(root.querySelectorAll(prefixesDomQuery));
+
+  if (candidates.length > 0) {
+    hclAdd('pending');
+    hclRemove('complete');
+  } else {
+    return;
+  }
+
+  var mark = perf.begin('onTree');
+
+  var mutations = candidates.reduce(function (acc, node) {
+    try {
+      var mutation = generateMutation(node);
+
+      if (mutation) {
+        acc.push(mutation);
+      }
+    } catch (e) {
+      if (!PRODUCTION) {
+        if (e instanceof MissingIcon) {
+          console.error(e);
+        }
+      }
+    }
+
+    return acc;
+  }, []);
+
+  mark();
+
+  perform(mutations, function () {
+    hclAdd('active');
+    hclAdd('complete');
+    hclRemove('pending');
+
+    if (typeof callback === 'function') callback();
+  });
+}
+
+function onNode(node) {
+  var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+  var mutation = generateMutation(node);
+
+  if (mutation) {
+    perform([mutation], callback);
+  }
+}
+
+var baseStyles = "svg:not(:root).svg-inline--fa {\n  overflow: visible; }\n\n.svg-inline--fa {\n  display: inline-block;\n  font-size: inherit;\n  height: 1em;\n  overflow: visible;\n  vertical-align: -.125em; }\n  .svg-inline--fa.fa-lg {\n    vertical-align: -.225em; }\n  .svg-inline--fa.fa-w-1 {\n    width: 0.0625em; }\n  .svg-inline--fa.fa-w-2 {\n    width: 0.125em; }\n  .svg-inline--fa.fa-w-3 {\n    width: 0.1875em; }\n  .svg-inline--fa.fa-w-4 {\n    width: 0.25em; }\n  .svg-inline--fa.fa-w-5 {\n    width: 0.3125em; }\n  .svg-inline--fa.fa-w-6 {\n    width: 0.375em; }\n  .svg-inline--fa.fa-w-7 {\n    width: 0.4375em; }\n  .svg-inline--fa.fa-w-8 {\n    width: 0.5em; }\n  .svg-inline--fa.fa-w-9 {\n    width: 0.5625em; }\n  .svg-inline--fa.fa-w-10 {\n    width: 0.625em; }\n  .svg-inline--fa.fa-w-11 {\n    width: 0.6875em; }\n  .svg-inline--fa.fa-w-12 {\n    width: 0.75em; }\n  .svg-inline--fa.fa-w-13 {\n    width: 0.8125em; }\n  .svg-inline--fa.fa-w-14 {\n    width: 0.875em; }\n  .svg-inline--fa.fa-w-15 {\n    width: 0.9375em; }\n  .svg-inline--fa.fa-w-16 {\n    width: 1em; }\n  .svg-inline--fa.fa-w-17 {\n    width: 1.0625em; }\n  .svg-inline--fa.fa-w-18 {\n    width: 1.125em; }\n  .svg-inline--fa.fa-w-19 {\n    width: 1.1875em; }\n  .svg-inline--fa.fa-w-20 {\n    width: 1.25em; }\n  .svg-inline--fa.fa-pull-left {\n    margin-right: .3em;\n    width: auto; }\n  .svg-inline--fa.fa-pull-right {\n    margin-left: .3em;\n    width: auto; }\n  .svg-inline--fa.fa-border {\n    height: 1.5em; }\n  .svg-inline--fa.fa-li {\n    width: 2em; }\n  .svg-inline--fa.fa-fw {\n    width: 1.25em; }\n\n.fa-layers svg.svg-inline--fa {\n  bottom: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  right: 0;\n  top: 0; }\n\n.fa-layers {\n  display: inline-block;\n  height: 1em;\n  position: relative;\n  text-align: center;\n  vertical-align: -.125em;\n  width: 1em; }\n  .fa-layers svg.svg-inline--fa {\n    -webkit-transform-origin: center center;\n            transform-origin: center center; }\n\n.fa-layers-text, .fa-layers-counter {\n  display: inline-block;\n  position: absolute;\n  text-align: center; }\n\n.fa-layers-text {\n  left: 50%;\n  top: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  -webkit-transform-origin: center center;\n          transform-origin: center center; }\n\n.fa-layers-counter {\n  background-color: #ff253a;\n  border-radius: 1em;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  color: #fff;\n  height: 1.5em;\n  line-height: 1;\n  max-width: 5em;\n  min-width: 1.5em;\n  overflow: hidden;\n  padding: .25em;\n  right: 0;\n  text-overflow: ellipsis;\n  top: 0;\n  -webkit-transform: scale(0.25);\n          transform: scale(0.25);\n  -webkit-transform-origin: top right;\n          transform-origin: top right; }\n\n.fa-layers-bottom-right {\n  bottom: 0;\n  right: 0;\n  top: auto;\n  -webkit-transform: scale(0.25);\n          transform: scale(0.25);\n  -webkit-transform-origin: bottom right;\n          transform-origin: bottom right; }\n\n.fa-layers-bottom-left {\n  bottom: 0;\n  left: 0;\n  right: auto;\n  top: auto;\n  -webkit-transform: scale(0.25);\n          transform: scale(0.25);\n  -webkit-transform-origin: bottom left;\n          transform-origin: bottom left; }\n\n.fa-layers-top-right {\n  right: 0;\n  top: 0;\n  -webkit-transform: scale(0.25);\n          transform: scale(0.25);\n  -webkit-transform-origin: top right;\n          transform-origin: top right; }\n\n.fa-layers-top-left {\n  left: 0;\n  right: auto;\n  top: 0;\n  -webkit-transform: scale(0.25);\n          transform: scale(0.25);\n  -webkit-transform-origin: top left;\n          transform-origin: top left; }\n\n.fa-lg {\n  font-size: 1.33333em;\n  line-height: 0.75em;\n  vertical-align: -.0667em; }\n\n.fa-xs {\n  font-size: .75em; }\n\n.fa-sm {\n  font-size: .875em; }\n\n.fa-1x {\n  font-size: 1em; }\n\n.fa-2x {\n  font-size: 2em; }\n\n.fa-3x {\n  font-size: 3em; }\n\n.fa-4x {\n  font-size: 4em; }\n\n.fa-5x {\n  font-size: 5em; }\n\n.fa-6x {\n  font-size: 6em; }\n\n.fa-7x {\n  font-size: 7em; }\n\n.fa-8x {\n  font-size: 8em; }\n\n.fa-9x {\n  font-size: 9em; }\n\n.fa-10x {\n  font-size: 10em; }\n\n.fa-fw {\n  text-align: center;\n  width: 1.25em; }\n\n.fa-ul {\n  list-style-type: none;\n  margin-left: 2.5em;\n  padding-left: 0; }\n  .fa-ul > li {\n    position: relative; }\n\n.fa-li {\n  left: -2em;\n  position: absolute;\n  text-align: center;\n  width: 2em;\n  line-height: inherit; }\n\n.fa-border {\n  border: solid 0.08em #eee;\n  border-radius: .1em;\n  padding: .2em .25em .15em; }\n\n.fa-pull-left {\n  float: left; }\n\n.fa-pull-right {\n  float: right; }\n\n.fa.fa-pull-left,\n.fas.fa-pull-left,\n.far.fa-pull-left,\n.fal.fa-pull-left,\n.fab.fa-pull-left {\n  margin-right: .3em; }\n\n.fa.fa-pull-right,\n.fas.fa-pull-right,\n.far.fa-pull-right,\n.fal.fa-pull-right,\n.fab.fa-pull-right {\n  margin-left: .3em; }\n\n.fa-spin {\n  -webkit-animation: fa-spin 2s infinite linear;\n          animation: fa-spin 2s infinite linear; }\n\n.fa-pulse {\n  -webkit-animation: fa-spin 1s infinite steps(8);\n          animation: fa-spin 1s infinite steps(8); }\n\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }\n\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg); } }\n\n.fa-rotate-90 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n          transform: rotate(90deg); }\n\n.fa-rotate-180 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n          transform: rotate(180deg); }\n\n.fa-rotate-270 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n          transform: rotate(270deg); }\n\n.fa-flip-horizontal {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n          transform: scale(-1, 1); }\n\n.fa-flip-vertical {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n          transform: scale(1, -1); }\n\n.fa-flip-horizontal.fa-flip-vertical {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(-1, -1);\n          transform: scale(-1, -1); }\n\n:root .fa-rotate-90,\n:root .fa-rotate-180,\n:root .fa-rotate-270,\n:root .fa-flip-horizontal,\n:root .fa-flip-vertical {\n  -webkit-filter: none;\n          filter: none; }\n\n.fa-stack {\n  display: inline-block;\n  height: 2em;\n  position: relative;\n  width: 2em; }\n\n.fa-stack-1x,\n.fa-stack-2x {\n  bottom: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  right: 0;\n  top: 0; }\n\n.svg-inline--fa.fa-stack-1x {\n  height: 1em;\n  width: 1em; }\n\n.svg-inline--fa.fa-stack-2x {\n  height: 2em;\n  width: 2em; }\n\n.fa-inverse {\n  color: #fff; }\n\n.sr-only {\n  border: 0;\n  clip: rect(0, 0, 0, 0);\n  height: 1px;\n  margin: -1px;\n  overflow: hidden;\n  padding: 0;\n  position: absolute;\n  width: 1px; }\n\n.sr-only-focusable:active, .sr-only-focusable:focus {\n  clip: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  position: static;\n  width: auto; }\n";
+
+var css = function () {
+  var dfp = DEFAULT_FAMILY_PREFIX;
+  var drc = DEFAULT_REPLACEMENT_CLASS;
+  var fp = config.familyPrefix;
+  var rc = config.replacementClass;
+  var s = baseStyles;
+
+  if (fp !== dfp || rc !== drc) {
+    var dPatt = new RegExp('\\.' + dfp + '\\-', 'g');
+    var rPatt = new RegExp('\\.' + drc, 'g');
+
+    s = s.replace(dPatt, '.' + fp + '-').replace(rPatt, '.' + rc);
+  }
+
+  return s;
+};
+
+function define(prefix, icons) {
+  var normalized = Object.keys(icons).reduce(function (acc, iconName) {
+    var icon = icons[iconName];
+    var expanded = !!icon.icon;
+
+    if (expanded) {
+      acc[icon.iconName] = icon.icon;
+    } else {
+      acc[iconName] = icon;
+    }
+    return acc;
+  }, {});
+
+  if (typeof namespace.hooks.addPack === 'function') {
+    namespace.hooks.addPack(prefix, normalized);
+  } else {
+    namespace.styles[prefix] = _extends({}, namespace.styles[prefix] || {}, normalized);
+  }
+
+  /**
+   * Font Awesome 4 used the prefix of `fa` for all icons. With the introduction
+   * of new styles we needed to differentiate between them. Prefix `fa` is now an alias
+   * for `fas` so we'll easy the upgrade process for our users by automatically defining
+   * this as well.
+   */
+  if (prefix === 'fas') {
+    define('fa', icons);
+  }
+}
+
+var Library = function () {
+  function Library() {
+    classCallCheck(this, Library);
+
+    this.definitions = {};
+  }
+
+  createClass(Library, [{
+    key: 'add',
+    value: function add() {
+      var _this = this;
+
+      for (var _len = arguments.length, definitions = Array(_len), _key = 0; _key < _len; _key++) {
+        definitions[_key] = arguments[_key];
+      }
+
+      var additions = definitions.reduce(this._pullDefinitions, {});
+
+      Object.keys(additions).forEach(function (key) {
+        _this.definitions[key] = _extends({}, _this.definitions[key] || {}, additions[key]);
+        define(key, additions[key]);
+      });
+    }
+  }, {
+    key: 'reset',
+    value: function reset() {
+      this.definitions = {};
+    }
+  }, {
+    key: '_pullDefinitions',
+    value: function _pullDefinitions(additions, definition) {
+      var normalized = definition.prefix && definition.iconName && definition.icon ? { 0: definition } : definition;
+
+      Object.keys(normalized).map(function (key) {
+        var _normalized$key = normalized[key],
+            prefix = _normalized$key.prefix,
+            iconName = _normalized$key.iconName,
+            icon = _normalized$key.icon;
+
+
+        if (!additions[prefix]) additions[prefix] = {};
+
+        additions[prefix][iconName] = icon;
+      });
+
+      return additions;
+    }
+  }]);
+  return Library;
+}();
+
+function prepIcon(icon) {
+  var width = icon[0];
+  var height = icon[1];
+  var vectorData = icon.slice(4);
+
+  return {
+    found: true,
+    width: width,
+    height: height,
+    icon: { tag: 'path', attributes: { fill: 'currentColor', d: vectorData[0] } }
+  };
+}
+
+function ensureCss() {
+  if (config.autoAddCss && !_cssInserted) {
+    insertCss(css());
+    _cssInserted = true;
+  }
+}
+
+function apiObject(val, abstractCreator) {
+  Object.defineProperty(val, 'abstract', {
+    get: abstractCreator
+  });
+
+  Object.defineProperty(val, 'html', {
+    get: function get() {
+      return val.abstract.map(function (a) {
+        return toHtml(a);
+      });
+    }
+  });
+
+  Object.defineProperty(val, 'node', {
+    get: function get() {
+      if (!IS_DOM) return;
+
+      var container = DOCUMENT.createElement('div');
+      container.innerHTML = val.html;
+      return container.children;
+    }
+  });
+
+  return val;
+}
+
+function findIconDefinition(params) {
+  var _params$prefix = params.prefix,
+      prefix = _params$prefix === undefined ? 'fa' : _params$prefix,
+      iconName = params.iconName;
+
+
+  if (!iconName) return;
+
+  return iconFromMapping(library.definitions, prefix, iconName) || iconFromMapping(namespace.styles, prefix, iconName);
+}
+
+function resolveIcons(next) {
+  return function (maybeIconDefinition) {
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var iconDefinition = (maybeIconDefinition || {}).icon ? maybeIconDefinition : findIconDefinition(maybeIconDefinition || {});
+
+    var mask = params.mask;
+
+
+    if (mask) {
+      mask = (mask || {}).icon ? mask : findIconDefinition(mask || {});
+    }
+
+    return next(iconDefinition, _extends({}, params, { mask: mask }));
+  };
+}
+
+var library = new Library();
+
+var noAuto = function noAuto() {
+  config.autoReplaceSvg = false;
+  config.observeMutations = false;
+
+  disconnect();
+};
+
+var _cssInserted = false;
+
+var dom = {
+  i2svg: function i2svg() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    if (IS_DOM) {
+      ensureCss();
+
+      var _params$node = params.node,
+          node = _params$node === undefined ? DOCUMENT : _params$node,
+          _params$callback = params.callback,
+          callback = _params$callback === undefined ? function () {} : _params$callback;
+
+
+      if (config.searchPseudoElements) {
+        searchPseudoElements(node);
+      }
+
+      onTree(node, callback);
+    }
+  },
+
+  css: css,
+
+  insertCss: function insertCss$$1() {
+    if (!_cssInserted) {
+      insertCss(css());
+      _cssInserted = true;
+    }
+  },
+
+  watch: function watch() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var autoReplaceSvgRoot = params.autoReplaceSvgRoot,
+        observeMutationsRoot = params.observeMutationsRoot;
+
+
+    if (config.autoReplaceSvg === false) {
+      config.autoReplaceSvg = true;
+    }
+
+    config.observeMutations = true;
+
+    domready(function () {
+      autoReplace({
+        autoReplaceSvgRoot: autoReplaceSvgRoot
+      });
+
+      observe({
+        treeCallback: onTree,
+        nodeCallback: onNode,
+        pseudoElementsCallback: searchPseudoElements,
+        observeMutationsRoot: observeMutationsRoot
+      });
+    });
+  }
+};
+
+var parse = {
+  transform: function transform(transformString) {
+    return parseTransformString(transformString);
+  }
+};
+
+var icon = resolveIcons(function (iconDefinition) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _params$transform = params.transform,
+      transform = _params$transform === undefined ? meaninglessTransform : _params$transform,
+      _params$symbol = params.symbol,
+      symbol = _params$symbol === undefined ? false : _params$symbol,
+      _params$mask = params.mask,
+      mask = _params$mask === undefined ? null : _params$mask,
+      _params$title = params.title,
+      title = _params$title === undefined ? null : _params$title,
+      _params$classes = params.classes,
+      classes = _params$classes === undefined ? [] : _params$classes,
+      _params$attributes = params.attributes,
+      attributes = _params$attributes === undefined ? {} : _params$attributes,
+      _params$styles = params.styles,
+      styles = _params$styles === undefined ? {} : _params$styles;
+
+
+  if (!iconDefinition) return;
+
+  var prefix = iconDefinition.prefix,
+      iconName = iconDefinition.iconName,
+      icon = iconDefinition.icon;
+
+
+  return apiObject(_extends({ type: 'icon' }, iconDefinition), function () {
+    ensureCss();
+
+    if (config.autoA11y) {
+      if (title) {
+        attributes['aria-labelledby'] = config.replacementClass + '-title-' + nextUniqueId();
+      } else {
+        attributes['aria-hidden'] = 'true';
+      }
+    }
+
+    return makeInlineSvgAbstract({
+      icons: {
+        main: prepIcon(icon),
+        mask: mask ? prepIcon(mask.icon) : { found: false, width: null, height: null, icon: {} }
+      },
+      prefix: prefix,
+      iconName: iconName,
+      transform: _extends({}, meaninglessTransform, transform),
+      symbol: symbol,
+      title: title,
+      extra: {
+        attributes: attributes,
+        styles: styles,
+        classes: classes
+      }
+    });
+  });
+});
+
+var text = function text(content) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _params$transform2 = params.transform,
+      transform = _params$transform2 === undefined ? meaninglessTransform : _params$transform2,
+      _params$title2 = params.title,
+      title = _params$title2 === undefined ? null : _params$title2,
+      _params$classes2 = params.classes,
+      classes = _params$classes2 === undefined ? [] : _params$classes2,
+      _params$attributes2 = params.attributes,
+      attributes = _params$attributes2 === undefined ? {} : _params$attributes2,
+      _params$styles2 = params.styles,
+      styles = _params$styles2 === undefined ? {} : _params$styles2;
+
+
+  return apiObject({ type: 'text', content: content }, function () {
+    ensureCss();
+
+    return makeLayersTextAbstract({
+      content: content,
+      transform: _extends({}, meaninglessTransform, transform),
+      title: title,
+      extra: {
+        attributes: attributes,
+        styles: styles,
+        classes: [config.familyPrefix + '-layers-text'].concat(toConsumableArray(classes))
+      }
+    });
+  });
+};
+
+var counter = function counter(content) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _params$title3 = params.title,
+      title = _params$title3 === undefined ? null : _params$title3,
+      _params$classes3 = params.classes,
+      classes = _params$classes3 === undefined ? [] : _params$classes3,
+      _params$attributes3 = params.attributes,
+      attributes = _params$attributes3 === undefined ? {} : _params$attributes3,
+      _params$styles3 = params.styles,
+      styles = _params$styles3 === undefined ? {} : _params$styles3;
+
+
+  return apiObject({ type: 'counter', content: content }, function () {
+    ensureCss();
+
+    return makeLayersCounterAbstract({
+      content: content.toString(),
+      title: title,
+      extra: {
+        attributes: attributes,
+        styles: styles,
+        classes: [config.familyPrefix + '-layers-counter'].concat(toConsumableArray(classes))
+      }
+    });
+  });
+};
+
+var layer = function layer(assembler) {
+  return apiObject({ type: 'layer' }, function () {
+    ensureCss();
+
+    var children = [];
+
+    assembler(function (args) {
+      Array.isArray(args) ? args.map(function (a) {
+        children = children.concat(a.abstract);
+      }) : children = children.concat(args.abstract);
+    });
+
+    return [{
+      tag: 'span',
+      attributes: { class: config.familyPrefix + '-layers' },
+      children: children
+    }];
+  });
+};
+
+var api = {
+  noAuto: noAuto,
+  config: config,
+  dom: dom,
+  library: library,
+  parse: parse,
+  findIconDefinition: findIconDefinition,
+  icon: icon,
+  text: text,
+  counter: counter,
+  layer: layer,
+  toHtml: toHtml
+};
+
+var autoReplace = function autoReplace() {
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var _params$autoReplaceSv = params.autoReplaceSvgRoot,
+      autoReplaceSvgRoot = _params$autoReplaceSv === undefined ? DOCUMENT : _params$autoReplaceSv;
+
+
+  if (Object.keys(namespace.styles).length > 0 && IS_DOM && config.autoReplaceSvg) api.dom.i2svg({ node: autoReplaceSvgRoot });
+};
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/@fortawesome/fontawesome/index.es.js":
 /*!***********************************************************!*\
   !*** ./node_modules/@fortawesome/fontawesome/index.es.js ***!
@@ -6946,12 +10001,13 @@ var config = api$1.config;
 /*!*****************************************************************!*\
   !*** ./node_modules/@fortawesome/react-fontawesome/index.es.js ***!
   \*****************************************************************/
-/*! exports provided: default */
+/*! exports provided: FontAwesomeIcon */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var _fortawesome_fontawesome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome */ "./node_modules/@fortawesome/fontawesome/index.es.js");
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FontAwesomeIcon", function() { return FontAwesomeIcon; });
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "./node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -6962,25 +10018,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-
-
-
-
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
 var humps = createCommonjsModule(function (module) {
-// =========
-// = humps =
-// =========
-// Underscore-to-camelCase converter (and vice versa)
-// for strings and object keys
-
-// humps is copyright © 2012+ Dom Christie
-// Released under the MIT license.
-
-
 (function(global) {
 
   var _processKeys = function(convert, obj, options) {
@@ -7118,135 +10160,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-
-
-
-
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-
 var defineProperty = function (obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -7276,18 +10189,6 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 var objectWithoutProperties = function (obj, keys) {
   var target = {};
 
@@ -7299,26 +10200,6 @@ var objectWithoutProperties = function (obj, keys) {
 
   return target;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var toConsumableArray = function (arr) {
   if (Array.isArray(arr)) {
@@ -7393,13 +10274,13 @@ try {
   PRODUCTION = "development" === 'production';
 } catch (e) {}
 
-var log = function () {
+function log () {
   if (!PRODUCTION && console && typeof console.error === 'function') {
     var _console;
 
     (_console = console).error.apply(_console, arguments);
   }
-};
+}
 
 function objectWithKey(key, value) {
   return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? defineProperty({}, key, value) : {};
@@ -7412,6 +10293,7 @@ function classList(props) {
     'fa-spin': props.spin,
     'fa-pulse': props.pulse,
     'fa-fw': props.fixedWidth,
+    'fa-inverse': props.inverse,
     'fa-border': props.border,
     'fa-li': props.listItem,
     'fa-flip-horizontal': props.flip === 'horizontal' || props.flip === 'both',
@@ -7425,60 +10307,61 @@ function classList(props) {
   });
 }
 
-function normalizeIconArgs(icon) {
-  if (icon === null) {
+function normalizeIconArgs(icon$$1) {
+  if (icon$$1 === null) {
     return null;
   }
 
-  if ((typeof icon === 'undefined' ? 'undefined' : _typeof(icon)) === 'object' && icon.prefix && icon.iconName) {
-    return icon;
+  if ((typeof icon$$1 === 'undefined' ? 'undefined' : _typeof(icon$$1)) === 'object' && icon$$1.prefix && icon$$1.iconName) {
+    return icon$$1;
   }
 
-  if (Array.isArray(icon) && icon.length === 2) {
-    return { prefix: icon[0], iconName: icon[1] };
+  if (Array.isArray(icon$$1) && icon$$1.length === 2) {
+    return { prefix: icon$$1[0], iconName: icon$$1[1] };
   }
 
-  if (typeof icon === 'string') {
-    return { prefix: 'fas', iconName: icon };
+  if (typeof icon$$1 === 'string') {
+    return { prefix: 'fas', iconName: icon$$1 };
   }
 }
 
-function FontAwesomeIcon$1(props) {
+function FontAwesomeIcon(props) {
   var iconArgs = props.icon,
       maskArgs = props.mask,
       symbol = props.symbol,
       className = props.className;
 
 
-  var icon = normalizeIconArgs(iconArgs);
+  var iconLookup = normalizeIconArgs(iconArgs);
   var classes = objectWithKey('classes', [].concat(toConsumableArray(classList(props)), toConsumableArray(className.split(' '))));
-  var transform = objectWithKey('transform', typeof props.transform === 'string' ? _fortawesome_fontawesome__WEBPACK_IMPORTED_MODULE_0__["default"].parse.transform(props.transform) : props.transform);
+  var transform = objectWithKey('transform', typeof props.transform === 'string' ? _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["parse"].transform(props.transform) : props.transform);
   var mask = objectWithKey('mask', normalizeIconArgs(maskArgs));
 
-  var renderedIcon = _fortawesome_fontawesome__WEBPACK_IMPORTED_MODULE_0__["default"].icon(icon, _extends({}, classes, transform, mask, {
+  var renderedIcon = Object(_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["icon"])(iconLookup, _extends({}, classes, transform, mask, {
     symbol: symbol
   }));
 
   if (!renderedIcon) {
-    log('Could not find icon', icon);
+    log('Could not find icon', iconLookup);
     return null;
   }
 
   var abstract = renderedIcon.abstract;
 
-  var convertCurry = convert.bind(null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement);
   var extraProps = {};
 
   Object.keys(props).forEach(function (key) {
-    if (!FontAwesomeIcon$1.defaultProps.hasOwnProperty(key)) extraProps[key] = props[key];
+    if (!FontAwesomeIcon.defaultProps.hasOwnProperty(key)) {
+      extraProps[key] = props[key];
+    }
   });
 
   return convertCurry(abstract[0], extraProps);
 }
 
-FontAwesomeIcon$1.displayName = 'FontAwesomeIcon';
+FontAwesomeIcon.displayName = 'FontAwesomeIcon';
 
-FontAwesomeIcon$1.propTypes = {
+FontAwesomeIcon.propTypes = {
   border: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
 
   className: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
@@ -7486,6 +10369,8 @@ FontAwesomeIcon$1.propTypes = {
   mask: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string]),
 
   fixedWidth: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  inverse: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
 
   flip: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(['horizontal', 'vertical', 'both']),
 
@@ -7496,8 +10381,6 @@ FontAwesomeIcon$1.propTypes = {
   pull: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(['right', 'left']),
 
   pulse: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-
-  name: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
 
   rotation: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf([90, 180, 270]),
 
@@ -7510,17 +10393,17 @@ FontAwesomeIcon$1.propTypes = {
   transform: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object])
 };
 
-FontAwesomeIcon$1.defaultProps = {
+FontAwesomeIcon.defaultProps = {
   border: false,
   className: '',
   mask: null,
   fixedWidth: false,
+  inverse: false,
   flip: null,
   icon: null,
   listItem: false,
   pull: null,
   pulse: false,
-  name: '',
   rotation: null,
   size: null,
   spin: false,
@@ -7528,11 +10411,4362 @@ FontAwesomeIcon$1.defaultProps = {
   transform: null
 };
 
-_fortawesome_fontawesome__WEBPACK_IMPORTED_MODULE_0__["default"].noAuto();
+var convertCurry = convert.bind(null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement);
 
-/* harmony default export */ __webpack_exports__["default"] = (FontAwesomeIcon$1);
+
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/AuthenticationDetails.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/AuthenticationDetails.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @class */
+var AuthenticationDetails = function () {
+  /**
+   * Constructs a new AuthenticationDetails object
+   * @param {object=} data Creation options.
+   * @param {string} data.Username User being authenticated.
+   * @param {string} data.Password Plain-text password to authenticate with.
+   * @param {(AttributeArg[])?} data.ValidationData Application extra metadata.
+   * @param {(AttributeArg[])?} data.AuthParamaters Authentication paramaters for custom auth.
+   */
+  function AuthenticationDetails(data) {
+    _classCallCheck(this, AuthenticationDetails);
+
+    var _ref = data || {},
+        ValidationData = _ref.ValidationData,
+        Username = _ref.Username,
+        Password = _ref.Password,
+        AuthParameters = _ref.AuthParameters;
+
+    this.validationData = ValidationData || {};
+    this.authParameters = AuthParameters || {};
+    this.username = Username;
+    this.password = Password;
+  }
+
+  /**
+   * @returns {string} the record's username
+   */
+
+
+  AuthenticationDetails.prototype.getUsername = function getUsername() {
+    return this.username;
+  };
+
+  /**
+   * @returns {string} the record's password
+   */
+
+
+  AuthenticationDetails.prototype.getPassword = function getPassword() {
+    return this.password;
+  };
+
+  /**
+   * @returns {Array} the record's validationData
+   */
+
+
+  AuthenticationDetails.prototype.getValidationData = function getValidationData() {
+    return this.validationData;
+  };
+
+  /**
+   * @returns {Array} the record's authParameters
+   */
+
+
+  AuthenticationDetails.prototype.getAuthParameters = function getAuthParameters() {
+    return this.authParameters;
+  };
+
+  return AuthenticationDetails;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (AuthenticationDetails);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/AuthenticationHelper.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/AuthenticationHelper.js ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! buffer/ */ "./node_modules/buffer/index.js");
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(buffer___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var crypto_browserify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! crypto-browserify */ "./node_modules/crypto-browserify/index.js");
+/* harmony import */ var crypto_browserify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(crypto_browserify__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _BigInteger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BigInteger */ "./node_modules/amazon-cognito-identity-js/es/BigInteger.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+var createHash = crypto_browserify__WEBPACK_IMPORTED_MODULE_1__["createHash"];
+var createHmac = crypto_browserify__WEBPACK_IMPORTED_MODULE_1__["createHmac"];
+var randomBytes = crypto_browserify__WEBPACK_IMPORTED_MODULE_1__["randomBytes"];
+
+
+
+var initN = 'FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1' + '29024E088A67CC74020BBEA63B139B22514A08798E3404DD' + 'EF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245' + 'E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED' + 'EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3D' + 'C2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F' + '83655D23DCA3AD961C62F356208552BB9ED529077096966D' + '670C354E4ABC9804F1746C08CA18217C32905E462E36CE3B' + 'E39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9' + 'DE2BCBF6955817183995497CEA956AE515D2261898FA0510' + '15728E5A8AAAC42DAD33170D04507A33A85521ABDF1CBA64' + 'ECFB850458DBEF0A8AEA71575D060C7DB3970F85A6E1E4C7' + 'ABF5AE8CDB0933D71E8C94E04A25619DCEE3D2261AD2EE6B' + 'F12FFA06D98A0864D87602733EC86A64521F2B18177B200C' + 'BBE117577A615D6C770988C0BAD946E208E24FA074E5AB31' + '43DB5BFCE0FD108E4B82D120A93AD2CAFFFFFFFFFFFFFFFF';
+
+var newPasswordRequiredChallengeUserAttributePrefix = 'userAttributes.';
+
+/** @class */
+
+var AuthenticationHelper = function () {
+  /**
+   * Constructs a new AuthenticationHelper object
+   * @param {string} PoolName Cognito user pool name.
+   */
+  function AuthenticationHelper(PoolName) {
+    _classCallCheck(this, AuthenticationHelper);
+
+    this.N = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](initN, 16);
+    this.g = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"]('2', 16);
+    this.k = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](this.hexHash('00' + this.N.toString(16) + '0' + this.g.toString(16)), 16);
+
+    this.smallAValue = this.generateRandomSmallA();
+    this.getLargeAValue(function () {});
+
+    this.infoBits = buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from('Caldera Derived Key', 'utf8');
+
+    this.poolName = PoolName;
+  }
+
+  /**
+   * @returns {BigInteger} small A, a random number
+   */
+
+
+  AuthenticationHelper.prototype.getSmallAValue = function getSmallAValue() {
+    return this.smallAValue;
+  };
+
+  /**
+   * @param {nodeCallback<BigInteger>} callback Called with (err, largeAValue)
+   * @returns {void}
+   */
+
+
+  AuthenticationHelper.prototype.getLargeAValue = function getLargeAValue(callback) {
+    var _this = this;
+
+    if (this.largeAValue) {
+      callback(null, this.largeAValue);
+    } else {
+      this.calculateA(this.smallAValue, function (err, largeAValue) {
+        if (err) {
+          callback(err, null);
+        }
+
+        _this.largeAValue = largeAValue;
+        callback(null, _this.largeAValue);
+      });
+    }
+  };
+
+  /**
+   * helper function to generate a random big integer
+   * @returns {BigInteger} a random value.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.generateRandomSmallA = function generateRandomSmallA() {
+    var hexRandom = randomBytes(128).toString('hex');
+
+    var randomBigInt = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](hexRandom, 16);
+    var smallABigInt = randomBigInt.mod(this.N);
+
+    return smallABigInt;
+  };
+
+  /**
+   * helper function to generate a random string
+   * @returns {string} a random value.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.generateRandomString = function generateRandomString() {
+    return randomBytes(40).toString('base64');
+  };
+
+  /**
+   * @returns {string} Generated random value included in password hash.
+   */
+
+
+  AuthenticationHelper.prototype.getRandomPassword = function getRandomPassword() {
+    return this.randomPassword;
+  };
+
+  /**
+   * @returns {string} Generated random value included in devices hash.
+   */
+
+
+  AuthenticationHelper.prototype.getSaltDevices = function getSaltDevices() {
+    return this.SaltToHashDevices;
+  };
+
+  /**
+   * @returns {string} Value used to verify devices.
+   */
+
+
+  AuthenticationHelper.prototype.getVerifierDevices = function getVerifierDevices() {
+    return this.verifierDevices;
+  };
+
+  /**
+   * Generate salts and compute verifier.
+   * @param {string} deviceGroupKey Devices to generate verifier for.
+   * @param {string} username User to generate verifier for.
+   * @param {nodeCallback<null>} callback Called with (err, null)
+   * @returns {void}
+   */
+
+
+  AuthenticationHelper.prototype.generateHashDevice = function generateHashDevice(deviceGroupKey, username, callback) {
+    var _this2 = this;
+
+    this.randomPassword = this.generateRandomString();
+    var combinedString = '' + deviceGroupKey + username + ':' + this.randomPassword;
+    var hashedString = this.hash(combinedString);
+
+    var hexRandom = randomBytes(16).toString('hex');
+    this.SaltToHashDevices = this.padHex(new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](hexRandom, 16));
+
+    this.g.modPow(new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](this.hexHash(this.SaltToHashDevices + hashedString), 16), this.N, function (err, verifierDevicesNotPadded) {
+      if (err) {
+        callback(err, null);
+      }
+
+      _this2.verifierDevices = _this2.padHex(verifierDevicesNotPadded);
+      callback(null, null);
+    });
+  };
+
+  /**
+   * Calculate the client's public value A = g^a%N
+   * with the generated random number a
+   * @param {BigInteger} a Randomly generated small A.
+   * @param {nodeCallback<BigInteger>} callback Called with (err, largeAValue)
+   * @returns {void}
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.calculateA = function calculateA(a, callback) {
+    var _this3 = this;
+
+    this.g.modPow(a, this.N, function (err, A) {
+      if (err) {
+        callback(err, null);
+      }
+
+      if (A.mod(_this3.N).equals(_BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"].ZERO)) {
+        callback(new Error('Illegal paramater. A mod N cannot be 0.'), null);
+      }
+
+      callback(null, A);
+    });
+  };
+
+  /**
+   * Calculate the client's value U which is the hash of A and B
+   * @param {BigInteger} A Large A value.
+   * @param {BigInteger} B Server B value.
+   * @returns {BigInteger} Computed U value.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.calculateU = function calculateU(A, B) {
+    this.UHexHash = this.hexHash(this.padHex(A) + this.padHex(B));
+    var finalU = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](this.UHexHash, 16);
+
+    return finalU;
+  };
+
+  /**
+   * Calculate a hash from a bitArray
+   * @param {Buffer} buf Value to hash.
+   * @returns {String} Hex-encoded hash.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.hash = function hash(buf) {
+    var hashHex = createHash('sha256').update(buf).digest('hex');
+    return new Array(64 - hashHex.length).join('0') + hashHex;
+  };
+
+  /**
+   * Calculate a hash from a hex string
+   * @param {String} hexStr Value to hash.
+   * @returns {String} Hex-encoded hash.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.hexHash = function hexHash(hexStr) {
+    return this.hash(buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(hexStr, 'hex'));
+  };
+
+  /**
+   * Standard hkdf algorithm
+   * @param {Buffer} ikm Input key material.
+   * @param {Buffer} salt Salt value.
+   * @returns {Buffer} Strong key material.
+   * @private
+   */
+
+
+  AuthenticationHelper.prototype.computehkdf = function computehkdf(ikm, salt) {
+    var prk = createHmac('sha256', salt).update(ikm).digest();
+    var infoBitsUpdate = buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].concat([this.infoBits, buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(String.fromCharCode(1), 'utf8')]);
+    var hmac = createHmac('sha256', prk).update(infoBitsUpdate).digest();
+    return hmac.slice(0, 16);
+  };
+
+  /**
+   * Calculates the final hkdf based on computed S value, and computed U value and the key
+   * @param {String} username Username.
+   * @param {String} password Password.
+   * @param {BigInteger} serverBValue Server B value.
+   * @param {BigInteger} salt Generated salt.
+   * @param {nodeCallback<Buffer>} callback Called with (err, hkdfValue)
+   * @returns {void}
+   */
+
+
+  AuthenticationHelper.prototype.getPasswordAuthenticationKey = function getPasswordAuthenticationKey(username, password, serverBValue, salt, callback) {
+    var _this4 = this;
+
+    if (serverBValue.mod(this.N).equals(_BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"].ZERO)) {
+      throw new Error('B cannot be zero.');
+    }
+
+    this.UValue = this.calculateU(this.largeAValue, serverBValue);
+
+    if (this.UValue.equals(_BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"].ZERO)) {
+      throw new Error('U cannot be zero.');
+    }
+
+    var usernamePassword = '' + this.poolName + username + ':' + password;
+    var usernamePasswordHash = this.hash(usernamePassword);
+
+    var xValue = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](this.hexHash(this.padHex(salt) + usernamePasswordHash), 16);
+    this.calculateS(xValue, serverBValue, function (err, sValue) {
+      if (err) {
+        callback(err, null);
+      }
+
+      var hkdf = _this4.computehkdf(buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this4.padHex(sValue), 'hex'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this4.padHex(_this4.UValue.toString(16)), 'hex'));
+
+      callback(null, hkdf);
+    });
+  };
+
+  /**
+   * Calculates the S value used in getPasswordAuthenticationKey
+   * @param {BigInteger} xValue Salted password hash value.
+   * @param {BigInteger} serverBValue Server B value.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  AuthenticationHelper.prototype.calculateS = function calculateS(xValue, serverBValue, callback) {
+    var _this5 = this;
+
+    this.g.modPow(xValue, this.N, function (err, gModPowXN) {
+      if (err) {
+        callback(err, null);
+      }
+
+      var intValue2 = serverBValue.subtract(_this5.k.multiply(gModPowXN));
+      intValue2.modPow(_this5.smallAValue.add(_this5.UValue.multiply(xValue)), _this5.N, function (err2, result) {
+        if (err2) {
+          callback(err2, null);
+        }
+
+        callback(null, result.mod(_this5.N));
+      });
+    });
+  };
+
+  /**
+  * Return constant newPasswordRequiredChallengeUserAttributePrefix
+  * @return {newPasswordRequiredChallengeUserAttributePrefix} constant prefix value
+  */
+
+
+  AuthenticationHelper.prototype.getNewPasswordRequiredChallengeUserAttributePrefix = function getNewPasswordRequiredChallengeUserAttributePrefix() {
+    return newPasswordRequiredChallengeUserAttributePrefix;
+  };
+
+  /**
+   * Converts a BigInteger (or hex string) to hex format padded with zeroes for hashing
+   * @param {BigInteger|String} bigInt Number or string to pad.
+   * @returns {String} Padded hex string.
+   */
+
+
+  AuthenticationHelper.prototype.padHex = function padHex(bigInt) {
+    var hashStr = bigInt.toString(16);
+    if (hashStr.length % 2 === 1) {
+      hashStr = '0' + hashStr;
+    } else if ('89ABCDEFabcdef'.indexOf(hashStr[0]) !== -1) {
+      hashStr = '00' + hashStr;
+    }
+    return hashStr;
+  };
+
+  return AuthenticationHelper;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (AuthenticationHelper);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/BigInteger.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/BigInteger.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// A small implementation of BigInteger based on http://www-cs-students.stanford.edu/~tjw/jsbn/
+//
+// All public methods have been removed except the following:
+//   new BigInteger(a, b) (only radix 2, 4, 8, 16 and 32 supported)
+//   toString (only radix 2, 4, 8, 16 and 32 supported)
+//   negate
+//   abs
+//   compareTo
+//   bitLength
+//   mod
+//   equals
+//   add
+//   subtract
+//   multiply
+//   divide
+//   modPow
+
+/* harmony default export */ __webpack_exports__["default"] = (BigInteger);
+
+/*
+ * Copyright (c) 2003-2005  Tom Wu
+ * All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * IN NO EVENT SHALL TOM WU BE LIABLE FOR ANY SPECIAL, INCIDENTAL,
+ * INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY DAMAGES WHATSOEVER
+ * RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER OR NOT ADVISED OF
+ * THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING OUT
+ * OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * In addition, the following condition applies:
+ *
+ * All redistributions must retain an intact copy of this copyright notice
+ * and disclaimer.
+ */
+
+// (public) Constructor
+function BigInteger(a, b) {
+  if (a != null) this.fromString(a, b);
+}
+
+// return new, unset BigInteger
+function nbi() {
+  return new BigInteger(null);
+}
+
+// Bits per digit
+var dbits;
+
+// JavaScript engine analysis
+var canary = 0xdeadbeefcafe;
+var j_lm = (canary & 0xffffff) == 0xefcafe;
+
+// am: Compute w_j += (x*this_i), propagate carries,
+// c is initial carry, returns final carry.
+// c < 3*dvalue, x < 2*dvalue, this_i < dvalue
+// We need to select the fastest one that works in this environment.
+
+// am1: use a single mult and divide to get the high bits,
+// max digit bits should be 26 because
+// max internal value = 2*dvalue^2-2*dvalue (< 2^53)
+function am1(i, x, w, j, c, n) {
+  while (--n >= 0) {
+    var v = x * this[i++] + w[j] + c;
+    c = Math.floor(v / 0x4000000);
+    w[j++] = v & 0x3ffffff;
+  }
+  return c;
+}
+// am2 avoids a big mult-and-extract completely.
+// Max digit bits should be <= 30 because we do bitwise ops
+// on values up to 2*hdvalue^2-hdvalue-1 (< 2^31)
+function am2(i, x, w, j, c, n) {
+  var xl = x & 0x7fff,
+      xh = x >> 15;
+  while (--n >= 0) {
+    var l = this[i] & 0x7fff;
+    var h = this[i++] >> 15;
+    var m = xh * l + h * xl;
+    l = xl * l + ((m & 0x7fff) << 15) + w[j] + (c & 0x3fffffff);
+    c = (l >>> 30) + (m >>> 15) + xh * h + (c >>> 30);
+    w[j++] = l & 0x3fffffff;
+  }
+  return c;
+}
+// Alternately, set max digit bits to 28 since some
+// browsers slow down when dealing with 32-bit numbers.
+function am3(i, x, w, j, c, n) {
+  var xl = x & 0x3fff,
+      xh = x >> 14;
+  while (--n >= 0) {
+    var l = this[i] & 0x3fff;
+    var h = this[i++] >> 14;
+    var m = xh * l + h * xl;
+    l = xl * l + ((m & 0x3fff) << 14) + w[j] + c;
+    c = (l >> 28) + (m >> 14) + xh * h;
+    w[j++] = l & 0xfffffff;
+  }
+  return c;
+}
+var inBrowser = typeof navigator !== "undefined";
+if (inBrowser && j_lm && navigator.appName == "Microsoft Internet Explorer") {
+  BigInteger.prototype.am = am2;
+  dbits = 30;
+} else if (inBrowser && j_lm && navigator.appName != "Netscape") {
+  BigInteger.prototype.am = am1;
+  dbits = 26;
+} else {
+  // Mozilla/Netscape seems to prefer am3
+  BigInteger.prototype.am = am3;
+  dbits = 28;
+}
+
+BigInteger.prototype.DB = dbits;
+BigInteger.prototype.DM = (1 << dbits) - 1;
+BigInteger.prototype.DV = 1 << dbits;
+
+var BI_FP = 52;
+BigInteger.prototype.FV = Math.pow(2, BI_FP);
+BigInteger.prototype.F1 = BI_FP - dbits;
+BigInteger.prototype.F2 = 2 * dbits - BI_FP;
+
+// Digit conversions
+var BI_RM = "0123456789abcdefghijklmnopqrstuvwxyz";
+var BI_RC = new Array();
+var rr, vv;
+rr = "0".charCodeAt(0);
+for (vv = 0; vv <= 9; ++vv) {
+  BI_RC[rr++] = vv;
+}rr = "a".charCodeAt(0);
+for (vv = 10; vv < 36; ++vv) {
+  BI_RC[rr++] = vv;
+}rr = "A".charCodeAt(0);
+for (vv = 10; vv < 36; ++vv) {
+  BI_RC[rr++] = vv;
+}function int2char(n) {
+  return BI_RM.charAt(n);
+}
+function intAt(s, i) {
+  var c = BI_RC[s.charCodeAt(i)];
+  return c == null ? -1 : c;
+}
+
+// (protected) copy this to r
+function bnpCopyTo(r) {
+  for (var i = this.t - 1; i >= 0; --i) {
+    r[i] = this[i];
+  }r.t = this.t;
+  r.s = this.s;
+}
+
+// (protected) set from integer value x, -DV <= x < DV
+function bnpFromInt(x) {
+  this.t = 1;
+  this.s = x < 0 ? -1 : 0;
+  if (x > 0) this[0] = x;else if (x < -1) this[0] = x + this.DV;else this.t = 0;
+}
+
+// return bigint initialized to value
+function nbv(i) {
+  var r = nbi();
+
+  r.fromInt(i);
+
+  return r;
+}
+
+// (protected) set from string and radix
+function bnpFromString(s, b) {
+  var k;
+  if (b == 16) k = 4;else if (b == 8) k = 3;else if (b == 2) k = 1;else if (b == 32) k = 5;else if (b == 4) k = 2;else throw new Error("Only radix 2, 4, 8, 16, 32 are supported");
+  this.t = 0;
+  this.s = 0;
+  var i = s.length,
+      mi = false,
+      sh = 0;
+  while (--i >= 0) {
+    var x = intAt(s, i);
+    if (x < 0) {
+      if (s.charAt(i) == "-") mi = true;
+      continue;
+    }
+    mi = false;
+    if (sh == 0) this[this.t++] = x;else if (sh + k > this.DB) {
+      this[this.t - 1] |= (x & (1 << this.DB - sh) - 1) << sh;
+      this[this.t++] = x >> this.DB - sh;
+    } else this[this.t - 1] |= x << sh;
+    sh += k;
+    if (sh >= this.DB) sh -= this.DB;
+  }
+  this.clamp();
+  if (mi) BigInteger.ZERO.subTo(this, this);
+}
+
+// (protected) clamp off excess high words
+function bnpClamp() {
+  var c = this.s & this.DM;
+  while (this.t > 0 && this[this.t - 1] == c) {
+    --this.t;
+  }
+}
+
+// (public) return string representation in given radix
+function bnToString(b) {
+  if (this.s < 0) return "-" + this.negate().toString();
+  var k;
+  if (b == 16) k = 4;else if (b == 8) k = 3;else if (b == 2) k = 1;else if (b == 32) k = 5;else if (b == 4) k = 2;else throw new Error("Only radix 2, 4, 8, 16, 32 are supported");
+  var km = (1 << k) - 1,
+      d,
+      m = false,
+      r = "",
+      i = this.t;
+  var p = this.DB - i * this.DB % k;
+  if (i-- > 0) {
+    if (p < this.DB && (d = this[i] >> p) > 0) {
+      m = true;
+      r = int2char(d);
+    }
+    while (i >= 0) {
+      if (p < k) {
+        d = (this[i] & (1 << p) - 1) << k - p;
+        d |= this[--i] >> (p += this.DB - k);
+      } else {
+        d = this[i] >> (p -= k) & km;
+        if (p <= 0) {
+          p += this.DB;
+          --i;
+        }
+      }
+      if (d > 0) m = true;
+      if (m) r += int2char(d);
+    }
+  }
+  return m ? r : "0";
+}
+
+// (public) -this
+function bnNegate() {
+  var r = nbi();
+
+  BigInteger.ZERO.subTo(this, r);
+
+  return r;
+}
+
+// (public) |this|
+function bnAbs() {
+  return this.s < 0 ? this.negate() : this;
+}
+
+// (public) return + if this > a, - if this < a, 0 if equal
+function bnCompareTo(a) {
+  var r = this.s - a.s;
+  if (r != 0) return r;
+  var i = this.t;
+  r = i - a.t;
+  if (r != 0) return this.s < 0 ? -r : r;
+  while (--i >= 0) {
+    if ((r = this[i] - a[i]) != 0) return r;
+  }return 0;
+}
+
+// returns bit length of the integer x
+function nbits(x) {
+  var r = 1,
+      t;
+  if ((t = x >>> 16) != 0) {
+    x = t;
+    r += 16;
+  }
+  if ((t = x >> 8) != 0) {
+    x = t;
+    r += 8;
+  }
+  if ((t = x >> 4) != 0) {
+    x = t;
+    r += 4;
+  }
+  if ((t = x >> 2) != 0) {
+    x = t;
+    r += 2;
+  }
+  if ((t = x >> 1) != 0) {
+    x = t;
+    r += 1;
+  }
+  return r;
+}
+
+// (public) return the number of bits in "this"
+function bnBitLength() {
+  if (this.t <= 0) return 0;
+  return this.DB * (this.t - 1) + nbits(this[this.t - 1] ^ this.s & this.DM);
+}
+
+// (protected) r = this << n*DB
+function bnpDLShiftTo(n, r) {
+  var i;
+  for (i = this.t - 1; i >= 0; --i) {
+    r[i + n] = this[i];
+  }for (i = n - 1; i >= 0; --i) {
+    r[i] = 0;
+  }r.t = this.t + n;
+  r.s = this.s;
+}
+
+// (protected) r = this >> n*DB
+function bnpDRShiftTo(n, r) {
+  for (var i = n; i < this.t; ++i) {
+    r[i - n] = this[i];
+  }r.t = Math.max(this.t - n, 0);
+  r.s = this.s;
+}
+
+// (protected) r = this << n
+function bnpLShiftTo(n, r) {
+  var bs = n % this.DB;
+  var cbs = this.DB - bs;
+  var bm = (1 << cbs) - 1;
+  var ds = Math.floor(n / this.DB),
+      c = this.s << bs & this.DM,
+      i;
+  for (i = this.t - 1; i >= 0; --i) {
+    r[i + ds + 1] = this[i] >> cbs | c;
+    c = (this[i] & bm) << bs;
+  }
+  for (i = ds - 1; i >= 0; --i) {
+    r[i] = 0;
+  }r[ds] = c;
+  r.t = this.t + ds + 1;
+  r.s = this.s;
+  r.clamp();
+}
+
+// (protected) r = this >> n
+function bnpRShiftTo(n, r) {
+  r.s = this.s;
+  var ds = Math.floor(n / this.DB);
+  if (ds >= this.t) {
+    r.t = 0;
+    return;
+  }
+  var bs = n % this.DB;
+  var cbs = this.DB - bs;
+  var bm = (1 << bs) - 1;
+  r[0] = this[ds] >> bs;
+  for (var i = ds + 1; i < this.t; ++i) {
+    r[i - ds - 1] |= (this[i] & bm) << cbs;
+    r[i - ds] = this[i] >> bs;
+  }
+  if (bs > 0) r[this.t - ds - 1] |= (this.s & bm) << cbs;
+  r.t = this.t - ds;
+  r.clamp();
+}
+
+// (protected) r = this - a
+function bnpSubTo(a, r) {
+  var i = 0,
+      c = 0,
+      m = Math.min(a.t, this.t);
+  while (i < m) {
+    c += this[i] - a[i];
+    r[i++] = c & this.DM;
+    c >>= this.DB;
+  }
+  if (a.t < this.t) {
+    c -= a.s;
+    while (i < this.t) {
+      c += this[i];
+      r[i++] = c & this.DM;
+      c >>= this.DB;
+    }
+    c += this.s;
+  } else {
+    c += this.s;
+    while (i < a.t) {
+      c -= a[i];
+      r[i++] = c & this.DM;
+      c >>= this.DB;
+    }
+    c -= a.s;
+  }
+  r.s = c < 0 ? -1 : 0;
+  if (c < -1) r[i++] = this.DV + c;else if (c > 0) r[i++] = c;
+  r.t = i;
+  r.clamp();
+}
+
+// (protected) r = this * a, r != this,a (HAC 14.12)
+// "this" should be the larger one if appropriate.
+function bnpMultiplyTo(a, r) {
+  var x = this.abs(),
+      y = a.abs();
+  var i = x.t;
+  r.t = i + y.t;
+  while (--i >= 0) {
+    r[i] = 0;
+  }for (i = 0; i < y.t; ++i) {
+    r[i + x.t] = x.am(0, y[i], r, i, 0, x.t);
+  }r.s = 0;
+  r.clamp();
+  if (this.s != a.s) BigInteger.ZERO.subTo(r, r);
+}
+
+// (protected) r = this^2, r != this (HAC 14.16)
+function bnpSquareTo(r) {
+  var x = this.abs();
+  var i = r.t = 2 * x.t;
+  while (--i >= 0) {
+    r[i] = 0;
+  }for (i = 0; i < x.t - 1; ++i) {
+    var c = x.am(i, x[i], r, 2 * i, 0, 1);
+    if ((r[i + x.t] += x.am(i + 1, 2 * x[i], r, 2 * i + 1, c, x.t - i - 1)) >= x.DV) {
+      r[i + x.t] -= x.DV;
+      r[i + x.t + 1] = 1;
+    }
+  }
+  if (r.t > 0) r[r.t - 1] += x.am(i, x[i], r, 2 * i, 0, 1);
+  r.s = 0;
+  r.clamp();
+}
+
+// (protected) divide this by m, quotient and remainder to q, r (HAC 14.20)
+// r != q, this != m.  q or r may be null.
+function bnpDivRemTo(m, q, r) {
+  var pm = m.abs();
+  if (pm.t <= 0) return;
+  var pt = this.abs();
+  if (pt.t < pm.t) {
+    if (q != null) q.fromInt(0);
+    if (r != null) this.copyTo(r);
+    return;
+  }
+  if (r == null) r = nbi();
+  var y = nbi(),
+      ts = this.s,
+      ms = m.s;
+  var nsh = this.DB - nbits(pm[pm.t - 1]);
+  // normalize modulus
+  if (nsh > 0) {
+    pm.lShiftTo(nsh, y);
+    pt.lShiftTo(nsh, r);
+  } else {
+    pm.copyTo(y);
+    pt.copyTo(r);
+  }
+  var ys = y.t;
+  var y0 = y[ys - 1];
+  if (y0 == 0) return;
+  var yt = y0 * (1 << this.F1) + (ys > 1 ? y[ys - 2] >> this.F2 : 0);
+  var d1 = this.FV / yt,
+      d2 = (1 << this.F1) / yt,
+      e = 1 << this.F2;
+  var i = r.t,
+      j = i - ys,
+      t = q == null ? nbi() : q;
+  y.dlShiftTo(j, t);
+  if (r.compareTo(t) >= 0) {
+    r[r.t++] = 1;
+    r.subTo(t, r);
+  }
+  BigInteger.ONE.dlShiftTo(ys, t);
+  t.subTo(y, y);
+  // "negative" y so we can replace sub with am later
+  while (y.t < ys) {
+    y[y.t++] = 0;
+  }while (--j >= 0) {
+    // Estimate quotient digit
+    var qd = r[--i] == y0 ? this.DM : Math.floor(r[i] * d1 + (r[i - 1] + e) * d2);
+    if ((r[i] += y.am(0, qd, r, j, 0, ys)) < qd) {
+      // Try it out
+      y.dlShiftTo(j, t);
+      r.subTo(t, r);
+      while (r[i] < --qd) {
+        r.subTo(t, r);
+      }
+    }
+  }
+  if (q != null) {
+    r.drShiftTo(ys, q);
+    if (ts != ms) BigInteger.ZERO.subTo(q, q);
+  }
+  r.t = ys;
+  r.clamp();
+  if (nsh > 0) r.rShiftTo(nsh, r);
+  // Denormalize remainder
+  if (ts < 0) BigInteger.ZERO.subTo(r, r);
+}
+
+// (public) this mod a
+function bnMod(a) {
+  var r = nbi();
+  this.abs().divRemTo(a, null, r);
+  if (this.s < 0 && r.compareTo(BigInteger.ZERO) > 0) a.subTo(r, r);
+  return r;
+}
+
+// (protected) return "-1/this % 2^DB"; useful for Mont. reduction
+// justification:
+//         xy == 1 (mod m)
+//         xy =  1+km
+//   xy(2-xy) = (1+km)(1-km)
+// x[y(2-xy)] = 1-k^2m^2
+// x[y(2-xy)] == 1 (mod m^2)
+// if y is 1/x mod m, then y(2-xy) is 1/x mod m^2
+// should reduce x and y(2-xy) by m^2 at each step to keep size bounded.
+// JS multiply "overflows" differently from C/C++, so care is needed here.
+function bnpInvDigit() {
+  if (this.t < 1) return 0;
+  var x = this[0];
+  if ((x & 1) == 0) return 0;
+  var y = x & 3;
+  // y == 1/x mod 2^2
+  y = y * (2 - (x & 0xf) * y) & 0xf;
+  // y == 1/x mod 2^4
+  y = y * (2 - (x & 0xff) * y) & 0xff;
+  // y == 1/x mod 2^8
+  y = y * (2 - ((x & 0xffff) * y & 0xffff)) & 0xffff;
+  // y == 1/x mod 2^16
+  // last step - calculate inverse mod DV directly;
+  // assumes 16 < DB <= 32 and assumes ability to handle 48-bit ints
+  y = y * (2 - x * y % this.DV) % this.DV;
+  // y == 1/x mod 2^dbits
+  // we really want the negative inverse, and -DV < y < DV
+  return y > 0 ? this.DV - y : -y;
+}
+
+function bnEquals(a) {
+  return this.compareTo(a) == 0;
+}
+
+// (protected) r = this + a
+function bnpAddTo(a, r) {
+  var i = 0,
+      c = 0,
+      m = Math.min(a.t, this.t);
+  while (i < m) {
+    c += this[i] + a[i];
+    r[i++] = c & this.DM;
+    c >>= this.DB;
+  }
+  if (a.t < this.t) {
+    c += a.s;
+    while (i < this.t) {
+      c += this[i];
+      r[i++] = c & this.DM;
+      c >>= this.DB;
+    }
+    c += this.s;
+  } else {
+    c += this.s;
+    while (i < a.t) {
+      c += a[i];
+      r[i++] = c & this.DM;
+      c >>= this.DB;
+    }
+    c += a.s;
+  }
+  r.s = c < 0 ? -1 : 0;
+  if (c > 0) r[i++] = c;else if (c < -1) r[i++] = this.DV + c;
+  r.t = i;
+  r.clamp();
+}
+
+// (public) this + a
+function bnAdd(a) {
+  var r = nbi();
+
+  this.addTo(a, r);
+
+  return r;
+}
+
+// (public) this - a
+function bnSubtract(a) {
+  var r = nbi();
+
+  this.subTo(a, r);
+
+  return r;
+}
+
+// (public) this * a
+function bnMultiply(a) {
+  var r = nbi();
+
+  this.multiplyTo(a, r);
+
+  return r;
+}
+
+// (public) this / a
+function bnDivide(a) {
+  var r = nbi();
+
+  this.divRemTo(a, r, null);
+
+  return r;
+}
+
+// Montgomery reduction
+function Montgomery(m) {
+  this.m = m;
+  this.mp = m.invDigit();
+  this.mpl = this.mp & 0x7fff;
+  this.mph = this.mp >> 15;
+  this.um = (1 << m.DB - 15) - 1;
+  this.mt2 = 2 * m.t;
+}
+
+// xR mod m
+function montConvert(x) {
+  var r = nbi();
+  x.abs().dlShiftTo(this.m.t, r);
+  r.divRemTo(this.m, null, r);
+  if (x.s < 0 && r.compareTo(BigInteger.ZERO) > 0) this.m.subTo(r, r);
+  return r;
+}
+
+// x/R mod m
+function montRevert(x) {
+  var r = nbi();
+  x.copyTo(r);
+  this.reduce(r);
+  return r;
+}
+
+// x = x/R mod m (HAC 14.32)
+function montReduce(x) {
+  while (x.t <= this.mt2) {
+    // pad x so am has enough room later
+    x[x.t++] = 0;
+  }for (var i = 0; i < this.m.t; ++i) {
+    // faster way of calculating u0 = x[i]*mp mod DV
+    var j = x[i] & 0x7fff;
+    var u0 = j * this.mpl + ((j * this.mph + (x[i] >> 15) * this.mpl & this.um) << 15) & x.DM;
+    // use am to combine the multiply-shift-add into one call
+    j = i + this.m.t;
+    x[j] += this.m.am(0, u0, x, i, 0, this.m.t);
+    // propagate carry
+    while (x[j] >= x.DV) {
+      x[j] -= x.DV;
+      x[++j]++;
+    }
+  }
+  x.clamp();
+  x.drShiftTo(this.m.t, x);
+  if (x.compareTo(this.m) >= 0) x.subTo(this.m, x);
+}
+
+// r = "x^2/R mod m"; x != r
+function montSqrTo(x, r) {
+  x.squareTo(r);
+
+  this.reduce(r);
+}
+
+// r = "xy/R mod m"; x,y != r
+function montMulTo(x, y, r) {
+  x.multiplyTo(y, r);
+
+  this.reduce(r);
+}
+
+Montgomery.prototype.convert = montConvert;
+Montgomery.prototype.revert = montRevert;
+Montgomery.prototype.reduce = montReduce;
+Montgomery.prototype.mulTo = montMulTo;
+Montgomery.prototype.sqrTo = montSqrTo;
+
+// (public) this^e % m (HAC 14.85)
+function bnModPow(e, m, callback) {
+  var i = e.bitLength(),
+      k,
+      r = nbv(1),
+      z = new Montgomery(m);
+  if (i <= 0) return r;else if (i < 18) k = 1;else if (i < 48) k = 3;else if (i < 144) k = 4;else if (i < 768) k = 5;else k = 6;
+
+  // precomputation
+  var g = new Array(),
+      n = 3,
+      k1 = k - 1,
+      km = (1 << k) - 1;
+  g[1] = z.convert(this);
+  if (k > 1) {
+    var g2 = nbi();
+    z.sqrTo(g[1], g2);
+    while (n <= km) {
+      g[n] = nbi();
+      z.mulTo(g2, g[n - 2], g[n]);
+      n += 2;
+    }
+  }
+
+  var j = e.t - 1,
+      w,
+      is1 = true,
+      r2 = nbi(),
+      t;
+  i = nbits(e[j]) - 1;
+  while (j >= 0) {
+    if (i >= k1) w = e[j] >> i - k1 & km;else {
+      w = (e[j] & (1 << i + 1) - 1) << k1 - i;
+      if (j > 0) w |= e[j - 1] >> this.DB + i - k1;
+    }
+
+    n = k;
+    while ((w & 1) == 0) {
+      w >>= 1;
+      --n;
+    }
+    if ((i -= n) < 0) {
+      i += this.DB;
+      --j;
+    }
+    if (is1) {
+      // ret == 1, don't bother squaring or multiplying it
+      g[w].copyTo(r);
+      is1 = false;
+    } else {
+      while (n > 1) {
+        z.sqrTo(r, r2);
+        z.sqrTo(r2, r);
+        n -= 2;
+      }
+      if (n > 0) z.sqrTo(r, r2);else {
+        t = r;
+        r = r2;
+        r2 = t;
+      }
+      z.mulTo(r2, g[w], r);
+    }
+
+    while (j >= 0 && (e[j] & 1 << i) == 0) {
+      z.sqrTo(r, r2);
+      t = r;
+      r = r2;
+      r2 = t;
+      if (--i < 0) {
+        i = this.DB - 1;
+        --j;
+      }
+    }
+  }
+  var result = z.revert(r);
+  callback(null, result);
+  return result;
+}
+
+// protected
+BigInteger.prototype.copyTo = bnpCopyTo;
+BigInteger.prototype.fromInt = bnpFromInt;
+BigInteger.prototype.fromString = bnpFromString;
+BigInteger.prototype.clamp = bnpClamp;
+BigInteger.prototype.dlShiftTo = bnpDLShiftTo;
+BigInteger.prototype.drShiftTo = bnpDRShiftTo;
+BigInteger.prototype.lShiftTo = bnpLShiftTo;
+BigInteger.prototype.rShiftTo = bnpRShiftTo;
+BigInteger.prototype.subTo = bnpSubTo;
+BigInteger.prototype.multiplyTo = bnpMultiplyTo;
+BigInteger.prototype.squareTo = bnpSquareTo;
+BigInteger.prototype.divRemTo = bnpDivRemTo;
+BigInteger.prototype.invDigit = bnpInvDigit;
+BigInteger.prototype.addTo = bnpAddTo;
+
+// public
+BigInteger.prototype.toString = bnToString;
+BigInteger.prototype.negate = bnNegate;
+BigInteger.prototype.abs = bnAbs;
+BigInteger.prototype.compareTo = bnCompareTo;
+BigInteger.prototype.bitLength = bnBitLength;
+BigInteger.prototype.mod = bnMod;
+BigInteger.prototype.equals = bnEquals;
+BigInteger.prototype.add = bnAdd;
+BigInteger.prototype.subtract = bnSubtract;
+BigInteger.prototype.multiply = bnMultiply;
+BigInteger.prototype.divide = bnDivide;
+BigInteger.prototype.modPow = bnModPow;
+
+// "constants"
+BigInteger.ZERO = nbv(0);
+BigInteger.ONE = nbv(1);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/Client.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/Client.js ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UserAgent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserAgent */ "./node_modules/amazon-cognito-identity-js/es/UserAgent.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+/** @class */
+
+var Client = function () {
+  /**
+   * Constructs a new AWS Cognito Identity Provider client object
+   * @param {string} region AWS region
+   * @param {string} endpoint endpoint
+   */
+  function Client(region, endpoint) {
+    _classCallCheck(this, Client);
+
+    this.endpoint = endpoint || 'https://cognito-idp.' + region + '.amazonaws.com/';
+    this.userAgent = _UserAgent__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.userAgent || 'aws-amplify/0.1.x js';
+  }
+
+  /**
+   * Makes an unauthenticated request on AWS Cognito Identity Provider API
+   * using fetch
+   * @param {string} operation API operation
+   * @param {object} params Input parameters
+   * @param {function} callback Callback called when a response is returned
+   * @returns {void}
+  */
+
+
+  Client.prototype.request = function request(operation, params, callback) {
+    var headers = {
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': 'AWSCognitoIdentityProviderService.' + operation,
+      'X-Amz-User-Agent': this.userAgent
+    };
+
+    var options = {
+      headers: headers,
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      body: JSON.stringify(params)
+    };
+
+    var response = void 0;
+
+    fetch(this.endpoint, options).then(function (resp) {
+      response = resp;
+      return resp;
+    }, function (err) {
+      // If error happens here, the request failed
+      // if it is TypeError throw network error
+      if (err instanceof TypeError) {
+        throw new Error('Network error');
+      }
+      throw err;
+    }).then(function (resp) {
+      return resp.json().catch(function () {
+        return {};
+      });
+    }).then(function (data) {
+      if (response.ok) return callback(null, data);
+
+      // Taken from aws-sdk-js/lib/protocol/json.js
+      // eslint-disable-next-line no-underscore-dangle
+      var code = (data.__type || data.code).split('#').pop();
+      var error = {
+        code: code,
+        name: code,
+        message: data.message || data.Message || null
+      };
+      return callback(error);
+    }).catch(function (err) {
+      // default to return 'UnknownError'
+      var error = { code: 'UnknownError', message: 'Unkown error' };
+
+      // first check if we have a service error
+      if (response && response.headers && response.headers.get('x-amzn-errortype')) {
+        try {
+          var code = response.headers.get('x-amzn-errortype').split(':')[0];
+          error = {
+            code: code,
+            name: code,
+            statusCode: response.status,
+            message: response.status ? response.status.toString() : null
+          };
+        } catch (ex) {
+          // pass through so it doesn't get swallowed if we can't parse it
+          error = {
+            code: 'UnknownError',
+            message: response.headers.get('x-amzn-errortype')
+          };
+          return callback(error);
+        }
+        // otherwise check if error is Network error
+      } else if (err instanceof Error && err.message === 'Network error') {
+        error = {
+          code: 'NetworkError',
+          name: err.name,
+          message: err.message
+        };
+      }
+      return callback(error);
+    });
+  };
+
+  return Client;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Client);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoAccessToken.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoAccessToken.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CognitoJwtToken__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CognitoJwtToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoJwtToken.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/*
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+/** @class */
+
+var CognitoAccessToken = function (_CognitoJwtToken) {
+  _inherits(CognitoAccessToken, _CognitoJwtToken);
+
+  /**
+   * Constructs a new CognitoAccessToken object
+   * @param {string=} AccessToken The JWT access token.
+   */
+  function CognitoAccessToken() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        AccessToken = _ref.AccessToken;
+
+    _classCallCheck(this, CognitoAccessToken);
+
+    return _possibleConstructorReturn(this, _CognitoJwtToken.call(this, AccessToken || ''));
+  }
+
+  return CognitoAccessToken;
+}(_CognitoJwtToken__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoAccessToken);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoIdToken.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoIdToken.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CognitoJwtToken__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CognitoJwtToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoJwtToken.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+/** @class */
+
+var CognitoIdToken = function (_CognitoJwtToken) {
+  _inherits(CognitoIdToken, _CognitoJwtToken);
+
+  /**
+   * Constructs a new CognitoIdToken object
+   * @param {string=} IdToken The JWT Id token
+   */
+  function CognitoIdToken() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        IdToken = _ref.IdToken;
+
+    _classCallCheck(this, CognitoIdToken);
+
+    return _possibleConstructorReturn(this, _CognitoJwtToken.call(this, IdToken || ''));
+  }
+
+  return CognitoIdToken;
+}(_CognitoJwtToken__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoIdToken);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoJwtToken.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoJwtToken.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! buffer/ */ "./node_modules/buffer/index.js");
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(buffer___WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+/** @class */
+
+var CognitoJwtToken = function () {
+  /**
+   * Constructs a new CognitoJwtToken object
+   * @param {string=} token The JWT token.
+   */
+  function CognitoJwtToken(token) {
+    _classCallCheck(this, CognitoJwtToken);
+
+    // Assign object
+    this.jwtToken = token || '';
+    this.payload = this.decodePayload();
+  }
+
+  /**
+   * @returns {string} the record's token.
+   */
+
+
+  CognitoJwtToken.prototype.getJwtToken = function getJwtToken() {
+    return this.jwtToken;
+  };
+
+  /**
+   * @returns {int} the token's expiration (exp member).
+   */
+
+
+  CognitoJwtToken.prototype.getExpiration = function getExpiration() {
+    return this.payload.exp;
+  };
+
+  /**
+   * @returns {int} the token's "issued at" (iat member).
+   */
+
+
+  CognitoJwtToken.prototype.getIssuedAt = function getIssuedAt() {
+    return this.payload.iat;
+  };
+
+  /**
+   * @returns {object} the token's payload.
+   */
+
+
+  CognitoJwtToken.prototype.decodePayload = function decodePayload() {
+    var payload = this.jwtToken.split('.')[1];
+    try {
+      return JSON.parse(buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(payload, 'base64').toString('utf8'));
+    } catch (err) {
+      return {};
+    }
+  };
+
+  return CognitoJwtToken;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoJwtToken);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoRefreshToken.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoRefreshToken.js ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @class */
+var CognitoRefreshToken = function () {
+  /**
+   * Constructs a new CognitoRefreshToken object
+   * @param {string=} RefreshToken The JWT refresh token.
+   */
+  function CognitoRefreshToken() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        RefreshToken = _ref.RefreshToken;
+
+    _classCallCheck(this, CognitoRefreshToken);
+
+    // Assign object
+    this.token = RefreshToken || '';
+  }
+
+  /**
+   * @returns {string} the record's token.
+   */
+
+
+  CognitoRefreshToken.prototype.getToken = function getToken() {
+    return this.token;
+  };
+
+  return CognitoRefreshToken;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoRefreshToken);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoUser.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoUser.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! buffer/ */ "./node_modules/buffer/index.js");
+/* harmony import */ var buffer___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(buffer___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var crypto_browserify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! crypto-browserify */ "./node_modules/crypto-browserify/index.js");
+/* harmony import */ var crypto_browserify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(crypto_browserify__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _BigInteger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BigInteger */ "./node_modules/amazon-cognito-identity-js/es/BigInteger.js");
+/* harmony import */ var _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AuthenticationHelper */ "./node_modules/amazon-cognito-identity-js/es/AuthenticationHelper.js");
+/* harmony import */ var _CognitoAccessToken__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CognitoAccessToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoAccessToken.js");
+/* harmony import */ var _CognitoIdToken__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CognitoIdToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoIdToken.js");
+/* harmony import */ var _CognitoRefreshToken__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CognitoRefreshToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoRefreshToken.js");
+/* harmony import */ var _CognitoUserSession__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CognitoUserSession */ "./node_modules/amazon-cognito-identity-js/es/CognitoUserSession.js");
+/* harmony import */ var _DateHelper__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DateHelper */ "./node_modules/amazon-cognito-identity-js/es/DateHelper.js");
+/* harmony import */ var _CognitoUserAttribute__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CognitoUserAttribute */ "./node_modules/amazon-cognito-identity-js/es/CognitoUserAttribute.js");
+/* harmony import */ var _StorageHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./StorageHelper */ "./node_modules/amazon-cognito-identity-js/es/StorageHelper.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+//import createHmac from 'create-hmac';
+
+var createHmac = crypto_browserify__WEBPACK_IMPORTED_MODULE_1__["createHmac"];
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @callback nodeCallback
+ * @template T result
+ * @param {*} err The operation failure reason, or null.
+ * @param {T} result The operation result.
+ */
+
+/**
+ * @callback onFailure
+ * @param {*} err Failure reason.
+ */
+
+/**
+ * @callback onSuccess
+ * @template T result
+ * @param {T} result The operation result.
+ */
+
+/**
+ * @callback mfaRequired
+ * @param {*} details MFA challenge details.
+ */
+
+/**
+ * @callback customChallenge
+ * @param {*} details Custom challenge details.
+ */
+
+/**
+ * @callback inputVerificationCode
+ * @param {*} data Server response.
+ */
+
+/**
+ * @callback authSuccess
+ * @param {CognitoUserSession} session The new session.
+ * @param {bool=} userConfirmationNecessary User must be confirmed.
+ */
+
+/** @class */
+
+var CognitoUser = function () {
+  /**
+   * Constructs a new CognitoUser object
+   * @param {object} data Creation options
+   * @param {string} data.Username The user's username.
+   * @param {CognitoUserPool} data.Pool Pool containing the user.
+   * @param {object} data.Storage Optional storage object.
+   */
+  function CognitoUser(data) {
+    _classCallCheck(this, CognitoUser);
+
+    if (data == null || data.Username == null || data.Pool == null) {
+      throw new Error('Username and pool information are required.');
+    }
+
+    this.username = data.Username || '';
+    this.pool = data.Pool;
+    this.Session = null;
+
+    this.client = data.Pool.client;
+
+    this.signInUserSession = null;
+    this.authenticationFlowType = 'USER_SRP_AUTH';
+
+    this.storage = data.Storage || new _StorageHelper__WEBPACK_IMPORTED_MODULE_10__["default"]().getStorage();
+  }
+
+  /**
+   * Sets the session for this user
+   * @param {CognitoUserSession} signInUserSession the session
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.setSignInUserSession = function setSignInUserSession(signInUserSession) {
+    this.clearCachedTokens();
+    this.signInUserSession = signInUserSession;
+    this.cacheTokens();
+  };
+
+  /**
+   * @returns {CognitoUserSession} the current session for this user
+   */
+
+
+  CognitoUser.prototype.getSignInUserSession = function getSignInUserSession() {
+    return this.signInUserSession;
+  };
+
+  /**
+   * @returns {string} the user's username
+   */
+
+
+  CognitoUser.prototype.getUsername = function getUsername() {
+    return this.username;
+  };
+
+  /**
+   * @returns {String} the authentication flow type
+   */
+
+
+  CognitoUser.prototype.getAuthenticationFlowType = function getAuthenticationFlowType() {
+    return this.authenticationFlowType;
+  };
+
+  /**
+   * sets authentication flow type
+   * @param {string} authenticationFlowType New value.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.setAuthenticationFlowType = function setAuthenticationFlowType(authenticationFlowType) {
+    this.authenticationFlowType = authenticationFlowType;
+  };
+
+  /**
+   * This is used for authenticating the user through the custom authentication flow.
+   * @param {AuthenticationDetails} authDetails Contains the authentication data
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {customChallenge} callback.customChallenge Custom challenge
+   *        response required to continue.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.initiateAuth = function initiateAuth(authDetails, callback) {
+    var _this = this;
+
+    var authParameters = authDetails.getAuthParameters();
+    authParameters.USERNAME = this.username;
+
+    var jsonReq = {
+      AuthFlow: 'CUSTOM_AUTH',
+      ClientId: this.pool.getClientId(),
+      AuthParameters: authParameters,
+      ClientMetadata: authDetails.getValidationData()
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+
+    this.client.request('InitiateAuth', jsonReq, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      var challengeName = data.ChallengeName;
+      var challengeParameters = data.ChallengeParameters;
+
+      if (challengeName === 'CUSTOM_CHALLENGE') {
+        _this.Session = data.Session;
+        return callback.customChallenge(challengeParameters);
+      }
+      _this.signInUserSession = _this.getCognitoUserSession(data.AuthenticationResult);
+      _this.cacheTokens();
+      return callback.onSuccess(_this.signInUserSession);
+    });
+  };
+
+  /**
+   * This is used for authenticating the user.
+   * stuff
+   * @param {AuthenticationDetails} authDetails Contains the authentication data
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {newPasswordRequired} callback.newPasswordRequired new
+   *        password and any required attributes are required to continue
+   * @param {mfaRequired} callback.mfaRequired MFA code
+   *        required to continue.
+   * @param {customChallenge} callback.customChallenge Custom challenge
+   *        response required to continue.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.authenticateUser = function authenticateUser(authDetails, callback) {
+    if (this.authenticationFlowType === 'USER_PASSWORD_AUTH') {
+      return this.authenticateUserPlainUsernamePassword(authDetails, callback);
+    } else if (this.authenticationFlowType === 'USER_SRP_AUTH') {
+      return this.authenticateUserDefaultAuth(authDetails, callback);
+    }
+    return callback.onFailure(new Error('Authentication flow type is invalid.'));
+  };
+
+  /**
+   * PRIVATE ONLY: This is an internal only method and should not
+   * be directly called by the consumers.
+   * It calls the AuthenticationHelper for SRP related
+   * stuff
+   * @param {AuthenticationDetails} authDetails Contains the authentication data
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {newPasswordRequired} callback.newPasswordRequired new
+   *        password and any required attributes are required to continue
+   * @param {mfaRequired} callback.mfaRequired MFA code
+   *        required to continue.
+   * @param {customChallenge} callback.customChallenge Custom challenge
+   *        response required to continue.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.authenticateUserDefaultAuth = function authenticateUserDefaultAuth(authDetails, callback) {
+    var _this2 = this;
+
+    var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](this.pool.getUserPoolId().split('_')[1]);
+    var dateHelper = new _DateHelper__WEBPACK_IMPORTED_MODULE_8__["default"]();
+
+    var serverBValue = void 0;
+    var salt = void 0;
+    var authParameters = {};
+
+    if (this.deviceKey != null) {
+      authParameters.DEVICE_KEY = this.deviceKey;
+    }
+
+    authParameters.USERNAME = this.username;
+    authenticationHelper.getLargeAValue(function (errOnAValue, aValue) {
+      // getLargeAValue callback start
+      if (errOnAValue) {
+        callback.onFailure(errOnAValue);
+      }
+
+      authParameters.SRP_A = aValue.toString(16);
+
+      if (_this2.authenticationFlowType === 'CUSTOM_AUTH') {
+        authParameters.CHALLENGE_NAME = 'SRP_A';
+      }
+
+      var jsonReq = {
+        AuthFlow: _this2.authenticationFlowType,
+        ClientId: _this2.pool.getClientId(),
+        AuthParameters: authParameters,
+        ClientMetadata: authDetails.getValidationData()
+      };
+      if (_this2.getUserContextData(_this2.username)) {
+        jsonReq.UserContextData = _this2.getUserContextData(_this2.username);
+      }
+
+      _this2.client.request('InitiateAuth', jsonReq, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+
+        var challengeParameters = data.ChallengeParameters;
+
+        _this2.username = challengeParameters.USER_ID_FOR_SRP;
+        serverBValue = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](challengeParameters.SRP_B, 16);
+        salt = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](challengeParameters.SALT, 16);
+        _this2.getCachedDeviceKeyAndPassword();
+
+        authenticationHelper.getPasswordAuthenticationKey(_this2.username, authDetails.getPassword(), serverBValue, salt, function (errOnHkdf, hkdf) {
+          // getPasswordAuthenticationKey callback start
+          if (errOnHkdf) {
+            callback.onFailure(errOnHkdf);
+          }
+
+          var dateNow = dateHelper.getNowString();
+
+          var signatureString = createHmac('sha256', hkdf).update(buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].concat([buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this2.pool.getUserPoolId().split('_')[1], 'utf8'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this2.username, 'utf8'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(challengeParameters.SECRET_BLOCK, 'base64'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(dateNow, 'utf8')])).digest('base64');
+
+          var challengeResponses = {};
+
+          challengeResponses.USERNAME = _this2.username;
+          challengeResponses.PASSWORD_CLAIM_SECRET_BLOCK = challengeParameters.SECRET_BLOCK;
+          challengeResponses.TIMESTAMP = dateNow;
+          challengeResponses.PASSWORD_CLAIM_SIGNATURE = signatureString;
+
+          if (_this2.deviceKey != null) {
+            challengeResponses.DEVICE_KEY = _this2.deviceKey;
+          }
+
+          var respondToAuthChallenge = function respondToAuthChallenge(challenge, challengeCallback) {
+            return _this2.client.request('RespondToAuthChallenge', challenge, function (errChallenge, dataChallenge) {
+              if (errChallenge && errChallenge.code === 'ResourceNotFoundException' && errChallenge.message.toLowerCase().indexOf('device') !== -1) {
+                challengeResponses.DEVICE_KEY = null;
+                _this2.deviceKey = null;
+                _this2.randomPassword = null;
+                _this2.deviceGroupKey = null;
+                _this2.clearCachedDeviceKeyAndPassword();
+                return respondToAuthChallenge(challenge, challengeCallback);
+              }
+              return challengeCallback(errChallenge, dataChallenge);
+            });
+          };
+
+          var jsonReqResp = {
+            ChallengeName: 'PASSWORD_VERIFIER',
+            ClientId: _this2.pool.getClientId(),
+            ChallengeResponses: challengeResponses,
+            Session: data.Session
+          };
+          if (_this2.getUserContextData()) {
+            jsonReqResp.UserContextData = _this2.getUserContextData();
+          }
+          respondToAuthChallenge(jsonReqResp, function (errAuthenticate, dataAuthenticate) {
+            if (errAuthenticate) {
+              return callback.onFailure(errAuthenticate);
+            }
+
+            var challengeName = dataAuthenticate.ChallengeName;
+            if (challengeName === 'NEW_PASSWORD_REQUIRED') {
+              _this2.Session = dataAuthenticate.Session;
+              var userAttributes = null;
+              var rawRequiredAttributes = null;
+              var requiredAttributes = [];
+              var userAttributesPrefix = authenticationHelper.getNewPasswordRequiredChallengeUserAttributePrefix();
+
+              if (dataAuthenticate.ChallengeParameters) {
+                userAttributes = JSON.parse(dataAuthenticate.ChallengeParameters.userAttributes);
+                rawRequiredAttributes = JSON.parse(dataAuthenticate.ChallengeParameters.requiredAttributes);
+              }
+
+              if (rawRequiredAttributes) {
+                for (var i = 0; i < rawRequiredAttributes.length; i++) {
+                  requiredAttributes[i] = rawRequiredAttributes[i].substr(userAttributesPrefix.length);
+                }
+              }
+              return callback.newPasswordRequired(userAttributes, requiredAttributes);
+            }
+            return _this2.authenticateUserInternal(dataAuthenticate, authenticationHelper, callback);
+          });
+          return undefined;
+          // getPasswordAuthenticationKey callback end
+        });
+        return undefined;
+      });
+      // getLargeAValue callback end
+    });
+  };
+
+  /**
+   * PRIVATE ONLY: This is an internal only method and should not
+   * be directly called by the consumers.
+   * @param {AuthenticationDetails} authDetails Contains the authentication data.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {mfaRequired} callback.mfaRequired MFA code
+   *        required to continue.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.authenticateUserPlainUsernamePassword = function authenticateUserPlainUsernamePassword(authDetails, callback) {
+    var _this3 = this;
+
+    var authParameters = {};
+    authParameters.USERNAME = this.username;
+    authParameters.PASSWORD = authDetails.getPassword();
+    if (!authParameters.PASSWORD) {
+      callback.onFailure(new Error('PASSWORD parameter is required'));
+      return;
+    }
+    var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](this.pool.getUserPoolId().split('_')[1]);
+    this.getCachedDeviceKeyAndPassword();
+    if (this.deviceKey != null) {
+      authParameters.DEVICE_KEY = this.deviceKey;
+    }
+
+    var jsonReq = {
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      ClientId: this.pool.getClientId(),
+      AuthParameters: authParameters,
+      ClientMetadata: authDetails.getValidationData()
+    };
+    if (this.getUserContextData(this.username)) {
+      jsonReq.UserContextData = this.getUserContextData(this.username);
+    }
+    // USER_PASSWORD_AUTH happens in a single round-trip: client sends userName and password,
+    // Cognito UserPools verifies password and returns tokens.
+    this.client.request('InitiateAuth', jsonReq, function (err, authResult) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return _this3.authenticateUserInternal(authResult, authenticationHelper, callback);
+    });
+  };
+
+  /**
+  * PRIVATE ONLY: This is an internal only method and should not
+  * be directly called by the consumers.
+  * @param {object} dataAuthenticate authentication data
+  * @param {object} authenticationHelper helper created
+  * @param {callback} callback passed on from caller
+  * @returns {void}
+  */
+
+
+  CognitoUser.prototype.authenticateUserInternal = function authenticateUserInternal(dataAuthenticate, authenticationHelper, callback) {
+    var _this4 = this;
+
+    var challengeName = dataAuthenticate.ChallengeName;
+    var challengeParameters = dataAuthenticate.ChallengeParameters;
+
+    if (challengeName === 'SMS_MFA') {
+      this.Session = dataAuthenticate.Session;
+      return callback.mfaRequired(challengeName, challengeParameters);
+    }
+
+    if (challengeName === 'SELECT_MFA_TYPE') {
+      this.Session = dataAuthenticate.Session;
+      return callback.selectMFAType(challengeName, challengeParameters);
+    }
+
+    if (challengeName === 'MFA_SETUP') {
+      this.Session = dataAuthenticate.Session;
+      return callback.mfaSetup(challengeName, challengeParameters);
+    }
+
+    if (challengeName === 'SOFTWARE_TOKEN_MFA') {
+      this.Session = dataAuthenticate.Session;
+      return callback.totpRequired(challengeName, challengeParameters);
+    }
+
+    if (challengeName === 'CUSTOM_CHALLENGE') {
+      this.Session = dataAuthenticate.Session;
+      return callback.customChallenge(challengeParameters);
+    }
+
+    if (challengeName === 'DEVICE_SRP_AUTH') {
+      this.getDeviceResponse(callback);
+      return undefined;
+    }
+
+    this.signInUserSession = this.getCognitoUserSession(dataAuthenticate.AuthenticationResult);
+    this.cacheTokens();
+
+    var newDeviceMetadata = dataAuthenticate.AuthenticationResult.NewDeviceMetadata;
+    if (newDeviceMetadata == null) {
+      return callback.onSuccess(this.signInUserSession);
+    }
+
+    authenticationHelper.generateHashDevice(dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey, dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceKey, function (errGenHash) {
+      if (errGenHash) {
+        return callback.onFailure(errGenHash);
+      }
+
+      var deviceSecretVerifierConfig = {
+        Salt: buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(authenticationHelper.getSaltDevices(), 'hex').toString('base64'),
+        PasswordVerifier: buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(authenticationHelper.getVerifierDevices(), 'hex').toString('base64')
+      };
+
+      _this4.verifierDevices = deviceSecretVerifierConfig.PasswordVerifier;
+      _this4.deviceGroupKey = newDeviceMetadata.DeviceGroupKey;
+      _this4.randomPassword = authenticationHelper.getRandomPassword();
+
+      _this4.client.request('ConfirmDevice', {
+        DeviceKey: newDeviceMetadata.DeviceKey,
+        AccessToken: _this4.signInUserSession.getAccessToken().getJwtToken(),
+        DeviceSecretVerifierConfig: deviceSecretVerifierConfig,
+        DeviceName: navigator.userAgent
+      }, function (errConfirm, dataConfirm) {
+        if (errConfirm) {
+          return callback.onFailure(errConfirm);
+        }
+
+        _this4.deviceKey = dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceKey;
+        _this4.cacheDeviceKeyAndPassword();
+        if (dataConfirm.UserConfirmationNecessary === true) {
+          return callback.onSuccess(_this4.signInUserSession, dataConfirm.UserConfirmationNecessary);
+        }
+        return callback.onSuccess(_this4.signInUserSession);
+      });
+      return undefined;
+    });
+    return undefined;
+  };
+
+  /**
+  * This method is user to complete the NEW_PASSWORD_REQUIRED challenge.
+  * Pass the new password with any new user attributes to be updated.
+  * User attribute keys must be of format userAttributes.<attribute_name>.
+  * @param {string} newPassword new password for this user
+  * @param {object} requiredAttributeData map with values for all required attributes
+  * @param {object} callback Result callback map.
+  * @param {onFailure} callback.onFailure Called on any error.
+  * @param {mfaRequired} callback.mfaRequired MFA code required to continue.
+  * @param {customChallenge} callback.customChallenge Custom challenge
+  *         response required to continue.
+  * @param {authSuccess} callback.onSuccess Called on success with the new session.
+  * @returns {void}
+  */
+
+
+  CognitoUser.prototype.completeNewPasswordChallenge = function completeNewPasswordChallenge(newPassword, requiredAttributeData, callback) {
+    var _this5 = this;
+
+    if (!newPassword) {
+      return callback.onFailure(new Error('New password is required.'));
+    }
+    var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](this.pool.getUserPoolId().split('_')[1]);
+    var userAttributesPrefix = authenticationHelper.getNewPasswordRequiredChallengeUserAttributePrefix();
+
+    var finalUserAttributes = {};
+    if (requiredAttributeData) {
+      Object.keys(requiredAttributeData).forEach(function (key) {
+        finalUserAttributes[userAttributesPrefix + key] = requiredAttributeData[key];
+      });
+    }
+
+    finalUserAttributes.NEW_PASSWORD = newPassword;
+    finalUserAttributes.USERNAME = this.username;
+    var jsonReq = {
+      ChallengeName: 'NEW_PASSWORD_REQUIRED',
+      ClientId: this.pool.getClientId(),
+      ChallengeResponses: finalUserAttributes,
+      Session: this.Session
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+
+    this.client.request('RespondToAuthChallenge', jsonReq, function (errAuthenticate, dataAuthenticate) {
+      if (errAuthenticate) {
+        return callback.onFailure(errAuthenticate);
+      }
+      return _this5.authenticateUserInternal(dataAuthenticate, authenticationHelper, callback);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to get a session using device authentication. It is called at the end of user
+   * authentication
+   *
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   * @private
+   */
+
+
+  CognitoUser.prototype.getDeviceResponse = function getDeviceResponse(callback) {
+    var _this6 = this;
+
+    var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](this.deviceGroupKey);
+    var dateHelper = new _DateHelper__WEBPACK_IMPORTED_MODULE_8__["default"]();
+
+    var authParameters = {};
+
+    authParameters.USERNAME = this.username;
+    authParameters.DEVICE_KEY = this.deviceKey;
+    authenticationHelper.getLargeAValue(function (errAValue, aValue) {
+      // getLargeAValue callback start
+      if (errAValue) {
+        callback.onFailure(errAValue);
+      }
+
+      authParameters.SRP_A = aValue.toString(16);
+
+      var jsonReq = {
+        ChallengeName: 'DEVICE_SRP_AUTH',
+        ClientId: _this6.pool.getClientId(),
+        ChallengeResponses: authParameters
+      };
+      if (_this6.getUserContextData()) {
+        jsonReq.UserContextData = _this6.getUserContextData();
+      }
+      _this6.client.request('RespondToAuthChallenge', jsonReq, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+
+        var challengeParameters = data.ChallengeParameters;
+
+        var serverBValue = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](challengeParameters.SRP_B, 16);
+        var salt = new _BigInteger__WEBPACK_IMPORTED_MODULE_2__["default"](challengeParameters.SALT, 16);
+
+        authenticationHelper.getPasswordAuthenticationKey(_this6.deviceKey, _this6.randomPassword, serverBValue, salt, function (errHkdf, hkdf) {
+          // getPasswordAuthenticationKey callback start
+          if (errHkdf) {
+            return callback.onFailure(errHkdf);
+          }
+
+          var dateNow = dateHelper.getNowString();
+
+          var signatureString = createHmac('sha256', hkdf).update(buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].concat([buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this6.deviceGroupKey, 'utf8'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(_this6.deviceKey, 'utf8'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(challengeParameters.SECRET_BLOCK, 'base64'), buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(dateNow, 'utf8')])).digest('base64');
+
+          var challengeResponses = {};
+
+          challengeResponses.USERNAME = _this6.username;
+          challengeResponses.PASSWORD_CLAIM_SECRET_BLOCK = challengeParameters.SECRET_BLOCK;
+          challengeResponses.TIMESTAMP = dateNow;
+          challengeResponses.PASSWORD_CLAIM_SIGNATURE = signatureString;
+          challengeResponses.DEVICE_KEY = _this6.deviceKey;
+
+          var jsonReqResp = {
+            ChallengeName: 'DEVICE_PASSWORD_VERIFIER',
+            ClientId: _this6.pool.getClientId(),
+            ChallengeResponses: challengeResponses,
+            Session: data.Session
+          };
+          if (_this6.getUserContextData()) {
+            jsonReqResp.UserContextData = _this6.getUserContextData();
+          }
+
+          _this6.client.request('RespondToAuthChallenge', jsonReqResp, function (errAuthenticate, dataAuthenticate) {
+            if (errAuthenticate) {
+              return callback.onFailure(errAuthenticate);
+            }
+
+            _this6.signInUserSession = _this6.getCognitoUserSession(dataAuthenticate.AuthenticationResult);
+            _this6.cacheTokens();
+
+            return callback.onSuccess(_this6.signInUserSession);
+          });
+          return undefined;
+          // getPasswordAuthenticationKey callback end
+        });
+        return undefined;
+      });
+      // getLargeAValue callback end
+    });
+  };
+
+  /**
+   * This is used for a certain user to confirm the registration by using a confirmation code
+   * @param {string} confirmationCode Code entered by user.
+   * @param {bool} forceAliasCreation Allow migrating from an existing email / phone number.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.confirmRegistration = function confirmRegistration(confirmationCode, forceAliasCreation, callback) {
+    var jsonReq = {
+      ClientId: this.pool.getClientId(),
+      ConfirmationCode: confirmationCode,
+      Username: this.username,
+      ForceAliasCreation: forceAliasCreation
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('ConfirmSignUp', jsonReq, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+  };
+
+  /**
+   * This is used by the user once he has the responses to a custom challenge
+   * @param {string} answerChallenge The custom challange answer.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {customChallenge} callback.customChallenge
+   *    Custom challenge response required to continue.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.sendCustomChallengeAnswer = function sendCustomChallengeAnswer(answerChallenge, callback) {
+    var _this7 = this;
+
+    var challengeResponses = {};
+    challengeResponses.USERNAME = this.username;
+    challengeResponses.ANSWER = answerChallenge;
+
+    var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](this.pool.getUserPoolId().split('_')[1]);
+    this.getCachedDeviceKeyAndPassword();
+    if (this.deviceKey != null) {
+      challengeResponses.DEVICE_KEY = this.deviceKey;
+    }
+
+    var jsonReq = {
+      ChallengeName: 'CUSTOM_CHALLENGE',
+      ChallengeResponses: challengeResponses,
+      ClientId: this.pool.getClientId(),
+      Session: this.Session
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('RespondToAuthChallenge', jsonReq, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+
+      return _this7.authenticateUserInternal(data, authenticationHelper, callback);
+    });
+  };
+
+  /**
+   * This is used by the user once he has an MFA code
+   * @param {string} confirmationCode The MFA code entered by the user.
+   * @param {object} callback Result callback map.
+   * @param {string} mfaType The mfa we are replying to.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {authSuccess} callback.onSuccess Called on success with the new session.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.sendMFACode = function sendMFACode(confirmationCode, callback, mfaType) {
+    var _this8 = this;
+
+    var challengeResponses = {};
+    challengeResponses.USERNAME = this.username;
+    challengeResponses.SMS_MFA_CODE = confirmationCode;
+    var mfaTypeSelection = mfaType || 'SMS_MFA';
+    if (mfaTypeSelection === 'SOFTWARE_TOKEN_MFA') {
+      challengeResponses.SOFTWARE_TOKEN_MFA_CODE = confirmationCode;
+    }
+
+    if (this.deviceKey != null) {
+      challengeResponses.DEVICE_KEY = this.deviceKey;
+    }
+
+    var jsonReq = {
+      ChallengeName: mfaTypeSelection,
+      ChallengeResponses: challengeResponses,
+      ClientId: this.pool.getClientId(),
+      Session: this.Session
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+
+    this.client.request('RespondToAuthChallenge', jsonReq, function (err, dataAuthenticate) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+
+      var challengeName = dataAuthenticate.ChallengeName;
+
+      if (challengeName === 'DEVICE_SRP_AUTH') {
+        _this8.getDeviceResponse(callback);
+        return undefined;
+      }
+
+      _this8.signInUserSession = _this8.getCognitoUserSession(dataAuthenticate.AuthenticationResult);
+      _this8.cacheTokens();
+
+      if (dataAuthenticate.AuthenticationResult.NewDeviceMetadata == null) {
+        return callback.onSuccess(_this8.signInUserSession);
+      }
+
+      var authenticationHelper = new _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_3__["default"](_this8.pool.getUserPoolId().split('_')[1]);
+      authenticationHelper.generateHashDevice(dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey, dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceKey, function (errGenHash) {
+        if (errGenHash) {
+          return callback.onFailure(errGenHash);
+        }
+
+        var deviceSecretVerifierConfig = {
+          Salt: buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(authenticationHelper.getSaltDevices(), 'hex').toString('base64'),
+          PasswordVerifier: buffer___WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(authenticationHelper.getVerifierDevices(), 'hex').toString('base64')
+        };
+
+        _this8.verifierDevices = deviceSecretVerifierConfig.PasswordVerifier;
+        _this8.deviceGroupKey = dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceGroupKey;
+        _this8.randomPassword = authenticationHelper.getRandomPassword();
+
+        _this8.client.request('ConfirmDevice', {
+          DeviceKey: dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceKey,
+          AccessToken: _this8.signInUserSession.getAccessToken().getJwtToken(),
+          DeviceSecretVerifierConfig: deviceSecretVerifierConfig,
+          DeviceName: navigator.userAgent
+        }, function (errConfirm, dataConfirm) {
+          if (errConfirm) {
+            return callback.onFailure(errConfirm);
+          }
+
+          _this8.deviceKey = dataAuthenticate.AuthenticationResult.NewDeviceMetadata.DeviceKey;
+          _this8.cacheDeviceKeyAndPassword();
+          if (dataConfirm.UserConfirmationNecessary === true) {
+            return callback.onSuccess(_this8.signInUserSession, dataConfirm.UserConfirmationNecessary);
+          }
+          return callback.onSuccess(_this8.signInUserSession);
+        });
+        return undefined;
+      });
+      return undefined;
+    });
+  };
+
+  /**
+   * This is used by an authenticated user to change the current password
+   * @param {string} oldUserPassword The current password.
+   * @param {string} newUserPassword The requested new password.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.changePassword = function changePassword(oldUserPassword, newUserPassword, callback) {
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('ChangePassword', {
+      PreviousPassword: oldUserPassword,
+      ProposedPassword: newUserPassword,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to enable MFA for himself
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.enableMFA = function enableMFA(callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    var mfaOptions = [];
+    var mfaEnabled = {
+      DeliveryMedium: 'SMS',
+      AttributeName: 'phone_number'
+    };
+    mfaOptions.push(mfaEnabled);
+
+    this.client.request('SetUserSettings', {
+      MFAOptions: mfaOptions,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to enable MFA for himself
+   * @param {string[]} smsMfaSettings the sms mfa settings
+   * @param {string[]} softwareTokenMfaSettings the software token mfa settings
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.setUserMfaPreference = function setUserMfaPreference(smsMfaSettings, softwareTokenMfaSettings, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('SetUserMFAPreference', {
+      SMSMfaSettings: smsMfaSettings,
+      SoftwareTokenMfaSettings: softwareTokenMfaSettings,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to disable MFA for himself
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.disableMFA = function disableMFA(callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    var mfaOptions = [];
+
+    this.client.request('SetUserSettings', {
+      MFAOptions: mfaOptions,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to delete himself
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.deleteUser = function deleteUser(callback) {
+    var _this9 = this;
+
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('DeleteUser', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      _this9.clearCachedTokens();
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * @typedef {CognitoUserAttribute | { Name:string, Value:string }} AttributeArg
+   */
+  /**
+   * This is used by an authenticated user to change a list of attributes
+   * @param {AttributeArg[]} attributes A list of the new user attributes.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.updateAttributes = function updateAttributes(attributes, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('UpdateUserAttributes', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      UserAttributes: attributes
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to get a list of attributes
+   * @param {nodeCallback<CognitoUserAttribute[]>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getUserAttributes = function getUserAttributes(callback) {
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('GetUser', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err, userData) {
+      if (err) {
+        return callback(err, null);
+      }
+
+      var attributeList = [];
+
+      for (var i = 0; i < userData.UserAttributes.length; i++) {
+        var attribute = {
+          Name: userData.UserAttributes[i].Name,
+          Value: userData.UserAttributes[i].Value
+        };
+        var userAttribute = new _CognitoUserAttribute__WEBPACK_IMPORTED_MODULE_9__["default"](attribute);
+        attributeList.push(userAttribute);
+      }
+
+      return callback(null, attributeList);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to get the MFAOptions
+   * @param {nodeCallback<MFAOptions>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getMFAOptions = function getMFAOptions(callback) {
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('GetUser', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err, userData) {
+      if (err) {
+        return callback(err, null);
+      }
+
+      return callback(null, userData.MFAOptions);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated users to get the userData
+   * @param {nodeCallback<UserData>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getUserData = function getUserData(callback) {
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('GetUser', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err, userData) {
+      if (err) {
+        return callback(err, null);
+      }
+
+      return callback(null, userData);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by an authenticated user to delete a list of attributes
+   * @param {string[]} attributeList Names of the attributes to delete.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.deleteAttributes = function deleteAttributes(attributeList, callback) {
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      return callback(new Error('User is not authenticated'), null);
+    }
+
+    this.client.request('DeleteUserAttributes', {
+      UserAttributeNames: attributeList,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, 'SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used by a user to resend a confirmation code
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.resendConfirmationCode = function resendConfirmationCode(callback) {
+    var jsonReq = {
+      ClientId: this.pool.getClientId(),
+      Username: this.username
+    };
+
+    this.client.request('ResendConfirmationCode', jsonReq, function (err, result) {
+      if (err) {
+        return callback(err, null);
+      }
+      return callback(null, result);
+    });
+  };
+
+  /**
+   * This is used to get a session, either from the session object
+   * or from  the local storage, or by using a refresh token
+   *
+   * @param {nodeCallback<CognitoUserSession>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getSession = function getSession(callback) {
+    if (this.username == null) {
+      return callback(new Error('Username is null. Cannot retrieve a new session'), null);
+    }
+
+    if (this.signInUserSession != null && this.signInUserSession.isValid()) {
+      return callback(null, this.signInUserSession);
+    }
+
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId() + '.' + this.username;
+    var idTokenKey = keyPrefix + '.idToken';
+    var accessTokenKey = keyPrefix + '.accessToken';
+    var refreshTokenKey = keyPrefix + '.refreshToken';
+    var clockDriftKey = keyPrefix + '.clockDrift';
+
+    if (this.storage.getItem(idTokenKey)) {
+      var idToken = new _CognitoIdToken__WEBPACK_IMPORTED_MODULE_5__["default"]({
+        IdToken: this.storage.getItem(idTokenKey)
+      });
+      var accessToken = new _CognitoAccessToken__WEBPACK_IMPORTED_MODULE_4__["default"]({
+        AccessToken: this.storage.getItem(accessTokenKey)
+      });
+      var refreshToken = new _CognitoRefreshToken__WEBPACK_IMPORTED_MODULE_6__["default"]({
+        RefreshToken: this.storage.getItem(refreshTokenKey)
+      });
+      var clockDrift = parseInt(this.storage.getItem(clockDriftKey), 0) || 0;
+
+      var sessionData = {
+        IdToken: idToken,
+        AccessToken: accessToken,
+        RefreshToken: refreshToken,
+        ClockDrift: clockDrift
+      };
+      var cachedSession = new _CognitoUserSession__WEBPACK_IMPORTED_MODULE_7__["default"](sessionData);
+      if (cachedSession.isValid()) {
+        this.signInUserSession = cachedSession;
+        return callback(null, this.signInUserSession);
+      }
+
+      if (refreshToken.getToken() == null) {
+        return callback(new Error('Cannot retrieve a new session. Please authenticate.'), null);
+      }
+
+      this.refreshSession(refreshToken, callback);
+    } else {
+      callback(new Error('Local storage is missing an ID Token, Please authenticate'), null);
+    }
+
+    return undefined;
+  };
+
+  /**
+   * This uses the refreshToken to retrieve a new session
+   * @param {CognitoRefreshToken} refreshToken A previous session's refresh token.
+   * @param {nodeCallback<CognitoUserSession>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.refreshSession = function refreshSession(refreshToken, callback) {
+    var _this10 = this;
+
+    var authParameters = {};
+    authParameters.REFRESH_TOKEN = refreshToken.getToken();
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId();
+    var lastUserKey = keyPrefix + '.LastAuthUser';
+
+    if (this.storage.getItem(lastUserKey)) {
+      this.username = this.storage.getItem(lastUserKey);
+      var deviceKeyKey = keyPrefix + '.' + this.username + '.deviceKey';
+      this.deviceKey = this.storage.getItem(deviceKeyKey);
+      authParameters.DEVICE_KEY = this.deviceKey;
+    }
+
+    var jsonReq = {
+      ClientId: this.pool.getClientId(),
+      AuthFlow: 'REFRESH_TOKEN_AUTH',
+      AuthParameters: authParameters
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('InitiateAuth', jsonReq, function (err, authResult) {
+      if (err) {
+        if (err.code === 'NotAuthorizedException') {
+          _this10.clearCachedTokens();
+        }
+        return callback(err, null);
+      }
+      if (authResult) {
+        var authenticationResult = authResult.AuthenticationResult;
+        if (!Object.prototype.hasOwnProperty.call(authenticationResult, 'RefreshToken')) {
+          authenticationResult.RefreshToken = refreshToken.getToken();
+        }
+        _this10.signInUserSession = _this10.getCognitoUserSession(authenticationResult);
+        _this10.cacheTokens();
+        return callback(null, _this10.signInUserSession);
+      }
+      return undefined;
+    });
+  };
+
+  /**
+   * This is used to save the session tokens to local storage
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.cacheTokens = function cacheTokens() {
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId();
+    var idTokenKey = keyPrefix + '.' + this.username + '.idToken';
+    var accessTokenKey = keyPrefix + '.' + this.username + '.accessToken';
+    var refreshTokenKey = keyPrefix + '.' + this.username + '.refreshToken';
+    var clockDriftKey = keyPrefix + '.' + this.username + '.clockDrift';
+    var lastUserKey = keyPrefix + '.LastAuthUser';
+
+    this.storage.setItem(idTokenKey, this.signInUserSession.getIdToken().getJwtToken());
+    this.storage.setItem(accessTokenKey, this.signInUserSession.getAccessToken().getJwtToken());
+    this.storage.setItem(refreshTokenKey, this.signInUserSession.getRefreshToken().getToken());
+    this.storage.setItem(clockDriftKey, '' + this.signInUserSession.getClockDrift());
+    this.storage.setItem(lastUserKey, this.username);
+  };
+
+  /**
+   * This is used to cache the device key and device group and device password
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.cacheDeviceKeyAndPassword = function cacheDeviceKeyAndPassword() {
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId() + '.' + this.username;
+    var deviceKeyKey = keyPrefix + '.deviceKey';
+    var randomPasswordKey = keyPrefix + '.randomPasswordKey';
+    var deviceGroupKeyKey = keyPrefix + '.deviceGroupKey';
+
+    this.storage.setItem(deviceKeyKey, this.deviceKey);
+    this.storage.setItem(randomPasswordKey, this.randomPassword);
+    this.storage.setItem(deviceGroupKeyKey, this.deviceGroupKey);
+  };
+
+  /**
+   * This is used to get current device key and device group and device password
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getCachedDeviceKeyAndPassword = function getCachedDeviceKeyAndPassword() {
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId() + '.' + this.username;
+    var deviceKeyKey = keyPrefix + '.deviceKey';
+    var randomPasswordKey = keyPrefix + '.randomPasswordKey';
+    var deviceGroupKeyKey = keyPrefix + '.deviceGroupKey';
+
+    if (this.storage.getItem(deviceKeyKey)) {
+      this.deviceKey = this.storage.getItem(deviceKeyKey);
+      this.randomPassword = this.storage.getItem(randomPasswordKey);
+      this.deviceGroupKey = this.storage.getItem(deviceGroupKeyKey);
+    }
+  };
+
+  /**
+   * This is used to clear the device key info from local storage
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.clearCachedDeviceKeyAndPassword = function clearCachedDeviceKeyAndPassword() {
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId() + '.' + this.username;
+    var deviceKeyKey = keyPrefix + '.deviceKey';
+    var randomPasswordKey = keyPrefix + '.randomPasswordKey';
+    var deviceGroupKeyKey = keyPrefix + '.deviceGroupKey';
+
+    this.storage.removeItem(deviceKeyKey);
+    this.storage.removeItem(randomPasswordKey);
+    this.storage.removeItem(deviceGroupKeyKey);
+  };
+
+  /**
+   * This is used to clear the session tokens from local storage
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.clearCachedTokens = function clearCachedTokens() {
+    var keyPrefix = 'CognitoIdentityServiceProvider.' + this.pool.getClientId();
+    var idTokenKey = keyPrefix + '.' + this.username + '.idToken';
+    var accessTokenKey = keyPrefix + '.' + this.username + '.accessToken';
+    var refreshTokenKey = keyPrefix + '.' + this.username + '.refreshToken';
+    var lastUserKey = keyPrefix + '.LastAuthUser';
+
+    this.storage.removeItem(idTokenKey);
+    this.storage.removeItem(accessTokenKey);
+    this.storage.removeItem(refreshTokenKey);
+    this.storage.removeItem(lastUserKey);
+  };
+
+  /**
+   * This is used to build a user session from tokens retrieved in the authentication result
+   * @param {object} authResult Successful auth response from server.
+   * @returns {CognitoUserSession} The new user session.
+   * @private
+   */
+
+
+  CognitoUser.prototype.getCognitoUserSession = function getCognitoUserSession(authResult) {
+    var idToken = new _CognitoIdToken__WEBPACK_IMPORTED_MODULE_5__["default"](authResult);
+    var accessToken = new _CognitoAccessToken__WEBPACK_IMPORTED_MODULE_4__["default"](authResult);
+    var refreshToken = new _CognitoRefreshToken__WEBPACK_IMPORTED_MODULE_6__["default"](authResult);
+
+    var sessionData = {
+      IdToken: idToken,
+      AccessToken: accessToken,
+      RefreshToken: refreshToken
+    };
+
+    return new _CognitoUserSession__WEBPACK_IMPORTED_MODULE_7__["default"](sessionData);
+  };
+
+  /**
+   * This is used to initiate a forgot password request
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {inputVerificationCode?} callback.inputVerificationCode
+   *    Optional callback raised instead of onSuccess with response data.
+   * @param {onSuccess} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.forgotPassword = function forgotPassword(callback) {
+    var jsonReq = {
+      ClientId: this.pool.getClientId(),
+      Username: this.username
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('ForgotPassword', jsonReq, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      if (typeof callback.inputVerificationCode === 'function') {
+        return callback.inputVerificationCode(data);
+      }
+      return callback.onSuccess(data);
+    });
+  };
+
+  /**
+   * This is used to confirm a new password using a confirmationCode
+   * @param {string} confirmationCode Code entered by user.
+   * @param {string} newPassword Confirm new password.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<void>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.confirmPassword = function confirmPassword(confirmationCode, newPassword, callback) {
+    var jsonReq = {
+      ClientId: this.pool.getClientId(),
+      Username: this.username,
+      ConfirmationCode: confirmationCode,
+      Password: newPassword
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('ConfirmForgotPassword', jsonReq, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess();
+    });
+  };
+
+  /**
+   * This is used to initiate an attribute confirmation request
+   * @param {string} attributeName User attribute that needs confirmation.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {inputVerificationCode} callback.inputVerificationCode Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getAttributeVerificationCode = function getAttributeVerificationCode(attributeName, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('GetUserAttributeVerificationCode', {
+      AttributeName: attributeName,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      if (typeof callback.inputVerificationCode === 'function') {
+        return callback.inputVerificationCode(data);
+      }
+      return callback.onSuccess();
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to confirm an attribute using a confirmation code
+   * @param {string} attributeName Attribute being confirmed.
+   * @param {string} confirmationCode Code entered by user.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.verifyAttribute = function verifyAttribute(attributeName, confirmationCode, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('VerifyUserAttribute', {
+      AttributeName: attributeName,
+      Code: confirmationCode,
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess('SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to get the device information using the current device key
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<*>} callback.onSuccess Called on success with device data.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getDevice = function getDevice(callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('GetDevice', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      DeviceKey: this.deviceKey
+    }, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess(data);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to forget a specific device
+   * @param {string} deviceKey Device key.
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.forgetSpecificDevice = function forgetSpecificDevice(deviceKey, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('ForgetDevice', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      DeviceKey: deviceKey
+    }, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess('SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to forget the current device
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.forgetDevice = function forgetDevice(callback) {
+    var _this11 = this;
+
+    this.forgetSpecificDevice(this.deviceKey, {
+      onFailure: callback.onFailure,
+      onSuccess: function onSuccess(result) {
+        _this11.deviceKey = null;
+        _this11.deviceGroupKey = null;
+        _this11.randomPassword = null;
+        _this11.clearCachedDeviceKeyAndPassword();
+        return callback.onSuccess(result);
+      }
+    });
+  };
+
+  /**
+   * This is used to set the device status as remembered
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.setDeviceStatusRemembered = function setDeviceStatusRemembered(callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('UpdateDeviceStatus', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      DeviceKey: this.deviceKey,
+      DeviceRememberedStatus: 'remembered'
+    }, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess('SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to set the device status as not remembered
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.setDeviceStatusNotRemembered = function setDeviceStatusNotRemembered(callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('UpdateDeviceStatus', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      DeviceKey: this.deviceKey,
+      DeviceRememberedStatus: 'not_remembered'
+    }, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess('SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to list all devices for a user
+   *
+   * @param {int} limit the number of devices returned in a call
+   * @param {string} paginationToken the pagination token in case any was returned before
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<*>} callback.onSuccess Called on success with device list.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.listDevices = function listDevices(limit, paginationToken, callback) {
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('ListDevices', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+      Limit: limit,
+      PaginationToken: paginationToken
+    }, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      return callback.onSuccess(data);
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used to globally revoke all tokens issued to a user
+   * @param {object} callback Result callback map.
+   * @param {onFailure} callback.onFailure Called on any error.
+   * @param {onSuccess<string>} callback.onSuccess Called on success.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.globalSignOut = function globalSignOut(callback) {
+    var _this12 = this;
+
+    if (this.signInUserSession == null || !this.signInUserSession.isValid()) {
+      return callback.onFailure(new Error('User is not authenticated'));
+    }
+
+    this.client.request('GlobalSignOut', {
+      AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+    }, function (err) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      _this12.clearCachedTokens();
+      return callback.onSuccess('SUCCESS');
+    });
+    return undefined;
+  };
+
+  /**
+   * This is used for the user to signOut of the application and clear the cached tokens.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.signOut = function signOut() {
+    this.signInUserSession = null;
+    this.clearCachedTokens();
+  };
+
+  /**
+   * This is used by a user trying to select a given MFA
+   * @param {string} answerChallenge the mfa the user wants
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.sendMFASelectionAnswer = function sendMFASelectionAnswer(answerChallenge, callback) {
+    var _this13 = this;
+
+    var challengeResponses = {};
+    challengeResponses.USERNAME = this.username;
+    challengeResponses.ANSWER = answerChallenge;
+
+    var jsonReq = {
+      ChallengeName: 'SELECT_MFA_TYPE',
+      ChallengeResponses: challengeResponses,
+      ClientId: this.pool.getClientId(),
+      Session: this.Session
+    };
+    if (this.getUserContextData()) {
+      jsonReq.UserContextData = this.getUserContextData();
+    }
+    this.client.request('RespondToAuthChallenge', jsonReq, function (err, data) {
+      if (err) {
+        return callback.onFailure(err);
+      }
+      _this13.Session = data.Session;
+      if (answerChallenge === 'SMS_MFA') {
+        return callback.mfaRequired(data.challengeName, data.challengeParameters);
+      }
+      if (answerChallenge === 'SOFTWARE_TOKEN_MFA') {
+        return callback.totpRequired(data.challengeName, data.challengeParameters);
+      }
+      return undefined;
+    });
+  };
+
+  /**
+   * This returns the user context data for advanced security feature.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.getUserContextData = function getUserContextData() {
+    var pool = this.pool;
+    return pool.getUserContextData(this.username);
+  };
+
+  /**
+   * This is used by an authenticated or a user trying to authenticate to associate a TOTP MFA
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.associateSoftwareToken = function associateSoftwareToken(callback) {
+    var _this14 = this;
+
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      this.client.request('AssociateSoftwareToken', {
+        Session: this.Session
+      }, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+        _this14.Session = data.Session;
+        return callback.associateSecretCode(data.SecretCode);
+      });
+    } else {
+      this.client.request('AssociateSoftwareToken', {
+        AccessToken: this.signInUserSession.getAccessToken().getJwtToken()
+      }, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+        return callback.associateSecretCode(data.SecretCode);
+      });
+    }
+  };
+
+  /**
+   * This is used by an authenticated or a user trying to authenticate to verify a TOTP MFA
+   * @param {string} totpCode The MFA code entered by the user.
+   * @param {string} friendlyDeviceName The device name we are assigning to the device.
+   * @param {nodeCallback<string>} callback Called on success or error.
+   * @returns {void}
+   */
+
+
+  CognitoUser.prototype.verifySoftwareToken = function verifySoftwareToken(totpCode, friendlyDeviceName, callback) {
+    var _this15 = this;
+
+    if (!(this.signInUserSession != null && this.signInUserSession.isValid())) {
+      this.client.request('VerifySoftwareToken', {
+        Session: this.Session,
+        UserCode: totpCode,
+        FriendlyDeviceName: friendlyDeviceName
+      }, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+        _this15.Session = data.Session;
+        var challengeResponses = {};
+        challengeResponses.USERNAME = _this15.username;
+        var jsonReq = {
+          ChallengeName: 'MFA_SETUP',
+          ClientId: _this15.pool.getClientId(),
+          ChallengeResponses: challengeResponses,
+          Session: _this15.Session
+        };
+        if (_this15.getUserContextData()) {
+          jsonReq.UserContextData = _this15.getUserContextData();
+        }
+        _this15.client.request('RespondToAuthChallenge', jsonReq, function (errRespond, dataRespond) {
+          if (errRespond) {
+            return callback.onFailure(errRespond);
+          }
+          _this15.signInUserSession = _this15.getCognitoUserSession(dataRespond.AuthenticationResult);
+          _this15.cacheTokens();
+          return callback.onSuccess(_this15.signInUserSession);
+        });
+        return undefined;
+      });
+    } else {
+      this.client.request('VerifySoftwareToken', {
+        AccessToken: this.signInUserSession.getAccessToken().getJwtToken(),
+        UserCode: totpCode,
+        FriendlyDeviceName: friendlyDeviceName
+      }, function (err, data) {
+        if (err) {
+          return callback.onFailure(err);
+        }
+        return callback.onSuccess(data);
+      });
+    }
+  };
+
+  return CognitoUser;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoUser);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoUserAttribute.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoUserAttribute.js ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @class */
+var CognitoUserAttribute = function () {
+  /**
+   * Constructs a new CognitoUserAttribute object
+   * @param {string=} Name The record's name
+   * @param {string=} Value The record's value
+   */
+  function CognitoUserAttribute() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        Name = _ref.Name,
+        Value = _ref.Value;
+
+    _classCallCheck(this, CognitoUserAttribute);
+
+    this.Name = Name || '';
+    this.Value = Value || '';
+  }
+
+  /**
+   * @returns {string} the record's value.
+   */
+
+
+  CognitoUserAttribute.prototype.getValue = function getValue() {
+    return this.Value;
+  };
+
+  /**
+   * Sets the record's value.
+   * @param {string} value The new value.
+   * @returns {CognitoUserAttribute} The record for method chaining.
+   */
+
+
+  CognitoUserAttribute.prototype.setValue = function setValue(value) {
+    this.Value = value;
+    return this;
+  };
+
+  /**
+   * @returns {string} the record's name.
+   */
+
+
+  CognitoUserAttribute.prototype.getName = function getName() {
+    return this.Name;
+  };
+
+  /**
+   * Sets the record's name
+   * @param {string} name The new name.
+   * @returns {CognitoUserAttribute} The record for method chaining.
+   */
+
+
+  CognitoUserAttribute.prototype.setName = function setName(name) {
+    this.Name = name;
+    return this;
+  };
+
+  /**
+   * @returns {string} a string representation of the record.
+   */
+
+
+  CognitoUserAttribute.prototype.toString = function toString() {
+    return JSON.stringify(this);
+  };
+
+  /**
+   * @returns {object} a flat object representing the record.
+   */
+
+
+  CognitoUserAttribute.prototype.toJSON = function toJSON() {
+    return {
+      Name: this.Name,
+      Value: this.Value
+    };
+  };
+
+  return CognitoUserAttribute;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoUserAttribute);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoUserPool.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoUserPool.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Client */ "./node_modules/amazon-cognito-identity-js/es/Client.js");
+/* harmony import */ var _CognitoUser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CognitoUser */ "./node_modules/amazon-cognito-identity-js/es/CognitoUser.js");
+/* harmony import */ var _StorageHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StorageHelper */ "./node_modules/amazon-cognito-identity-js/es/StorageHelper.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+
+
+/** @class */
+
+var CognitoUserPool = function () {
+  /**
+   * Constructs a new CognitoUserPool object
+   * @param {object} data Creation options.
+   * @param {string} data.UserPoolId Cognito user pool id.
+   * @param {string} data.ClientId User pool application client id.
+   * @param {object} data.Storage Optional storage object.
+   * @param {boolean} data.AdvancedSecurityDataCollectionFlag Optional:
+   *        boolean flag indicating if the data collection is enabled
+   *        to support cognito advanced security features. By default, this
+   *        flag is set to true.
+   */
+  function CognitoUserPool(data) {
+    _classCallCheck(this, CognitoUserPool);
+
+    var _ref = data || {},
+        UserPoolId = _ref.UserPoolId,
+        ClientId = _ref.ClientId,
+        endpoint = _ref.endpoint,
+        AdvancedSecurityDataCollectionFlag = _ref.AdvancedSecurityDataCollectionFlag;
+
+    if (!UserPoolId || !ClientId) {
+      throw new Error('Both UserPoolId and ClientId are required.');
+    }
+    if (!/^[\w-]+_.+$/.test(UserPoolId)) {
+      throw new Error('Invalid UserPoolId format.');
+    }
+    var region = UserPoolId.split('_')[0];
+
+    this.userPoolId = UserPoolId;
+    this.clientId = ClientId;
+
+    this.client = new _Client__WEBPACK_IMPORTED_MODULE_0__["default"](region, endpoint);
+
+    /**
+     * By default, AdvancedSecurityDataCollectionFlag is set to true,
+     * if no input value is provided.
+     */
+    this.advancedSecurityDataCollectionFlag = AdvancedSecurityDataCollectionFlag !== false;
+
+    this.storage = data.Storage || new _StorageHelper__WEBPACK_IMPORTED_MODULE_2__["default"]().getStorage();
+  }
+
+  /**
+   * @returns {string} the user pool id
+   */
+
+
+  CognitoUserPool.prototype.getUserPoolId = function getUserPoolId() {
+    return this.userPoolId;
+  };
+
+  /**
+   * @returns {string} the client id
+   */
+
+
+  CognitoUserPool.prototype.getClientId = function getClientId() {
+    return this.clientId;
+  };
+
+  /**
+   * @typedef {object} SignUpResult
+   * @property {CognitoUser} user New user.
+   * @property {bool} userConfirmed If the user is already confirmed.
+   */
+  /**
+   * method for signing up a user
+   * @param {string} username User's username.
+   * @param {string} password Plain-text initial password entered by user.
+   * @param {(AttributeArg[])=} userAttributes New user attributes.
+   * @param {(AttributeArg[])=} validationData Application metadata.
+   * @param {nodeCallback<SignUpResult>} callback Called on error or with the new user.
+   * @returns {void}
+   */
+
+
+  CognitoUserPool.prototype.signUp = function signUp(username, password, userAttributes, validationData, callback) {
+    var _this = this;
+
+    var jsonReq = {
+      ClientId: this.clientId,
+      Username: username,
+      Password: password,
+      UserAttributes: userAttributes,
+      ValidationData: validationData
+    };
+    if (this.getUserContextData(username)) {
+      jsonReq.UserContextData = this.getUserContextData(username);
+    }
+    this.client.request('SignUp', jsonReq, function (err, data) {
+      if (err) {
+        return callback(err, null);
+      }
+
+      var cognitoUser = {
+        Username: username,
+        Pool: _this,
+        Storage: _this.storage
+      };
+
+      var returnData = {
+        user: new _CognitoUser__WEBPACK_IMPORTED_MODULE_1__["default"](cognitoUser),
+        userConfirmed: data.UserConfirmed,
+        userSub: data.UserSub
+      };
+
+      return callback(null, returnData);
+    });
+  };
+
+  /**
+   * method for getting the current user of the application from the local storage
+   *
+   * @returns {CognitoUser} the user retrieved from storage
+   */
+
+
+  CognitoUserPool.prototype.getCurrentUser = function getCurrentUser() {
+    var lastUserKey = 'CognitoIdentityServiceProvider.' + this.clientId + '.LastAuthUser';
+
+    var lastAuthUser = this.storage.getItem(lastUserKey);
+    if (lastAuthUser) {
+      var cognitoUser = {
+        Username: lastAuthUser,
+        Pool: this,
+        Storage: this.storage
+      };
+
+      return new _CognitoUser__WEBPACK_IMPORTED_MODULE_1__["default"](cognitoUser);
+    }
+
+    return null;
+  };
+
+  /**
+   * This method returns the encoded data string used for cognito advanced security feature.
+   * This would be generated only when developer has included the JS used for collecting the
+   * data on their client. Please refer to documentation to know more about using AdvancedSecurity
+   * features
+   * @param {string} username the username for the context data
+   * @returns {string} the user context data
+   **/
+
+
+  CognitoUserPool.prototype.getUserContextData = function getUserContextData(username) {
+    if (typeof AmazonCognitoAdvancedSecurityData === 'undefined') {
+      return undefined;
+    }
+    /* eslint-disable */
+    var amazonCognitoAdvancedSecurityDataConst = AmazonCognitoAdvancedSecurityData;
+    /* eslint-enable */
+
+    if (this.advancedSecurityDataCollectionFlag) {
+      var advancedSecurityData = amazonCognitoAdvancedSecurityDataConst.getData(username, this.userPoolId, this.clientId);
+      if (advancedSecurityData) {
+        var userContextData = {
+          EncodedData: advancedSecurityData
+        };
+        return userContextData;
+      }
+    }
+    return {};
+  };
+
+  return CognitoUserPool;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoUserPool);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CognitoUserSession.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CognitoUserSession.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** @class */
+var CognitoUserSession = function () {
+  /**
+   * Constructs a new CognitoUserSession object
+   * @param {CognitoIdToken} IdToken The session's Id token.
+   * @param {CognitoRefreshToken=} RefreshToken The session's refresh token.
+   * @param {CognitoAccessToken} AccessToken The session's access token.
+   * @param {int} ClockDrift The saved computer's clock drift or undefined to force calculation.
+   */
+  function CognitoUserSession() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        IdToken = _ref.IdToken,
+        RefreshToken = _ref.RefreshToken,
+        AccessToken = _ref.AccessToken,
+        ClockDrift = _ref.ClockDrift;
+
+    _classCallCheck(this, CognitoUserSession);
+
+    if (AccessToken == null || IdToken == null) {
+      throw new Error('Id token and Access Token must be present.');
+    }
+
+    this.idToken = IdToken;
+    this.refreshToken = RefreshToken;
+    this.accessToken = AccessToken;
+    this.clockDrift = ClockDrift === undefined ? this.calculateClockDrift() : ClockDrift;
+  }
+
+  /**
+   * @returns {CognitoIdToken} the session's Id token
+   */
+
+
+  CognitoUserSession.prototype.getIdToken = function getIdToken() {
+    return this.idToken;
+  };
+
+  /**
+   * @returns {CognitoRefreshToken} the session's refresh token
+   */
+
+
+  CognitoUserSession.prototype.getRefreshToken = function getRefreshToken() {
+    return this.refreshToken;
+  };
+
+  /**
+   * @returns {CognitoAccessToken} the session's access token
+   */
+
+
+  CognitoUserSession.prototype.getAccessToken = function getAccessToken() {
+    return this.accessToken;
+  };
+
+  /**
+   * @returns {int} the session's clock drift
+   */
+
+
+  CognitoUserSession.prototype.getClockDrift = function getClockDrift() {
+    return this.clockDrift;
+  };
+
+  /**
+   * @returns {int} the computer's clock drift
+   */
+
+
+  CognitoUserSession.prototype.calculateClockDrift = function calculateClockDrift() {
+    var now = Math.floor(new Date() / 1000);
+    var iat = Math.min(this.accessToken.getIssuedAt(), this.idToken.getIssuedAt());
+
+    return now - iat;
+  };
+
+  /**
+   * Checks to see if the session is still valid based on session expiry information found
+   * in tokens and the current time (adjusted with clock drift)
+   * @returns {boolean} if the session is still valid
+   */
+
+
+  CognitoUserSession.prototype.isValid = function isValid() {
+    var now = Math.floor(new Date() / 1000);
+    var adjusted = now - this.clockDrift;
+
+    return adjusted < this.accessToken.getExpiration() && adjusted < this.idToken.getExpiration();
+  };
+
+  return CognitoUserSession;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CognitoUserSession);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/CookieStorage.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/CookieStorage.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+/** @class */
+
+var CookieStorage = function () {
+
+  /**
+   * Constructs a new CookieStorage object
+   * @param {object} data Creation options.
+   * @param {string} data.domain Cookies domain (mandatory).
+   * @param {string} data.path Cookies path (default: '/')
+   * @param {integer} data.expires Cookie expiration (in days, default: 365)
+   * @param {boolean} data.secure Cookie secure flag (default: true)
+   */
+  function CookieStorage(data) {
+    _classCallCheck(this, CookieStorage);
+
+    this.domain = data.domain;
+    if (data.path) {
+      this.path = data.path;
+    } else {
+      this.path = '/';
+    }
+    if (Object.prototype.hasOwnProperty.call(data, 'expires')) {
+      this.expires = data.expires;
+    } else {
+      this.expires = 365;
+    }
+    if (Object.prototype.hasOwnProperty.call(data, 'secure')) {
+      this.secure = data.secure;
+    } else {
+      this.secure = true;
+    }
+  }
+
+  /**
+   * This is used to set a specific item in storage
+   * @param {string} key - the key for the item
+   * @param {object} value - the value
+   * @returns {string} value that was set
+   */
+
+
+  CookieStorage.prototype.setItem = function setItem(key, value) {
+    js_cookie__WEBPACK_IMPORTED_MODULE_0__["set"](key, value, {
+      path: this.path,
+      expires: this.expires,
+      domain: this.domain,
+      secure: this.secure
+    });
+    return js_cookie__WEBPACK_IMPORTED_MODULE_0__["get"](key);
+  };
+
+  /**
+   * This is used to get a specific key from storage
+   * @param {string} key - the key for the item
+   * This is used to clear the storage
+   * @returns {string} the data item
+   */
+
+
+  CookieStorage.prototype.getItem = function getItem(key) {
+    return js_cookie__WEBPACK_IMPORTED_MODULE_0__["get"](key);
+  };
+
+  /**
+   * This is used to remove an item from storage
+   * @param {string} key - the key being set
+   * @returns {string} value - value that was deleted
+   */
+
+
+  CookieStorage.prototype.removeItem = function removeItem(key) {
+    return js_cookie__WEBPACK_IMPORTED_MODULE_0__["remove"](key, {
+      path: this.path,
+      domain: this.domain,
+      secure: this.secure
+    });
+  };
+
+  /**
+   * This is used to clear the storage
+   * @returns {string} nothing
+   */
+
+
+  CookieStorage.prototype.clear = function clear() {
+    var cookies = js_cookie__WEBPACK_IMPORTED_MODULE_0__["get"]();
+    var index = void 0;
+    for (index = 0; index < cookies.length; ++index) {
+      js_cookie__WEBPACK_IMPORTED_MODULE_0__["remove"](cookies[index]);
+    }
+    return {};
+  };
+
+  return CookieStorage;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (CookieStorage);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/DateHelper.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/DateHelper.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var weekNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+/** @class */
+
+var DateHelper = function () {
+  function DateHelper() {
+    _classCallCheck(this, DateHelper);
+  }
+
+  /**
+   * @returns {string} The current time in "ddd MMM D HH:mm:ss UTC YYYY" format.
+   */
+  DateHelper.prototype.getNowString = function getNowString() {
+    var now = new Date();
+
+    var weekDay = weekNames[now.getUTCDay()];
+    var month = monthNames[now.getUTCMonth()];
+    var day = now.getUTCDate();
+
+    var hours = now.getUTCHours();
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+
+    var minutes = now.getUTCMinutes();
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+
+    var seconds = now.getUTCSeconds();
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    var year = now.getUTCFullYear();
+
+    // ddd MMM D HH:mm:ss UTC YYYY
+    var dateNow = weekDay + ' ' + month + ' ' + day + ' ' + hours + ':' + minutes + ':' + seconds + ' UTC ' + year;
+
+    return dateNow;
+  };
+
+  return DateHelper;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (DateHelper);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/StorageHelper.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/StorageHelper.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var dataMemory = {};
+
+/** @class */
+
+var MemoryStorage = function () {
+  function MemoryStorage() {
+    _classCallCheck(this, MemoryStorage);
+  }
+
+  /**
+   * This is used to set a specific item in storage
+   * @param {string} key - the key for the item
+   * @param {object} value - the value
+   * @returns {string} value that was set
+   */
+  MemoryStorage.setItem = function setItem(key, value) {
+    dataMemory[key] = value;
+    return dataMemory[key];
+  };
+
+  /**
+   * This is used to get a specific key from storage
+   * @param {string} key - the key for the item
+   * This is used to clear the storage
+   * @returns {string} the data item
+   */
+
+
+  MemoryStorage.getItem = function getItem(key) {
+    return Object.prototype.hasOwnProperty.call(dataMemory, key) ? dataMemory[key] : undefined;
+  };
+
+  /**
+   * This is used to remove an item from storage
+   * @param {string} key - the key being set
+   * @returns {string} value - value that was deleted
+   */
+
+
+  MemoryStorage.removeItem = function removeItem(key) {
+    return delete dataMemory[key];
+  };
+
+  /**
+   * This is used to clear the storage
+   * @returns {string} nothing
+   */
+
+
+  MemoryStorage.clear = function clear() {
+    dataMemory = {};
+    return dataMemory;
+  };
+
+  return MemoryStorage;
+}();
+
+/** @class */
+
+
+var StorageHelper = function () {
+
+  /**
+   * This is used to get a storage object
+   * @returns {object} the storage
+   */
+  function StorageHelper() {
+    _classCallCheck(this, StorageHelper);
+
+    try {
+      this.storageWindow = window.localStorage;
+      this.storageWindow.setItem('aws.cognito.test-ls', 1);
+      this.storageWindow.removeItem('aws.cognito.test-ls');
+    } catch (exception) {
+      this.storageWindow = MemoryStorage;
+    }
+  }
+
+  /**
+   * This is used to return the storage
+   * @returns {object} the storage
+   */
+
+
+  StorageHelper.prototype.getStorage = function getStorage() {
+    return this.storageWindow;
+  };
+
+  return StorageHelper;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (StorageHelper);
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/UserAgent.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/UserAgent.js ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// class for defining the amzn user-agent
+/* harmony default export */ __webpack_exports__["default"] = (UserAgent);
+// constructor
+function UserAgent() {}
+// public
+UserAgent.prototype.userAgent = 'aws-amplify/0.1.x js';
+
+/***/ }),
+
+/***/ "./node_modules/amazon-cognito-identity-js/es/index.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/amazon-cognito-identity-js/es/index.js ***!
+  \*************************************************************/
+/*! exports provided: AuthenticationDetails, AuthenticationHelper, CognitoAccessToken, CognitoIdToken, CognitoRefreshToken, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, CookieStorage, DateHelper */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AuthenticationDetails__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AuthenticationDetails */ "./node_modules/amazon-cognito-identity-js/es/AuthenticationDetails.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuthenticationDetails", function() { return _AuthenticationDetails__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuthenticationHelper */ "./node_modules/amazon-cognito-identity-js/es/AuthenticationHelper.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuthenticationHelper", function() { return _AuthenticationHelper__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _CognitoAccessToken__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CognitoAccessToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoAccessToken.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoAccessToken", function() { return _CognitoAccessToken__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _CognitoIdToken__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CognitoIdToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoIdToken.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoIdToken", function() { return _CognitoIdToken__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _CognitoRefreshToken__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CognitoRefreshToken */ "./node_modules/amazon-cognito-identity-js/es/CognitoRefreshToken.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoRefreshToken", function() { return _CognitoRefreshToken__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _CognitoUser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CognitoUser */ "./node_modules/amazon-cognito-identity-js/es/CognitoUser.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoUser", function() { return _CognitoUser__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _CognitoUserAttribute__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CognitoUserAttribute */ "./node_modules/amazon-cognito-identity-js/es/CognitoUserAttribute.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoUserAttribute", function() { return _CognitoUserAttribute__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _CognitoUserPool__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CognitoUserPool */ "./node_modules/amazon-cognito-identity-js/es/CognitoUserPool.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoUserPool", function() { return _CognitoUserPool__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
+/* harmony import */ var _CognitoUserSession__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CognitoUserSession */ "./node_modules/amazon-cognito-identity-js/es/CognitoUserSession.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CognitoUserSession", function() { return _CognitoUserSession__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+
+/* harmony import */ var _CookieStorage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CookieStorage */ "./node_modules/amazon-cognito-identity-js/es/CookieStorage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CookieStorage", function() { return _CookieStorage__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _DateHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./DateHelper */ "./node_modules/amazon-cognito-identity-js/es/DateHelper.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DateHelper", function() { return _DateHelper__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
+/*!
+ * Copyright 2016 Amazon.com,
+ * Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Amazon Software License (the "License").
+ * You may not use this file except in compliance with the
+ * License. A copy of the License is located at
+ *
+ *     http://aws.amazon.com/asl/
+ *
+ * or in the "license" file accompanying this file. This file is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, express or implied. See the License
+ * for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
 
 /***/ }),
 
@@ -7737,6 +14971,17 @@ module.exports = function () {
 	return /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g;
 };
 
+
+/***/ }),
+
+/***/ "./node_modules/attr-accept/dist/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/attr-accept/dist/index.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={i:e,l:!1,exports:{}};return t[e].call(o.exports,o,o.exports,n),o.l=!0,o.exports}var r={};return n.m=t,n.c=r,n.d=function(t,r,e){n.o(t,r)||Object.defineProperty(t,r,{configurable:!1,enumerable:!0,get:e})},n.n=function(t){var r=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(r,"a",r),r},n.o=function(t,n){return Object.prototype.hasOwnProperty.call(t,n)},n.p="",n(n.s=13)}([function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n){var r=t.exports={version:"2.5.0"};"number"==typeof __e&&(__e=r)},function(t,n,r){t.exports=!r(4)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(32)("wks"),o=r(9),i=r(0).Symbol,u="function"==typeof i;(t.exports=function(t){return e[t]||(e[t]=u&&i[t]||(u?i:o)("Symbol."+t))}).store=e},function(t,n,r){var e=r(0),o=r(2),i=r(8),u=r(22),c=r(10),f=function(t,n,r){var a,s,p,l,v=t&f.F,y=t&f.G,h=t&f.S,d=t&f.P,x=t&f.B,g=y?e:h?e[n]||(e[n]={}):(e[n]||{}).prototype,m=y?o:o[n]||(o[n]={}),b=m.prototype||(m.prototype={});y&&(r=n);for(a in r)s=!v&&g&&void 0!==g[a],p=(s?g:r)[a],l=x&&s?c(p,e):d&&"function"==typeof p?c(Function.call,p):p,g&&u(g,a,p,t&f.U),m[a]!=p&&i(m,a,l),d&&b[a]!=p&&(b[a]=p)};e.core=o,f.F=1,f.G=2,f.S=4,f.P=8,f.B=16,f.W=32,f.U=64,f.R=128,t.exports=f},function(t,n,r){var e=r(16),o=r(21);t.exports=r(3)?function(t,n,r){return e.f(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(24);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){var e=r(28),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";n.__esModule=!0,n.default=function(t,n){if(t&&n){var r=Array.isArray(n)?n:n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):n.endsWith("/*")?i===n.replace(/\/.*$/,""):o===n})}return!0},r(14),r(34)},function(t,n,r){r(15),t.exports=r(2).Array.some},function(t,n,r){"use strict";var e=r(7),o=r(25)(3);e(e.P+e.F*!r(33)([].some,!0),"Array",{some:function(t){return o(this,t,arguments[1])}})},function(t,n,r){var e=r(17),o=r(18),i=r(20),u=Object.defineProperty;n.f=r(3)?Object.defineProperty:function(t,n,r){if(e(t),n=i(n,!0),e(r),o)try{return u(t,n,r)}catch(t){}if("get"in r||"set"in r)throw TypeError("Accessors not supported!");return"value"in r&&(t[n]=r.value),t}},function(t,n,r){var e=r(1);t.exports=function(t){if(!e(t))throw TypeError(t+" is not an object!");return t}},function(t,n,r){t.exports=!r(3)&&!r(4)(function(){return 7!=Object.defineProperty(r(19)("div"),"a",{get:function(){return 7}}).a})},function(t,n,r){var e=r(1),o=r(0).document,i=e(o)&&e(o.createElement);t.exports=function(t){return i?o.createElement(t):{}}},function(t,n,r){var e=r(1);t.exports=function(t,n){if(!e(t))return t;var r,o;if(n&&"function"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;if("function"==typeof(r=t.valueOf)&&!e(o=r.call(t)))return o;if(!n&&"function"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;throw TypeError("Can't convert object to primitive value")}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(0),o=r(8),i=r(23),u=r(9)("src"),c=Function.toString,f=(""+c).split("toString");r(2).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,c){var a="function"==typeof r;a&&(i(r,"name")||o(r,"name",n)),t[n]!==r&&(a&&(i(r,u)||o(r,u,t[n]?""+t[n]:f.join(String(n)))),t===e?t[n]=r:c?t[n]?t[n]=r:o(t,n,r):(delete t[n],o(t,n,r)))})(Function.prototype,"toString",function(){return"function"==typeof this&&this[u]||c.call(this)})},function(t,n){var r={}.hasOwnProperty;t.exports=function(t,n){return r.call(t,n)}},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n,r){var e=r(10),o=r(26),i=r(27),u=r(12),c=r(29);t.exports=function(t,n){var r=1==t,f=2==t,a=3==t,s=4==t,p=6==t,l=5==t||p,v=n||c;return function(n,c,y){for(var h,d,x=i(n),g=o(x),m=e(c,y,3),b=u(g.length),_=0,w=r?v(n,b):f?v(n,0):void 0;b>_;_++)if((l||_ in g)&&(h=g[_],d=m(h,_,x),t))if(r)w[_]=d;else if(d)switch(t){case 3:return!0;case 5:return h;case 6:return _;case 2:w.push(h)}else if(s)return!1;return p?-1:a||s?s:w}}},function(t,n,r){var e=r(5);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==e(t)?t.split(""):Object(t)}},function(t,n,r){var e=r(11);t.exports=function(t){return Object(e(t))}},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(30);t.exports=function(t,n){return new(e(t))(n)}},function(t,n,r){var e=r(1),o=r(31),i=r(6)("species");t.exports=function(t){var n;return o(t)&&(n=t.constructor,"function"!=typeof n||n!==Array&&!o(n.prototype)||(n=void 0),e(n)&&null===(n=n[i])&&(n=void 0)),void 0===n?Array:n}},function(t,n,r){var e=r(5);t.exports=Array.isArray||function(t){return"Array"==e(t)}},function(t,n,r){var e=r(0),o=e["__core-js_shared__"]||(e["__core-js_shared__"]={});t.exports=function(t){return o[t]||(o[t]={})}},function(t,n,r){"use strict";var e=r(4);t.exports=function(t,n){return!!t&&e(function(){n?t.call(null,function(){},1):t.call(null)})}},function(t,n,r){r(35),t.exports=r(2).String.endsWith},function(t,n,r){"use strict";var e=r(7),o=r(12),i=r(36),u="".endsWith;e(e.P+e.F*r(38)("endsWith"),"String",{endsWith:function(t){var n=i(this,t,"endsWith"),r=arguments.length>1?arguments[1]:void 0,e=o(n.length),c=void 0===r?e:Math.min(o(r),e),f=String(t);return u?u.call(n,f,c):n.slice(c-f.length,c)===f}})},function(t,n,r){var e=r(37),o=r(11);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){var e=r(1),o=r(5),i=r(6)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n,r){var e=r(6)("match");t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(r){try{return n[e]=!1,!"/./"[t](n)}catch(t){}}return!0}}]);
 
 /***/ }),
 
@@ -9408,6 +16653,1971 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/base64-js/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/base64-js/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  for (var i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/buffer/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/buffer/index.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+
+
+var base64 = __webpack_require__(/*! base64-js */ "./node_modules/base64-js/index.js")
+var ieee754 = __webpack_require__(/*! ieee754 */ "./node_modules/ieee754/index.js")
+var isArray = __webpack_require__(/*! isarray */ "./node_modules/isarray/index.js")
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Use Object implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * Due to various browser bugs, sometimes the Object implementation will be used even
+ * when the browser supports typed arrays.
+ *
+ * Note:
+ *
+ *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+ *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+ *
+ *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+ *
+ *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+ *     incorrect length in some situations.
+
+ * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+ * get the Object implementation, which is slower but behaves correctly.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+  ? global.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+/*
+ * Export kMaxLength after typed array support is determined.
+ */
+exports.kMaxLength = kMaxLength()
+
+function typedArraySupport () {
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42 && // typed array instances can be augmented
+        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+  } catch (e) {
+    return false
+  }
+}
+
+function kMaxLength () {
+  return Buffer.TYPED_ARRAY_SUPPORT
+    ? 0x7fffffff
+    : 0x3fffffff
+}
+
+function createBuffer (that, length) {
+  if (kMaxLength() < length) {
+    throw new RangeError('Invalid typed array length')
+  }
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = new Uint8Array(length)
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    if (that === null) {
+      that = new Buffer(length)
+    }
+    that.length = length
+  }
+
+  return that
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+    return new Buffer(arg, encodingOrOffset, length)
+  }
+
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(this, arg)
+  }
+  return from(this, arg, encodingOrOffset, length)
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+// TODO: Legacy, not needed anymore. Remove in next major version.
+Buffer._augment = function (arr) {
+  arr.__proto__ = Buffer.prototype
+  return arr
+}
+
+function from (that, value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    return fromArrayBuffer(that, value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(that, value, encodingOrOffset)
+  }
+
+  return fromObject(that, value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(null, value, encodingOrOffset, length)
+}
+
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
+}
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (that, size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(that, size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(that, size).fill(fill, encoding)
+      : createBuffer(that, size).fill(fill)
+  }
+  return createBuffer(that, size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(null, size, fill, encoding)
+}
+
+function allocUnsafe (that, size) {
+  assertSize(size)
+  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+    for (var i = 0; i < size; ++i) {
+      that[i] = 0
+    }
+  }
+  return that
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(null, size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(null, size)
+}
+
+function fromString (that, string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  that = createBuffer(that, length)
+
+  var actual = that.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    that = that.slice(0, actual)
+  }
+
+  return that
+}
+
+function fromArrayLike (that, array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  that = createBuffer(that, length)
+  for (var i = 0; i < length; i += 1) {
+    that[i] = array[i] & 255
+  }
+  return that
+}
+
+function fromArrayBuffer (that, array, byteOffset, length) {
+  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  if (byteOffset === undefined && length === undefined) {
+    array = new Uint8Array(array)
+  } else if (length === undefined) {
+    array = new Uint8Array(array, byteOffset)
+  } else {
+    array = new Uint8Array(array, byteOffset, length)
+  }
+
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = array
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    that = fromArrayLike(that, array)
+  }
+  return that
+}
+
+function fromObject (that, obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    that = createBuffer(that, len)
+
+    if (that.length === 0) {
+      return that
+    }
+
+    obj.copy(that, 0, 0, len)
+    return that
+  }
+
+  if (obj) {
+    if ((typeof ArrayBuffer !== 'undefined' &&
+        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+        return createBuffer(that, 0)
+      }
+      return fromArrayLike(that, obj)
+    }
+
+    if (obj.type === 'Buffer' && isArray(obj.data)) {
+      return fromArrayLike(that, obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < kMaxLength()` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= kMaxLength()) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return !!(b != null && b._isBuffer)
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
+
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+// Buffer instances.
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length | 0
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (isNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (Buffer.TYPED_ARRAY_SUPPORT &&
+        typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  // must be an even number of digits
+  var strLen = string.length
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (isNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset | 0
+    if (isFinite(length)) {
+      length = length | 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  // legacy write(string, encoding, offset, length) - remove in v0.13
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    newBuf = this.subarray(start, end)
+    newBuf.__proto__ = Buffer.prototype
+  } else {
+    var sliceLen = end - start
+    newBuf = new Buffer(sliceLen, undefined)
+    for (var i = 0; i < sliceLen; ++i) {
+      newBuf[i] = this[i + start]
+    }
+  }
+
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+function objectWriteUInt16 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+      (littleEndian ? i : 1 - i) * 8
+  }
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+function objectWriteUInt32 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffffffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+  }
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset + 3] = (value >>> 24)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 1] = (value >>> 8)
+    this[offset] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 3] = (value >>> 24)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+  var i
+
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : utf8ToBytes(new Buffer(val, encoding).toString())
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function stringtrim (str) {
+  if (str.trim) return str.trim()
+  return str.replace(/^\s+|\s+$/g, '')
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+function isnan (val) {
+  return val !== val // eslint-disable-line no-self-compare
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/classnames/index.js":
 /*!******************************************!*\
   !*** ./node_modules/classnames/index.js ***!
@@ -9416,7 +18626,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2016 Jed Watson.
+  Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
@@ -9438,8 +18648,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 			if (argType === 'string' || argType === 'number') {
 				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				classes.push(classNames.apply(null, arg));
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
 			} else if (argType === 'object') {
 				for (var key in arg) {
 					if (hasOwn.call(arg, key) && arg[key]) {
@@ -9453,6 +18666,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	}
 
 	if (typeof module !== 'undefined' && module.exports) {
+		classNames.default = classNames;
 		module.exports = classNames;
 	} else if (true) {
 		// register as 'classnames', consistent with npm package name
@@ -9462,6 +18676,578 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {}
 }());
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/helpers.js":
+/*!***************************************************!*\
+  !*** ./node_modules/crypto-browserify/helpers.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js").Buffer;
+var intSize = 4;
+var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
+var chrsz = 8;
+
+function toArray(buf, bigEndian) {
+  if ((buf.length % intSize) !== 0) {
+    var len = buf.length + (intSize - (buf.length % intSize));
+    buf = Buffer.concat([buf, zeroBuffer], len);
+  }
+
+  var arr = [];
+  var fn = bigEndian ? buf.readInt32BE : buf.readInt32LE;
+  for (var i = 0; i < buf.length; i += intSize) {
+    arr.push(fn.call(buf, i));
+  }
+  return arr;
+}
+
+function toBuffer(arr, size, bigEndian) {
+  var buf = new Buffer(size);
+  var fn = bigEndian ? buf.writeInt32BE : buf.writeInt32LE;
+  for (var i = 0; i < arr.length; i++) {
+    fn.call(buf, arr[i], i * 4, true);
+  }
+  return buf;
+}
+
+function hash(buf, fn, hashSize, bigEndian) {
+  if (!Buffer.isBuffer(buf)) buf = new Buffer(buf);
+  var arr = fn(toArray(buf, bigEndian), buf.length * chrsz);
+  return toBuffer(arr, hashSize, bigEndian);
+}
+
+module.exports = { hash: hash };
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/crypto-browserify/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js").Buffer
+var sha = __webpack_require__(/*! ./sha */ "./node_modules/crypto-browserify/sha.js")
+var sha256 = __webpack_require__(/*! ./sha256 */ "./node_modules/crypto-browserify/sha256.js")
+var rng = __webpack_require__(/*! ./rng */ "./node_modules/crypto-browserify/rng.js")
+var md5 = __webpack_require__(/*! ./md5 */ "./node_modules/crypto-browserify/md5.js")
+
+var algorithms = {
+  sha1: sha,
+  sha256: sha256,
+  md5: md5
+}
+
+var blocksize = 64
+var zeroBuffer = new Buffer(blocksize); zeroBuffer.fill(0)
+function hmac(fn, key, data) {
+  if(!Buffer.isBuffer(key)) key = new Buffer(key)
+  if(!Buffer.isBuffer(data)) data = new Buffer(data)
+
+  if(key.length > blocksize) {
+    key = fn(key)
+  } else if(key.length < blocksize) {
+    key = Buffer.concat([key, zeroBuffer], blocksize)
+  }
+
+  var ipad = new Buffer(blocksize), opad = new Buffer(blocksize)
+  for(var i = 0; i < blocksize; i++) {
+    ipad[i] = key[i] ^ 0x36
+    opad[i] = key[i] ^ 0x5C
+  }
+
+  var hash = fn(Buffer.concat([ipad, data]))
+  return fn(Buffer.concat([opad, hash]))
+}
+
+function hash(alg, key) {
+  alg = alg || 'sha1'
+  var fn = algorithms[alg]
+  var bufs = []
+  var length = 0
+  if(!fn) error('algorithm:', alg, 'is not yet supported')
+  return {
+    update: function (data) {
+      if(!Buffer.isBuffer(data)) data = new Buffer(data)
+        
+      bufs.push(data)
+      length += data.length
+      return this
+    },
+    digest: function (enc) {
+      var buf = Buffer.concat(bufs)
+      var r = key ? hmac(fn, key, buf) : fn(buf)
+      bufs = null
+      return enc ? r.toString(enc) : r
+    }
+  }
+}
+
+function error () {
+  var m = [].slice.call(arguments).join(' ')
+  throw new Error([
+    m,
+    'we accept pull requests',
+    'http://github.com/dominictarr/crypto-browserify'
+    ].join('\n'))
+}
+
+exports.createHash = function (alg) { return hash(alg) }
+exports.createHmac = function (alg, key) { return hash(alg, key) }
+exports.randomBytes = function(size, callback) {
+  if (callback && callback.call) {
+    try {
+      callback.call(this, undefined, new Buffer(rng(size)))
+    } catch (err) { callback(err) }
+  } else {
+    return new Buffer(rng(size))
+  }
+}
+
+function each(a, f) {
+  for(var i in a)
+    f(a[i], i)
+}
+
+// the least I can do is make error messages for the rest of the node.js/crypto api.
+each(['createCredentials'
+, 'createCipher'
+, 'createCipheriv'
+, 'createDecipher'
+, 'createDecipheriv'
+, 'createSign'
+, 'createVerify'
+, 'createDiffieHellman'
+, 'pbkdf2'], function (name) {
+  exports[name] = function () {
+    error('sorry,', name, 'is not implemented yet')
+  }
+})
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/md5.js":
+/*!***********************************************!*\
+  !*** ./node_modules/crypto-browserify/md5.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.1 Copyright (C) Paul Johnston 1999 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+
+var helpers = __webpack_require__(/*! ./helpers */ "./node_modules/crypto-browserify/helpers.js");
+
+/*
+ * Perform a simple self-test to see if the VM is working
+ */
+function md5_vm_test()
+{
+  return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
+}
+
+/*
+ * Calculate the MD5 of an array of little-endian words, and a bit length
+ */
+function core_md5(x, len)
+{
+  /* append padding */
+  x[len >> 5] |= 0x80 << ((len) % 32);
+  x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+
+    a = md5_ff(a, b, c, d, x[i+ 0], 7 , -680876936);
+    d = md5_ff(d, a, b, c, x[i+ 1], 12, -389564586);
+    c = md5_ff(c, d, a, b, x[i+ 2], 17,  606105819);
+    b = md5_ff(b, c, d, a, x[i+ 3], 22, -1044525330);
+    a = md5_ff(a, b, c, d, x[i+ 4], 7 , -176418897);
+    d = md5_ff(d, a, b, c, x[i+ 5], 12,  1200080426);
+    c = md5_ff(c, d, a, b, x[i+ 6], 17, -1473231341);
+    b = md5_ff(b, c, d, a, x[i+ 7], 22, -45705983);
+    a = md5_ff(a, b, c, d, x[i+ 8], 7 ,  1770035416);
+    d = md5_ff(d, a, b, c, x[i+ 9], 12, -1958414417);
+    c = md5_ff(c, d, a, b, x[i+10], 17, -42063);
+    b = md5_ff(b, c, d, a, x[i+11], 22, -1990404162);
+    a = md5_ff(a, b, c, d, x[i+12], 7 ,  1804603682);
+    d = md5_ff(d, a, b, c, x[i+13], 12, -40341101);
+    c = md5_ff(c, d, a, b, x[i+14], 17, -1502002290);
+    b = md5_ff(b, c, d, a, x[i+15], 22,  1236535329);
+
+    a = md5_gg(a, b, c, d, x[i+ 1], 5 , -165796510);
+    d = md5_gg(d, a, b, c, x[i+ 6], 9 , -1069501632);
+    c = md5_gg(c, d, a, b, x[i+11], 14,  643717713);
+    b = md5_gg(b, c, d, a, x[i+ 0], 20, -373897302);
+    a = md5_gg(a, b, c, d, x[i+ 5], 5 , -701558691);
+    d = md5_gg(d, a, b, c, x[i+10], 9 ,  38016083);
+    c = md5_gg(c, d, a, b, x[i+15], 14, -660478335);
+    b = md5_gg(b, c, d, a, x[i+ 4], 20, -405537848);
+    a = md5_gg(a, b, c, d, x[i+ 9], 5 ,  568446438);
+    d = md5_gg(d, a, b, c, x[i+14], 9 , -1019803690);
+    c = md5_gg(c, d, a, b, x[i+ 3], 14, -187363961);
+    b = md5_gg(b, c, d, a, x[i+ 8], 20,  1163531501);
+    a = md5_gg(a, b, c, d, x[i+13], 5 , -1444681467);
+    d = md5_gg(d, a, b, c, x[i+ 2], 9 , -51403784);
+    c = md5_gg(c, d, a, b, x[i+ 7], 14,  1735328473);
+    b = md5_gg(b, c, d, a, x[i+12], 20, -1926607734);
+
+    a = md5_hh(a, b, c, d, x[i+ 5], 4 , -378558);
+    d = md5_hh(d, a, b, c, x[i+ 8], 11, -2022574463);
+    c = md5_hh(c, d, a, b, x[i+11], 16,  1839030562);
+    b = md5_hh(b, c, d, a, x[i+14], 23, -35309556);
+    a = md5_hh(a, b, c, d, x[i+ 1], 4 , -1530992060);
+    d = md5_hh(d, a, b, c, x[i+ 4], 11,  1272893353);
+    c = md5_hh(c, d, a, b, x[i+ 7], 16, -155497632);
+    b = md5_hh(b, c, d, a, x[i+10], 23, -1094730640);
+    a = md5_hh(a, b, c, d, x[i+13], 4 ,  681279174);
+    d = md5_hh(d, a, b, c, x[i+ 0], 11, -358537222);
+    c = md5_hh(c, d, a, b, x[i+ 3], 16, -722521979);
+    b = md5_hh(b, c, d, a, x[i+ 6], 23,  76029189);
+    a = md5_hh(a, b, c, d, x[i+ 9], 4 , -640364487);
+    d = md5_hh(d, a, b, c, x[i+12], 11, -421815835);
+    c = md5_hh(c, d, a, b, x[i+15], 16,  530742520);
+    b = md5_hh(b, c, d, a, x[i+ 2], 23, -995338651);
+
+    a = md5_ii(a, b, c, d, x[i+ 0], 6 , -198630844);
+    d = md5_ii(d, a, b, c, x[i+ 7], 10,  1126891415);
+    c = md5_ii(c, d, a, b, x[i+14], 15, -1416354905);
+    b = md5_ii(b, c, d, a, x[i+ 5], 21, -57434055);
+    a = md5_ii(a, b, c, d, x[i+12], 6 ,  1700485571);
+    d = md5_ii(d, a, b, c, x[i+ 3], 10, -1894986606);
+    c = md5_ii(c, d, a, b, x[i+10], 15, -1051523);
+    b = md5_ii(b, c, d, a, x[i+ 1], 21, -2054922799);
+    a = md5_ii(a, b, c, d, x[i+ 8], 6 ,  1873313359);
+    d = md5_ii(d, a, b, c, x[i+15], 10, -30611744);
+    c = md5_ii(c, d, a, b, x[i+ 6], 15, -1560198380);
+    b = md5_ii(b, c, d, a, x[i+13], 21,  1309151649);
+    a = md5_ii(a, b, c, d, x[i+ 4], 6 , -145523070);
+    d = md5_ii(d, a, b, c, x[i+11], 10, -1120210379);
+    c = md5_ii(c, d, a, b, x[i+ 2], 15,  718787259);
+    b = md5_ii(b, c, d, a, x[i+ 9], 21, -343485551);
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+  }
+  return Array(a, b, c, d);
+
+}
+
+/*
+ * These functions implement the four basic operations the algorithm uses.
+ */
+function md5_cmn(q, a, b, x, s, t)
+{
+  return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s),b);
+}
+function md5_ff(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+}
+function md5_gg(a, b, c, d, x, s, t)
+{
+  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+}
+function md5_hh(a, b, c, d, x, s, t)
+{
+  return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+}
+function md5_ii(a, b, c, d, x, s, t)
+{
+  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function bit_rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+module.exports = function md5(buf) {
+  return helpers.hash(buf, core_md5, 16);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/rng.js":
+/*!***********************************************!*\
+  !*** ./node_modules/crypto-browserify/rng.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Original code adapted from Robert Kieffer.
+// details at https://github.com/broofa/node-uuid
+(function() {
+  var _global = this;
+
+  var mathRNG, whatwgRNG;
+
+  // NOTE: Math.random() does not guarantee "cryptographic quality"
+  mathRNG = function(size) {
+    var bytes = new Array(size);
+    var r;
+
+    for (var i = 0, r; i < size; i++) {
+      if ((i & 0x03) == 0) r = Math.random() * 0x100000000;
+      bytes[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return bytes;
+  }
+
+  if (_global.crypto && crypto.getRandomValues) {
+    whatwgRNG = function(size) {
+      var bytes = new Uint8Array(size);
+      crypto.getRandomValues(bytes);
+      return bytes;
+    }
+  }
+
+  module.exports = whatwgRNG || mathRNG;
+
+}())
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/sha.js":
+/*!***********************************************!*\
+  !*** ./node_modules/crypto-browserify/sha.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
+ * in FIPS PUB 180-1
+ * Version 2.1a Copyright Paul Johnston 2000 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for details.
+ */
+
+var helpers = __webpack_require__(/*! ./helpers */ "./node_modules/crypto-browserify/helpers.js");
+
+/*
+ * Calculate the SHA-1 of an array of big-endian words, and a bit length
+ */
+function core_sha1(x, len)
+{
+  /* append padding */
+  x[len >> 5] |= 0x80 << (24 - len % 32);
+  x[((len + 64 >> 9) << 4) + 15] = len;
+
+  var w = Array(80);
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+  var e = -1009589776;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+    var olde = e;
+
+    for(var j = 0; j < 80; j++)
+    {
+      if(j < 16) w[j] = x[i + j];
+      else w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+      var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
+                       safe_add(safe_add(e, w[j]), sha1_kt(j)));
+      e = d;
+      d = c;
+      c = rol(b, 30);
+      b = a;
+      a = t;
+    }
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+    e = safe_add(e, olde);
+  }
+  return Array(a, b, c, d, e);
+
+}
+
+/*
+ * Perform the appropriate triplet combination function for the current
+ * iteration
+ */
+function sha1_ft(t, b, c, d)
+{
+  if(t < 20) return (b & c) | ((~b) & d);
+  if(t < 40) return b ^ c ^ d;
+  if(t < 60) return (b & c) | (b & d) | (c & d);
+  return b ^ c ^ d;
+}
+
+/*
+ * Determine the appropriate additive constant for the current iteration
+ */
+function sha1_kt(t)
+{
+  return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
+         (t < 60) ? -1894007588 : -899497514;
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+module.exports = function sha1(buf) {
+  return helpers.hash(buf, core_sha1, 20, true);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/crypto-browserify/sha256.js":
+/*!**************************************************!*\
+  !*** ./node_modules/crypto-browserify/sha256.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/**
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
+ * in FIPS 180-2
+ * Version 2.2-beta Copyright Angel Marin, Paul Johnston 2000 - 2009.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ *
+ */
+
+var helpers = __webpack_require__(/*! ./helpers */ "./node_modules/crypto-browserify/helpers.js");
+
+var safe_add = function(x, y) {
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+};
+
+var S = function(X, n) {
+  return (X >>> n) | (X << (32 - n));
+};
+
+var R = function(X, n) {
+  return (X >>> n);
+};
+
+var Ch = function(x, y, z) {
+  return ((x & y) ^ ((~x) & z));
+};
+
+var Maj = function(x, y, z) {
+  return ((x & y) ^ (x & z) ^ (y & z));
+};
+
+var Sigma0256 = function(x) {
+  return (S(x, 2) ^ S(x, 13) ^ S(x, 22));
+};
+
+var Sigma1256 = function(x) {
+  return (S(x, 6) ^ S(x, 11) ^ S(x, 25));
+};
+
+var Gamma0256 = function(x) {
+  return (S(x, 7) ^ S(x, 18) ^ R(x, 3));
+};
+
+var Gamma1256 = function(x) {
+  return (S(x, 17) ^ S(x, 19) ^ R(x, 10));
+};
+
+var core_sha256 = function(m, l) {
+  var K = new Array(0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2);
+  var HASH = new Array(0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19);
+    var W = new Array(64);
+    var a, b, c, d, e, f, g, h, i, j;
+    var T1, T2;
+  /* append padding */
+  m[l >> 5] |= 0x80 << (24 - l % 32);
+  m[((l + 64 >> 9) << 4) + 15] = l;
+  for (var i = 0; i < m.length; i += 16) {
+    a = HASH[0]; b = HASH[1]; c = HASH[2]; d = HASH[3]; e = HASH[4]; f = HASH[5]; g = HASH[6]; h = HASH[7];
+    for (var j = 0; j < 64; j++) {
+      if (j < 16) {
+        W[j] = m[j + i];
+      } else {
+        W[j] = safe_add(safe_add(safe_add(Gamma1256(W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
+      }
+      T1 = safe_add(safe_add(safe_add(safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
+      T2 = safe_add(Sigma0256(a), Maj(a, b, c));
+      h = g; g = f; f = e; e = safe_add(d, T1); d = c; c = b; b = a; a = safe_add(T1, T2);
+    }
+    HASH[0] = safe_add(a, HASH[0]); HASH[1] = safe_add(b, HASH[1]); HASH[2] = safe_add(c, HASH[2]); HASH[3] = safe_add(d, HASH[3]);
+    HASH[4] = safe_add(e, HASH[4]); HASH[5] = safe_add(f, HASH[5]); HASH[6] = safe_add(g, HASH[6]); HASH[7] = safe_add(h, HASH[7]);
+  }
+  return HASH;
+};
+
+module.exports = function sha256(buf) {
+  return helpers.hash(buf, core_sha256, 32, true);
+};
 
 
 /***/ }),
@@ -12308,84 +22094,82 @@ module.exports = warning;
 
 /***/ }),
 
-/***/ "./node_modules/hoist-non-react-statics/index.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/hoist-non-react-statics/index.js ***!
-  \*******************************************************/
+/***/ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /**
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-(function (global, factory) {
-     true ? module.exports = factory() :
-    undefined;
-}(this, (function () {
-    'use strict';
-    
-    var REACT_STATICS = {
-        childContextTypes: true,
-        contextTypes: true,
-        defaultProps: true,
-        displayName: true,
-        getDefaultProps: true,
-        getDerivedStateFromProps: true,
-        mixins: true,
-        propTypes: true,
-        type: true
-    };
-    
-    var KNOWN_STATICS = {
-        name: true,
-        length: true,
-        prototype: true,
-        caller: true,
-        callee: true,
-        arguments: true,
-        arity: true
-    };
-    
-    var defineProperty = Object.defineProperty;
-    var getOwnPropertyNames = Object.getOwnPropertyNames;
-    var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-    var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-    var getPrototypeOf = Object.getPrototypeOf;
-    var objectPrototype = getPrototypeOf && getPrototypeOf(Object);
-    
-    return function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-        if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
-            
-            if (objectPrototype) {
-                var inheritedComponent = getPrototypeOf(sourceComponent);
-                if (inheritedComponent && inheritedComponent !== objectPrototype) {
-                    hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
-                }
+var REACT_STATICS = {
+    childContextTypes: true,
+    contextTypes: true,
+    defaultProps: true,
+    displayName: true,
+    getDefaultProps: true,
+    getDerivedStateFromProps: true,
+    mixins: true,
+    propTypes: true,
+    type: true
+};
+
+var KNOWN_STATICS = {
+    name: true,
+    length: true,
+    prototype: true,
+    caller: true,
+    callee: true,
+    arguments: true,
+    arity: true
+};
+
+var defineProperty = Object.defineProperty;
+var getOwnPropertyNames = Object.getOwnPropertyNames;
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var getPrototypeOf = Object.getPrototypeOf;
+var objectPrototype = getPrototypeOf && getPrototypeOf(Object);
+
+function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
+    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+
+        if (objectPrototype) {
+            var inheritedComponent = getPrototypeOf(sourceComponent);
+            if (inheritedComponent && inheritedComponent !== objectPrototype) {
+                hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
             }
-            
-            var keys = getOwnPropertyNames(sourceComponent);
-            
-            if (getOwnPropertySymbols) {
-                keys = keys.concat(getOwnPropertySymbols(sourceComponent));
-            }
-            
-            for (var i = 0; i < keys.length; ++i) {
-                var key = keys[i];
-                if (!REACT_STATICS[key] && !KNOWN_STATICS[key] && (!blacklist || !blacklist[key])) {
-                    var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
-                    try { // Avoid failures from read-only properties
-                        defineProperty(targetComponent, key, descriptor);
-                    } catch (e) {}
-                }
-            }
-            
-            return targetComponent;
         }
-        
+
+        var keys = getOwnPropertyNames(sourceComponent);
+
+        if (getOwnPropertySymbols) {
+            keys = keys.concat(getOwnPropertySymbols(sourceComponent));
+        }
+
+        for (var i = 0; i < keys.length; ++i) {
+            var key = keys[i];
+            if (!REACT_STATICS[key] && !KNOWN_STATICS[key] && (!blacklist || !blacklist[key])) {
+                var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
+                try { // Avoid failures from read-only properties
+                    defineProperty(targetComponent, key, descriptor);
+                } catch (e) {}
+            }
+        }
+
         return targetComponent;
-    };
-})));
+    }
+
+    return targetComponent;
+}
+
+module.exports = hoistNonReactStatics;
 
 
 /***/ }),
@@ -12932,6 +22716,101 @@ module.exports = XmlEntities;
 
 /***/ }),
 
+/***/ "./node_modules/ieee754/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/ieee754/index.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/invariant/browser.js":
 /*!*******************************************!*\
   !*** ./node_modules/invariant/browser.js ***!
@@ -13040,6 +22919,202 @@ module.exports = function (x) {
 	var prototype;
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/isarray/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/js-cookie/src/js.cookie.js":
+/*!*************************************************!*\
+  !*** ./node_modules/js-cookie/src/js.cookie.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+;(function (factory) {
+	var registeredInModuleLoader = false;
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		registeredInModuleLoader = true;
+	}
+	if (true) {
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function init (converter) {
+		function api (key, value, attributes) {
+			var result;
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			// Write
+
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			// Read
+
+			if (!key) {
+				result = {};
+			}
+
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (!this.json && cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
+
+					if (this.json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					if (key === name) {
+						result = cookie;
+						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
+					}
+				} catch (e) {}
+			}
+
+			return result;
+		}
+
+		api.set = api;
+		api.get = function (key) {
+			return api.call(api, key);
+		};
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
+		};
+		api.defaults = {};
+
+		api.remove = function (key, attributes) {
+			api(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
 
 
 /***/ }),
@@ -13184,7 +23259,7 @@ module.exports.InvalidTokenError = InvalidTokenError;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441943416
+      // 1530197464798
       var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -18386,11 +28461,24 @@ module.exports = function (url) {
 
 
 
+var printWarning = function() {};
+
 if (true) {
-  var invariant = __webpack_require__(/*! fbjs/lib/invariant */ "./node_modules/fbjs/lib/invariant.js");
-  var warning = __webpack_require__(/*! fbjs/lib/warning */ "./node_modules/fbjs/lib/warning.js");
   var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
   var loggedTypeFailures = {};
+
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
 }
 
 /**
@@ -18415,12 +28503,29 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
         try {
           // This is intentionally an invariant that gets caught. It's the same
           // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            var err = Error(
+              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+            );
+            err.name = 'Invariant Violation';
+            throw err;
+          }
           error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
         } catch (ex) {
           error = ex;
         }
-        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        if (error && !(error instanceof Error)) {
+          printWarning(
+            (componentName || 'React class') + ': type specification of ' +
+            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+            'You may have forgotten to pass an argument to the type checker ' +
+            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+            'shape all require an argument).'
+          )
+
+        }
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
           // same error.
@@ -18428,7 +28533,9 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
           var stack = getStack ? getStack() : '';
 
-          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+          printWarning(
+            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+          );
         }
       }
     }
@@ -18457,13 +28564,31 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(/*! fbjs/lib/emptyFunction */ "./node_modules/fbjs/lib/emptyFunction.js");
-var invariant = __webpack_require__(/*! fbjs/lib/invariant */ "./node_modules/fbjs/lib/invariant.js");
-var warning = __webpack_require__(/*! fbjs/lib/warning */ "./node_modules/fbjs/lib/warning.js");
 var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
 
 var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
 var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
+
+var printWarning = function() {};
+
+if (true) {
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -18607,12 +28732,13 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
       if (secret !== ReactPropTypesSecret) {
         if (throwOnDirectAccess) {
           // New behavior only for users of `prop-types` package
-          invariant(
-            false,
+          var err = new Error(
             'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
             'Use `PropTypes.checkPropTypes()` to call them. ' +
             'Read more at http://fb.me/use-check-prop-types'
           );
+          err.name = 'Invariant Violation';
+          throw err;
         } else if ("development" !== 'production' && typeof console !== 'undefined') {
           // Old behavior for people using React.PropTypes
           var cacheKey = componentName + ':' + propName;
@@ -18621,15 +28747,12 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
             // Avoid spamming the console because they are often not actionable except for lib authors
             manualPropTypeWarningCount < 3
           ) {
-            warning(
-              false,
+            printWarning(
               'You are manually calling a React.PropTypes validation ' +
-              'function for the `%s` prop on `%s`. This is deprecated ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
               'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
-              propFullName,
-              componentName
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
             );
             manualPropTypeCallCache[cacheKey] = true;
             manualPropTypeWarningCount++;
@@ -18673,7 +28796,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   }
 
   function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
   }
 
   function createArrayOfTypeChecker(typeChecker) {
@@ -18723,8 +28846,8 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-       true ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : undefined;
-      return emptyFunction.thatReturnsNull;
+       true ? printWarning('Invalid argument supplied to oneOf, expected an instance of array.') : undefined;
+      return emptyFunctionThatReturnsNull;
     }
 
     function validate(props, propName, componentName, location, propFullName) {
@@ -18766,21 +28889,18 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createUnionTypeChecker(arrayOfTypeCheckers) {
     if (!Array.isArray(arrayOfTypeCheckers)) {
-       true ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
-      return emptyFunction.thatReturnsNull;
+       true ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
+      return emptyFunctionThatReturnsNull;
     }
 
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
       if (typeof checker !== 'function') {
-        warning(
-          false,
+        printWarning(
           'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received %s at index %s.',
-          getPostfixForTypeWarning(checker),
-          i
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
         );
-        return emptyFunction.thatReturnsNull;
+        return emptyFunctionThatReturnsNull;
       }
     }
 
@@ -37497,6 +47617,770 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/react-dropzone/dist/es/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-dropzone/dist/es/index.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./node_modules/react-dropzone/dist/es/utils/index.js");
+/* harmony import */ var _utils_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/styles */ "./node_modules/react-dropzone/dist/es/utils/styles.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/* eslint prefer-template: 0 */
+
+
+
+
+
+
+var Dropzone = function (_React$Component) {
+  _inherits(Dropzone, _React$Component);
+
+  function Dropzone(props, context) {
+    _classCallCheck(this, Dropzone);
+
+    var _this = _possibleConstructorReturn(this, (Dropzone.__proto__ || Object.getPrototypeOf(Dropzone)).call(this, props, context));
+
+    _this.renderChildren = function (children, isDragActive, isDragAccept, isDragReject) {
+      if (typeof children === 'function') {
+        return children(_extends({}, _this.state, {
+          isDragActive: isDragActive,
+          isDragAccept: isDragAccept,
+          isDragReject: isDragReject
+        }));
+      }
+      return children;
+    };
+
+    _this.composeHandlers = _this.composeHandlers.bind(_this);
+    _this.onClick = _this.onClick.bind(_this);
+    _this.onDocumentDrop = _this.onDocumentDrop.bind(_this);
+    _this.onDragEnter = _this.onDragEnter.bind(_this);
+    _this.onDragLeave = _this.onDragLeave.bind(_this);
+    _this.onDragOver = _this.onDragOver.bind(_this);
+    _this.onDragStart = _this.onDragStart.bind(_this);
+    _this.onDrop = _this.onDrop.bind(_this);
+    _this.onFileDialogCancel = _this.onFileDialogCancel.bind(_this);
+    _this.onInputElementClick = _this.onInputElementClick.bind(_this);
+
+    _this.setRef = _this.setRef.bind(_this);
+    _this.setRefs = _this.setRefs.bind(_this);
+
+    _this.isFileDialogActive = false;
+
+    _this.state = {
+      draggedFiles: [],
+      acceptedFiles: [],
+      rejectedFiles: []
+    };
+    return _this;
+  }
+
+  _createClass(Dropzone, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var preventDropOnDocument = this.props.preventDropOnDocument;
+
+      this.dragTargets = [];
+
+      if (preventDropOnDocument) {
+        document.addEventListener('dragover', _utils__WEBPACK_IMPORTED_MODULE_2__["onDocumentDragOver"], false);
+        document.addEventListener('drop', this.onDocumentDrop, false);
+      }
+      this.fileInputEl.addEventListener('click', this.onInputElementClick, false);
+      window.addEventListener('focus', this.onFileDialogCancel, false);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var preventDropOnDocument = this.props.preventDropOnDocument;
+
+      if (preventDropOnDocument) {
+        document.removeEventListener('dragover', _utils__WEBPACK_IMPORTED_MODULE_2__["onDocumentDragOver"]);
+        document.removeEventListener('drop', this.onDocumentDrop);
+      }
+      if (this.fileInputEl != null) {
+        this.fileInputEl.removeEventListener('click', this.onInputElementClick, false);
+      }
+      window.removeEventListener('focus', this.onFileDialogCancel, false);
+    }
+  }, {
+    key: 'composeHandlers',
+    value: function composeHandlers(handler) {
+      if (this.props.disabled) {
+        return null;
+      }
+
+      return handler;
+    }
+  }, {
+    key: 'onDocumentDrop',
+    value: function onDocumentDrop(evt) {
+      if (this.node && this.node.contains(evt.target)) {
+        // if we intercepted an event for our instance, let it propagate down to the instance's onDrop handler
+        return;
+      }
+      evt.preventDefault();
+      this.dragTargets = [];
+    }
+  }, {
+    key: 'onDragStart',
+    value: function onDragStart(evt) {
+      if (this.props.onDragStart) {
+        this.props.onDragStart.call(this, evt);
+      }
+    }
+  }, {
+    key: 'onDragEnter',
+    value: function onDragEnter(evt) {
+      evt.preventDefault();
+
+      // Count the dropzone and any children that are entered.
+      if (this.dragTargets.indexOf(evt.target) === -1) {
+        this.dragTargets.push(evt.target);
+      }
+
+      this.setState({
+        isDragActive: true, // Do not rely on files for the drag state. It doesn't work in Safari.
+        draggedFiles: Object(_utils__WEBPACK_IMPORTED_MODULE_2__["getDataTransferItems"])(evt)
+      });
+
+      if (this.props.onDragEnter) {
+        this.props.onDragEnter.call(this, evt);
+      }
+    }
+  }, {
+    key: 'onDragOver',
+    value: function onDragOver(evt) {
+      // eslint-disable-line class-methods-use-this
+      evt.preventDefault();
+      evt.stopPropagation();
+      try {
+        // The file dialog on Chrome allows users to drag files from the dialog onto
+        // the dropzone, causing the browser the crash when the file dialog is closed.
+        // A drop effect of 'none' prevents the file from being dropped
+        evt.dataTransfer.dropEffect = this.isFileDialogActive ? 'none' : 'copy'; // eslint-disable-line no-param-reassign
+      } catch (err) {
+        // continue regardless of error
+      }
+
+      if (this.props.onDragOver) {
+        this.props.onDragOver.call(this, evt);
+      }
+      return false;
+    }
+  }, {
+    key: 'onDragLeave',
+    value: function onDragLeave(evt) {
+      var _this2 = this;
+
+      evt.preventDefault();
+
+      // Only deactivate once the dropzone and all children have been left.
+      this.dragTargets = this.dragTargets.filter(function (el) {
+        return el !== evt.target && _this2.node.contains(el);
+      });
+      if (this.dragTargets.length > 0) {
+        return;
+      }
+
+      // Clear dragging files state
+      this.setState({
+        isDragActive: false,
+        draggedFiles: []
+      });
+
+      if (this.props.onDragLeave) {
+        this.props.onDragLeave.call(this, evt);
+      }
+    }
+  }, {
+    key: 'onDrop',
+    value: function onDrop(evt) {
+      var _this3 = this;
+
+      var _props = this.props,
+          onDrop = _props.onDrop,
+          onDropAccepted = _props.onDropAccepted,
+          onDropRejected = _props.onDropRejected,
+          multiple = _props.multiple,
+          disablePreview = _props.disablePreview,
+          accept = _props.accept;
+
+      var fileList = Object(_utils__WEBPACK_IMPORTED_MODULE_2__["getDataTransferItems"])(evt);
+      var acceptedFiles = [];
+      var rejectedFiles = [];
+
+      // Stop default browser behavior
+      evt.preventDefault();
+
+      // Reset the counter along with the drag on a drop.
+      this.dragTargets = [];
+      this.isFileDialogActive = false;
+
+      fileList.forEach(function (file) {
+        if (!disablePreview) {
+          try {
+            file.preview = window.URL.createObjectURL(file); // eslint-disable-line no-param-reassign
+          } catch (err) {
+            if (true) {
+              console.error('Failed to generate preview for file', file, err); // eslint-disable-line no-console
+            }
+          }
+        }
+
+        if (Object(_utils__WEBPACK_IMPORTED_MODULE_2__["fileAccepted"])(file, accept) && Object(_utils__WEBPACK_IMPORTED_MODULE_2__["fileMatchSize"])(file, _this3.props.maxSize, _this3.props.minSize)) {
+          acceptedFiles.push(file);
+        } else {
+          rejectedFiles.push(file);
+        }
+      });
+
+      if (!multiple) {
+        // if not in multi mode add any extra accepted files to rejected.
+        // This will allow end users to easily ignore a multi file drop in "single" mode.
+        rejectedFiles.push.apply(rejectedFiles, _toConsumableArray(acceptedFiles.splice(1)));
+      }
+
+      if (onDrop) {
+        onDrop.call(this, acceptedFiles, rejectedFiles, evt);
+      }
+
+      if (rejectedFiles.length > 0 && onDropRejected) {
+        onDropRejected.call(this, rejectedFiles, evt);
+      }
+
+      if (acceptedFiles.length > 0 && onDropAccepted) {
+        onDropAccepted.call(this, acceptedFiles, evt);
+      }
+
+      // Clear files value
+      this.draggedFiles = null;
+
+      // Reset drag state
+      this.setState({
+        isDragActive: false,
+        draggedFiles: [],
+        acceptedFiles: acceptedFiles,
+        rejectedFiles: rejectedFiles
+      });
+    }
+  }, {
+    key: 'onClick',
+    value: function onClick(evt) {
+      var _props2 = this.props,
+          onClick = _props2.onClick,
+          disableClick = _props2.disableClick;
+
+      if (!disableClick) {
+        evt.stopPropagation();
+
+        if (onClick) {
+          onClick.call(this, evt);
+        }
+
+        // in IE11/Edge the file-browser dialog is blocking, ensure this is behind setTimeout
+        // this is so react can handle state changes in the onClick prop above above
+        // see: https://github.com/react-dropzone/react-dropzone/issues/450
+        if (Object(_utils__WEBPACK_IMPORTED_MODULE_2__["isIeOrEdge"])()) {
+          setTimeout(this.open.bind(this), 0);
+        } else {
+          this.open();
+        }
+      }
+    }
+  }, {
+    key: 'onInputElementClick',
+    value: function onInputElementClick(evt) {
+      evt.stopPropagation();
+      if (this.props.inputProps && this.props.inputProps.onClick) {
+        this.props.inputProps.onClick();
+      }
+    }
+  }, {
+    key: 'onFileDialogCancel',
+    value: function onFileDialogCancel() {
+      var _this4 = this;
+
+      // timeout will not recognize context of this method
+      var onFileDialogCancel = this.props.onFileDialogCancel;
+      // execute the timeout only if the FileDialog is opened in the browser
+
+      if (this.isFileDialogActive) {
+        setTimeout(function () {
+          if (_this4.fileInputEl != null) {
+            // Returns an object as FileList
+            var files = _this4.fileInputEl.files;
+
+
+            if (!files.length) {
+              _this4.isFileDialogActive = false;
+            }
+          }
+
+          if (typeof onFileDialogCancel === 'function') {
+            onFileDialogCancel();
+          }
+        }, 300);
+      }
+    }
+  }, {
+    key: 'setRef',
+    value: function setRef(ref) {
+      this.node = ref;
+    }
+  }, {
+    key: 'setRefs',
+    value: function setRefs(ref) {
+      this.fileInputEl = ref;
+    }
+    /**
+     * Open system file upload dialog.
+     *
+     * @public
+     */
+
+  }, {
+    key: 'open',
+    value: function open() {
+      this.isFileDialogActive = true;
+      this.fileInputEl.value = null;
+      this.fileInputEl.click();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props3 = this.props,
+          accept = _props3.accept,
+          acceptClassName = _props3.acceptClassName,
+          activeClassName = _props3.activeClassName,
+          children = _props3.children,
+          disabled = _props3.disabled,
+          disabledClassName = _props3.disabledClassName,
+          inputProps = _props3.inputProps,
+          multiple = _props3.multiple,
+          name = _props3.name,
+          rejectClassName = _props3.rejectClassName,
+          rest = _objectWithoutProperties(_props3, ['accept', 'acceptClassName', 'activeClassName', 'children', 'disabled', 'disabledClassName', 'inputProps', 'multiple', 'name', 'rejectClassName']);
+
+      var acceptStyle = rest.acceptStyle,
+          activeStyle = rest.activeStyle,
+          _rest$className = rest.className,
+          className = _rest$className === undefined ? '' : _rest$className,
+          disabledStyle = rest.disabledStyle,
+          rejectStyle = rest.rejectStyle,
+          style = rest.style,
+          props = _objectWithoutProperties(rest, ['acceptStyle', 'activeStyle', 'className', 'disabledStyle', 'rejectStyle', 'style']);
+
+      var _state = this.state,
+          isDragActive = _state.isDragActive,
+          draggedFiles = _state.draggedFiles;
+
+      var filesCount = draggedFiles.length;
+      var isMultipleAllowed = multiple || filesCount <= 1;
+      var isDragAccept = filesCount > 0 && Object(_utils__WEBPACK_IMPORTED_MODULE_2__["allFilesAccepted"])(draggedFiles, this.props.accept);
+      var isDragReject = filesCount > 0 && (!isDragAccept || !isMultipleAllowed);
+      var noStyles = !className && !style && !activeStyle && !acceptStyle && !rejectStyle && !disabledStyle;
+
+      if (isDragActive && activeClassName) {
+        className += ' ' + activeClassName;
+      }
+      if (isDragAccept && acceptClassName) {
+        className += ' ' + acceptClassName;
+      }
+      if (isDragReject && rejectClassName) {
+        className += ' ' + rejectClassName;
+      }
+      if (disabled && disabledClassName) {
+        className += ' ' + disabledClassName;
+      }
+
+      if (noStyles) {
+        style = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].default;
+        activeStyle = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].active;
+        acceptStyle = style.active;
+        rejectStyle = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].rejected;
+        disabledStyle = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].disabled;
+      }
+
+      var appliedStyle = _extends({ position: 'relative' }, style);
+      if (activeStyle && isDragActive) {
+        appliedStyle = _extends({}, appliedStyle, activeStyle);
+      }
+      if (acceptStyle && isDragAccept) {
+        appliedStyle = _extends({}, appliedStyle, acceptStyle);
+      }
+      if (rejectStyle && isDragReject) {
+        appliedStyle = _extends({}, appliedStyle, rejectStyle);
+      }
+      if (disabledStyle && disabled) {
+        appliedStyle = _extends({}, appliedStyle, disabledStyle);
+      }
+
+      var inputAttributes = {
+        accept: accept,
+        disabled: disabled,
+        type: 'file',
+        style: _extends({
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          opacity: 0.00001,
+          pointerEvents: 'none'
+        }, inputProps.style),
+        multiple: _utils__WEBPACK_IMPORTED_MODULE_2__["supportMultiple"] && multiple,
+        ref: this.setRefs,
+        onChange: this.onDrop,
+        autoComplete: 'off'
+      };
+
+      if (name && name.length) {
+        inputAttributes.name = name;
+      }
+
+      // Destructure custom props away from props used for the div element
+
+      var acceptedFiles = props.acceptedFiles,
+          preventDropOnDocument = props.preventDropOnDocument,
+          disablePreview = props.disablePreview,
+          disableClick = props.disableClick,
+          onDropAccepted = props.onDropAccepted,
+          onDropRejected = props.onDropRejected,
+          onFileDialogCancel = props.onFileDialogCancel,
+          maxSize = props.maxSize,
+          minSize = props.minSize,
+          divProps = _objectWithoutProperties(props, ['acceptedFiles', 'preventDropOnDocument', 'disablePreview', 'disableClick', 'onDropAccepted', 'onDropRejected', 'onFileDialogCancel', 'maxSize', 'minSize']);
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+        'div',
+        _extends({
+          className: className,
+          style: appliedStyle
+        }, divProps /* expand user provided props first so event handlers are never overridden */, {
+          onClick: this.composeHandlers(this.onClick),
+          onDragStart: this.composeHandlers(this.onDragStart),
+          onDragEnter: this.composeHandlers(this.onDragEnter),
+          onDragOver: this.composeHandlers(this.onDragOver),
+          onDragLeave: this.composeHandlers(this.onDragLeave),
+          onDrop: this.composeHandlers(this.onDrop),
+          ref: this.setRef,
+          'aria-disabled': disabled
+        }),
+        this.renderChildren(children, isDragActive, isDragAccept, isDragReject),
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('input', _extends({}, inputProps /* expand user provided inputProps first so inputAttributes override them */, inputAttributes))
+      );
+    }
+  }]);
+
+  return Dropzone;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Dropzone);
+
+Dropzone.propTypes = {
+  /**
+   * Allow specific types of files. See https://github.com/okonet/attr-accept for more information.
+   * Keep in mind that mime type determination is not reliable across platforms. CSV files,
+   * for example, are reported as text/plain under macOS but as application/vnd.ms-excel under
+   * Windows. In some cases there might not be a mime type set at all.
+   * See: https://github.com/react-dropzone/react-dropzone/issues/276
+   */
+  accept: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string)]),
+
+  /**
+   * Contents of the dropzone
+   */
+  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func]),
+
+  /**
+   * Disallow clicking on the dropzone container to open file dialog
+   */
+  disableClick: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  /**
+   * Enable/disable the dropzone entirely
+   */
+  disabled: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  /**
+   * Enable/disable preview generation
+   */
+  disablePreview: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  /**
+   * If false, allow dropped items to take over the current browser window
+   */
+  preventDropOnDocument: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  /**
+   * Pass additional attributes to the `<input type="file"/>` tag
+   */
+  inputProps: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * Allow dropping multiple files
+   */
+  multiple: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+
+  /**
+   * `name` attribute for the input tag
+   */
+  name: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * Maximum file size (in bytes)
+   */
+  maxSize: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
+
+  /**
+   * Minimum file size (in bytes)
+   */
+  minSize: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
+
+  /**
+   * className
+   */
+  className: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * className to apply when drag is active
+   */
+  activeClassName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * className to apply when drop will be accepted
+   */
+  acceptClassName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * className to apply when drop will be rejected
+   */
+  rejectClassName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * className to apply when dropzone is disabled
+   */
+  disabledClassName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+
+  /**
+   * CSS styles to apply
+   */
+  style: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * CSS styles to apply when drag is active
+   */
+  activeStyle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * CSS styles to apply when drop will be accepted
+   */
+  acceptStyle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * CSS styles to apply when drop will be rejected
+   */
+  rejectStyle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * CSS styles to apply when dropzone is disabled
+   */
+  disabledStyle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+
+  /**
+   * onClick callback
+   * @param {Event} event
+   */
+  onClick: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDrop callback
+   */
+  onDrop: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDropAccepted callback
+   */
+  onDropAccepted: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDropRejected callback
+   */
+  onDropRejected: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDragStart callback
+   */
+  onDragStart: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDragEnter callback
+   */
+  onDragEnter: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDragOver callback
+   */
+  onDragOver: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * onDragLeave callback
+   */
+  onDragLeave: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+
+  /**
+   * Provide a callback on clicking the cancel button of the file dialog
+   */
+  onFileDialogCancel: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+};
+
+Dropzone.defaultProps = {
+  preventDropOnDocument: true,
+  disabled: false,
+  disablePreview: false,
+  disableClick: false,
+  inputProps: {},
+  multiple: true,
+  maxSize: Infinity,
+  minSize: 0
+};
+
+/***/ }),
+
+/***/ "./node_modules/react-dropzone/dist/es/utils/index.js":
+/*!************************************************************!*\
+  !*** ./node_modules/react-dropzone/dist/es/utils/index.js ***!
+  \************************************************************/
+/*! exports provided: supportMultiple, getDataTransferItems, fileAccepted, fileMatchSize, allFilesAccepted, onDocumentDragOver, isIeOrEdge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportMultiple", function() { return supportMultiple; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDataTransferItems", function() { return getDataTransferItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fileAccepted", function() { return fileAccepted; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fileMatchSize", function() { return fileMatchSize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "allFilesAccepted", function() { return allFilesAccepted; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onDocumentDragOver", function() { return onDocumentDragOver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isIeOrEdge", function() { return isIeOrEdge; });
+/* harmony import */ var attr_accept__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! attr-accept */ "./node_modules/attr-accept/dist/index.js");
+/* harmony import */ var attr_accept__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(attr_accept__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
+
+function getDataTransferItems(event) {
+  var dataTransferItemsList = [];
+  if (event.dataTransfer) {
+    var dt = event.dataTransfer;
+    if (dt.files && dt.files.length) {
+      dataTransferItemsList = dt.files;
+    } else if (dt.items && dt.items.length) {
+      // During the drag even the dataTransfer.files is null
+      // but Chrome implements some drag store, which is accesible via dataTransfer.items
+      dataTransferItemsList = dt.items;
+    }
+  } else if (event.target && event.target.files) {
+    dataTransferItemsList = event.target.files;
+  }
+  // Convert from DataTransferItemsList to the native Array
+  return Array.prototype.slice.call(dataTransferItemsList);
+}
+
+// Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
+// that MIME type will always be accepted
+function fileAccepted(file, accept) {
+  return file.type === 'application/x-moz-file' || attr_accept__WEBPACK_IMPORTED_MODULE_0___default()(file, accept);
+}
+
+function fileMatchSize(file, maxSize, minSize) {
+  return file.size <= maxSize && file.size >= minSize;
+}
+
+function allFilesAccepted(files, accept) {
+  return files.every(function (file) {
+    return fileAccepted(file, accept);
+  });
+}
+
+// allow the entire document to be a drag target
+function onDocumentDragOver(evt) {
+  evt.preventDefault();
+}
+
+function isIe(userAgent) {
+  return userAgent.indexOf('MSIE') !== -1 || userAgent.indexOf('Trident/') !== -1;
+}
+
+function isEdge(userAgent) {
+  return userAgent.indexOf('Edge/') !== -1;
+}
+
+function isIeOrEdge() {
+  var userAgent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window.navigator.userAgent;
+
+  return isIe(userAgent) || isEdge(userAgent);
+}
+
+/***/ }),
+
+/***/ "./node_modules/react-dropzone/dist/es/utils/styles.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/react-dropzone/dist/es/utils/styles.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  rejected: {
+    borderStyle: 'solid',
+    borderColor: '#c66',
+    backgroundColor: '#eee'
+  },
+  disabled: {
+    opacity: 0.5
+  },
+  active: {
+    borderStyle: 'solid',
+    borderColor: '#6c6',
+    backgroundColor: '#eee'
+  },
+  default: {
+    width: 200,
+    height: 200,
+    borderWidth: 2,
+    borderColor: '#666',
+    borderStyle: 'dashed',
+    borderRadius: 5
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/react-hot-loader/dist/react-hot-loader.development.js":
 /*!****************************************************************************!*\
   !*** ./node_modules/react-hot-loader/dist/react-hot-loader.development.js ***!
@@ -37516,93 +48400,9 @@ var React__default = _interopDefault(React);
 var shallowEqual = _interopDefault(__webpack_require__(/*! shallowequal */ "./node_modules/shallowequal/index.js"));
 var levenshtein = _interopDefault(__webpack_require__(/*! fast-levenshtein */ "./node_modules/fast-levenshtein/levenshtein.js"));
 var PropTypes = _interopDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-var hoistNonReactStatic = _interopDefault(__webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/index.js"));
-
-/* eslint-disable no-underscore-dangle */
-
-var isCompositeComponent = function isCompositeComponent(type) {
-  return typeof type === 'function';
-};
-
-var getComponentDisplayName = function getComponentDisplayName(type) {
-  return type.displayName || type.name || 'Component';
-};
-
-var getInternalInstance = function getInternalInstance(instance) {
-  return instance._reactInternalFiber || // React 16
-  instance._reactInternalInstance || // React 15
-  null;
-};
-
-var updateInstance = function updateInstance(instance) {
-  var updater = instance.updater,
-      forceUpdate = instance.forceUpdate;
-
-  if (typeof forceUpdate === 'function') {
-    instance.forceUpdate();
-  } else if (updater && typeof updater.enqueueForceUpdate === 'function') {
-    updater.enqueueForceUpdate(instance);
-  }
-};
-
-var isFragmentNode = function isFragmentNode(_ref) {
-  var type = _ref.type;
-  return React__default.Fragment && type === React__default.Fragment;
-};
-
-var generation = 1;
-
-var increment = function increment() {
-  return generation++;
-};
-var get = function get() {
-  return generation;
-};
-
-var PREFIX = '__reactstandin__';
-var PROXY_KEY = PREFIX + 'key';
-var GENERATION = PREFIX + 'proxyGeneration';
-var REGENERATE_METHOD = PREFIX + 'regenerateByEval';
-var UNWRAP_PROXY = PREFIX + 'getCurrent';
-var CACHED_RESULT = PREFIX + 'cachedResult';
-var PROXY_IS_MOUNTED = PREFIX + 'isMounted';
-
-var configuration = {
-  logLevel: 'error'
-};
-
-/* eslint-disable no-console */
-
-var logger = {
-  debug: function debug() {
-    if (['debug'].includes(configuration.logLevel)) {
-      var _console;
-
-      (_console = console).debug.apply(_console, arguments);
-    }
-  },
-  log: function log() {
-    if (['debug', 'log'].includes(configuration.logLevel)) {
-      var _console2;
-
-      (_console2 = console).log.apply(_console2, arguments);
-    }
-  },
-  warn: function warn() {
-    if (['debug', 'log', 'warn'].includes(configuration.logLevel)) {
-      var _console3;
-
-      (_console3 = console).warn.apply(_console3, arguments);
-    }
-  },
-  error: function error() {
-    if (['debug', 'log', 'warn', 'error'].includes(configuration.logLevel)) {
-      var _console4;
-
-      (_console4 = console).error.apply(_console4, arguments);
-    }
-  }
-};
+var defaultPolyfill = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js");
+var defaultPolyfill__default = _interopDefault(defaultPolyfill);
+var hoistNonReactStatic = _interopDefault(__webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js"));
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -37654,11 +48454,125 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+/* eslint-disable no-underscore-dangle */
+
+var isCompositeComponent = function isCompositeComponent(type) {
+  return typeof type === 'function';
+};
+
+var getComponentDisplayName = function getComponentDisplayName(type) {
+  return type.displayName || type.name || 'Component';
+};
+
+var getInternalInstance = function getInternalInstance(instance) {
+  return instance._reactInternalFiber || // React 16
+  instance._reactInternalInstance || // React 15
+  null;
+};
+
+var updateInstance = function updateInstance(instance) {
+  var updater = instance.updater,
+      forceUpdate = instance.forceUpdate;
+
+  if (typeof forceUpdate === 'function') {
+    instance.forceUpdate();
+  } else if (updater && typeof updater.enqueueForceUpdate === 'function') {
+    updater.enqueueForceUpdate(instance);
+  }
+};
+
+var isFragmentNode = function isFragmentNode(_ref) {
+  var type = _ref.type;
+  return React__default.Fragment && type === React__default.Fragment;
+};
+
+var ContextType = React__default.createContext ? React__default.createContext() : null;
+var ConsumerType = ContextType && ContextType.Consumer.$$typeof;
+var ProviderType = ContextType && ContextType.Provider.$$typeof;
+
+var CONTEXT_CURRENT_VALUE = '_currentValue';
+
+var isContextConsumer = function isContextConsumer(_ref2) {
+  var type = _ref2.type;
+  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && type.$$typeof === ConsumerType;
+};
+var isContextProvider = function isContextProvider(_ref3) {
+  var type = _ref3.type;
+  return type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && type.$$typeof === ProviderType;
+};
+var getContextProvider = function getContextProvider(type) {
+  return type && type._context;
+};
+
+var generation = 1;
+
+var increment = function increment() {
+  return generation++;
+};
+var get$1 = function get() {
+  return generation;
+};
+
+var PREFIX = '__reactstandin__';
+var PROXY_KEY = PREFIX + 'key';
+var GENERATION = PREFIX + 'proxyGeneration';
+var REGENERATE_METHOD = PREFIX + 'regenerateByEval';
+var UNWRAP_PROXY = PREFIX + 'getCurrent';
+var CACHED_RESULT = PREFIX + 'cachedResult';
+var PROXY_IS_MOUNTED = PREFIX + 'isMounted';
+
+var configuration = {
+  // Log level
+  logLevel: 'error',
+
+  // Allows using SFC without changes. leading to some components not updated
+  pureSFC: false,
+
+  // Allows SFC to be used, enables "intermediate" components used by Relay, should be disabled for Preact
+  allowSFC: true,
+
+  // Hook on babel component register.
+  onComponentRegister: false
+};
+
+/* eslint-disable no-console */
+
+var logger = {
+  debug: function debug() {
+    if (['debug'].indexOf(configuration.logLevel) !== -1) {
+      var _console;
+
+      (_console = console).debug.apply(_console, arguments);
+    }
+  },
+  log: function log() {
+    if (['debug', 'log'].indexOf(configuration.logLevel) !== -1) {
+      var _console2;
+
+      (_console2 = console).log.apply(_console2, arguments);
+    }
+  },
+  warn: function warn() {
+    if (['debug', 'log', 'warn'].indexOf(configuration.logLevel) !== -1) {
+      var _console3;
+
+      (_console3 = console).warn.apply(_console3, arguments);
+    }
+  },
+  error: function error() {
+    if (['debug', 'log', 'warn', 'error'].indexOf(configuration.logLevel) !== -1) {
+      var _console4;
+
+      (_console4 = console).error.apply(_console4, arguments);
+    }
+  }
+};
+
 /* eslint-disable no-eval, func-names */
 
 function getDisplayName(Component) {
   var displayName = Component.displayName || Component.name;
-  return displayName && displayName !== 'ReactComponent' ? displayName : 'Unknown';
+  return displayName && displayName !== 'ReactComponent' ? displayName : 'Component';
 }
 
 var reactLifeCycleMountMethods = ['componentWillMount', 'componentDidMount'];
@@ -37747,7 +48661,7 @@ function safeDefineProperty(target, key, props) {
   }
 }
 
-var RESERVED_STATICS = ['length', 'displayName', 'name', 'arguments', 'caller', 'prototype', 'toString', 'valueOf', PROXY_KEY, UNWRAP_PROXY];
+var RESERVED_STATICS = ['length', 'displayName', 'name', 'arguments', 'caller', 'prototype', 'toString', 'valueOf', 'isStatelessFunctionalProxy', PROXY_KEY, UNWRAP_PROXY];
 
 function transferStaticProps(ProxyComponent, savedDescriptors, PreviousComponent, NextComponent) {
   Object.getOwnPropertyNames(ProxyComponent).forEach(function (key) {
@@ -37847,12 +48761,12 @@ function mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastIn
       if (key.startsWith(PREFIX)) return;
       var nextAttr = nextInstance[key];
       var prevAttr = proxyInstance[key];
-      if (prevAttr && nextAttr) {
+      if (nextAttr) {
         if (isNativeFunction(nextAttr) || isNativeFunction(prevAttr)) {
           // this is bound method
           var isSameArity = nextAttr.length === prevAttr.length;
           var existsInPrototype = ownKeys.indexOf(key) >= 0 || ProxyComponent.prototype[key];
-          if (isSameArity && existsInPrototype) {
+          if ((isSameArity || !prevAttr) && existsInPrototype) {
             if (hasRegenerate) {
               injectedCode[key] = 'Object.getPrototypeOf(this)[\'' + key + '\'].bind(this)';
             } else {
@@ -37866,9 +48780,12 @@ function mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastIn
 
         var nextString = String(nextAttr);
         var injectedBefore = injectedMembers[key];
-        if (nextString !== String(prevAttr) || injectedBefore && nextString !== String(injectedBefore)) {
+        var isArrow = nextString.indexOf('=>') >= 0;
+        var isFunction = nextString.indexOf('function') >= 0 || isArrow;
+        var referToThis = nextString.indexOf('this') >= 0;
+        if (nextString !== String(prevAttr) || injectedBefore && nextString !== String(injectedBefore) || isArrow && referToThis) {
           if (!hasRegenerate) {
-            if (nextString.indexOf('function') < 0 && nextString.indexOf('=>') < 0) {
+            if (!isFunction) {
               // just copy prop over
               injectedCode[key] = nextAttr;
             } else {
@@ -37908,7 +48825,10 @@ function inject(target, currentGeneration, injectedMembers) {
     Object.keys(injectedMembers).forEach(function (key) {
       try {
         if (hasRegenerate) {
-          target[REGENERATE_METHOD](key, '(function REACT_HOT_LOADER_SANDBOX () {\n          var _this = this; // common babel transpile\n          var _this2 = this; // common babel transpile\n          return ' + injectedMembers[key] + ';\n          }).call(this)');
+          var usedThis = String(injectedMembers[key]).match(/_this([\d]+)/gi) || [];
+          target[REGENERATE_METHOD](key, '(function REACT_HOT_LOADER_SANDBOX () {\n          var _this  = this; // common babel transpile\n          ' + usedThis.map(function (name) {
+            return 'var ' + name + ' = this;';
+          }) + '\n\n          return ' + injectedMembers[key] + ';\n          }).call(this)');
         } else {
           target[key] = injectedMembers[key];
         }
@@ -37926,11 +48846,17 @@ var has = Object.prototype.hasOwnProperty;
 
 var proxies = new WeakMap();
 
-var blackListedClassMembers = ['constructor', 'render', 'componentDidMount', 'componentWillReceiveProps', 'componentWillUnmount', 'getInitialState', 'getDefaultProps'];
+var resetClassProxies = function resetClassProxies() {
+  proxies = new WeakMap();
+};
+
+var blackListedClassMembers = ['constructor', 'render', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'componentWillUnmount', 'hotComponentRender', 'getInitialState', 'getDefaultProps'];
 
 var defaultRenderOptions = {
-  componentWillReceiveProps: identity,
   componentWillRender: identity,
+  componentDidUpdate: function componentDidUpdate(result) {
+    return result;
+  },
   componentDidRender: function componentDidRender(result) {
     return result;
   }
@@ -37951,6 +48877,37 @@ var defineClassMembers = function defineClassMembers(Class, methods) {
   });
 };
 
+var setSFPFlag = function setSFPFlag(component, flag) {
+  return safeDefineProperty(component, 'isStatelessFunctionalProxy', {
+    configurable: false,
+    writable: false,
+    enumerable: false,
+    value: flag
+  });
+};
+
+var copyMethodDescriptors = function copyMethodDescriptors(target, source) {
+  if (source) {
+    // it is possible to use `function-double` to construct an ideal clone, but does not make a sence
+    var keys = Object.getOwnPropertyNames(source);
+
+    keys.forEach(function (key) {
+      return safeDefineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+
+    safeDefineProperty(target, 'toString', {
+      configurable: true,
+      writable: false,
+      enumerable: false,
+      value: function toString() {
+        return String(source);
+      }
+    });
+  }
+
+  return target;
+};
+
 function createClassProxy(InitialComponent, proxyKey, options) {
   var renderOptions = _extends({}, defaultRenderOptions, options);
   // Prevent double wrapping.
@@ -37965,6 +48922,8 @@ function createClassProxy(InitialComponent, proxyKey, options) {
   var savedDescriptors = {};
   var injectedMembers = {};
   var proxyGeneration = 0;
+  var classUpdatePostponed = null;
+  var instancesCount = 0;
   var isFunctionalComponent = !isReactClass(InitialComponent);
 
   var lastInstance = null;
@@ -37972,11 +48931,16 @@ function createClassProxy(InitialComponent, proxyKey, options) {
   function postConstructionAction() {
     this[GENERATION] = 0;
 
+    lastInstance = this;
+    // is there is an update pending
+    if (classUpdatePostponed) {
+      var callUpdate = classUpdatePostponed;
+      classUpdatePostponed = null;
+      callUpdate();
+    }
     // As long we can't override constructor
     // every class shall evolve from a base class
     inject(this, proxyGeneration, injectedMembers);
-
-    lastInstance = this;
   }
 
   function proxiedUpdate() {
@@ -37988,7 +48952,7 @@ function createClassProxy(InitialComponent, proxyKey, options) {
   function lifeCycleWrapperFactory(wrapperName) {
     var sideEffect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
 
-    return function wrappedMethod() {
+    return copyMethodDescriptors(function wrappedMethod() {
       proxiedUpdate.call(this);
       sideEffect(this);
 
@@ -37997,17 +48961,17 @@ function createClassProxy(InitialComponent, proxyKey, options) {
       }
 
       return !isFunctionalComponent && CurrentComponent.prototype[wrapperName] && CurrentComponent.prototype[wrapperName].apply(this, rest);
-    };
+    }, InitialComponent.prototype && InitialComponent.prototype[wrapperName]);
   }
 
   function methodWrapperFactory(wrapperName, realMethod) {
-    return function wrappedMethod() {
+    return copyMethodDescriptors(function wrappedMethod() {
       for (var _len2 = arguments.length, rest = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         rest[_key2] = arguments[_key2];
       }
 
       return realMethod.apply(this, rest);
-    };
+    }, realMethod);
   }
 
   var fakeBasePrototype = function fakeBasePrototype(Base) {
@@ -38024,16 +48988,18 @@ function createClassProxy(InitialComponent, proxyKey, options) {
 
   var componentDidMount = lifeCycleWrapperFactory('componentDidMount', function (target) {
     target[PROXY_IS_MOUNTED] = true;
+    instancesCount++;
   });
-  var componentWillReceiveProps = lifeCycleWrapperFactory('componentWillReceiveProps', renderOptions.componentWillReceiveProps);
+  var componentDidUpdate = lifeCycleWrapperFactory('componentDidUpdate', renderOptions.componentDidUpdate);
   var componentWillUnmount = lifeCycleWrapperFactory('componentWillUnmount', function (target) {
     target[PROXY_IS_MOUNTED] = false;
+    instancesCount--;
   });
 
-  function proxiedRender() {
-    proxiedUpdate.call(this);
+  function hotComponentRender() {
+    // repeating subrender call to keep RENDERED_GENERATION up to date
     renderOptions.componentWillRender(this);
-
+    proxiedUpdate.call(this);
     var result = void 0;
 
     // We need to use hasOwnProperty here, as the cached result is a React node
@@ -38044,10 +49010,22 @@ function createClassProxy(InitialComponent, proxyKey, options) {
     } else if (isFunctionalComponent) {
       result = CurrentComponent(this.props, this.context);
     } else {
-      result = CurrentComponent.prototype.render.call(this);
+      result = (CurrentComponent.prototype.render || this.render).apply(this,
+      // eslint-disable-next-line prefer-rest-params
+      arguments);
     }
 
-    return renderOptions.componentDidRender(result);
+    return renderOptions.componentDidRender.call(this, result);
+  }
+
+  function proxiedRender() {
+    renderOptions.componentWillRender(this);
+
+    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return hotComponentRender.call.apply(hotComponentRender, [this].concat(args));
   }
 
   var defineProxyMethods = function defineProxyMethods(Proxy) {
@@ -38055,34 +49033,62 @@ function createClassProxy(InitialComponent, proxyKey, options) {
 
     defineClassMembers(Proxy, _extends({}, fakeBasePrototype(Base), {
       render: proxiedRender,
+      hotComponentRender: hotComponentRender,
       componentDidMount: componentDidMount,
-      componentWillReceiveProps: componentWillReceiveProps,
+      componentDidUpdate: componentDidUpdate,
       componentWillUnmount: componentWillUnmount
     }));
   };
 
-  var ProxyFacade = void 0;
+  var _ProxyFacade = void 0;
   var ProxyComponent = null;
+  var proxy = void 0;
 
   if (!isFunctionalComponent) {
+    // Component
     ProxyComponent = proxyClassCreator(InitialComponent, postConstructionAction);
 
     defineProxyMethods(ProxyComponent, InitialComponent.prototype);
 
-    ProxyFacade = ProxyComponent;
+    _ProxyFacade = ProxyComponent;
+  } else if (!configuration.allowSFC) {
+    // SFC Converted to component. Does not support returning precreated instances from render.
+    ProxyComponent = proxyClassCreator(React.Component, postConstructionAction);
+
+    defineProxyMethods(ProxyComponent);
+    _ProxyFacade = ProxyComponent;
   } else {
+    // SFC
+
     // This function only gets called for the initial mount. The actual
     // rendered component instance will be the return value.
 
     // eslint-disable-next-line func-names
-    ProxyFacade = function ProxyFacade(props, context) {
+    _ProxyFacade = function ProxyFacade(props, context) {
       var result = CurrentComponent(props, context);
+
+      // simple SFC, could continue to be SFC
+      if (configuration.pureSFC) {
+        if (!CurrentComponent.contextTypes) {
+          if (!_ProxyFacade.isStatelessFunctionalProxy) {
+            setSFPFlag(_ProxyFacade, true);
+          }
+
+          return renderOptions.componentDidRender(result);
+        }
+      }
+      setSFPFlag(_ProxyFacade, false);
 
       // This is a Relay-style container constructor. We can't do the prototype-
       // style wrapping for this as we do elsewhere, so just we just pass it
       // through as-is.
       if (isReactComponentInstance(result)) {
         ProxyComponent = null;
+
+        // Relay lazily sets statics like getDerivedStateFromProps on initial
+        // render in lazy construction, so we need to do the same here.
+        transferStaticProps(_ProxyFacade, savedDescriptors, null, CurrentComponent);
+
         return result;
       }
 
@@ -38101,29 +49107,29 @@ function createClassProxy(InitialComponent, proxyKey, options) {
     };
   }
 
-  function get() {
-    return ProxyFacade;
+  function get$$1() {
+    return _ProxyFacade;
   }
 
   function getCurrent() {
     return CurrentComponent;
   }
 
-  safeDefineProperty(ProxyFacade, UNWRAP_PROXY, {
+  safeDefineProperty(_ProxyFacade, UNWRAP_PROXY, {
     configurable: false,
     writable: false,
     enumerable: false,
     value: getCurrent
   });
 
-  safeDefineProperty(ProxyFacade, PROXY_KEY, {
+  safeDefineProperty(_ProxyFacade, PROXY_KEY, {
     configurable: false,
     writable: false,
     enumerable: false,
     value: proxyKey
   });
 
-  safeDefineProperty(ProxyFacade, 'toString', {
+  safeDefineProperty(_ProxyFacade, 'toString', {
     configurable: true,
     writable: false,
     enumerable: false,
@@ -38144,11 +49150,13 @@ function createClassProxy(InitialComponent, proxyKey, options) {
     // Prevent proxy cycles
     var existingProxy = proxies.get(NextComponent);
     if (existingProxy) {
-      update(existingProxy[UNWRAP_PROXY]());
       return;
     }
 
     isFunctionalComponent = !isReactClass(NextComponent);
+
+    proxies.set(NextComponent, proxy);
+
     proxyGeneration++;
 
     // Save the next constructor so we call it
@@ -38158,7 +49166,7 @@ function createClassProxy(InitialComponent, proxyKey, options) {
     // Try to infer displayName
     var displayName = getDisplayName(CurrentComponent);
 
-    safeDefineProperty(ProxyFacade, 'displayName', {
+    safeDefineProperty(_ProxyFacade, 'displayName', {
       configurable: true,
       writable: false,
       enumerable: true,
@@ -38171,24 +49179,41 @@ function createClassProxy(InitialComponent, proxyKey, options) {
       });
     }
 
-    savedDescriptors = transferStaticProps(ProxyFacade, savedDescriptors, PreviousComponent, NextComponent);
+    savedDescriptors = transferStaticProps(_ProxyFacade, savedDescriptors, PreviousComponent, NextComponent);
 
-    if (isFunctionalComponent || !ProxyComponent) {
-      // nothing
-    } else {
-      checkLifeCycleMethods(ProxyComponent, NextComponent);
-      Object.setPrototypeOf(ProxyComponent.prototype, NextComponent.prototype);
-      defineProxyMethods(ProxyComponent, NextComponent.prototype);
-      if (proxyGeneration > 1) {
-        injectedMembers = mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastInstance, injectedMembers);
+    if (isFunctionalComponent || !ProxyComponent) ; else {
+      var classHotReplacement = function classHotReplacement() {
+        checkLifeCycleMethods(ProxyComponent, NextComponent);
+        Object.setPrototypeOf(ProxyComponent.prototype, NextComponent.prototype);
+        defineProxyMethods(ProxyComponent, NextComponent.prototype);
+        if (proxyGeneration > 1) {
+          injectedMembers = mergeComponents(ProxyComponent, NextComponent, InitialComponent, lastInstance, injectedMembers);
+        }
+      };
+
+      // Was constructed once
+      if (instancesCount > 0) {
+        classHotReplacement();
+      } else {
+        classUpdatePostponed = classHotReplacement;
       }
     }
   }
 
   update(InitialComponent);
 
-  var proxy = { get: get, update: update };
-  proxies.set(ProxyFacade, proxy);
+  var dereference = function dereference() {
+    proxies.delete(InitialComponent);
+    proxies.delete(_ProxyFacade);
+    proxies.delete(CurrentComponent);
+  };
+
+  proxy = { get: get$$1, update: update, dereference: dereference, getCurrent: function getCurrent() {
+      return CurrentComponent;
+    } };
+
+  proxies.set(InitialComponent, proxy);
+  proxies.set(_ProxyFacade, proxy);
 
   safeDefineProperty(proxy, UNWRAP_PROXY, {
     configurable: false,
@@ -38201,6 +49226,7 @@ function createClassProxy(InitialComponent, proxyKey, options) {
 }
 
 var proxiesByID = void 0;
+var blackListedProxies = void 0;
 var idsByType = void 0;
 
 var elementCount = 0;
@@ -38241,17 +49267,43 @@ var createProxyForType = function createProxyForType(type) {
   return getProxyByType(type) || updateProxyById(generateTypeId(), type);
 };
 
+var isTypeBlacklisted = function isTypeBlacklisted(type) {
+  return blackListedProxies.has(type);
+};
+var blacklistByType = function blacklistByType(type) {
+  return blackListedProxies.set(type, true);
+};
+
 var resetProxies = function resetProxies() {
   proxiesByID = {};
   idsByType = new WeakMap();
+  blackListedProxies = new WeakMap();
+  resetClassProxies();
 };
 
 resetProxies();
 
+var tune = {
+  allowSFC: false
+};
+
+var preactAdapter = function preactAdapter(instance, resolveType) {
+  var oldHandler = instance.options.vnode;
+
+  Object.assign(configuration, tune);
+
+  instance.options.vnode = function (vnode) {
+    vnode.nodeName = resolveType(vnode.nodeName);
+    if (oldHandler) {
+      oldHandler(vnode);
+    }
+  };
+};
+
 /* eslint-disable no-use-before-define */
 
-function resolveType(type) {
-  if (!isCompositeComponent(type)) return type;
+function _resolveType(type) {
+  if (!isCompositeComponent(type) || isTypeBlacklisted(type)) return type;
 
   var proxy = reactHotLoader.disableProxyCreation ? getProxyByType(type) : createProxyForType(type);
 
@@ -38262,10 +49314,19 @@ var reactHotLoader = {
   register: function register(type, uniqueLocalName, fileName) {
     if (isCompositeComponent(type) && typeof uniqueLocalName === 'string' && uniqueLocalName && typeof fileName === 'string' && fileName) {
       var id = fileName + '#' + uniqueLocalName;
+      var proxy = getProxyById(id);
 
-      if (getProxyById(id)) {
-        // component got replaced. Need to reconsile
+      if (proxy && proxy.getCurrent() !== type) {
+        // component got replaced. Need to reconcile
         increment();
+
+        if (isTypeBlacklisted(type) || isTypeBlacklisted(proxy.getCurrent())) {
+          logger.error('React-hot-loader: Cold component', uniqueLocalName, 'at', fileName, 'has been updated');
+        }
+      }
+
+      if (configuration.onComponentRegister) {
+        configuration.onComponentRegister(type, uniqueLocalName, fileName);
       }
 
       updateProxyById(id, type);
@@ -38273,6 +49334,12 @@ var reactHotLoader = {
   },
   reset: function reset() {
     resetProxies();
+  },
+  preact: function preact(instance) {
+    preactAdapter(instance, _resolveType);
+  },
+  resolveType: function resolveType(type) {
+    return _resolveType(type);
   },
   patch: function patch(React$$1) {
     if (!React$$1.createElement.isPatchedByReactHotLoader) {
@@ -38285,7 +49352,7 @@ var reactHotLoader = {
           args[_key - 1] = arguments[_key];
         }
 
-        return originalCreateElement.apply(undefined, [resolveType(type)].concat(args));
+        return originalCreateElement.apply(undefined, [_resolveType(type)].concat(args));
       };
       React$$1.createElement.isPatchedByReactHotLoader = true;
     }
@@ -38306,7 +49373,7 @@ var reactHotLoader = {
       var originalChildrenOnly = React$$1.Children.only;
       // Use the same trick as React.createElement
       React$$1.Children.only = function (children) {
-        return originalChildrenOnly(_extends({}, children, { type: resolveType(children.type) }));
+        return originalChildrenOnly(_extends({}, children, { type: _resolveType(children.type) }));
       };
       React$$1.Children.only.isPatchedByReactHotLoader = true;
     }
@@ -38324,6 +49391,16 @@ function pushStack(stack, node) {
   stack.type = node.type;
   stack.children = [];
   stack.instance = typeof node.type === 'function' ? node.stateNode : stack;
+
+  if (!stack.instance) {
+    stack.instance = {
+      SFC_fake: stack.type,
+      props: {},
+      render: function render() {
+        return stack.type(stack.instance.props);
+      }
+    };
+  }
 }
 
 function hydrateFiberStack(node, stack) {
@@ -38346,6 +49423,17 @@ function pushState(stack, type, instance) {
   stack.type = type;
   stack.children = [];
   stack.instance = instance || stack;
+
+  if (typeof type === 'function' && type.isStatelessFunctionalProxy) {
+    // In React 15 SFC is wrapped by component. We have to detect our proxies and change the way it works
+    stack.instance = {
+      SFC_fake: type,
+      props: {},
+      render: function render() {
+        return type(stack.instance.props);
+      }
+    };
+  }
 }
 
 function hydrateLegacyStack(node, stack) {
@@ -38371,12 +49459,16 @@ function hydrateLegacyStack(node, stack) {
 function getReactStack(instance) {
   var rootNode = getInternalInstance(instance);
   var stack = {};
-  var isFiber = typeof rootNode.tag === 'number';
-  if (isFiber) {
-    hydrateFiberStack(rootNode, stack);
-  } else {
-    hydrateLegacyStack(rootNode, stack);
+  if (rootNode) {
+    // React stack
+    var isFiber = typeof rootNode.tag === 'number';
+    if (isFiber) {
+      hydrateFiberStack(rootNode, stack);
+    } else {
+      hydrateLegacyStack(rootNode, stack);
+    }
   }
+
   return stack;
 }
 
@@ -38384,6 +49476,18 @@ function getReactStack(instance) {
 var UNDEFINED_NAMES = {
   Unknown: true,
   Component: true
+};
+
+var renderStack = [];
+
+var stackReport = function stackReport() {
+  var rev = renderStack.slice().reverse();
+  logger.warn('in', rev[0].name, rev);
+};
+
+var emptyMap = new Map();
+var stackContext = function stackContext() {
+  return (renderStack[renderStack.length - 1] || {}).context || emptyMap;
 };
 
 var areNamesEqual = function areNamesEqual(a, b) {
@@ -38443,7 +49547,7 @@ var equalClasses = function equalClasses(a, b) {
   var hits = 0;
   var misses = 0;
   Object.getOwnPropertyNames(prototypeA).forEach(function (key) {
-    if (typeof prototypeA[key] === 'function') {
+    if (typeof prototypeA[key] === 'function' && key !== 'constructor') {
       if (haveTextSimilarity(String(prototypeA[key]), String(prototypeB[key]))) {
         hits++;
       } else {
@@ -38469,8 +49573,10 @@ var isSwappable = function isSwappable(a, b) {
   if (isReactClass$1(a.prototype)) {
     return areNamesEqual(getComponentDisplayName(a), getComponentDisplayName(b)) && equalClasses(a, b);
   }
+
   if (isFunctional(a)) {
-    return areNamesEqual(getComponentDisplayName(a), getComponentDisplayName(b)) && haveTextSimilarity(String(a), String(b));
+    var nameA = getComponentDisplayName(a);
+    return areNamesEqual(nameA, getComponentDisplayName(b)) && nameA !== 'Component' || haveTextSimilarity(String(a), String(b));
   }
   return false;
 };
@@ -38480,7 +49586,9 @@ var render = function render(component) {
     return [];
   }
   if (isReactClass$1(component)) {
-    return component.render();
+    // not calling real render method to prevent call recursion.
+    // stateless components does not have hotComponentRender
+    return component.hotComponentRender ? component.hotComponentRender() : component.render();
   }
   if (isArray(component)) {
     return component.map(render);
@@ -38498,7 +49606,7 @@ var mapChildren = function mapChildren(children, instances) {
     children: children.filter(function (c) {
       return c;
     }).map(function (child, index) {
-      if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) !== 'object') {
+      if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) !== 'object' || child.isMerged) {
         return child;
       }
       var instanceLine = instances[index] || {};
@@ -38511,9 +49619,12 @@ var mapChildren = function mapChildren(children, instances) {
       }
 
       var newChildren = asArray(child.props && child.props.children || child.children || []);
-      var nextChildren = oldChildren.length && mapChildren(newChildren, oldChildren);
+      var nextChildren = child.type !== 'function' && oldChildren.length && mapChildren(newChildren, oldChildren);
 
-      return _extends({}, instanceLine, nextChildren || {}, {
+      return _extends({
+        nextProps: child.props,
+        isMerged: true
+      }, instanceLine, nextChildren || {}, {
         type: child.type
       });
     })
@@ -38549,18 +49660,22 @@ var mergeInject = function mergeInject(a, b, instance) {
   if (flatA.length === flatB.length) {
     return mapChildren(flatA, flatB);
   }
-  if (flatB.length === 0 && flatA.length === 1 && _typeof(flatA[0]) !== 'object') {
-    // terminal node
-  } else {
+  if (flatB.length === 0 && flatA.length === 1 && _typeof(flatA[0]) !== 'object') ; else {
     logger.warn('React-hot-loader: unable to merge ', a, 'and children of ', instance);
+    stackReport();
   }
   return NO_CHILDREN;
 };
 
 var transformFlowNode = function transformFlowNode(flow) {
   return flow.reduce(function (acc, node) {
-    if (isFragmentNode(node) && node.props && node.props.children) {
-      return [].concat(acc, node.props.children);
+    if (node && isFragmentNode(node)) {
+      if (node.props && node.props.children) {
+        return [].concat(acc, filterNullArray(asArray(node.props.children)));
+      }
+      if (node.children) {
+        return [].concat(acc, filterNullArray(asArray(node.children)));
+      }
     }
     return [].concat(acc, [node]);
   }, []);
@@ -38578,6 +49693,12 @@ var flushScheduledUpdates = function flushScheduledUpdates() {
   });
 };
 
+var unscheduleUpdate = function unscheduleUpdate(instance) {
+  scheduledUpdates = scheduledUpdates.filter(function (inst) {
+    return inst !== instance;
+  });
+};
+
 var scheduleInstanceUpdate = function scheduleInstanceUpdate(instance) {
   scheduledUpdates.push(instance);
   if (!scheduledUpdate) {
@@ -38586,6 +49707,16 @@ var scheduleInstanceUpdate = function scheduleInstanceUpdate(instance) {
 };
 
 var hotReplacementRender = function hotReplacementRender(instance, stack) {
+  if (isReactClass$1(instance)) {
+    var type = getElementType(stack);
+
+    renderStack.push({
+      name: getComponentDisplayName(type),
+      type: type,
+      props: stack.instance.props,
+      context: stackContext()
+    });
+  }
   var flow = transformFlowNode(filterNullArray(asArray(render(instance))));
 
   var children = stack.children;
@@ -38596,22 +49727,24 @@ var hotReplacementRender = function hotReplacementRender(instance, stack) {
     var next = function next(instance) {
       // copy over props as long new component may be hidden inside them
       // child does not have all props, as long some of them can be calculated on componentMount.
-      var nextProps = _extends({}, instance.props);
-      for (var key in child.props) {
-        if (child.props[key]) {
-          nextProps[key] = child.props[key];
-        }
-      }
+      var realProps = instance.props;
+      var nextProps = _extends({}, realProps, child.nextProps || {}, child.props || {});
+
       if (isReactClass$1(instance) && instance.componentWillUpdate) {
         // Force-refresh component (bypass redux renderedComponent)
-        instance.componentWillUpdate(nextProps, instance.state);
+        instance.componentWillUpdate(_extends({}, realProps), instance.state);
       }
       instance.props = nextProps;
       hotReplacementRender(instance, stackChild);
+      instance.props = realProps;
     };
 
     // text node
     if ((typeof child === 'undefined' ? 'undefined' : _typeof(child)) !== 'object' || !stackChild || !stackChild.instance) {
+      if (stackChild && stackChild.children && stackChild.children.length) {
+        logger.error('React-hot-loader: reconciliation failed', 'could not dive into [', child, '] while some elements are still present in the tree.');
+        stackReport();
+      }
       return;
     }
 
@@ -38619,45 +49752,101 @@ var hotReplacementRender = function hotReplacementRender(instance, stack) {
       // Portals could generate undefined !== null
       if (child.type && stackChild.type) {
         logger.warn('React-hot-loader: got ', child.type, 'instead of', stackChild.type);
+        stackReport();
       }
       return;
     }
 
-    if (typeof child.type !== 'function') {
-      next(
-      // move types from render to the instances of hydrated tree
-      mergeInject(asArray(child.props ? child.props.children : child.children), stackChild.instance.children, stackChild.instance));
-    } else {
-      // unwrap proxy
-      var childType = getElementType(child);
-      if (!stackChild.type[PROXY_KEY]) {
-        /* eslint-disable no-console */
-        logger.error('React-hot-loader: fatal error caused by ', stackChild.type, ' - no instrumentation found. ', 'Please require react-hot-loader before React. More in troubleshooting.');
-        throw new Error('React-hot-loader: wrong configuration');
+    // React context
+    if (isContextConsumer(child)) {
+      try {
+        next({
+          children: (child.props ? child.props.children : child.children[0])(stackContext().get(child.type) || child.type[CONTEXT_CURRENT_VALUE])
+        });
+      } catch (e) {
+        // do nothing, yet
+      }
+    } else if (typeof child.type !== 'function') {
+      // React
+      var childName = child.type ? getComponentDisplayName(child.type) : 'empty';
+      var extraContext = stackContext();
+
+      if (isContextProvider(child)) {
+        extraContext = new Map(extraContext);
+        extraContext.set(getContextProvider(child.type), _extends({}, child.nextProps || {}, child.props || {}).value);
+        childName = 'ContextProvider';
       }
 
+      renderStack.push({
+        name: childName,
+        type: child.type,
+        props: stack.instance.props,
+        context: extraContext
+      });
+
+      next(
+      // move types from render to the instances of hydrated tree
+      mergeInject(transformFlowNode(asArray(child.props ? child.props.children : child.children)), stackChild.instance.children, stackChild.instance));
+      renderStack.pop();
+    } else {
       if (child.type === stackChild.type) {
         next(stackChild.instance);
-      } else if (isSwappable(childType, stackChild.type)) {
-        // they are both registered, or have equal code/displayname/signature
-
-        // update proxy using internal PROXY_KEY
-        updateProxyById(stackChild.type[PROXY_KEY], childType);
-
-        next(stackChild.instance);
       } else {
-        logger.warn('React-hot-loader: a ' + getComponentDisplayName(childType) + ' was found where a ' + getComponentDisplayName(stackChild) + ' was expected.\n          ' + childType);
+        // unwrap proxy
+        var childType = getElementType(child);
+        if (!stackChild.type[PROXY_KEY]) {
+          if (isTypeBlacklisted(stackChild.type)) {
+            logger.warn('React-hot-loader: cold element got updated ', stackChild.type);
+            return;
+          }
+          /* eslint-disable no-console */
+          logger.error('React-hot-loader: fatal error caused by ', stackChild.type, ' - no instrumentation found. ', 'Please require react-hot-loader before React. More in troubleshooting.');
+          stackReport();
+          throw new Error('React-hot-loader: wrong configuration');
+        }
+
+        if (isSwappable(childType, stackChild.type)) {
+          // they are both registered, or have equal code/displayname/signature
+
+          // update proxy using internal PROXY_KEY
+          updateProxyById(stackChild.type[PROXY_KEY], childType);
+
+          next(stackChild.instance);
+        } else {
+          logger.warn('React-hot-loader: a ' + getComponentDisplayName(childType) + ' was found where a ' + getComponentDisplayName(stackChild) + ' was expected.\n          ' + childType);
+          stackReport();
+        }
       }
 
       scheduleInstanceUpdate(stackChild.instance);
     }
   });
+
+  if (isReactClass$1(instance)) {
+    renderStack.pop();
+  }
+};
+
+var hotComponentCompare = function hotComponentCompare(oldType, newType) {
+  if (oldType === newType) {
+    return true;
+  }
+
+  if (isSwappable(newType, oldType)) {
+    getProxyByType(newType[UNWRAP_PROXY]()).dereference();
+    updateProxyById(oldType[PROXY_KEY], newType[UNWRAP_PROXY]());
+    updateProxyById(newType[PROXY_KEY], oldType[UNWRAP_PROXY]());
+    return true;
+  }
+
+  return false;
 };
 
 var hotReplacementRender$1 = (function (instance, stack) {
   try {
     // disable reconciler to prevent upcoming components from proxying.
     reactHotLoader.disableProxyCreation = true;
+    renderStack = [];
     hotReplacementRender(instance, stack);
   } catch (e) {
     logger.warn('React-hot-loader: reconcilation failed due to error', e);
@@ -38674,7 +49863,7 @@ var RENDERED_GENERATION = 'REACT_HOT_LOADER_RENDERED_GENERATION';
 
 var renderReconciler = function renderReconciler(target, force) {
   // we are not inside parent reconcilation
-  var currentGeneration = get();
+  var currentGeneration = get$1();
   var componentGeneration = target[RENDERED_GENERATION];
 
   target[RENDERED_GENERATION] = currentGeneration;
@@ -38692,14 +49881,12 @@ function asyncReconciledRender(target) {
   renderReconciler(target, false);
 }
 
-function syncReconciledRender(target) {
-  if (renderReconciler(target, false)) {
-    flushScheduledUpdates();
-  }
-}
-
-var proxyWrapper = function proxyWrapper(element) {
+function proxyWrapper(element) {
   // post wrap on post render
+  if (!reactHotLoader.disableProxyCreation) {
+    unscheduleUpdate(this);
+  }
+
   if (!element) {
     return element;
   }
@@ -38715,43 +49902,42 @@ var proxyWrapper = function proxyWrapper(element) {
     }
   }
   return element;
-};
+}
 
 setStandInOptions({
-  componentWillReceiveProps: syncReconciledRender,
   componentWillRender: asyncReconciledRender,
-  componentDidRender: proxyWrapper
+  componentDidRender: proxyWrapper,
+  componentDidUpdate: flushScheduledUpdates
 });
 
 var AppContainer = function (_React$Component) {
   inherits(AppContainer, _React$Component);
 
-  function AppContainer(props) {
+  function AppContainer() {
+    var _temp, _this, _ret;
+
     classCallCheck(this, AppContainer);
 
-    var _this = possibleConstructorReturn(this, _React$Component.call(this, props));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.state = {
+    return _ret = (_temp = (_this = possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       error: null,
+      // eslint-disable-next-line react/no-unused-state
       generation: 0
-    };
-    return _this;
+    }, _temp), possibleConstructorReturn(_this, _ret);
   }
 
-  AppContainer.prototype.componentWillReceiveProps = function componentWillReceiveProps() {
-    if (this.state.generation !== get()) {
+  AppContainer.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.generation !== get$1()) {
       // Hot reload is happening.
-
-      this.setState({
+      return {
         error: null,
-        generation: get()
-      });
-
-      // perform sandboxed render to find similarities between new and old code
-      renderReconciler(this, true);
-      // it is possible to flush update out of render cycle
-      flushScheduledUpdates();
+        generation: get$1()
+      };
     }
+    return null;
   };
 
   AppContainer.prototype.shouldComponentUpdate = function shouldComponentUpdate(prevProps, prevState) {
@@ -38794,7 +49980,10 @@ AppContainer.propTypes = {
   },
 
   errorReporter: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
-};
+
+  //  trying first react-lifecycles-compat.polyfill, then trying react-lifecycles-compat, which could be .default
+};var realPolyfill = defaultPolyfill.polyfill || defaultPolyfill__default;
+realPolyfill(AppContainer);
 
 var openedModules = {};
 
@@ -38876,7 +50065,7 @@ var makeHotExport = function makeHotExport(sourceModule) {
 var hot = function hot(sourceModule) {
   if (!sourceModule || !sourceModule.id) {
     // this is fatal
-    throw new Error('React-hot-loader: `hot` could not found the `id` property in the `module` you have provided');
+    throw new Error('React-hot-loader: `hot` could not find the `id` property in the `module` you have provided');
   }
   var moduleId = sourceModule.id;
   var module = hotModule(moduleId);
@@ -38896,7 +50085,7 @@ var hot = function hot(sourceModule) {
         return possibleConstructorReturn(this, _Component.apply(this, arguments));
       }
 
-      ExportedComponent.prototype.componentWillMount = function componentWillMount() {
+      ExportedComponent.prototype.componentDidMount = function componentDidMount() {
         module.instances.push(this);
       };
 
@@ -38934,6 +50123,15 @@ var areComponentsEqual = function areComponentsEqual(a, b) {
   return getProxyOrType(a) === getProxyOrType(b);
 };
 
+var compareOrSwap = function compareOrSwap(oldType, newType) {
+  return hotComponentCompare(oldType, newType);
+};
+
+var cold = function cold(type) {
+  blacklistByType(type);
+  return type;
+};
+
 var setConfig = function setConfig(config) {
   return Object.assign(configuration, config);
 };
@@ -38946,6 +50144,8 @@ exports.hot = hot;
 exports.enterModule = enter;
 exports.leaveModule = leave;
 exports.areComponentsEqual = areComponentsEqual;
+exports.compareOrSwap = compareOrSwap;
+exports.cold = cold;
 exports.setConfig = setConfig;
 
 
@@ -38964,6 +50164,457 @@ exports.setConfig = setConfig;
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./dist/react-hot-loader.development.js */ "./node_modules/react-hot-loader/dist/react-hot-loader.development.js");
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/react-input-autosize/lib/AutosizeInput.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/react-input-autosize/lib/AutosizeInput.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var sizerStyle = {
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	visibility: 'hidden',
+	height: 0,
+	overflow: 'scroll',
+	whiteSpace: 'pre'
+};
+
+var INPUT_PROPS_BLACKLIST = ['extraWidth', 'injectStyles', 'inputClassName', 'inputRef', 'inputStyle', 'minWidth', 'onAutosize', 'placeholderIsMinWidth'];
+
+var cleanInputProps = function cleanInputProps(inputProps) {
+	INPUT_PROPS_BLACKLIST.forEach(function (field) {
+		return delete inputProps[field];
+	});
+	return inputProps;
+};
+
+var copyStyles = function copyStyles(styles, node) {
+	node.style.fontSize = styles.fontSize;
+	node.style.fontFamily = styles.fontFamily;
+	node.style.fontWeight = styles.fontWeight;
+	node.style.fontStyle = styles.fontStyle;
+	node.style.letterSpacing = styles.letterSpacing;
+	node.style.textTransform = styles.textTransform;
+};
+
+var isIE = typeof window !== 'undefined' && window.navigator ? /MSIE |Trident\/|Edge\//.test(window.navigator.userAgent) : false;
+
+var generateId = function generateId() {
+	// we only need an auto-generated ID for stylesheet injection, which is only
+	// used for IE. so if the browser is not IE, this should return undefined.
+	return isIE ? '_' + Math.random().toString(36).substr(2, 12) : undefined;
+};
+
+var AutosizeInput = function (_Component) {
+	_inherits(AutosizeInput, _Component);
+
+	function AutosizeInput(props) {
+		_classCallCheck(this, AutosizeInput);
+
+		var _this = _possibleConstructorReturn(this, (AutosizeInput.__proto__ || Object.getPrototypeOf(AutosizeInput)).call(this, props));
+
+		_this.inputRef = function (el) {
+			_this.input = el;
+			if (typeof _this.props.inputRef === 'function') {
+				_this.props.inputRef(el);
+			}
+		};
+
+		_this.placeHolderSizerRef = function (el) {
+			_this.placeHolderSizer = el;
+		};
+
+		_this.sizerRef = function (el) {
+			_this.sizer = el;
+		};
+
+		_this.state = {
+			inputWidth: props.minWidth,
+			inputId: props.id || generateId()
+		};
+		return _this;
+	}
+
+	_createClass(AutosizeInput, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.mounted = true;
+			this.copyInputStyles();
+			this.updateInputWidth();
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			var id = nextProps.id;
+
+			if (id !== this.props.id) {
+				this.setState({ inputId: id || generateId() });
+			}
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps, prevState) {
+			if (prevState.inputWidth !== this.state.inputWidth) {
+				if (typeof this.props.onAutosize === 'function') {
+					this.props.onAutosize(this.state.inputWidth);
+				}
+			}
+			this.updateInputWidth();
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this.mounted = false;
+		}
+	}, {
+		key: 'copyInputStyles',
+		value: function copyInputStyles() {
+			if (!this.mounted || !window.getComputedStyle) {
+				return;
+			}
+			var inputStyles = this.input && window.getComputedStyle(this.input);
+			if (!inputStyles) {
+				return;
+			}
+			copyStyles(inputStyles, this.sizer);
+			if (this.placeHolderSizer) {
+				copyStyles(inputStyles, this.placeHolderSizer);
+			}
+		}
+	}, {
+		key: 'updateInputWidth',
+		value: function updateInputWidth() {
+			if (!this.mounted || !this.sizer || typeof this.sizer.scrollWidth === 'undefined') {
+				return;
+			}
+			var newInputWidth = void 0;
+			if (this.props.placeholder && (!this.props.value || this.props.value && this.props.placeholderIsMinWidth)) {
+				newInputWidth = Math.max(this.sizer.scrollWidth, this.placeHolderSizer.scrollWidth) + 2;
+			} else {
+				newInputWidth = this.sizer.scrollWidth + 2;
+			}
+			// add extraWidth to the detected width. for number types, this defaults to 16 to allow for the stepper UI
+			var extraWidth = this.props.type === 'number' && this.props.extraWidth === undefined ? 16 : parseInt(this.props.extraWidth) || 0;
+			newInputWidth += extraWidth;
+			if (newInputWidth < this.props.minWidth) {
+				newInputWidth = this.props.minWidth;
+			}
+			if (newInputWidth !== this.state.inputWidth) {
+				this.setState({
+					inputWidth: newInputWidth
+				});
+			}
+		}
+	}, {
+		key: 'getInput',
+		value: function getInput() {
+			return this.input;
+		}
+	}, {
+		key: 'focus',
+		value: function focus() {
+			this.input.focus();
+		}
+	}, {
+		key: 'blur',
+		value: function blur() {
+			this.input.blur();
+		}
+	}, {
+		key: 'select',
+		value: function select() {
+			this.input.select();
+		}
+	}, {
+		key: 'renderStyles',
+		value: function renderStyles() {
+			// this method injects styles to hide IE's clear indicator, which messes
+			// with input size detection. the stylesheet is only injected when the
+			// browser is IE, and can also be disabled by the `injectStyles` prop.
+			var injectStyles = this.props.injectStyles;
+
+			return isIE && injectStyles ? _react2.default.createElement('style', { dangerouslySetInnerHTML: {
+					__html: 'input#' + this.state.inputId + '::-ms-clear {display: none;}'
+				} }) : null;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var sizerValue = [this.props.defaultValue, this.props.value, ''].reduce(function (previousValue, currentValue) {
+				if (previousValue !== null && previousValue !== undefined) {
+					return previousValue;
+				}
+				return currentValue;
+			});
+
+			var wrapperStyle = _extends({}, this.props.style);
+			if (!wrapperStyle.display) wrapperStyle.display = 'inline-block';
+
+			var inputStyle = _extends({
+				boxSizing: 'content-box',
+				width: this.state.inputWidth + 'px'
+			}, this.props.inputStyle);
+
+			var inputProps = _objectWithoutProperties(this.props, []);
+
+			cleanInputProps(inputProps);
+			inputProps.className = this.props.inputClassName;
+			inputProps.id = this.state.inputId;
+			inputProps.style = inputStyle;
+
+			return _react2.default.createElement(
+				'div',
+				{ className: this.props.className, style: wrapperStyle },
+				this.renderStyles(),
+				_react2.default.createElement('input', _extends({}, inputProps, { ref: this.inputRef })),
+				_react2.default.createElement(
+					'div',
+					{ ref: this.sizerRef, style: sizerStyle },
+					sizerValue
+				),
+				this.props.placeholder ? _react2.default.createElement(
+					'div',
+					{ ref: this.placeHolderSizerRef, style: sizerStyle },
+					this.props.placeholder
+				) : null
+			);
+		}
+	}]);
+
+	return AutosizeInput;
+}(_react.Component);
+
+AutosizeInput.propTypes = {
+	className: _propTypes2.default.string, // className for the outer element
+	defaultValue: _propTypes2.default.any, // default field value
+	extraWidth: _propTypes2.default.oneOfType([// additional width for input element
+	_propTypes2.default.number, _propTypes2.default.string]),
+	id: _propTypes2.default.string, // id to use for the input, can be set for consistent snapshots
+	injectStyles: _propTypes2.default.bool, // inject the custom stylesheet to hide clear UI, defaults to true
+	inputClassName: _propTypes2.default.string, // className for the input element
+	inputRef: _propTypes2.default.func, // ref callback for the input element
+	inputStyle: _propTypes2.default.object, // css styles for the input element
+	minWidth: _propTypes2.default.oneOfType([// minimum width for input element
+	_propTypes2.default.number, _propTypes2.default.string]),
+	onAutosize: _propTypes2.default.func, // onAutosize handler: function(newWidth) {}
+	onChange: _propTypes2.default.func, // onChange handler: function(event) {}
+	placeholder: _propTypes2.default.string, // placeholder text
+	placeholderIsMinWidth: _propTypes2.default.bool, // don't collapse size to less than the placeholder
+	style: _propTypes2.default.object, // css styles for the outer element
+	value: _propTypes2.default.any // field value
+};
+AutosizeInput.defaultProps = {
+	minWidth: 1,
+	injectStyles: true
+};
+
+exports.default = AutosizeInput;
+
+/***/ }),
+
+/***/ "./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js ***!
+  \****************************************************************************/
+/*! exports provided: polyfill */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "polyfill", function() { return polyfill; });
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+function componentWillMount() {
+  // Call this.constructor.gDSFP to support sub-classes.
+  var state = this.constructor.getDerivedStateFromProps(this.props, this.state);
+  if (state !== null && state !== undefined) {
+    this.setState(state);
+  }
+}
+
+function componentWillReceiveProps(nextProps) {
+  // Call this.constructor.gDSFP to support sub-classes.
+  // Use the setState() updater to ensure state isn't stale in certain edge cases.
+  function updater(prevState) {
+    var state = this.constructor.getDerivedStateFromProps(nextProps, prevState);
+    return state !== null && state !== undefined ? state : null;
+  }
+  // Binding "this" is important for shallow renderer support.
+  this.setState(updater.bind(this));
+}
+
+function componentWillUpdate(nextProps, nextState) {
+  try {
+    var prevProps = this.props;
+    var prevState = this.state;
+    this.props = nextProps;
+    this.state = nextState;
+    this.__reactInternalSnapshotFlag = true;
+    this.__reactInternalSnapshot = this.getSnapshotBeforeUpdate(
+      prevProps,
+      prevState
+    );
+  } finally {
+    this.props = prevProps;
+    this.state = prevState;
+  }
+}
+
+// React may warn about cWM/cWRP/cWU methods being deprecated.
+// Add a flag to suppress these warnings for this special case.
+componentWillMount.__suppressDeprecationWarning = true;
+componentWillReceiveProps.__suppressDeprecationWarning = true;
+componentWillUpdate.__suppressDeprecationWarning = true;
+
+function polyfill(Component) {
+  var prototype = Component.prototype;
+
+  if (!prototype || !prototype.isReactComponent) {
+    throw new Error('Can only polyfill class components');
+  }
+
+  if (
+    typeof Component.getDerivedStateFromProps !== 'function' &&
+    typeof prototype.getSnapshotBeforeUpdate !== 'function'
+  ) {
+    return Component;
+  }
+
+  // If new component APIs are defined, "unsafe" lifecycles won't be called.
+  // Error if any of these lifecycles are present,
+  // Because they would work differently between older and newer (16.3+) versions of React.
+  var foundWillMountName = null;
+  var foundWillReceivePropsName = null;
+  var foundWillUpdateName = null;
+  if (typeof prototype.componentWillMount === 'function') {
+    foundWillMountName = 'componentWillMount';
+  } else if (typeof prototype.UNSAFE_componentWillMount === 'function') {
+    foundWillMountName = 'UNSAFE_componentWillMount';
+  }
+  if (typeof prototype.componentWillReceiveProps === 'function') {
+    foundWillReceivePropsName = 'componentWillReceiveProps';
+  } else if (typeof prototype.UNSAFE_componentWillReceiveProps === 'function') {
+    foundWillReceivePropsName = 'UNSAFE_componentWillReceiveProps';
+  }
+  if (typeof prototype.componentWillUpdate === 'function') {
+    foundWillUpdateName = 'componentWillUpdate';
+  } else if (typeof prototype.UNSAFE_componentWillUpdate === 'function') {
+    foundWillUpdateName = 'UNSAFE_componentWillUpdate';
+  }
+  if (
+    foundWillMountName !== null ||
+    foundWillReceivePropsName !== null ||
+    foundWillUpdateName !== null
+  ) {
+    var componentName = Component.displayName || Component.name;
+    var newApiName =
+      typeof Component.getDerivedStateFromProps === 'function'
+        ? 'getDerivedStateFromProps()'
+        : 'getSnapshotBeforeUpdate()';
+
+    throw Error(
+      'Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n' +
+        componentName +
+        ' uses ' +
+        newApiName +
+        ' but also contains the following legacy lifecycles:' +
+        (foundWillMountName !== null ? '\n  ' + foundWillMountName : '') +
+        (foundWillReceivePropsName !== null
+          ? '\n  ' + foundWillReceivePropsName
+          : '') +
+        (foundWillUpdateName !== null ? '\n  ' + foundWillUpdateName : '') +
+        '\n\nThe above lifecycles should be removed. Learn more about this warning here:\n' +
+        'https://fb.me/react-async-component-lifecycle-hooks'
+    );
+  }
+
+  // React <= 16.2 does not support static getDerivedStateFromProps.
+  // As a workaround, use cWM and cWRP to invoke the new static lifecycle.
+  // Newer versions of React will ignore these lifecycles if gDSFP exists.
+  if (typeof Component.getDerivedStateFromProps === 'function') {
+    prototype.componentWillMount = componentWillMount;
+    prototype.componentWillReceiveProps = componentWillReceiveProps;
+  }
+
+  // React <= 16.2 does not support getSnapshotBeforeUpdate.
+  // As a workaround, use cWU to invoke the new lifecycle.
+  // Newer versions of React will ignore that lifecycle if gSBU exists.
+  if (typeof prototype.getSnapshotBeforeUpdate === 'function') {
+    if (typeof prototype.componentDidUpdate !== 'function') {
+      throw new Error(
+        'Cannot polyfill getSnapshotBeforeUpdate() for components that do not define componentDidUpdate() on the prototype'
+      );
+    }
+
+    prototype.componentWillUpdate = componentWillUpdate;
+
+    var componentDidUpdate = prototype.componentDidUpdate;
+
+    prototype.componentDidUpdate = function componentDidUpdatePolyfill(
+      prevProps,
+      prevState,
+      maybeSnapshot
+    ) {
+      // 16.3+ will not execute our will-update method;
+      // It will pass a snapshot value to did-update though.
+      // Older versions will require our polyfilled will-update value.
+      // We need to handle both cases, but can't just check for the presence of "maybeSnapshot",
+      // Because for <= 15.x versions this might be a "prevContext" object.
+      // We also can't just check "__reactInternalSnapshot",
+      // Because get-snapshot might return a falsy value.
+      // So check for the explicit __reactInternalSnapshotFlag flag to determine behavior.
+      var snapshot = this.__reactInternalSnapshotFlag
+        ? this.__reactInternalSnapshot
+        : maybeSnapshot;
+
+      componentDidUpdate.call(this, prevProps, prevState, snapshot);
+    };
+  }
+
+  return Component;
+}
+
+
 
 
 /***/ }),
@@ -39597,7 +51248,7 @@ function createProvider() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return connectAdvanced; });
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/index.js");
+/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var invariant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! invariant */ "./node_modules/invariant/browser.js");
 /* harmony import */ var invariant__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(invariant__WEBPACK_IMPORTED_MODULE_1__);
@@ -41251,6 +52902,134 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/react-router-hash-link/lib/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/react-router-hash-link/lib/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.genericHashLink = genericHashLink;
+exports.HashLink = HashLink;
+exports.NavHashLink = NavHashLink;
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var hashFragment = '';
+var observer = null;
+var asyncTimerId = null;
+var scrollFunction = null;
+
+function reset() {
+  hashFragment = '';
+  if (observer !== null) observer.disconnect();
+  if (asyncTimerId !== null) {
+    window.clearTimeout(asyncTimerId);
+    asyncTimerId = null;
+  }
+}
+
+function getElAndScroll() {
+  var element = document.getElementById(hashFragment);
+  if (element !== null) {
+    scrollFunction(element);
+    reset();
+    return true;
+  }
+  return false;
+}
+
+function hashLinkScroll() {
+  // Push onto callback queue so it runs after the DOM is updated
+  window.setTimeout(function () {
+    if (getElAndScroll() === false) {
+      if (observer === null) {
+        observer = new MutationObserver(getElAndScroll);
+      }
+      observer.observe(document, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+      // if the element doesn't show up in 10 seconds, stop checking
+      asyncTimerId = window.setTimeout(function () {
+        reset();
+      }, 10000);
+    }
+  }, 0);
+}
+
+function genericHashLink(props, As) {
+  function handleClick(e) {
+    reset();
+    if (props.onClick) props.onClick(e);
+    if (typeof props.to === 'string') {
+      hashFragment = props.to.split('#').slice(1).join('#');
+    } else if (_typeof(props.to) === 'object' && typeof props.to.hash === 'string') {
+      hashFragment = props.to.hash.replace('#', '');
+    }
+    if (hashFragment !== '') {
+      scrollFunction = props.scroll || function (el) {
+        return el.scrollIntoView(props.smooth ? { behavior: 'smooth' } : undefined);
+      };
+      hashLinkScroll();
+    }
+  }
+
+  var scroll = props.scroll,
+      smooth = props.smooth,
+      filteredProps = _objectWithoutProperties(props, ['scroll', 'smooth']);
+
+  return _react2.default.createElement(
+    As,
+    _extends({}, filteredProps, { onClick: handleClick }),
+    props.children
+  );
+}
+
+function HashLink(props) {
+  return genericHashLink(props, _reactRouterDom.Link);
+}
+
+function NavHashLink(props) {
+  return genericHashLink(props, _reactRouterDom.NavLink);
+}
+
+var propTypes = {
+  onClick: _propTypes2.default.func,
+  children: _propTypes2.default.node,
+  scroll: _propTypes2.default.func,
+  to: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object])
+};
+
+HashLink.propTypes = propTypes;
+NavHashLink.propTypes = propTypes;
+
+/***/ }),
+
 /***/ "./node_modules/react-router/es/MemoryRouter.js":
 /*!******************************************************!*\
   !*** ./node_modules/react-router/es/MemoryRouter.js ***!
@@ -42161,6 +53940,68 @@ var generatePath = function generatePath() {
 
 /***/ }),
 
+/***/ "./node_modules/react-router/es/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/react-router/es/index.js ***!
+  \***********************************************/
+/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, withRouter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MemoryRouter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MemoryRouter */ "./node_modules/react-router/es/MemoryRouter.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MemoryRouter", function() { return _MemoryRouter__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _Prompt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Prompt */ "./node_modules/react-router/es/Prompt.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Prompt", function() { return _Prompt__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _Redirect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Redirect */ "./node_modules/react-router/es/Redirect.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return _Redirect__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _Route__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Route */ "./node_modules/react-router/es/Route.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return _Route__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _Router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Router */ "./node_modules/react-router/es/Router.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return _Router__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _StaticRouter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./StaticRouter */ "./node_modules/react-router/es/StaticRouter.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StaticRouter", function() { return _StaticRouter__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _Switch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Switch */ "./node_modules/react-router/es/Switch.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return _Switch__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _generatePath__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./generatePath */ "./node_modules/react-router/es/generatePath.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generatePath", function() { return _generatePath__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
+/* harmony import */ var _matchPath__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./matchPath */ "./node_modules/react-router/es/matchPath.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "matchPath", function() { return _matchPath__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+
+/* harmony import */ var _withRouter__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./withRouter */ "./node_modules/react-router/es/withRouter.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withRouter", function() { return _withRouter__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/react-router/es/matchPath.js":
 /*!***************************************************!*\
   !*** ./node_modules/react-router/es/matchPath.js ***!
@@ -42260,7 +54101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/index.js");
+/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _Route__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Route */ "./node_modules/react-router/es/Route.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -43263,7 +55104,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942568
+      // 1530197463863
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43281,7 +55122,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942588
+      // 1530197463874
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43299,7 +55140,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942602
+      // 1530197463885
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43317,7 +55158,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942593
+      // 1530197463891
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43335,7 +55176,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942617
+      // 1530197463895
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43353,7 +55194,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942580
+      // 1530197463869
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43371,7 +55212,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942637
+      // 1530197463902
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43389,7 +55230,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942575
+      // 1530197463933
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43407,7 +55248,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942613
+      // 1530197463907
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43425,7 +55266,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942627
+      // 1530197463911
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43443,7 +55284,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942608
+      // 1530197463916
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43461,7 +55302,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942632
+      // 1530197463924
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43479,7 +55320,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942622
+      // 1530197463928
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -43497,7 +55338,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1529441942642
+      // 1530197463938
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);

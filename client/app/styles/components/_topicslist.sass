@@ -1,16 +1,61 @@
 .topics-list
-  border: 1px solid red
 
-  .topic-section:not(:first-of-type)
-    margin: 50px 0
-    padding-top: 20px
+  .topic-section
+    display: grid
+    align-items: center
+    margin: 10px 0 0
 
-    &:first-of-type
-      margin-top: 50px
+    &:not(:first-of-type)
+      margin: 30px 0
 
-    .topic-list-word:not(:first-of-type)
-      margin: 50px 0
-      height: max-content
+    // topic headers
+    .topic-header
+      display: grid
+      grid-template-columns: repeat(2, max-content)
+      grid-column-gap: 10px
+      align-items: center
+      transition: .5s all
 
-      // &:last-of-type
-      //   margin-bottom: 0
+      &:hover .trash
+        opacity: 1
+      
+      .trash
+        margin-top: 5px
+        color: lightgrey
+        opacity: 0
+
+        &:hover
+          cursor: pointer
+          color: $deny-red
+
+      // topic names
+      .topic-name-in-main-list
+        margin: 0
+        padding: 0 0 0 30px
+        font: bold 32px "Roboto Condensed", sans-serif
+
+    .word-empty
+      margin: 10px 0
+      padding: 0 0 0 30px
+      font: normal 18px monsterrat, sans-serif
+      color: $sidebar-black
+
+    .word-group-in-main-list
+      margin: 5px 0
+      padding: 20px 30px
+      transition: .5s all
+      
+      &:hover 
+        background-color: rgba(0,0,0,.03)
+        // h3, p
+        //   color: lighten($sidebar-black, 25%)
+
+      .word-name
+        margin: 0 0 10px
+        color: $sidebar-black
+        font: 700 20px montserrat, sans-serif
+
+      .word-definition
+        margin: 0
+        color: $sidebar-black
+        font: normal 18px monsterrat, sans-serif
