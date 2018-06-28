@@ -181,7 +181,7 @@ export class SearchResults extends Component<IProps, IState> {
                             </Link>
                             {/* <TopicsListWord key={word.uid} word={word} /> */}
                         </div>
-                    )}
+                    ).slice(0,7)}
                 </div>
                 
             </section>
