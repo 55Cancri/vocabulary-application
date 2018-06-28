@@ -11,6 +11,7 @@ import {
 } from 'reactstrap'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
+import ImageGallery from 'react-image-gallery'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   startEditWord,
@@ -227,6 +228,20 @@ export class WordPage extends Component<IProps> {
             <Dropzone onDrop={this.handleDrop}>
               <p>drop files here:</p>
             </Dropzone>
+            <ImageGallery
+              items={chosen.images.map(image => ({
+                original: image.url,
+                thumbnail: image.url
+              }))}
+            />
+            {/*  {chosen.images.map(image => (
+               <img
+               key={image.wordOwner}
+               src={image.url}
+               width={300}
+               height={300}
+             />
+            // ))}*/}
           </div>
         )}
       </div>
