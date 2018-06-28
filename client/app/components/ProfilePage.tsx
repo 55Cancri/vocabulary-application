@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Axios from 'axios'
 import Dropzone from 'react-dropzone'
-import { demoAxios } from '../interceptors/demoAxios'
+import { stat } from 'fs'
 
 interface Iprops {
   username
@@ -10,44 +10,45 @@ interface Iprops {
   lastname
   email
   profileImage
+  topThree
+  words
 }
 
 export class ProfilePage extends Component<Iprops> {
-  // public componentDidMount() {
-  //   Axios
-  //     .get(
-  //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/files/profile.jpg'
-  //     )
-  //     .then(resp => {
-  //       this.setState({
-  //         url: resp.data
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //     })
-  // }
-
   render() {
     return (
-      <div>
-        <div>
-          Profile Picture:
-          <p>
-            <img src={this.props.profileImage} />
-            {/* <img src={this.state.url} /> */}
-          </p>
+      <div className="profile-page">
+        <div className="profile-pic-div">
+          <div
+            className="profile-image"
+            style={{
+              background: `url(${this.props.profileImage})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: '50% 50%',
+              width: 300,
+              height: 300
+            }}
+          />
         </div>
+
         <div className="input-group">
           <p className="title">
             Name: {this.props.firstname} {this.props.lastname}
           </p>
-        </div>
-        <div className="input-group">
           <p className="title">Username: {this.props.username}</p>
-        </div>
-        <div className="input-group">
           <p className="title">Email: {this.props.email}</p>
+          <p className="title">Wordcount: {this.props.words.length}</p>
+        </div>
+
+        <div className="fav-words">
+          <h1>Favorite Words:</h1>
+          {this.props.topThree.map(word => (
+            <div className="fav-word">
+              <h2>{word.word} </h2>
+              <p>{word.definition}</p>
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -59,7 +60,9 @@ const mapStateToProps = state => ({
   email: state.auth.email,
   firstname: state.auth.name,
   lastname: state.auth.last,
-  profileImage: state.auth.profileImage
+  profileImage: state.auth.profileImage,
+  topThree: state.lexica.words.slice(0, 3),
+  words: state.lexica.words
 })
 
 export default connect(mapStateToProps)(ProfilePage)
