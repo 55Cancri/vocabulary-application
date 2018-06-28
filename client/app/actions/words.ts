@@ -11,8 +11,12 @@ export const updatedWords = user => ({
   user
 })
 
-export const updateTopics = user => ({
+export const updatedTopics = user => ({
   type: 'NEW_TOPIC',
+  user
+})
+export const deleteTopic = user => ({
+  type: 'DELETE_TOPIC',
   user
 })
 
@@ -25,11 +29,17 @@ export const startEditWord = word => dispatch =>
 export const startDeleteWord = word => dispatch =>
   api.lexica.deleteWord(word).then(data => dispatch(updatedWords(data)))
 
+export const startAddImageToWord = image => dispatch =>
+  api.lexica.addImage(image).then(data => dispatch(updatedTopics(data)))
+
 export const startAddTopic = topic => dispatch =>
-  api.lexica.addTopic(topic).then(data => dispatch(updateTopics(data)))
+  api.lexica.addTopic(topic).then(data => dispatch(updatedTopics(data)))
 
 export const startEditTopic = topic => dispatch =>
-  api.lexica.updateTopic(topic).then(data => dispatch(updateTopics(data)))
+  api.lexica.updateTopic(topic).then(data => dispatch(updatedTopics(data)))
+
+export const startDeleteTopic = topic => dispatch =>
+  api.lexica.deleteTopic(topic).then(data => dispatch(deleteTopic(data)))
 
 export const search = results => ({
   type: 'SEARCH',

@@ -3,19 +3,78 @@
   padding: 25px 60px
   min-width: 80px
   width: 10vw
-  border: 1px solid red
 
   .textbar
     position: fixed
     top: 100px
     left: 100px
     height: 80vh
+    max-width: 110px
     overflow-y: scroll
     padding: 0 25px
-    border: 1px solid green
+
+    &::-webkit-scrollbar
+      // size
+      width: 7px
+      // background
+      -webkit-box-shadow: none
+
+    &::-webkit-scrollbar-thumb
+      // bar color
+      background-color: $br-grey
+      // bar curve
+      border-radius: 25px
 
     .title
       font-weight: bold
     
     .subhead
       font-style: italic
+
+    .list
+
+      .topic-group-in-textbar
+        transition: .3s all
+        &:hover 
+          .topic-name
+            color: $create-blue
+
+          .topic-count
+            color: lighten($create-blue, 25%)
+
+        .topic-name
+          margin: 0
+          margin-top: 15px
+          font: normal 18px "Roboto Condensed", sans-serif
+          color: $sidebar-black
+
+        .topic-count
+          margin: 0
+          font: normal 14px montserrat, sans-serif
+          color: $subhead-grey
+
+      .add-topic-button
+        font: italic 14px roboto, sans-serif
+        color: $subhead-grey
+        transition: .4s all
+
+        &:hover
+          cursor: pointer
+          text-decoration: underline
+          color: $sidebar-black
+      
+      .enter-topic-name
+        margin: 15px 0 0
+        width: 100%
+        outline: none
+        border: none
+        border-bottom: 2px solid lighten($subhead-grey, 8%)
+
+        &::placeholder
+          font: normal 14px roboto, sans-serif
+          color: $subhead-grey
+
+      .active
+        font-style: bold
+        font-size: 18px
+        color: red

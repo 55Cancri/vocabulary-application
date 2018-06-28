@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { HashLink as Link } from 'react-router-hash-link'
+// import ScrollSpy from 'react-scrollspy'
 
 import { generateUuid } from '../helpers/helpers'
 import { startAddTopic } from '../actions/words'
@@ -13,6 +14,7 @@ interface IProps {
   username: string
   startAddTopic: (any) => any
   dataIsHere: boolean
+  position: string
   match?: any
 }
 
@@ -31,6 +33,11 @@ export class Textbar extends Component<IProps, IState> {
     editing: false
   }
 
+  listenKeyboard = e => {
+    if (e.keyCode === 27 || e.key === 'Escape')
+      this.setState({ editing: false })
+  }
+
   handleChange = e => {
     let { name, value }: { name: keyof IState; value: string } = e.target
     this.setState({
@@ -38,7 +45,13 @@ export class Textbar extends Component<IProps, IState> {
     } as any)
   }
 
-  handleToggle = () => this.setState({ editing: !this.state.editing })
+  handleAddTopic = () => {
+    this.setState({ editing: true })
+  }
+
+  handleBlur = e => {
+    this.setState({ editing: false })
+  }
 
   handleSubmit = e => {
     e.preventDefault()
@@ -50,8 +63,17 @@ export class Textbar extends Component<IProps, IState> {
   }
 
   // @ts-ignore
+  componentDidMount = () => {
+    window.addEventListener('keydown', this.listenKeyboard)
+    // 3. example typescript ref
+    // this.inputEl !== undefined && this.inputEl.focus()
+  }
+  // 1. example typescript ref
+  // inputEl!: any
+
+  // @ts-ignore
   render = () => {
-    const { words, topics, tags, match } = this.props
+    const { words, topics, tags, match, position } = this.props
     const { editing, topicName } = this.state
     return (
       <div className="textbar-container">
@@ -63,10 +85,18 @@ export class Textbar extends Component<IProps, IState> {
             </p>
             <div className="list">
               {topics !== undefined &&
+                // <ScrollSpy
+                //   items={[...topics.map(topic => topic.uid)]}
+                //   currentClassName="active"
+                //   // componentTag="div"
+                // >
+                // {topics !== undefined &&
                 topics.map((topic, i) => (
                   <Link
                     to={`#${topic.uid}`}
+                    // href={`#${topic.uid}`}
                     key={topic.uid}
+                    className="topic-group-in-textbar"
                     smooth="true"
                     scroll={el =>
                       el.scrollIntoView({
@@ -75,23 +105,43 @@ export class Textbar extends Component<IProps, IState> {
                       })
                     }
                   >
-                    <p>{topic.topic}</p>
-                    {
-                      words.filter(word => {
-                        if (word.topic === topic.uid) return word
-                      }).length
-                    }&nbsp;words
+                    <p
+                      className={
+                        position === topic.uid
+                          ? 'active topic-name'
+                          : 'topic-name'
+                      }
+                    >
+                      {topic.topic}
+                    </p>
+                    <p className="topic-count">
+                      {
+                        words.filter(word => {
+                          if (word.topic === topic.uid) return word
+                        }).length
+                      }&nbsp;words
+                    </p>
                   </Link>
+                  // </ScrollSpy>
                 ))}
-              {!editing ? (
-                <p onClick={this.handleToggle}>+ Add topic</p>
-              ) : (
-                <form
-                  onSubmit={this.handleSubmit}
-                  onChange={this.handleChange}
-                  onBlur={this.handleToggle}
-                >
-                  <input type="text" name="topicName" value={topicName} />
+              {!editing && (
+                <p onClick={this.handleAddTopic} className="add-topic-button">
+                  + Add topic
+                </p>
+              )}
+              {editing && (
+                <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+                  <input
+                    type="text"
+                    name="topicName"
+                    value={topicName}
+                    className="enter-topic-name"
+                    placeholder="Enter topic"
+                    onBlur={this.handleBlur}
+                    autoFocus={true}
+                    // 2. example typescript ref
+                    // ref={inputEl => (this.inputEl = inputEl)}
+                  />
                 </form>
               )}
             </div>
@@ -152,7 +202,8 @@ const mapStateToProps = state => ({
   topics: state.lexica.topics,
   tags: state.lexica.tags,
   username: state.auth.username,
-  dataIsHere: state.app.dataIsHere
+  dataIsHere: state.app.dataIsHere,
+  position: state.app.position
 })
 
 export default withRouter<any>(

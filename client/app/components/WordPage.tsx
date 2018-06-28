@@ -9,8 +9,14 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+import axios from 'axios'
+import Dropzone from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { startEditWord, startDeleteWord } from '../actions/words'
+import {
+  startEditWord,
+  startDeleteWord,
+  startAddImageToWord
+} from '../actions/words'
 
 interface IProps {
   chosen: any
@@ -20,6 +26,7 @@ interface IProps {
   history
   startEditWord: (any) => any
   startDeleteWord: (any) => any
+  startAddImageToWord: (any) => any
 }
 
 export class WordPage extends Component<IProps> {
@@ -52,6 +59,43 @@ export class WordPage extends Component<IProps> {
     type === 'definition' && this.setState({ definition: e.target.value })
   }
 
+  handleDrop = async (files: any) => {
+    const { username, chosen, startAddImageToWord } = this.props
+
+    const wordOwner = chosen.uid
+    // get dropped file
+    const file = files[0]
+
+    // build url to s3 bucket
+    const url = `http://vocab-app-pics.s3.amazonaws.com/${username}/${wordOwner}/${
+      file.name
+    }`
+
+    const dynamoData = { username, wordOwner, url }
+
+    // upload file to s3 bucket
+    try {
+      const s3upload = await axios.put(url, file)
+    } catch (e) {
+      console.log('error uploading to s3 bucket', e)
+    }
+
+    // send to dynamoDb
+    startAddImageToWord(dynamoData)
+
+    // try {
+    //   const dynamoUpload = await axios
+    //     .post(
+    //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
+    //       dynamoData
+    //     )
+    //     .then(res => res.data)
+    //     .then(user => startAddImageToWord(user))
+    // } catch (e) {
+    //   console.log('error uploading to lambda', e)
+    // }
+  }
+
   handleDelete = async () => {
     const { chosen, username, startDeleteWord } = this.props
 
@@ -64,7 +108,6 @@ export class WordPage extends Component<IProps> {
 
     await startDeleteWord(word)
     this.props.history.push('/dashboard')
-    // updateWord, createWord, Login, persistUser
   }
 
   handleSubmit = async e => {
@@ -181,6 +224,9 @@ export class WordPage extends Component<IProps> {
                 style={{ fontSize: 24 }}
               />
             )}
+            <Dropzone onDrop={this.handleDrop}>
+              <p>drop files here:</p>
+            </Dropzone>
           </div>
         )}
       </div>
@@ -197,5 +243,5 @@ const mapStateToProps = (state, props) => ({
 
 export default connect(
   mapStateToProps,
-  { startEditWord, startDeleteWord }
+  { startEditWord, startDeleteWord, startAddImageToWord }
 )(WordPage)

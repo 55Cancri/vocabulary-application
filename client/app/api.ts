@@ -35,6 +35,9 @@ const addWordUrl =
 const updateWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-word'
 
+const addWordImageUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/store-image'
+
 const deleteWordUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-word'
 
@@ -43,6 +46,9 @@ const addTopicUrl =
 
 const updateTopicUrl =
   'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-topic'
+
+const deleteTopicUrl =
+  'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/delete-topic'
 
 // TODO: require token passed in header
 export default {
@@ -71,10 +77,16 @@ export default {
     deleteWord: word =>
       axios.post(deleteWordUrl, { word }).then(res => res.data),
 
+    addImage: image =>
+      axios.post(addWordImageUrl, { image }).then(res => res.data),
+
     addTopic: topic => axios.post(addTopicUrl, { topic }).then(res => res.data),
 
     updateTopic: topic =>
-      axios.post(updateTopicUrl, { topic }).then(res => res.data)
+      axios.post(updateTopicUrl, { topic }).then(res => res.data),
+
+    deleteTopic: topic =>
+      axios.post(deleteTopicUrl, { topic }).then(res => res.data)
   }
   // header: {
   //   getEverything: username => {
