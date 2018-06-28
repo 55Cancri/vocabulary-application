@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d0fa9a286c9e15e27ba2"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5a727d35473f6d1be945"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -839,8 +839,8 @@ exports.startNuke = email => dispatch => api_1.default.user.nuke(email).then(use
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
-    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/app.ts");
+    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/app.ts");
     leaveModule(module);
 })();
 
@@ -933,8 +933,8 @@ exports.startLogout = () => dispatch => {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
-    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/auth.ts");
+    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/auth.ts");
     leaveModule(module);
 })();
 
@@ -1029,8 +1029,8 @@ exports.search = results => ({
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
-    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/words.ts");
+    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/words.ts");
     leaveModule(module);
 })();
 
@@ -1121,19 +1121,19 @@ exports.default = {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(authAxios, "authAxios", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(signupUrl, "signupUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(loginUrl, "loginUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(persistUrl, "persistUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(addWordUrl, "addWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(updateWordUrl, "updateWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(addTopicUrl, "addTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
-    reactHotLoader.register(deleteTopicUrl, "deleteTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(authAxios, "authAxios", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(signupUrl, "signupUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(loginUrl, "loginUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(persistUrl, "persistUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(addWordUrl, "addWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(updateWordUrl, "updateWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(addTopicUrl, "addTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(deleteTopicUrl, "deleteTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
     leaveModule(module);
 })();
 
@@ -1181,10 +1181,10 @@ react_dom_1.render(react_1.default.createElement(AppRouters_1.default, null), do
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
-    reactHotLoader.register(AppRouters_1, "AppRouters_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
-    reactHotLoader.register(fontawesome_1, "fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
+    reactHotLoader.register(AppRouters_1, "AppRouters_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
+    reactHotLoader.register(fontawesome_1, "fontawesome_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
     leaveModule(module);
 })();
 
@@ -1229,10 +1229,10 @@ exports.default = exports.DashboardPage;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(TopicsList_1, "TopicsList_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(TopicsList_1, "TopicsList_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
     leaveModule(module);
 })();
 
@@ -1306,13 +1306,13 @@ exports.default = react_redux_1.connect(mapStateToProps)(GlossaryPage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(GlossaryPage, "GlossaryPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(GlossaryPage, "GlossaryPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
     leaveModule(module);
 })();
 
@@ -1443,12 +1443,12 @@ exports.default = react_redux_1.connect(mapStateToProps, {
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
-    reactHotLoader.register(SearchResults_1, "SearchResults_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
-    reactHotLoader.register(Header, "Header", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(SearchResults_1, "SearchResults_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(Header, "Header", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
     leaveModule(module);
 })();
 
@@ -1648,10 +1648,10 @@ exports.default = react_redux_1.connect(undefined, { startLogin: auth_1.startLog
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(awsCognito, "awsCognito", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(LoginPage, "LoginPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(awsCognito, "awsCognito", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(LoginPage, "LoginPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
     leaveModule(module);
 })();
 
@@ -1736,9 +1736,9 @@ exports.default = Modal;
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
-    reactHotLoader.register(Modal, "Modal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
+    reactHotLoader.register(Modal, "Modal", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
     leaveModule(module);
 })();
 
@@ -1799,12 +1799,12 @@ exports.default = react_redux_1.connect(mapStateToProps)(ModalContainer);
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(NewWordModal_1, "NewWordModal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(MODAL_COMPONENTS, "MODAL_COMPONENTS", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(ModalContainer, "ModalContainer", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(NewWordModal_1, "NewWordModal_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(MODAL_COMPONENTS, "MODAL_COMPONENTS", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(ModalContainer, "ModalContainer", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
     leaveModule(module);
 })();
 
@@ -1847,9 +1847,9 @@ exports.default = NotFoundPage;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(NotFoundPage, "NotFoundPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(NotFoundPage, "NotFoundPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
     leaveModule(module);
 })();
 
@@ -1885,22 +1885,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 class ProfilePage extends react_1.Component {
-    // public componentDidMount() {
-    //   Axios
-    //     .get(
-    //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/files/profile.jpg'
-    //     )
-    //     .then(resp => {
-    //       this.setState({
-    //         url: resp.data
-    //       })
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
-    // }
     render() {
-        return react_1.default.createElement("div", null, react_1.default.createElement("div", null, "Profile Picture:", react_1.default.createElement("p", null, react_1.default.createElement("img", { src: this.props.profileImage }))), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Name: ", this.props.firstname, " ", this.props.lastname)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Username: ", this.props.username)), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Email: ", this.props.email)));
+        return react_1.default.createElement("div", { className: "profile-page" }, react_1.default.createElement("div", { className: "profile-pic-div" }, react_1.default.createElement("div", { className: "profile-image", style: {
+                background: `url(${this.props.profileImage})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: '50% 50%',
+                width: 300,
+                height: 300
+            } })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("p", { className: "title" }, "Name: ", this.props.firstname, " ", this.props.lastname), react_1.default.createElement("p", { className: "title" }, "Username: ", this.props.username), react_1.default.createElement("p", { className: "title" }, "Email: ", this.props.email), react_1.default.createElement("p", { className: "title" }, "Wordcount: ", this.props.words.length)), react_1.default.createElement("div", { className: "fav-words" }, react_1.default.createElement("h1", null, "Favorite Words:"), this.props.topThree.map(word => react_1.default.createElement("div", { className: "fav-word" }, react_1.default.createElement("h2", null, word.word, " "), react_1.default.createElement("p", null, word.definition)))));
     }
 
     // @ts-ignore
@@ -1916,7 +1909,9 @@ const mapStateToProps = state => ({
     email: state.auth.email,
     firstname: state.auth.name,
     lastname: state.auth.last,
-    profileImage: state.auth.profileImage
+    profileImage: state.auth.profileImage,
+    topThree: state.lexica.words.slice(0, 3),
+    words: state.lexica.words
 });
 exports.default = react_redux_1.connect(mapStateToProps)(ProfilePage);
 ;
@@ -1930,10 +1925,10 @@ exports.default = react_redux_1.connect(mapStateToProps)(ProfilePage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(ProfilePage, "ProfilePage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(ProfilePage, "ProfilePage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
     leaveModule(module);
 })();
 
@@ -2121,13 +2116,13 @@ exports.default = react_redux_1.connect(mapStateToProps, null)(SearchResults);
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(matchFound, "matchFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(keywordFound, "keywordFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(SearchResults, "SearchResults", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(matchFound, "matchFound", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(keywordFound, "keywordFound", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(SearchResults, "SearchResults", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
     leaveModule(module);
 })();
 
@@ -2252,8 +2247,8 @@ class SettingsPage extends react_1.Component {
         const { email, username, photo } = this.props;
         let { page, fullname } = this.state;
         page = page.toLowerCase();
-        return react_1.default.createElement("div", { className: "main-body" }, react_1.default.createElement("div", { className: "settings-page" }, react_1.default.createElement("aside", { className: "settings-side-menu" }, react_1.default.createElement("p", { className: page === 'general' ? 'is-active' : null, onClick: this.setPage }, "General"), react_1.default.createElement("p", { className: page === 'password' ? 'is-active' : null, onClick: this.setPage }, "Password"), react_1.default.createElement("p", { className: page === 'transfers' ? 'is-active' : null, onClick: this.setPage }, "Transfers")), this.state.page.toLowerCase() == 'general' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Settings"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange, onSubmit: this.generalUploadHandler }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "photo" }, "Photo"), react_1.default.createElement("div", { className: "photo-container", onClick: () => this.photoUpload.click() }, react_1.default.createElement(react_dropzone_1.default, { onDrop: this.onDrop }, react_1.default.createElement("p", null, "drop files here:")), react_1.default.createElement("p", { className: "text" }, "Edit")), react_1.default.createElement("input", { className: "file-upload", style: { display: 'none' }, name: "file", type: "file", onChange: this.fileSelectedHandler, ref: photoUpload => this.photoUpload = photoUpload, "data-cloudinary-field": "image_id" // ?
-        })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "fullname" }, "Full Name"), react_1.default.createElement("input", { type: "text", name: "fullname", placeholder: fullname })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "email" }, "Email"), react_1.default.createElement("input", { type: "email", name: "email", placeholder: email })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'password' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Reset Password"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "old" }, "Old Password"), react_1.default.createElement("input", { type: "text", name: "old" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "new" }, "New Password"), react_1.default.createElement("input", { type: "text", name: "new" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "retype" }, "Retype Password"), react_1.default.createElement("input", { type: "text", name: "retype" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'transfers' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Transfers"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "interest" }, "Charge interest?"), react_1.default.createElement("input", { type: "text", name: "interest" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "amount" }, "Interest amount"), react_1.default.createElement("input", { type: "email", name: "amount" }), react_1.default.createElement("span", null, "%")), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes"))))));
+        return react_1.default.createElement("div", { className: "main-body" }, react_1.default.createElement("div", { className: "settings-page" }, react_1.default.createElement("aside", { className: "settings-side-menu" }, react_1.default.createElement("p", { className: page === 'general' ? 'is-active' : null, onClick: this.setPage }, "General"), react_1.default.createElement("p", { className: page === 'password' ? 'is-active' : null, onClick: this.setPage }, "Password"), react_1.default.createElement("p", { className: page === 'transfers' ? 'is-active' : null, onClick: this.setPage }, "Themes")), this.state.page.toLowerCase() == 'general' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Settings"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange, onSubmit: this.generalUploadHandler }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "photo" }, "Photo"), react_1.default.createElement("div", { className: "photo-container", onClick: () => this.photoUpload.click() }, react_1.default.createElement(react_dropzone_1.default, { onDrop: this.onDrop }, react_1.default.createElement("p", null, "drop files here:")), react_1.default.createElement("p", { className: "text" }, "Edit")), react_1.default.createElement("input", { className: "file-upload", style: { display: 'none' }, name: "file", type: "file", onChange: this.fileSelectedHandler, ref: photoUpload => this.photoUpload = photoUpload, "data-cloudinary-field": "image_id" // ?
+        })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "fullname" }, "Full Name"), react_1.default.createElement("input", { type: "text", name: "fullname", placeholder: fullname })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "email" }, "Email"), react_1.default.createElement("input", { type: "email", name: "email", placeholder: email })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'password' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Reset Password"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "old" }, "Old Password"), react_1.default.createElement("input", { type: "text", name: "old" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "new" }, "New Password"), react_1.default.createElement("input", { type: "text", name: "new" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "retype" }, "Retype Password"), react_1.default.createElement("input", { type: "text", name: "retype" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes")))), this.state.page.toLowerCase() == 'themes' && react_1.default.createElement("div", null, react_1.default.createElement("h2", null, "Themes"), react_1.default.createElement("form", { className: "settings-form", onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "interest" }, "Change website theme:"), react_1.default.createElement("input", { type: "text", name: "interest" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("button", { className: "save", type: "submit" }, "Save changes"))))));
     }
 
     // @ts-ignore
@@ -2283,14 +2278,14 @@ exports.default = react_redux_1.connect(mapStateToProps, { startUpdateUser: auth
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(SettingsPage, "SettingsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(SettingsPage, "SettingsPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
     leaveModule(module);
 })();
 
@@ -2389,10 +2384,10 @@ exports.default = react_redux_1.connect(mapStateToProps, { loadModal: modal_1.lo
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(SidebarContent, "SidebarContent", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(SidebarContent, "SidebarContent", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
     leaveModule(module);
 })();
 
@@ -2632,11 +2627,11 @@ exports.default = react_redux_1.connect(undefined, { startSignup: auth_1.startSi
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(AmazonCognitoIdentity, "AmazonCognitoIdentity", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(SignupPage, "SignupPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(AmazonCognitoIdentity, "AmazonCognitoIdentity", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(SignupPage, "SignupPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
     leaveModule(module);
 })();
 
@@ -2713,14 +2708,14 @@ exports.default = react_redux_1.connect(mapStateToProps)(TagsPage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(TopicsListWord_1, "TopicsListWord_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(TagsPage, "TagsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(TopicsListWord_1, "TopicsListWord_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(TagsPage, "TagsPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
     leaveModule(module);
 })();
 
@@ -2857,10 +2852,10 @@ exports.default = react_router_1.withRouter(react_redux_1.connect(mapStateToProp
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
-    reactHotLoader.register(Textbar, "Textbar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
+    reactHotLoader.register(Textbar, "Textbar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
     leaveModule(module);
 })();
 
@@ -3036,14 +3031,14 @@ exports.default = react_redux_1.connect(mapStateToProps, { startEditTopic: words
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(TopicsList, "TopicsList", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(TopicsList, "TopicsList", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
     leaveModule(module);
 })();
 
@@ -3090,8 +3085,8 @@ exports.default = exports.TopicsListWord;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsListWord.tsx");
     leaveModule(module);
 })();
 
@@ -3275,17 +3270,17 @@ exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(WordPage, "WordPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(WordPage, "WordPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
     leaveModule(module);
 })();
 
@@ -3386,12 +3381,12 @@ exports.default = react_redux_1.connect(mapStateToProps, { startAddWord: words_1
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(Modal_1, "Modal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(NewWordModal, "NewWordModal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(Modal_1, "Modal_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(NewWordModal, "NewWordModal", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
     leaveModule(module);
 })();
 
@@ -3572,7 +3567,7 @@ exports.appReducer = (state = initialState, action = {}) => {
         return;
     }
 
-    reactHotLoader.register(initialState, "initialState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/app.ts");
+    reactHotLoader.register(initialState, "initialState", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/reducers/app.ts");
     leaveModule(module);
 })();
 
@@ -3702,7 +3697,7 @@ exports.modalReducer = (state = initialModalState, action = {}) => {
         return;
     }
 
-    reactHotLoader.register(initialModalState, "initialModalState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/modal.ts");
+    reactHotLoader.register(initialModalState, "initialModalState", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/reducers/modal.ts");
     leaveModule(module);
 })();
 
@@ -3786,12 +3781,12 @@ exports.default = react_hot_loader_1.hot(module)(AppRouter);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(store, "store", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(AppRouter, "AppRouter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(store, "store", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(AppRouter, "AppRouter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
     leaveModule(module);
 })();
 
@@ -3876,14 +3871,14 @@ exports.default = react_redux_1.connect(mapStateToProps, null, null, {
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(Header_1, "Header_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(ModalContainer_1, "ModalContainer_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(PrivateRoute, "PrivateRoute", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(Header_1, "Header_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(ModalContainer_1, "ModalContainer_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(PrivateRoute, "PrivateRoute", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
     leaveModule(module);
 })();
 
@@ -3940,10 +3935,10 @@ exports.default = react_redux_1.connect(mapStateToProps)(exports.PublicRoute);
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
     leaveModule(module);
 })();
 
@@ -4084,27 +4079,27 @@ exports.default = react_redux_1.connect(mapStateToProps)(Pages);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(LoginPage_1, "LoginPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SignupPage_1, "SignupPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(GlossaryPage_1, "GlossaryPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(TagsPage_1, "TagsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(WordPage_1, "WordPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(ProfilePage_1, "ProfilePage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mql, "mql", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(sidebar, "sidebar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(Pages, "Pages", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(LoginPage_1, "LoginPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SignupPage_1, "SignupPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(GlossaryPage_1, "GlossaryPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(TagsPage_1, "TagsPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(WordPage_1, "WordPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(ProfilePage_1, "ProfilePage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mql, "mql", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(sidebar, "sidebar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(Pages, "Pages", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
     leaveModule(module);
 })();
 
@@ -4172,10 +4167,10 @@ exports.configureStore = () => {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
-    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
-    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
-    reactHotLoader.register(composeEnhancers, "composeEnhancers", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
+    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
+    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
+    reactHotLoader.register(composeEnhancers, "composeEnhancers", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
     leaveModule(module);
 })();
 
@@ -4193,7 +4188,7 @@ exports.configureStore = () => {
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197983441
+      // 1530201776733
       var cssReload = __webpack_require__(/*! ../../../node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -23259,7 +23254,7 @@ module.exports.InvalidTokenError = InvalidTokenError;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197982889
+      // 1530201775493
       var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -48023,9 +48018,9 @@ var Dropzone = function (_React$Component) {
         disabledStyle = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].disabled;
       }
 
-      var appliedStyle = _extends({ position: 'relative' }, style);
+      var appliedStyle = _extends({}, style);
       if (activeStyle && isDragActive) {
-        appliedStyle = _extends({}, appliedStyle, activeStyle);
+        appliedStyle = _extends({}, style, activeStyle);
       }
       if (acceptStyle && isDragAccept) {
         appliedStyle = _extends({}, appliedStyle, acceptStyle);
@@ -48034,22 +48029,14 @@ var Dropzone = function (_React$Component) {
         appliedStyle = _extends({}, appliedStyle, rejectStyle);
       }
       if (disabledStyle && disabled) {
-        appliedStyle = _extends({}, appliedStyle, disabledStyle);
+        appliedStyle = _extends({}, style, disabledStyle);
       }
 
       var inputAttributes = {
         accept: accept,
         disabled: disabled,
         type: 'file',
-        style: _extends({
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          opacity: 0.00001,
-          pointerEvents: 'none'
-        }, inputProps.style),
+        style: { display: 'none' },
         multiple: _utils__WEBPACK_IMPORTED_MODULE_2__["supportMultiple"] && multiple,
         ref: this.setRefs,
         onChange: this.onDrop,
@@ -48261,7 +48248,6 @@ Dropzone.defaultProps = {
   disabled: false,
   disablePreview: false,
   disableClick: false,
-  inputProps: {},
   multiple: true,
   maxSize: Infinity,
   minSize: 0
@@ -55104,7 +55090,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981586
+      // 1530201774857
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55122,7 +55108,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981603
+      // 1530201774857
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55140,7 +55126,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981609
+      // 1530201774888
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55158,7 +55144,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981614
+      // 1530201774904
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55176,7 +55162,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981620
+      // 1530201774935
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55194,7 +55180,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981593
+      // 1530201774888
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55212,7 +55198,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981636
+      // 1530201774888
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55230,7 +55216,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981597
+      // 1530201774873
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55248,7 +55234,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981631
+      // 1530201774904
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55266,7 +55252,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981653
+      // 1530201774920
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55284,7 +55270,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981642
+      // 1530201774920
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55302,7 +55288,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981670
+      // 1530201774920
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55320,7 +55306,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981676
+      // 1530201774935
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55338,7 +55324,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530197981685
+      // 1530201774935
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
