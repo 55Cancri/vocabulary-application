@@ -4,10 +4,11 @@ import { TopicsListWord } from './TopicsListWord'
 import { Link } from 'react-router-dom'
 
 interface IState {
-  words: any
-  topics: any
-  tags: any
-  // results: any
+    words: any,
+    topics: any,
+    tags: any,
+    activeTag: any
+    // results: any
 }
 
 interface IProps {
@@ -41,12 +42,7 @@ export class SearchResults extends Component<IProps, IState> {
     tags: this.props.tags,
     resultElements: []
   }
-
-  //@ts-ignore
-  componentDidMount = () => {
-    // console.log(this.state.tags)
-  }
-
+  
   //@ts-ignore
   componentWillReceiveProps = (props, nextProps) => {
     // console.log('Input so far: ', props.term)
@@ -217,10 +213,13 @@ export class SearchResults extends Component<IProps, IState> {
 }
 
 const mapStateToProps = (state): IState => {
+
   return {
     words: state.lexica.words,
     topics: state.lexica.topics,
     tags: state.lexica.tags
+    activeTag: state.lexica.activeTag
+
     //   results: state.lexica.results
   }
 }

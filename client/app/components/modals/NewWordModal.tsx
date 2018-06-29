@@ -12,7 +12,7 @@ interface IProps extends RouteComponentProps<any> {
   startAddWord: any
   onChange: any
   username: string
-  topics
+  topics: any
 }
 
 interface IState {
@@ -27,7 +27,14 @@ export class NewWordModal extends Component<IProps, IState> {
     topic: '',
     word: '',
     definition: '',
-    tags: ''
+    tags: '',
+    
+  }
+
+  //@ts-ignore
+  componentDidMount = () => {
+    console.log(this.props.topics)
+    // console.log(this.state.topics)
   }
 
   onClose = () => this.props.hideModal()
@@ -37,6 +44,13 @@ export class NewWordModal extends Component<IProps, IState> {
     this.setState({
       [name]: value
     } as any)
+  }
+
+  selectTopic = e => {
+    console.log(e.target.value)
+    // console.log(this.state.topic)
+    this.setState({topic: e.target.value})
+    // console.log(this.state.topic)
   }
 
   handleSubmit = e => {
@@ -83,6 +97,7 @@ export class NewWordModal extends Component<IProps, IState> {
           <h2 className="title">New word</h2>
           <div className="close" onClick={this.onClose}>
             <FontAwesomeIcon icon="times" />
+
           </div>
         </div>
         <form
