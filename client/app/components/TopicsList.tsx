@@ -203,6 +203,7 @@ const mapStateToProps = state => ({
   words: state.lexica.words,
   topics: state.lexica.topics,
   tags: state.lexica.tags,
+  activeTag: state.lexica.activeTag,
   results: state.lexica.results,
   dataIsHere: state.app.dataIsHere,
   details: state.app.details
