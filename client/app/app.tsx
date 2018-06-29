@@ -49,5 +49,6 @@ fontawesome.library.add(
 )
 
 import './styles/styles.sass'
+import 'react-toggle/style.css'
 
 render(<AppRouter />, document.getElementById('root'))

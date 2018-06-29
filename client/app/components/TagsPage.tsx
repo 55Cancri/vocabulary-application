@@ -17,16 +17,21 @@ export class TagsPage extends Component<IProps> {
       <div className="tags-page">
         <Textbar />
         <div>
-          {tags === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+          {tags === undefined && (
+            <Spinner
+              className="loading-indicator"
+              name="ball-spin-fade-loader"
+            />
+          )}
           {tags !== undefined &&
             tags.length === 0 && <p>You have not created any tags yet.</p>}
           {tags !== undefined &&
             tags.map(tag => (
-              <div key={tag}>
-                <h2 id={tag}>{tag}</h2>
+              <div key={tag.uid}>
+                <h2 id={tag.uid}>{tag.tag}</h2>
                 {words !== undefined &&
                   words.map(word => {
-                    if (word.tags.includes(tag))
+                    if (word.uid === tag.wordOwner)
                       return <TopicsListWord key={word.uid} word={word} />
                   })}
               </div>

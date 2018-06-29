@@ -16,7 +16,12 @@ export class GlossaryPage extends Component<IProps> {
       <div className="glossary-page">
         <Textbar />
         <div>
-          {words === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+          {words === undefined && (
+            <Spinner
+              className="loading-indicator"
+              name="ball-spin-fade-loader"
+            />
+          )}
           {words !== undefined &&
             words.length === 0 && <p>You have not added any words yet.</p>}
           {words !== undefined &&

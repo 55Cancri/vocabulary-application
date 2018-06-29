@@ -96,9 +96,37 @@ export class Pages extends Component<IProps, IState> {
   // @ts-ignore
   // shouldComponentUpdate = () => false
 
-  // convert sidebar routes back to PrivateRoute
   // @ts-ignore
   render = () => {
+    const sidebarStyles = {
+      root: {
+        // Position above overlays or other high z-index elements your app might use
+        zIndex: 100000,
+        // Detach from right and bottom screen edges as it blocks underlying content
+        // This also has the effect of shrinking the component to a width and height of 0
+        right: 'auto',
+        bottom: 'auto',
+        // Allow child sidebar elements to render now that element has collapsed
+        overflow: 'visible'
+      },
+      content: {
+        // Detach from right and bottom screen edges as it blocks underlying content (collapses element)
+        left: 'auto',
+        bottom: 'auto',
+        // The dragHandle is inside content element for some reason.
+        // Allow it to render now that the parent is collapsed.
+        overflow: 'visible'
+      },
+      sidebar: {
+        // Make sidebar fixed, like dragHandle is by default
+        position: 'fixed'
+      },
+      overlay: {
+        // Enable/disable overlay interactivity based on open/closed state
+        // pointer-events browser support: IE11+
+        pointerEvents: 'auto'
+      }
+    }
     return (
       <Router history={history}>
         <Switch>
@@ -107,11 +135,15 @@ export class Pages extends Component<IProps, IState> {
           <PublicRoute path="/login" component={LoginPage} />
           <Sidebar
             sidebar={sidebar}
+            // @ts-ignore
+            // styles={sidebarStyles}
             open={this.state.sidebarOpen}
             docked={this.state.sidebarDocked}
             onSetOpen={this.onSetSidebarOpen}
             sidebarClassName="sidebar"
-            transitions={false}
+            rootClassName="root-class"
+            contentClassName="content-class"
+            overlayClassName="overlay-class"
           >
             <PrivateRoute path="/dashboard" component={DashboardPage} />
             <PrivateRoute path="/glossary" component={GlossaryPage} />

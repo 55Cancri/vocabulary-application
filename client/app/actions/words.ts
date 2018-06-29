@@ -15,6 +15,7 @@ export const updatedTopics = user => ({
   type: 'NEW_TOPIC',
   user
 })
+
 export const deleteTopic = user => ({
   type: 'DELETE_TOPIC',
   user

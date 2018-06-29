@@ -11,6 +11,7 @@ interface IProps extends RouteComponentProps<any> {
   startAddWord: any
   onChange: any
   username: string
+  topics
 }
 
 interface IState {
@@ -39,12 +40,34 @@ export class NewWordModal extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
+
+    // dark blue, sky blue, red, lime, turqouise, orange, violet
+    const colors = [
+      '#034182',
+      '#118df0',
+      '#ff4a68',
+      '#8eba43',
+      '#02bd9d',
+      '#f8aa27',
+      '#ba69de'
+    ]
+
     const { word, definition, topic, tags: stateTags } = this.state
     const { username: owner, startAddWord } = this.props
-    // split tags by: [comma] / space
-    const tags = stateTags.split(',')
+
     const uid = generateUuid()
     const topicUid = generateUuid()
+
+    let wordTags = stateTags.split(',')
+
+    const tags = wordTags.map(tag => ({
+      tag,
+      wordOwner: uid,
+      uid: generateUuid(),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      deleted: false
+    }))
+
     const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
 
     startAddWord(nextWord).then(() => this.onClose())
@@ -53,6 +76,7 @@ export class NewWordModal extends Component<IProps, IState> {
   // @ts-ignore
   render = () => {
     const { word, tags, topic, definition } = this.state
+    const { topics } = this.props
     return (
       <Modal onClose={this.onClose}>
         <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
@@ -67,6 +91,14 @@ export class NewWordModal extends Component<IProps, IState> {
           <div className="input-group">
             <label htmlFor="topic">Add topic</label>
             <input type="text" name="topic" value={topic} />
+            {/* <select>
+              {topics !== undefined &&
+                topics.map(topic => (
+                  <option key={topic.uid} value={topic.topic}>
+                    {topic.topic}
+                  </option>
+                ))}
+            </select> */}
           </div>
           <div className="input-group">
             <label htmlFor="definition">Definition</label>
@@ -84,7 +116,8 @@ export class NewWordModal extends Component<IProps, IState> {
 }
 
 const mapStateToProps = state => ({
-  username: state.auth.username
+  username: state.auth.username,
+  topics: state.lexica.topics
 })
 
 // mapStateToProps -- to read from the store
