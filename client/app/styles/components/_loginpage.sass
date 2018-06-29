@@ -10,25 +10,31 @@
     height: 100vh
     width: 100vw
     // background: url("https://image.ibb.co/jqyfVJ/blur_businesswoman_close_up_407237.jpg") no-repeat
+    // background-color: red
     background-size: cover
     background-position: 6%
-    -webkit-filter: grayscale(100%) brightness(100%)
-    -moz-filter: grayscale(100%) brightness(100%)
-    -o-filter: grayscale(100%) brightness(100%)
-    -ms-filter: grayscale(100%) brightness(100%)
-    filter: grayscale(100%) brightness(100%)
+    // -webkit-filter: grayscale(100%) brightness(100%)
+    // -moz-filter: grayscale(100%) brightness(100%)
+    // -o-filter: grayscale(100%) brightness(100%)
+    // -ms-filter: grayscale(100%) brightness(100%)
+    // filter: grayscale(100%) brightness(100%)
     opacity: 1
     z-index: -1
 
   .login-form
+    display: grid
+    grid-template-columns: 1fr
     width: 35vw
     max-width: 600px
-    padding: 30px 55px 45px
-    border-radius: 10px
-    background-color: rgba(255, 255, 255, .8)
+    padding: 40px 55px
+    // padding: 30px 55px 45px
+    border-radius: 3px
+    background-color: rgba(255, 255, 255, 1)
+    // background-color: rgba(255, 255, 255, .8)
   
     .input-group
-      margin: 20px 0
+      display: grid
+      margin: 10px 0
 
       .title
         padding-bottom: 5px
@@ -42,10 +48,11 @@
           padding: 10px 0 5px
       
       input
-        height: 42px
-        border-radius: 5px
-        font-size: 24px
-        background-color: lighten($buttongrey, 6%)
+        height: 35px
+        padding: 10px 15px
+        border-radius: 3px
+        font-size: 21px
+        background-color: lighten(lightgrey, 10%)
         color: $sidebar-black
         opacity: .8
 
@@ -65,8 +72,13 @@
       font-size: 18px
 
     .login-button
-      margin: 15px 0 0
+      padding: 8px 15px
+      margin: 15px 0 5px
       width: 100%
+      border: none
+      border-radius: 3px
+      font: 500 22px montserrat, sans-serif
+      color: $white
       background-color: $create-blue
 
     .switch-auth-form
