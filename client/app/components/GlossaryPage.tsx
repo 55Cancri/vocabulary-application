@@ -27,8 +27,8 @@ export class GlossaryPage extends Component<IProps> {
           {words !== undefined &&
             words.map(word => (
               <Link to={`/word/${word.uid}`} key={word.uid}>
-                <h2>{word.word}</h2>
-                <p>{word.definition}</p>
+                <h2 className="title">{word.word}</h2>
+                <p className="definition">{word.definition}</p>
               </Link>
             ))}
         </div>

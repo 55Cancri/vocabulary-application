@@ -155,7 +155,7 @@ export class TopicsList extends Component<IProps> {
               {!words.some(word => word.topic === topic.uid) && (
                 <p className="word-empty">No words yet.</p>
               )}
-              {words.map(word => {
+              {words.map((word, i) => {
                 if (word.topic === topic.uid)
                   return (
                     <TopicsListWord
@@ -166,6 +166,7 @@ export class TopicsList extends Component<IProps> {
                       draggable="true"
                       onDragStart={e => this.handleDrag(e)}
                       className={dragging ? 'drag' : ''}
+                      i={i}
                     />
                   )
               })}

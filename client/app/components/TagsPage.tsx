@@ -27,12 +27,19 @@ export class TagsPage extends Component<IProps> {
             tags.length === 0 && <p>You have not created any tags yet.</p>}
           {tags !== undefined &&
             tags.map(tag => (
-              <div key={tag.uid}>
-                <h2 id={tag.uid}>{tag.tag}</h2>
+              <div key={tag.uid} className="tag-group">
+                <h2 id={tag.uid} className="tag-title">
+                  {tag.tag}
+                </h2>
                 {words !== undefined &&
                   words.map(word => {
                     if (word.uid === tag.wordOwner)
-                      return <TopicsListWord key={word.uid} word={word} />
+                      return (
+                        <div className="word-group">
+                          <p className="word-title">{word.word}</p>
+                          <p className="word-definition">{word.definition}</p>
+                        </div>
+                      )
                   })}
               </div>
             ))}

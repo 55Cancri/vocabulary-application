@@ -196,54 +196,56 @@ export class WordPage extends Component<IProps> {
                 />
               )}
             </div>
-              <div className="tags">
-                {tags !== undefined &&
-                  tags.filter(tag => tag.wordOwner === chosen.uid).map(tag => (
-                    <div
-                      key={tag.uid}
-                      style={{
-                        margin: 0,
-                        padding: `5px 10px`,
-                        borderRadius: 3,
-                        backgroundColor: tag.color
-                      }}
-                    >
-                      <p className="tag-text">{tag.tag}</p>
-                    </div>
-                  ))}
-                <FontAwesomeIcon icon="plus" className="add-tag" />
-              </div>
-              {!editingDefinition && (
-                <p data-type="definition" onDoubleClick={this.toggleEdit}>
-                  {checkDefinition && chosen.definition}
-                </p>
-              )}
-              {editingDefinition && (
-                <AutosizeInput
-                  className="edit-definition"
-                  data-type="definition"
-                  value={definition}
-                  onChange={this.handleChange}
-                  onKeyPress={this.handleSubmit}
-                  style={{ fontSize: 24 }}
+            <div className="tags">
+              {tags !== undefined &&
+                tags.filter(tag => tag.wordOwner === chosen.uid).map(tag => (
+                  <div
+                    key={tag.uid}
+                    style={{
+                      margin: 0,
+                      padding: `5px 10px`,
+                      borderRadius: 3,
+                      backgroundColor: tag.color
+                    }}
+                  >
+                    <p className="tag-text">{tag.tag}</p>
+                  </div>
+                ))}
+              <FontAwesomeIcon icon="plus" className="add-tag" />
+            </div>
+            {!editingDefinition && (
+              <p data-type="definition" onDoubleClick={this.toggleEdit}>
+                {checkDefinition && chosen.definition}
+              </p>
+            )}
+            {editingDefinition && (
+              <AutosizeInput
+                className="edit-definition"
+                data-type="definition"
+                value={definition}
+                onChange={this.handleChange}
+                onKeyPress={this.handleSubmit}
+                style={{ fontSize: 24 }}
+              />
+            )}
+            {chosen !== undefined &&
+              chosen.images !== undefined &&
+              chosen.images.length > 0 && (
+                <ImageGallery
+                  items={
+                    chosen.images !== undefined &&
+                    chosen.images.map(image => ({
+                      original: image.url,
+                      thumbnail: image.url
+                    }))
+                  }
+                  showPlayButton={false}
+                  autoPlay={true}
                 />
               )}
-              <Dropzone onDrop={this.handleDrop}>
-                <p>drop files here:</p>
-              </Dropzone>
-              {chosen !== undefined &&
-                chosen.images !== undefined &&
-                chosen.images.length > 0 && (
-                  <ImageGallery
-                    items={
-                      chosen.images !== undefined &&
-                      chosen.images.map(image => ({
-                        original: image.url,
-                        thumbnail: image.url
-                      }))
-                    }
-                  />
-                )}
+            <Dropzone onDrop={this.handleDrop} className="dropzone">
+              <p className="add-images">+ add images</p>
+            </Dropzone>
           </div>
         )}
       </div>

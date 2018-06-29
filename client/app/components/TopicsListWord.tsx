@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import ImageGallery from 'react-image-gallery'
 
 export const TopicsListWord = props => {
-  const { word, tags, details } = props
+  const { word, tags, details, i } = props
   return (
     <div key={word.uid} className="word-group-in-main-list">
       <Link to={`/word/${word.uid}`}>
@@ -54,6 +54,8 @@ export const TopicsListWord = props => {
             // useBrowserFullscreen={false}
             showThumbnails={false}
             showPlayButton={false}
+            autoPlay={true}
+            slideInterval={5000 + i * 500}
           />
         )}
     </div>

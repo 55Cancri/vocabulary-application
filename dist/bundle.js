@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5a727d35473f6d1be945"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b9723ceb1a569389834a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -817,6 +817,10 @@ exports.updateTextbar = uid => ({
     uid
 });
 exports.startUpdateTextbar = uid => dispatch => dispatch(exports.updateTextbar(uid));
+exports.setDetails = () => ({
+    type: 'SET_DETAILS'
+});
+exports.startSetDetails = () => dispatch => dispatch(exports.setDetails());
 exports.deleteAccount = user => ({
     type: 'DELETE',
     user
@@ -839,8 +843,8 @@ exports.startNuke = email => dispatch => api_1.default.user.nuke(email).then(use
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/app.ts");
-    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/app.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/app.ts");
     leaveModule(module);
 })();
 
@@ -933,8 +937,8 @@ exports.startLogout = () => dispatch => {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/auth.ts");
-    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/auth.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/auth.ts");
     leaveModule(module);
 })();
 
@@ -1010,7 +1014,7 @@ exports.deleteTopic = user => ({
 exports.startAddWord = word => dispatch => api_1.default.lexica.addWord(word).then(data => dispatch(exports.addedWords(data)));
 exports.startEditWord = word => dispatch => api_1.default.lexica.updateWord(word).then(data => dispatch(exports.updatedWords(data)));
 exports.startDeleteWord = word => dispatch => api_1.default.lexica.deleteWord(word).then(data => dispatch(exports.updatedWords(data)));
-exports.startAddImageToWord = image => dispatch => api_1.default.lexica.addImage(image).then(data => dispatch(exports.updatedTopics(data)));
+exports.startAddImageToWord = image => dispatch => api_1.default.lexica.addImage(image).then(data => dispatch(exports.updatedWords(data)));
 exports.startAddTopic = topic => dispatch => api_1.default.lexica.addTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
 exports.startEditTopic = topic => dispatch => api_1.default.lexica.updateTopic(topic).then(data => dispatch(exports.updatedTopics(data)));
 exports.startDeleteTopic = topic => dispatch => api_1.default.lexica.deleteTopic(topic).then(data => dispatch(exports.deleteTopic(data)));
@@ -1029,8 +1033,8 @@ exports.search = results => ({
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/words.ts");
-    reactHotLoader.register(api_1, "api_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/actions/words.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
+    reactHotLoader.register(api_1, "api_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/actions/words.ts");
     leaveModule(module);
 })();
 
@@ -1121,19 +1125,19 @@ exports.default = {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(authAxios, "authAxios", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(signupUrl, "signupUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(loginUrl, "loginUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(persistUrl, "persistUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(addWordUrl, "addWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(updateWordUrl, "updateWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(addTopicUrl, "addTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
-    reactHotLoader.register(deleteTopicUrl, "deleteTopicUrl", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/api.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(authAxios, "authAxios", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(signupUrl, "signupUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(loginUrl, "loginUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(persistUrl, "persistUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addWordUrl, "addWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(updateWordUrl, "updateWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addWordImageUrl, "addWordImageUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(deleteWordUrl, "deleteWordUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(addTopicUrl, "addTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(updateTopicUrl, "updateTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
+    reactHotLoader.register(deleteTopicUrl, "deleteTopicUrl", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/api.ts");
     leaveModule(module);
 })();
 
@@ -1169,6 +1173,7 @@ const fontawesome_1 = __importDefault(__webpack_require__(/*! @fortawesome/fonta
 const fontawesome_free_solid_1 = __webpack_require__(/*! @fortawesome/fontawesome-free-solid */ "./node_modules/@fortawesome/fontawesome-free-solid/index.es.js");
 fontawesome_1.default.library.add(fontawesome_free_solid_1.faTimes, fontawesome_free_solid_1.faEllipsisH, fontawesome_free_solid_1.faBars, fontawesome_free_solid_1.faSearch, fontawesome_free_solid_1.faBell, fontawesome_free_solid_1.faHome, fontawesome_free_solid_1.faCaretDown, fontawesome_free_solid_1.faAngleLeft, fontawesome_free_solid_1.faAngleDown, fontawesome_free_solid_1.faAngleRight, fontawesome_free_solid_1.faArrowLeft, fontawesome_free_solid_1.faPlus, fontawesome_free_solid_1.faDollarSign, fontawesome_free_solid_1.faShoppingCart, fontawesome_free_solid_1.faSlidersH, fontawesome_free_solid_1.faSitemap, fontawesome_free_solid_1.faEraser, fontawesome_free_solid_1.faTrash, fontawesome_free_solid_1.faUpload, fontawesome_free_solid_1.faGlobe);
 __webpack_require__(/*! ./styles/styles.sass */ "./client/app/styles/styles.sass");
+__webpack_require__(/*! react-toggle/style.css */ "./node_modules/react-toggle/style.css");
 react_dom_1.render(react_1.default.createElement(AppRouters_1.default, null), document.getElementById('root'));
 ;
 
@@ -1181,10 +1186,10 @@ react_dom_1.render(react_1.default.createElement(AppRouters_1.default, null), do
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
-    reactHotLoader.register(AppRouters_1, "AppRouters_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
-    reactHotLoader.register(fontawesome_1, "fontawesome_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/app.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(AppRouters_1, "AppRouters_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
+    reactHotLoader.register(fontawesome_1, "fontawesome_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/app.tsx");
     leaveModule(module);
 })();
 
@@ -1229,10 +1234,10 @@ exports.default = exports.DashboardPage;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
-    reactHotLoader.register(TopicsList_1, "TopicsList_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
+    reactHotLoader.register(TopicsList_1, "TopicsList_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/DashboardPage.tsx");
     leaveModule(module);
 })();
 
@@ -1279,7 +1284,7 @@ class GlossaryPage extends react_1.Component {
         // @ts-ignore
         this.render = () => {
             const { words } = this.props;
-            return react_1.default.createElement("div", { className: "glossary-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, words === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), words !== undefined && words.length === 0 && react_1.default.createElement("p", null, "You have not added any words yet."), words !== undefined && words.map(word => react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}`, key: word.uid }, react_1.default.createElement("h2", null, word.word), react_1.default.createElement("p", null, word.definition)))));
+            return react_1.default.createElement("div", { className: "glossary-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, words === undefined && react_1.default.createElement(react_spinkit_1.default, { className: "loading-indicator", name: "ball-spin-fade-loader" }), words !== undefined && words.length === 0 && react_1.default.createElement("p", null, "You have not added any words yet."), words !== undefined && words.map(word => react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}`, key: word.uid }, react_1.default.createElement("h2", { className: "title" }, word.word), react_1.default.createElement("p", { className: "definition" }, word.definition)))));
         };
     }
 
@@ -1306,13 +1311,13 @@ exports.default = react_redux_1.connect(mapStateToProps)(GlossaryPage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(GlossaryPage, "GlossaryPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(GlossaryPage, "GlossaryPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/GlossaryPage.tsx");
     leaveModule(module);
 })();
 
@@ -1443,12 +1448,12 @@ exports.default = react_redux_1.connect(mapStateToProps, {
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
-    reactHotLoader.register(SearchResults_1, "SearchResults_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
-    reactHotLoader.register(Header, "Header", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Header.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(SearchResults_1, "SearchResults_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(Header, "Header", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Header.tsx");
     leaveModule(module);
 })();
 
@@ -1648,10 +1653,10 @@ exports.default = react_redux_1.connect(undefined, { startLogin: auth_1.startLog
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(awsCognito, "awsCognito", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
-    reactHotLoader.register(LoginPage, "LoginPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(awsCognito, "awsCognito", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
+    reactHotLoader.register(LoginPage, "LoginPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/LoginPage.tsx");
     leaveModule(module);
 })();
 
@@ -1736,9 +1741,9 @@ exports.default = Modal;
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
-    reactHotLoader.register(Modal, "Modal", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Modal.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
+    reactHotLoader.register(Modal, "Modal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Modal.tsx");
     leaveModule(module);
 })();
 
@@ -1799,12 +1804,12 @@ exports.default = react_redux_1.connect(mapStateToProps)(ModalContainer);
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(NewWordModal_1, "NewWordModal_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(MODAL_COMPONENTS, "MODAL_COMPONENTS", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(ModalContainer, "ModalContainer", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(NewWordModal_1, "NewWordModal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(MODAL_COMPONENTS, "MODAL_COMPONENTS", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(ModalContainer, "ModalContainer", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ModalContainer.tsx");
     leaveModule(module);
 })();
 
@@ -1847,9 +1852,9 @@ exports.default = NotFoundPage;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
-    reactHotLoader.register(NotFoundPage, "NotFoundPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
+    reactHotLoader.register(NotFoundPage, "NotFoundPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/NotFoundPage.tsx");
     leaveModule(module);
 })();
 
@@ -1925,10 +1930,10 @@ exports.default = react_redux_1.connect(mapStateToProps)(ProfilePage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(ProfilePage, "ProfilePage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(ProfilePage, "ProfilePage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/ProfilePage.tsx");
     leaveModule(module);
 })();
 
@@ -2041,21 +2046,27 @@ class SearchResults extends react_1.Component {
             // console.log('Results: ', results)
             switch (keyword) {
                 case 'tags':
-                    // Some logic
-                    for (let t of termItems) {
-                        // console.log(words[0].tags)
-                        // console.log(words.filter(word => word.tags.includes(t)))
-                        allResults.push(words.filter(word => word.tags.includes(t)));
-                    }
-                    console.log(allResults);
-                    for (let i = 0; i < allResults.length; i++) {
-                        for (let j of allResults[i]) {
-                            if (!finalResults.includes(j)) {
-                                finalResults.push(j);
-                            }
-                        }
-                    }
+                    termItems.map(char => {
+                        const stage1 = this.props.tags.filter(tag => tag.tag.includes(char));
+                        allResults.push(stage1);
+                        allResults.filter(result => !finalResults.includes(result) && finalResults.push(result));
+                    });
                     return finalResults;
+                // Some logic
+                // for (let t of termItems) {
+                // console.log(words[0].tags)
+                // console.log(words.filter(word => word.tags.includes(t)))
+                //   allResults.push(words.filter(word => word.tags.includes(t)))
+                // }
+                // console.log(allResults)
+                // for (let i = 0; i < allResults.length; i++) {
+                //   for (let j of allResults[i]) {
+                //     if (!finalResults.includes(j)) {
+                //       finalResults.push(j)
+                //     }
+                //   }
+                // }
+                // return finalResults
                 // console.log(finalResults)
                 // To remove duplicate words
                 // for(let i=0; i<results.length; ++i) {
@@ -2073,6 +2084,52 @@ class SearchResults extends react_1.Component {
             }
         };
     }
+    //   keyFilter = term => {
+    //     console.log('Stepped into keyFilter')
+    //     let keyword = term.substring(0, term.indexOf(':'))
+    //     let words = this.props.words
+    //     let termItems = term
+    //       .substring(term.indexOf(':') + 2, term.length)
+    //       .split(' ')
+    //     let allResults = []
+    //     let finalResults = []
+    //     // console.log(keyword)
+    //     // console.log(words)
+    //     // console.log('Tags to search: ', termItems)
+    //     // console.log('Results: ', results)
+    //     switch (keyword) {
+    //       case 'tags':
+    //         // Some logic
+    //         for (let t of termItems) {
+    //           // console.log(words[0].tags)
+    //           // console.log(words.filter(word => word.tags.includes(t)))
+    //           allResults.push(words.filter(word => word.tags.includes(t)))
+    //         }
+    //         console.log(allResults)
+    //         for (let i = 0; i < allResults.length; i++) {
+    //           for (let j of allResults[i]) {
+    //             if (!finalResults.includes(j)) {
+    //               finalResults.push(j)
+    //             }
+    //           }
+    //         }
+    //         return finalResults
+    //       // console.log(finalResults)
+    //       // To remove duplicate words
+    //       // for(let i=0; i<results.length; ++i) {
+    //       //     for(let j=i+1; j<results.length; ++j) {
+    //       //         if(results[i] === results[j])
+    //       //             results.splice(j--, 1);
+    //       //     }
+    //       // }
+    //       case 'topic':
+    //         // More logic
+    //         return words
+    //       default:
+    //         // Do nothing
+    //         return words
+    //     }
+    //   }
     // buildResults = () => {
     //     this.state.resultPool.forEach(e => {
     //         console.log('Result object', e)
@@ -2085,7 +2142,7 @@ class SearchResults extends react_1.Component {
     //     return this.state.resultElements
     // }
     render() {
-        return react_1.default.createElement("section", { className: this.props.inputState ? 'section focus' : 'section blur' }, react_1.default.createElement("div", { className: "search-results-bg" }), react_1.default.createElement("div", { className: 'search-results' }, react_1.default.createElement("h1", null, "Results"), keywordFound(this.props.term) ? this.props.words !== undefined && this.keyFilter(this.props.term).map(word => react_1.default.createElement("div", { key: word.uid }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word)))) : this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word => react_1.default.createElement("div", { key: word.uid }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word))))));
+        return react_1.default.createElement("section", { className: this.props.inputState ? 'section focus' : 'section blur' }, react_1.default.createElement("div", { className: "search-results-bg" }), react_1.default.createElement("div", { className: "search-results" }, react_1.default.createElement("h1", { className: "title" }, "Results"), keywordFound(this.props.term) ? this.props.words !== undefined && this.keyFilter(this.props.term).map(word => react_1.default.createElement("div", { key: word.uid, className: "word" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word)))) : this.props.words !== undefined && this.props.words.filter(matchFound(this.props.term)).map(word => react_1.default.createElement("div", { key: word.uid, className: "word" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("p", null, word.word))))));
     }
 
     // @ts-ignore
@@ -2116,13 +2173,13 @@ exports.default = react_redux_1.connect(mapStateToProps, null)(SearchResults);
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(matchFound, "matchFound", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(keywordFound, "keywordFound", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(SearchResults, "SearchResults", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(matchFound, "matchFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(keywordFound, "keywordFound", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(SearchResults, "SearchResults", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SearchResults.tsx");
     leaveModule(module);
 })();
 
@@ -2278,14 +2335,14 @@ exports.default = react_redux_1.connect(mapStateToProps, { startUpdateUser: auth
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(SettingsPage, "SettingsPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(SettingsPage, "SettingsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SettingsPage.tsx");
     leaveModule(module);
 })();
 
@@ -2384,10 +2441,10 @@ exports.default = react_redux_1.connect(mapStateToProps, { loadModal: modal_1.lo
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(SidebarContent, "SidebarContent", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(SidebarContent, "SidebarContent", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SidebarContent.tsx");
     leaveModule(module);
 })();
 
@@ -2627,11 +2684,11 @@ exports.default = react_redux_1.connect(undefined, { startSignup: auth_1.startSi
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(AmazonCognitoIdentity, "AmazonCognitoIdentity", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
-    reactHotLoader.register(SignupPage, "SignupPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(AmazonCognitoIdentity, "AmazonCognitoIdentity", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
+    reactHotLoader.register(SignupPage, "SignupPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/SignupPage.tsx");
     leaveModule(module);
 })();
 
@@ -2671,15 +2728,14 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/re
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const react_spinkit_1 = __importDefault(__webpack_require__(/*! react-spinkit */ "./node_modules/react-spinkit/dist/index.js"));
 const Textbar_1 = __importDefault(__webpack_require__(/*! ./Textbar */ "./client/app/components/Textbar.tsx"));
-const TopicsListWord_1 = __importDefault(__webpack_require__(/*! ./TopicsListWord */ "./client/app/components/TopicsListWord.tsx"));
 class TagsPage extends react_1.Component {
     constructor() {
         super(...arguments);
         // @ts-ignore
         this.render = () => {
             const { words, tags } = this.props;
-            return react_1.default.createElement("div", { className: "tags-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, tags === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), tags !== undefined && tags.length === 0 && react_1.default.createElement("p", null, "You have not created any tags yet."), tags !== undefined && tags.map(tag => react_1.default.createElement("div", { key: tag }, react_1.default.createElement("h2", { id: tag }, tag), words !== undefined && words.map(word => {
-                if (word.tags.includes(tag)) return react_1.default.createElement(TopicsListWord_1.default, { key: word.uid, word: word });
+            return react_1.default.createElement("div", { className: "tags-page" }, react_1.default.createElement(Textbar_1.default, null), react_1.default.createElement("div", null, tags === undefined && react_1.default.createElement(react_spinkit_1.default, { className: "loading-indicator", name: "ball-spin-fade-loader" }), tags !== undefined && tags.length === 0 && react_1.default.createElement("p", null, "You have not created any tags yet."), tags !== undefined && tags.map(tag => react_1.default.createElement("div", { key: tag.uid, className: "tag-group" }, react_1.default.createElement("h2", { id: tag.uid, className: "tag-title" }, tag.tag), words !== undefined && words.map(word => {
+                if (word.uid === tag.wordOwner) return react_1.default.createElement("div", { className: "word-group" }, react_1.default.createElement("p", { className: "word-title" }, word.word), react_1.default.createElement("p", { className: "word-definition" }, word.definition));
             })))));
         };
     }
@@ -2708,14 +2764,13 @@ exports.default = react_redux_1.connect(mapStateToProps)(TagsPage);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(TopicsListWord_1, "TopicsListWord_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(TagsPage, "TagsPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(TagsPage, "TagsPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TagsPage.tsx");
     leaveModule(module);
 })();
 
@@ -2747,14 +2802,19 @@ var __importStar = this && this.__importStar || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const react_router_1 = __webpack_require__(/*! react-router */ "./node_modules/react-router/es/index.js");
 const react_router_hash_link_1 = __webpack_require__(/*! react-router-hash-link */ "./node_modules/react-router-hash-link/lib/index.js");
 // import ScrollSpy from 'react-scrollspy'
+const react_toggle_1 = __importDefault(__webpack_require__(/*! react-toggle */ "./node_modules/react-toggle/dist/component/index.js"));
 const helpers_1 = __webpack_require__(/*! ../helpers/helpers */ "./client/app/helpers/helpers.ts");
 const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
+const app_1 = __webpack_require__(/*! ../actions/app */ "./client/app/actions/app.ts");
 class Textbar extends react_1.Component {
     constructor() {
         super(...arguments);
@@ -2762,7 +2822,8 @@ class Textbar extends react_1.Component {
             topics: [],
             numberOfTopics: 0,
             topicName: '',
-            editing: false
+            editing: false,
+            button: false
         };
         this.listenKeyboard = e => {
             if (e.keyCode === 27 || e.key === 'Escape') this.setState({ editing: false });
@@ -2773,6 +2834,8 @@ class Textbar extends react_1.Component {
                 [name]: value
             });
         };
+        // this.setState({ button: !this.state.button })
+        this.handleDetailsChange = () => this.props.startSetDetails();
         this.handleAddTopic = () => {
             this.setState({ editing: true });
         };
@@ -2797,9 +2860,9 @@ class Textbar extends react_1.Component {
         // inputEl!: any
         // @ts-ignore
         this.render = () => {
-            const { words, topics, tags, match, position } = this.props;
+            const { words, topics, tags, match, position, details } = this.props;
             const { editing, topicName } = this.state;
-            return react_1.default.createElement("div", { className: "textbar-container" }, match.path === '/dashboard' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Topics"), react_1.default.createElement("p", { className: "subhead" }, topics !== undefined && topics.length, " topics"), react_1.default.createElement("div", { className: "list" }, topics !== undefined &&
+            return react_1.default.createElement("div", { className: "textbar-container" }, match.path === '/dashboard' && react_1.default.createElement("div", { className: "textbar" }, topics !== undefined && react_1.default.createElement("p", { className: "title" }, "Topics"), topics !== undefined && react_1.default.createElement("p", { className: "subhead" }, topics !== undefined && topics.length, " topics"), words !== undefined && words.length > 0 && react_1.default.createElement("div", null, react_1.default.createElement("p", { className: "detail-title" }, "details"), react_1.default.createElement(react_toggle_1.default, { defaultChecked: details, "aria-label": "No label tag", onChange: this.handleDetailsChange, className: "detail-toggler" })), react_1.default.createElement("div", { className: "list" }, topics !== undefined &&
             // <ScrollSpy
             //   items={[...topics.map(topic => topic.uid)]}
             //   currentClassName="active"
@@ -2815,12 +2878,17 @@ class Textbar extends react_1.Component {
                 if (word.topic === topic.uid) return word;
             }).length, "\u00A0words"))
             // </ScrollSpy>
-            ), !editing && react_1.default.createElement("p", { onClick: this.handleAddTopic, className: "add-topic-button" }, "+ Add topic"), editing && react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.handleChange }, react_1.default.createElement("input", { type: "text", name: "topicName", value: topicName, className: "enter-topic-name", placeholder: "Enter topic", onBlur: this.handleBlur, autoFocus: true })))), match.path === '/glossary' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Glossary"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " words")), match.path === '/tags' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Tags"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " tags"), tags !== undefined && tags.map((tag, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${tag}`, key: tag, smooth: "true", scroll: el => el.scrollIntoView({
+            ), !editing && topics !== undefined && react_1.default.createElement("p", { onClick: this.handleAddTopic, className: "add-topic-button" }, "+ Add topic"), editing && topics !== undefined && react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.handleChange }, react_1.default.createElement("input", { type: "text", name: "topicName", value: topicName, className: "enter-topic-name", placeholder: "Enter topic", onBlur: this.handleBlur, autoFocus: true })))), match.path === '/glossary' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Glossary"), react_1.default.createElement("p", { className: "subhead" }, words !== undefined && words.length, " words"), words !== undefined && words.map((word, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${word.uid}`,
+                // href={`#${topic.uid}`}
+                key: word.uid, className: "word-group-in-textbar", smooth: "true", scroll: el => el.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
-                }) }, react_1.default.createElement("p", null, `${tag} (${words.filter(word => {
-                if (word.tags.includes(tag)) return word.word;
-            }).length})`)))), match.path.includes('/word/') && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "word")));
+                }) }, react_1.default.createElement("p", { className: position === word.uid ? 'active glossary-word-name' : 'glossary-word-name' }, word.word)))), match.path === '/tags' && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Tags"), react_1.default.createElement("p", { className: "subhead" }, tags !== undefined && tags.length, " tags"), tags !== undefined && tags.map((tag, i) => react_1.default.createElement(react_router_hash_link_1.HashLink, { to: `#${tag.uid}`, key: tag.uid, smooth: "true", scroll: el => el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                }) }, react_1.default.createElement("p", { className: "tag-name" }, `${tag.tag} (${words.filter(word => {
+                if (word.uid === tag.wordOwner) return word.word;
+            }).length})`)))), match.path.includes('/word/') && react_1.default.createElement("div", { className: "textbar" }, react_1.default.createElement("p", { className: "title" }, "Options"), react_1.default.createElement("p", { className: "word-page-subhead" }, "+ Add tags"), react_1.default.createElement("p", { className: "word-page-subhead" }, "+ Add usage"), react_1.default.createElement("p", { className: "word-page-subhead" }, "+ Add images")));
         };
     }
 
@@ -2838,9 +2906,10 @@ const mapStateToProps = state => ({
     tags: state.lexica.tags,
     username: state.auth.username,
     dataIsHere: state.app.dataIsHere,
-    position: state.app.position
+    position: state.app.position,
+    details: state.app.details
 });
-exports.default = react_router_1.withRouter(react_redux_1.connect(mapStateToProps, { startAddTopic: words_1.startAddTopic })(Textbar));
+exports.default = react_router_1.withRouter(react_redux_1.connect(mapStateToProps, { startAddTopic: words_1.startAddTopic, startSetDetails: app_1.startSetDetails })(Textbar));
 ;
 
 (function () {
@@ -2852,10 +2921,12 @@ exports.default = react_router_1.withRouter(react_redux_1.connect(mapStateToProp
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
-    reactHotLoader.register(Textbar, "Textbar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/Textbar.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(react_toggle_1, "react_toggle_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(Textbar, "Textbar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/Textbar.tsx");
     leaveModule(module);
 })();
 
@@ -2937,31 +3008,23 @@ class TopicsList extends react_1.Component {
             // sets editing = to double clicked word
             this.setState({ editing: e.target.id });
         };
-        this.handleScroll = e => {
-            // this.getBoundingClientRect().top
-            // console.log('scroll', this.stepInput.current)
-            // const el = e.target
-            // console.log(el)
-            // const minPixel = el.offsetTop
-            // const maxPixel = minPixel + el.scrollHeight
-            // const value = document.body.scrollTop
-            // // respect bounds of element
-            // let percent = (value - minPixel) / (maxPixel - minPixel)
-            // percent = Math.min(1, Math.max(percent, 0)) * 100
+        this.handleKeyPress = e => {
+            if (e.key === 'ESCAPE' || e.keyCode === 27) this.setState({ editing: null });
         };
         // @ts-ignore
         this.componentDidMount = () => {
             this.props.topics !== undefined && this.setState({ topics: this.props.topics });
-            window.addEventListener('scroll', this.handleScroll, true);
-            this.setState(this.state);
+            window.addEventListener('keydown', this.handleKeyPress, true);
+            // need true to get scroll events
+            // window.addEventListener('scroll', this.handleScroll, true)
         };
         // @ts-ignore
-        this.componentWillUnmount = () => window.removeEventListener('scroll', this.handleScroll);
+        this.componentWillUnmount = () => window.removeEventListener('keydown', this.handleKeyPress);
         this.handleTextbar = ({ currentTarget }) => {
             const { startUpdateTextbar } = this.props;
             const uid = currentTarget.id;
             // console.log('uid: ', uid)
-            startUpdateTextbar(uid);
+            // startUpdateTextbar(uid)
         };
         this.handleDrag = e => {
             console.log('dragging...');
@@ -2993,15 +3056,15 @@ class TopicsList extends react_1.Component {
         });
         // @ts-ignore
         this.render = () => {
-            const { words, topics } = this.props;
+            const { words, topics, tags, details } = this.props;
             const { editing, dragging } = this.state;
-            return react_1.default.createElement("div", { className: "topics-list" }, topics === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), topics !== undefined && topics.length === 0 && react_1.default.createElement("p", null, "You have not created any topics yet."), topics !== undefined && topics.map((topic, i) => react_1.default.createElement("div", { key: topic.uid, id: topic.uid, className: "topic-section", onMouseEnter: this.handleTextbar, ref: div => this[`topic${topic.uid}`] = div }, editing !== topic.uid && react_1.default.createElement("div", { className: "topic-header", id: topic.uid }, react_1.default.createElement("h2", { id: topic.uid, className: "topic-name-in-main-list", onDoubleClick: this.setToEditing }, topic.topic), react_1.default.createElement("div", { className: "trash-container", id: topic.uid, "data-owner": topic.owner, onClick: this.handleDelete }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "trash-alt", className: "trash" }))), editing === topic.uid && react_1.default.createElement(react_input_autosize_1.default
+            return react_1.default.createElement("div", { className: "topics-list" }, topics === undefined && react_1.default.createElement(react_spinkit_1.default, { className: "loading-indicator", name: "ball-spin-fade-loader" }), topics !== undefined && topics.length === 0 && react_1.default.createElement("p", null, "You have not created any topics yet."), topics !== undefined && topics.map((topic, i) => react_1.default.createElement("div", { key: topic.uid, id: topic.uid, className: "topic-section", onMouseEnter: this.handleTextbar, ref: div => this[`topic${topic.uid}`] = div }, editing !== topic.uid && react_1.default.createElement("div", { className: "topic-header", id: topic.uid }, react_1.default.createElement("h2", { id: topic.uid, className: "topic-name-in-main-list", onDoubleClick: this.setToEditing }, topic.topic), react_1.default.createElement("div", { className: "trash-container", id: topic.uid, "data-owner": topic.owner, onClick: this.handleDelete }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "trash-alt", className: "trash" }))), editing === topic.uid && react_1.default.createElement(react_input_autosize_1.default
             // className="edit-definition"
             , {
                 // className="edit-definition"
-                id: topic.uid, value: this.state.topics.filter(compare => compare.uid === topic.uid).map(topic => topic.topic), onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), !words.some(word => word.topic === topic.uid) && react_1.default.createElement("p", { className: "word-empty" }, "No words yet."), words.map(word => {
-                if (word.topic === topic.uid) return react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word, draggable: "true", onDragStart: e => this.handleDrag(e), className: dragging ? 'drag' : '' });
-            }))), react_1.default.createElement("div", { id: "0", className: "topic-section", onMouseEnter: this.handleTextbar }, words !== undefined && words.some(word => word.topic === 0) && react_1.default.createElement("div", { className: "topic-header" }, react_1.default.createElement("h2", { id: "0", className: "topic-name-in-main-list" }, "Uncategorized")), words !== undefined && words.map(word => word.topic === 0 && react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word }))));
+                id: topic.uid, value: this.state.topics.filter(compare => compare.uid === topic.uid).map(topic => topic.topic), onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 }, className: "editing-topic" }), !words.some(word => word.topic === topic.uid) && react_1.default.createElement("p", { className: "word-empty" }, "No words yet."), words.map((word, i) => {
+                if (word.topic === topic.uid) return react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word, tags: tags, details: details, draggable: "true", onDragStart: e => this.handleDrag(e), className: dragging ? 'drag' : '', i: i });
+            }))), react_1.default.createElement("div", { id: "0", className: "topic-section", onMouseEnter: this.handleTextbar }, words !== undefined && words.some(word => word.topic === 0) && react_1.default.createElement("div", { className: "topic-header" }, react_1.default.createElement("h2", { id: "0", className: "topic-name-in-main-list" }, "Uncategorized")), words !== undefined && words.map(word => word.topic === 0 && react_1.default.createElement(TopicsListWord_1.TopicsListWord, { key: word.uid, word: word, details: details, tags: tags }))));
         };
     }
 
@@ -3016,8 +3079,10 @@ exports.TopicsList = TopicsList;
 const mapStateToProps = state => ({
     words: state.lexica.words,
     topics: state.lexica.topics,
+    tags: state.lexica.tags,
     results: state.lexica.results,
-    dataIsHere: state.app.dataIsHere
+    dataIsHere: state.app.dataIsHere,
+    details: state.app.details
 });
 exports.default = react_redux_1.connect(mapStateToProps, { startEditTopic: words_1.startEditTopic, startDeleteTopic: words_1.startDeleteTopic, startUpdateTextbar: app_1.startUpdateTextbar })(TopicsList);
 ;
@@ -3031,14 +3096,14 @@ exports.default = react_redux_1.connect(mapStateToProps, { startEditTopic: words
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(TopicsList, "TopicsList", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(TopicsList, "TopicsList", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsList.tsx");
     leaveModule(module);
 })();
 
@@ -3069,9 +3134,25 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const react_image_gallery_1 = __importDefault(__webpack_require__(/*! react-image-gallery */ "./node_modules/react-image-gallery/build/image-gallery.js"));
 exports.TopicsListWord = props => {
-    const { word } = props;
-    return react_1.default.createElement("div", { key: word.uid, className: "word-group-in-main-list" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("h3", { className: "word-name" }, word.word), react_1.default.createElement("p", { className: "word-definition" }, word.definition)));
+    const { word, tags, details, i } = props;
+    return react_1.default.createElement("div", { key: word.uid, className: "word-group-in-main-list" }, react_1.default.createElement(react_router_dom_1.Link, { to: `/word/${word.uid}` }, react_1.default.createElement("h3", { className: "word-name" }, word.word), details !== undefined && react_1.default.createElement("div", { className: "tags" }, details && tags !== undefined && tags.filter(tag => tag.wordOwner === word.uid).map(tag => react_1.default.createElement("div", { key: tag.uid, style: {
+            margin: 0,
+            padding: `5px 10px`,
+            borderRadius: 3,
+            backgroundColor: tag.color
+        } }, react_1.default.createElement("p", { className: "tag-text" }, tag.tag))), !details && tags !== undefined && tags.filter(tag => tag.wordOwner === word.uid).map(tag => react_1.default.createElement("div", { key: tag.uid, style: {
+            width: 10,
+            height: 10,
+            borderRadius: 50,
+            backgroundColor: tag.color
+        } }))), react_1.default.createElement("p", { className: "word-definition" }, word.definition)), details !== undefined && details && word.images !== undefined && word.images.length > 0 && react_1.default.createElement(react_image_gallery_1.default, { items: word.images.map(image => ({
+            original: image.url,
+            thumbnail: image.url
+        })),
+        // useBrowserFullscreen={false}
+        showThumbnails: false, showPlayButton: false, autoPlay: true, slideInterval: 5000 + i * 500 }));
 };
 exports.default = exports.TopicsListWord;
 ;
@@ -3085,8 +3166,9 @@ exports.default = exports.TopicsListWord;
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsListWord.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
+    reactHotLoader.register(react_image_gallery_1, "react_image_gallery_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/TopicsListWord.tsx");
     leaveModule(module);
 })();
 
@@ -3154,6 +3236,7 @@ const react_input_autosize_1 = __importDefault(__webpack_require__(/*! react-inp
 const reactstrap_1 = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/dist/reactstrap.es.js");
 const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 const react_dropzone_1 = __importDefault(__webpack_require__(/*! react-dropzone */ "./node_modules/react-dropzone/dist/es/index.js"));
+const react_image_gallery_1 = __importDefault(__webpack_require__(/*! react-image-gallery */ "./node_modules/react-image-gallery/build/image-gallery.js"));
 const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 const words_1 = __webpack_require__(/*! ../actions/words */ "./client/app/actions/words.ts");
 class WordPage extends react_1.Component {
@@ -3193,17 +3276,6 @@ class WordPage extends react_1.Component {
             }
             // send to dynamoDb
             startAddImageToWord(dynamoData);
-            // try {
-            //   const dynamoUpload = await axios
-            //     .post(
-            //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
-            //       dynamoData
-            //     )
-            //     .then(res => res.data)
-            //     .then(user => startAddImageToWord(user))
-            // } catch (e) {
-            //   console.log('error uploading to lambda', e)
-            // }
         });
         this.handleDelete = () => __awaiter(this, void 0, void 0, function* () {
             const { chosen, username, startDeleteWord } = this.props;
@@ -3212,7 +3284,6 @@ class WordPage extends react_1.Component {
                 word: chosen.word,
                 uid: chosen.uid
             };
-            console.log('deleting word: ', word);
             yield startDeleteWord(word);
             this.props.history.push('/dashboard');
         });
@@ -3235,14 +3306,22 @@ class WordPage extends react_1.Component {
         };
         // @ts-ignore
         this.render = () => {
-            const { chosen } = this.props;
+            const { chosen, tags } = this.props;
             const { word, definition, editingWord, editingDefinition } = this.state;
             const checkChosen = chosen !== undefined;
             const checkDefinition = chosen !== undefined && chosen.definition !== undefined;
             const checkTags = chosen !== undefined && chosen.tags !== undefined;
-            return react_1.default.createElement("div", { className: "word-page" }, react_1.default.createElement(Textbar_1.default, null), word === undefined && react_1.default.createElement(react_spinkit_1.default, { name: "ball-scale-ripple-multiple" }), word !== undefined && react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "header" }, !editingWord && react_1.default.createElement("div", null, react_1.default.createElement("h1", { className: "title", "data-type": "word", onDoubleClick: this.toggleEdit }, checkChosen && chosen.word), react_1.default.createElement("div", { className: "ellipsis-container" }, react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root options" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "ellipsis-h", className: "ellipsis" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { left: "true", className: "dropdown-menu", style: {
+            return react_1.default.createElement("div", { className: "word-page" }, react_1.default.createElement(Textbar_1.default, null), word === undefined && react_1.default.createElement(react_spinkit_1.default, { className: "loading-indicator", name: "ball-spin-fade-loader" }), word !== undefined && react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "header" }, !editingWord && react_1.default.createElement("div", null, react_1.default.createElement("h1", { className: "title", "data-type": "word", onDoubleClick: this.toggleEdit }, checkChosen && chosen.word), react_1.default.createElement("div", { className: "ellipsis-container" }, react_1.default.createElement(reactstrap_1.Dropdown, { isOpen: this.state.dropdownOpen, toggle: this.toggleDropdown, className: "dropdown-root options" }, react_1.default.createElement(reactstrap_1.DropdownToggle, { className: "dropdown-toggle" }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "ellipsis-h", className: "ellipsis" })), react_1.default.createElement(reactstrap_1.DropdownMenu, { left: "true", className: "dropdown-menu", style: {
                     display: this.state.dropdownOpen === false ? 'none' : 'block'
-                } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item menu-delete", onClick: this.handleDelete }, "Delete"))))), editingWord && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-word", "data-type": "word", value: word, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })), react_1.default.createElement("div", { className: "tag-section" }, checkTags && chosen.tags.join(' '), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "add-tag" })), !editingDefinition && react_1.default.createElement("p", { "data-type": "definition", onDoubleClick: this.toggleEdit }, checkDefinition && chosen.definition), editingDefinition && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-definition", "data-type": "definition", value: definition, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), react_1.default.createElement(react_dropzone_1.default, { onDrop: this.handleDrop }, react_1.default.createElement("p", null, "drop files here:"))));
+                } }, react_1.default.createElement(reactstrap_1.DropdownItem, { className: "dropdown-item menu-delete", onClick: this.handleDelete }, "Delete"))))), editingWord && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-word", "data-type": "word", value: word, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } })), react_1.default.createElement("div", { className: "tags" }, tags !== undefined && tags.filter(tag => tag.wordOwner === chosen.uid).map(tag => react_1.default.createElement("div", { key: tag.uid, style: {
+                    margin: 0,
+                    padding: `5px 10px`,
+                    borderRadius: 3,
+                    backgroundColor: tag.color
+                } }, react_1.default.createElement("p", { className: "tag-text" }, tag.tag))), react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "plus", className: "add-tag" })), !editingDefinition && react_1.default.createElement("p", { "data-type": "definition", onDoubleClick: this.toggleEdit }, checkDefinition && chosen.definition), editingDefinition && react_1.default.createElement(react_input_autosize_1.default, { className: "edit-definition", "data-type": "definition", value: definition, onChange: this.handleChange, onKeyPress: this.handleSubmit, style: { fontSize: 24 } }), chosen !== undefined && chosen.images !== undefined && chosen.images.length > 0 && react_1.default.createElement(react_image_gallery_1.default, { items: chosen.images !== undefined && chosen.images.map(image => ({
+                    original: image.url,
+                    thumbnail: image.url
+                })), showPlayButton: false, autoPlay: true }), react_1.default.createElement(react_dropzone_1.default, { onDrop: this.handleDrop, className: "dropzone" }, react_1.default.createElement("p", { className: "add-images" }, "+ add images"))));
         };
     }
 
@@ -3256,6 +3335,7 @@ class WordPage extends react_1.Component {
 exports.WordPage = WordPage;
 const mapStateToProps = (state, props) => ({
     chosen: state.lexica.words !== undefined && state.lexica.words.find(word => word.uid === props.match.params.uid),
+    tags: state.lexica.tags,
     username: state.auth.username
 });
 exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_1.startEditWord, startDeleteWord: words_1.startDeleteWord, startAddImageToWord: words_1.startAddImageToWord })(WordPage);
@@ -3270,17 +3350,18 @@ exports.default = react_redux_1.connect(mapStateToProps, { startEditWord: words_
         return;
     }
 
-    reactHotLoader.register(__awaiter, "__awaiter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(Textbar_1, "Textbar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(axios_1, "axios_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(WordPage, "WordPage", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__awaiter, "__awaiter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(Textbar_1, "Textbar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_spinkit_1, "react_spinkit_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_input_autosize_1, "react_input_autosize_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(axios_1, "axios_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_dropzone_1, "react_dropzone_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(react_image_gallery_1, "react_image_gallery_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(WordPage, "WordPage", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/WordPage.tsx");
     leaveModule(module);
 })();
 
@@ -3319,6 +3400,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 const Modal_1 = __importDefault(__webpack_require__(/*! ../Modal */ "./client/app/components/Modal.tsx"));
+const react_fontawesome_1 = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 const modal_1 = __webpack_require__(/*! ../../actions/modal */ "./client/app/actions/modal.ts");
 const words_1 = __webpack_require__(/*! ../../actions/words */ "./client/app/actions/words.ts");
 const helpers_1 = __webpack_require__(/*! ../../helpers/helpers */ "./client/app/helpers/helpers.ts");
@@ -3340,19 +3422,28 @@ class NewWordModal extends react_1.Component {
         };
         this.handleSubmit = e => {
             e.preventDefault();
+            // dark blue, sky blue, red, turqouise, orange, violet
+            const colors = ['#034182', '#118df0', '#ff4a68', '#02bd9d', '#f8aa27', '#ba69de'];
             const { word, definition, topic, tags: stateTags } = this.state;
             const { username: owner, startAddWord } = this.props;
-            // split tags by: [comma] / space
-            const tags = stateTags.split(',');
             const uid = helpers_1.generateUuid();
             const topicUid = helpers_1.generateUuid();
+            let wordTags = stateTags.split(',');
+            const tags = wordTags.map(tag => ({
+                tag,
+                wordOwner: uid,
+                uid: helpers_1.generateUuid(),
+                color: colors[Math.floor(Math.random() * colors.length)],
+                deleted: false
+            }));
             const nextWord = { uid, word, definition, tags, topic, topicUid, owner };
             startAddWord(nextWord).then(() => this.onClose());
         };
         // @ts-ignore
         this.render = () => {
             const { word, tags, topic, definition } = this.state;
-            return react_1.default.createElement(Modal_1.default, { onClose: this.onClose }, react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.onFieldChange }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "word" }, "Name"), react_1.default.createElement("input", { type: "text", name: "word", value: word })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "tags" }, "Add tags"), react_1.default.createElement("input", { type: "text", name: "tags", value: tags })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "topic" }, "Add topic"), react_1.default.createElement("input", { type: "text", name: "topic", value: topic })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "definition" }, "Definition"), react_1.default.createElement("textarea", { name: "definition", value: definition })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("input", { type: "submit", name: "submit" }))), react_1.default.createElement("p", { onClick: this.onClose }, "click to close modal"));
+            const { topics } = this.props;
+            return react_1.default.createElement(Modal_1.default, { onClose: this.onClose }, react_1.default.createElement("div", { className: "new-word-modal_header" }, react_1.default.createElement("h2", { className: "title" }, "New word"), react_1.default.createElement("div", { className: "close", onClick: this.onClose }, react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: "times" }))), react_1.default.createElement("form", { onSubmit: this.handleSubmit, onChange: this.onFieldChange, className: "new-word-modal" }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "word", className: "title" }, "Name"), react_1.default.createElement("input", { type: "text", name: "word", value: word, className: "input" })), react_1.default.createElement("div", { className: "split-data" }, react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "topic", className: "title" }, "Topic"), react_1.default.createElement("input", { type: "text", name: "topic", value: topic, className: "input" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "tags", className: "title" }, "Tags"), react_1.default.createElement("input", { type: "text", name: "tags", value: tags, className: "input" }), react_1.default.createElement("p", { className: "caption" }, "Separate by comma"))), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("label", { htmlFor: "definition", className: "title" }, "Definition"), react_1.default.createElement("textarea", { name: "definition", value: definition, className: "input textarea", "data-enable-grammarly": "false" })), react_1.default.createElement("div", { className: "input-group" }, react_1.default.createElement("input", { type: "submit", name: "submit", className: "submit" }))));
         };
     }
 
@@ -3365,7 +3456,8 @@ class NewWordModal extends react_1.Component {
 }
 exports.NewWordModal = NewWordModal;
 const mapStateToProps = state => ({
-    username: state.auth.username
+    username: state.auth.username,
+    topics: state.lexica.topics
 });
 // mapStateToProps -- to read from the store
 // mapDispatchToProps -- to write to the store
@@ -3381,12 +3473,12 @@ exports.default = react_redux_1.connect(mapStateToProps, { startAddWord: words_1
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(Modal_1, "Modal_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(NewWordModal, "NewWordModal", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(Modal_1, "Modal_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(NewWordModal, "NewWordModal", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/components/modals/NewWordModal.tsx");
     leaveModule(module);
 })();
 
@@ -3536,20 +3628,17 @@ exports.compareObjects = (obj1, obj2) => {
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialState = {
     dataIsHere: false,
+    details: false,
     position: ''
-    // textbar: 'topic'
-    // showSearch:
 };
 exports.appReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case 'LOGIN':
-            return {
-                dataIsHere: true
-            };
+            return Object.assign({}, state, { dataIsHere: true });
         case 'TEXTBAR':
-            return {
-                position: action.uid.length > 0 && action.uid
-            };
+            return Object.assign({}, state, { position: action.uid.length > 0 && action.uid });
+        case 'SET_DETAILS':
+            return Object.assign({}, state, { details: !state.details });
         case 'LOGOUT':
             return {};
         default:
@@ -3567,7 +3656,7 @@ exports.appReducer = (state = initialState, action = {}) => {
         return;
     }
 
-    reactHotLoader.register(initialState, "initialState", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/reducers/app.ts");
+    reactHotLoader.register(initialState, "initialState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/app.ts");
     leaveModule(module);
 })();
 
@@ -3635,12 +3724,12 @@ exports.lexiconReducer = (state = {}, action = {}) => {
             return {
                 words: action.user.words,
                 topics: action.user.topics,
-                tags: [...new Set(action.user.words.map(word => word.tags).reduce((append, nextArray) => append.concat(nextArray), []))]
+                tags: action.user.tags
             };
         case 'LOGOUT':
             return {};
         case 'NEW_WORD':
-            return Object.assign({}, state, { words: action.user.words, topics: action.user.topics });
+            return Object.assign({}, state, { words: action.user.words, topics: action.user.topics, tags: action.user.tags });
         case 'UPDATED_WORD':
             return Object.assign({}, state, { words: action.user.words });
         case 'NEW_TOPIC':
@@ -3697,7 +3786,7 @@ exports.modalReducer = (state = initialModalState, action = {}) => {
         return;
     }
 
-    reactHotLoader.register(initialModalState, "initialModalState", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/reducers/modal.ts");
+    reactHotLoader.register(initialModalState, "initialModalState", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/reducers/modal.ts");
     leaveModule(module);
 })();
 
@@ -3781,12 +3870,12 @@ exports.default = react_hot_loader_1.hot(module)(AppRouter);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(store, "store", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
-    reactHotLoader.register(AppRouter, "AppRouter", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(jwt_decode_1, "jwt_decode_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(store, "store", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
+    reactHotLoader.register(AppRouter, "AppRouter", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/AppRouters.tsx");
     leaveModule(module);
 })();
 
@@ -3835,12 +3924,58 @@ const Header_1 = __importDefault(__webpack_require__(/*! ../components/Header */
 const ModalContainer_1 = __importDefault(__webpack_require__(/*! ../components/ModalContainer */ "./client/app/components/ModalContainer.tsx"));
 class PrivateRoute extends react_1.Component {
     constructor() {
+        // state = {
+        //   mql: mql,
+        //   sidebarDocked: false,
+        //   sidebarOpen: false
+        // }
         super(...arguments);
+        // mediaQueryChanged = () => {
+        //   this.setState({ sidebarDocked: this.state.mql.matches })
+        // }
+        // onSetSidebarOpen = () =>
+        //   this.setState({ sidebarOpen: !this.state.sidebarOpen })
+        // componentWillMount() {
+        //   mql.addListener(this.mediaQueryChanged)
+        //   this.setState({ mql: mql, sidebarDocked: mql.matches })
+        // }
+        // componentWillUnmount() {
+        //   this.state.mql.removeListener(this.mediaQueryChanged)
+        // }
         // @ts-ignore
         this.render = () => {
             const _a = this.props,
                   { isAuthenticated, component: Component } = _a,
                   rest = __rest(_a, ["isAuthenticated", "component"]);
+            // const sidebarStyles = {
+            //   root: {
+            //     // Position above overlays or other high z-index elements your app might use
+            //     zIndex: 100000,
+            //     // Detach from right and bottom screen edges as it blocks underlying content
+            //     // This also has the effect of shrinking the component to a width and height of 0
+            //     right: 'auto',
+            //     bottom: 'auto',
+            //     // Allow child sidebar elements to render now that element has collapsed
+            //     overflow: 'visible'
+            //   },
+            //   content: {
+            //     // Detach from right and bottom screen edges as it blocks underlying content (collapses element)
+            //     left: 'auto',
+            //     bottom: 'auto',
+            //     // The dragHandle is inside content element for some reason.
+            //     // Allow it to render now that the parent is collapsed.
+            //     overflow: 'visible'
+            //   },
+            //   sidebar: {
+            //     // Make sidebar fixed, like dragHandle is by default
+            //     position: 'fixed'
+            //   },
+            //   overlay: {
+            //     // Enable/disable overlay interactivity based on open/closed state
+            //     // pointer-events browser support: IE11+
+            //     pointerEvents: 'auto'
+            //   }
+            // }
             return react_1.default.createElement(react_router_dom_1.Route, Object.assign({}, rest, { component: props => isAuthenticated ? react_1.default.createElement("div", null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(Component, Object.assign({}, props)), react_1.default.createElement(ModalContainer_1.default, null)) : react_1.default.createElement(react_router_dom_1.Redirect, { to: "/login" }) }));
         };
     }
@@ -3871,14 +4006,14 @@ exports.default = react_redux_1.connect(mapStateToProps, null, null, {
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(Header_1, "Header_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(ModalContainer_1, "ModalContainer_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(PrivateRoute, "PrivateRoute", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(Header_1, "Header_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(ModalContainer_1, "ModalContainer_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(PrivateRoute, "PrivateRoute", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PrivateRoute.tsx");
     leaveModule(module);
 })();
 
@@ -3935,10 +4070,10 @@ exports.default = react_redux_1.connect(mapStateToProps)(exports.PublicRoute);
         return;
     }
 
-    reactHotLoader.register(__rest, "__rest", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__rest, "__rest", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/PublicRoute.tsx");
     leaveModule(module);
 })();
 
@@ -4042,10 +4177,41 @@ class Pages extends react_1.Component {
         this.onSetSidebarOpen = () => this.setState({ sidebarOpen: !this.state.sidebarOpen });
         // @ts-ignore
         // shouldComponentUpdate = () => false
-        // convert sidebar routes back to PrivateRoute
         // @ts-ignore
         this.render = () => {
-            return react_1.default.createElement(react_router_dom_1.Router, { history: exports.history }, react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PublicRoute_1.default, { exact: true, path: "/", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/signup", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/login", component: LoginPage_1.default }), react_1.default.createElement(react_sidebar_1.default, { sidebar: sidebar, open: this.state.sidebarOpen, docked: this.state.sidebarDocked, onSetOpen: this.onSetSidebarOpen, sidebarClassName: "sidebar", transitions: false }, react_1.default.createElement(PrivateRoute_1.default, { path: "/dashboard", component: DashboardPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/glossary", component: GlossaryPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/tags", component: TagsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/word/:uid", component: WordPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/settings", component: SettingsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/profile", component: ProfilePage_1.default })), react_1.default.createElement(react_router_dom_1.Route, { component: NotFoundPage_1.default })));
+            const sidebarStyles = {
+                root: {
+                    // Position above overlays or other high z-index elements your app might use
+                    zIndex: 100000,
+                    // Detach from right and bottom screen edges as it blocks underlying content
+                    // This also has the effect of shrinking the component to a width and height of 0
+                    right: 'auto',
+                    bottom: 'auto',
+                    // Allow child sidebar elements to render now that element has collapsed
+                    overflow: 'visible'
+                },
+                content: {
+                    // Detach from right and bottom screen edges as it blocks underlying content (collapses element)
+                    left: 'auto',
+                    bottom: 'auto',
+                    // The dragHandle is inside content element for some reason.
+                    // Allow it to render now that the parent is collapsed.
+                    overflow: 'visible'
+                },
+                sidebar: {
+                    // Make sidebar fixed, like dragHandle is by default
+                    position: 'fixed'
+                },
+                overlay: {
+                    // Enable/disable overlay interactivity based on open/closed state
+                    // pointer-events browser support: IE11+
+                    pointerEvents: 'auto'
+                }
+            };
+            return react_1.default.createElement(react_router_dom_1.Router, { history: exports.history }, react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(PublicRoute_1.default, { exact: true, path: "/", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/signup", component: SignupPage_1.default }), react_1.default.createElement(PublicRoute_1.default, { path: "/login", component: LoginPage_1.default }), react_1.default.createElement(react_sidebar_1.default, { sidebar: sidebar,
+                // @ts-ignore
+                // styles={sidebarStyles}
+                open: this.state.sidebarOpen, docked: this.state.sidebarDocked, onSetOpen: this.onSetSidebarOpen, sidebarClassName: "sidebar", rootClassName: "root-class", contentClassName: "content-class", overlayClassName: "overlay-class" }, react_1.default.createElement(PrivateRoute_1.default, { path: "/dashboard", component: DashboardPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/glossary", component: GlossaryPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/tags", component: TagsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/word/:uid", component: WordPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/settings", component: SettingsPage_1.default }), react_1.default.createElement(PrivateRoute_1.default, { path: "/profile", component: ProfilePage_1.default })), react_1.default.createElement(react_router_dom_1.Route, { component: NotFoundPage_1.default })));
         };
     }
     componentWillMount() {
@@ -4079,27 +4245,27 @@ exports.default = react_redux_1.connect(mapStateToProps)(Pages);
         return;
     }
 
-    reactHotLoader.register(__importStar, "__importStar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_1, "react_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(LoginPage_1, "LoginPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SignupPage_1, "SignupPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(GlossaryPage_1, "GlossaryPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(TagsPage_1, "TagsPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(WordPage_1, "WordPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(ProfilePage_1, "ProfilePage_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mql, "mql", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(sidebar, "sidebar", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(Pages, "Pages", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
-    reactHotLoader.register(mapStateToProps, "mapStateToProps", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importStar, "__importStar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_1, "react_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(react_sidebar_1, "react_sidebar_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(createBrowserHistory_1, "createBrowserHistory_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SidebarContent_1, "SidebarContent_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PrivateRoute_1, "PrivateRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(PublicRoute_1, "PublicRoute_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(LoginPage_1, "LoginPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SignupPage_1, "SignupPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(SettingsPage_1, "SettingsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(DashboardPage_1, "DashboardPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(GlossaryPage_1, "GlossaryPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(TagsPage_1, "TagsPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(WordPage_1, "WordPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(NotFoundPage_1, "NotFoundPage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(ProfilePage_1, "ProfilePage_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mql, "mql", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(sidebar, "sidebar", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(Pages, "Pages", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
+    reactHotLoader.register(mapStateToProps, "mapStateToProps", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/routers/Routes.tsx");
     leaveModule(module);
 })();
 
@@ -4167,10 +4333,10 @@ exports.configureStore = () => {
         return;
     }
 
-    reactHotLoader.register(__importDefault, "__importDefault", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
-    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
-    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
-    reactHotLoader.register(composeEnhancers, "composeEnhancers", "C:/Users/phili/Documents/Revature/project2/vocabulary-application/client/app/store/configureStore.ts");
+    reactHotLoader.register(__importDefault, "__importDefault", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(redux_thunk_1, "redux_thunk_1", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(checkTokenExpirationMiddleware, "checkTokenExpirationMiddleware", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
+    reactHotLoader.register(composeEnhancers, "composeEnhancers", "/Users/ericmorrison/Desktop/revature/homework/vocabulary/client/app/store/configureStore.ts");
     leaveModule(module);
 })();
 
@@ -4188,7 +4354,7 @@ exports.configureStore = () => {
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201776733
+      // 1530273549086
       var cssReload = __webpack_require__(/*! ../../../node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -19247,6 +19413,46 @@ module.exports = function sha256(buf) {
 
 /***/ }),
 
+/***/ "./node_modules/detect-passive-events/lib/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/detect-passive-events/lib/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// adapted from https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+var detectPassiveEvents = {
+  update: function update() {
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+      var passive = false;
+      var options = Object.defineProperty({}, 'passive', {
+        get: function get() {
+          passive = true;
+        }
+      });
+      // note: have to set and remove a no-op listener instead of null
+      // (which was used previously), becasue Edge v15 throws an error
+      // when providing a null callback.
+      // https://github.com/rafrex/detect-passive-events/pull/3
+      var noop = function noop() {};
+      window.addEventListener('testPassiveEventSupport', noop, options);
+      window.removeEventListener('testPassiveEventSupport', noop, options);
+      detectPassiveEvents.hasSupport = passive;
+    }
+  }
+};
+
+detectPassiveEvents.update();
+exports.default = detectPassiveEvents;
+
+/***/ }),
+
 /***/ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js":
 /*!*************************************************************************************!*\
   !*** ./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js ***!
@@ -23254,7 +23460,7 @@ module.exports.InvalidTokenError = InvalidTokenError;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201775493
+      // 1530273547925
       var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -23631,6 +23837,395 @@ function isPlainObject(value) {
 
 /***/ }),
 
+/***/ "./node_modules/lodash.debounce/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/lodash.debounce/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeMin = Math.min;
+
+/**
+ * Gets the timestamp of the number of milliseconds that have elapsed since
+ * the Unix epoch (1 January 1970 00:00:00 UTC).
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Date
+ * @returns {number} Returns the timestamp.
+ * @example
+ *
+ * _.defer(function(stamp) {
+ *   console.log(_.now() - stamp);
+ * }, _.now());
+ * // => Logs the number of milliseconds it took for the deferred invocation.
+ */
+var now = function() {
+  return root.Date.now();
+};
+
+/**
+ * Creates a debounced function that delays invoking `func` until after `wait`
+ * milliseconds have elapsed since the last time the debounced function was
+ * invoked. The debounced function comes with a `cancel` method to cancel
+ * delayed `func` invocations and a `flush` method to immediately invoke them.
+ * Provide `options` to indicate whether `func` should be invoked on the
+ * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
+ * with the last arguments provided to the debounced function. Subsequent
+ * calls to the debounced function return the result of the last `func`
+ * invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is
+ * invoked on the trailing edge of the timeout only if the debounced function
+ * is invoked more than once during the `wait` timeout.
+ *
+ * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+ * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+ *
+ * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+ * for details over the differences between `_.debounce` and `_.throttle`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Function
+ * @param {Function} func The function to debounce.
+ * @param {number} [wait=0] The number of milliseconds to delay.
+ * @param {Object} [options={}] The options object.
+ * @param {boolean} [options.leading=false]
+ *  Specify invoking on the leading edge of the timeout.
+ * @param {number} [options.maxWait]
+ *  The maximum time `func` is allowed to be delayed before it's invoked.
+ * @param {boolean} [options.trailing=true]
+ *  Specify invoking on the trailing edge of the timeout.
+ * @returns {Function} Returns the new debounced function.
+ * @example
+ *
+ * // Avoid costly calculations while the window size is in flux.
+ * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+ *
+ * // Invoke `sendMail` when clicked, debouncing subsequent calls.
+ * jQuery(element).on('click', _.debounce(sendMail, 300, {
+ *   'leading': true,
+ *   'trailing': false
+ * }));
+ *
+ * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
+ * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
+ * var source = new EventSource('/stream');
+ * jQuery(source).on('message', debounced);
+ *
+ * // Cancel the trailing debounced invocation.
+ * jQuery(window).on('popstate', debounced.cancel);
+ */
+function debounce(func, wait, options) {
+  var lastArgs,
+      lastThis,
+      maxWait,
+      result,
+      timerId,
+      lastCallTime,
+      lastInvokeTime = 0,
+      leading = false,
+      maxing = false,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  wait = toNumber(wait) || 0;
+  if (isObject(options)) {
+    leading = !!options.leading;
+    maxing = 'maxWait' in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+
+  function invokeFunc(time) {
+    var args = lastArgs,
+        thisArg = lastThis;
+
+    lastArgs = lastThis = undefined;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+
+  function leadingEdge(time) {
+    // Reset any `maxWait` timer.
+    lastInvokeTime = time;
+    // Start the timer for the trailing edge.
+    timerId = setTimeout(timerExpired, wait);
+    // Invoke the leading edge.
+    return leading ? invokeFunc(time) : result;
+  }
+
+  function remainingWait(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime,
+        result = wait - timeSinceLastCall;
+
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+  }
+
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime;
+
+    // Either this is the first call, activity has stopped and we're at the
+    // trailing edge, the system time has gone backwards and we're treating
+    // it as the trailing edge, or we've hit the `maxWait` limit.
+    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
+      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
+  }
+
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
+    }
+    // Restart the timer.
+    timerId = setTimeout(timerExpired, remainingWait(time));
+  }
+
+  function trailingEdge(time) {
+    timerId = undefined;
+
+    // Only invoke if we have `lastArgs` which means `func` has been
+    // debounced at least once.
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    lastArgs = lastThis = undefined;
+    return result;
+  }
+
+  function cancel() {
+    if (timerId !== undefined) {
+      clearTimeout(timerId);
+    }
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = undefined;
+  }
+
+  function flush() {
+    return timerId === undefined ? result : trailingEdge(now());
+  }
+
+  function debounced() {
+    var time = now(),
+        isInvoking = shouldInvoke(time);
+
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time;
+
+    if (isInvoking) {
+      if (timerId === undefined) {
+        return leadingEdge(lastCallTime);
+      }
+      if (maxing) {
+        // Handle invocations in a tight loop.
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
+      }
+    }
+    if (timerId === undefined) {
+      timerId = setTimeout(timerExpired, wait);
+    }
+    return result;
+  }
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = debounce;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/lodash.isfunction/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/lodash.isfunction/index.js ***!
@@ -23843,6 +24438,457 @@ function isObject(value) {
 
 module.exports = isObject;
 
+
+/***/ }),
+
+/***/ "./node_modules/lodash.throttle/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/lodash.throttle/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeMin = Math.min;
+
+/**
+ * Gets the timestamp of the number of milliseconds that have elapsed since
+ * the Unix epoch (1 January 1970 00:00:00 UTC).
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Date
+ * @returns {number} Returns the timestamp.
+ * @example
+ *
+ * _.defer(function(stamp) {
+ *   console.log(_.now() - stamp);
+ * }, _.now());
+ * // => Logs the number of milliseconds it took for the deferred invocation.
+ */
+var now = function() {
+  return root.Date.now();
+};
+
+/**
+ * Creates a debounced function that delays invoking `func` until after `wait`
+ * milliseconds have elapsed since the last time the debounced function was
+ * invoked. The debounced function comes with a `cancel` method to cancel
+ * delayed `func` invocations and a `flush` method to immediately invoke them.
+ * Provide `options` to indicate whether `func` should be invoked on the
+ * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
+ * with the last arguments provided to the debounced function. Subsequent
+ * calls to the debounced function return the result of the last `func`
+ * invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is
+ * invoked on the trailing edge of the timeout only if the debounced function
+ * is invoked more than once during the `wait` timeout.
+ *
+ * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+ * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+ *
+ * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+ * for details over the differences between `_.debounce` and `_.throttle`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Function
+ * @param {Function} func The function to debounce.
+ * @param {number} [wait=0] The number of milliseconds to delay.
+ * @param {Object} [options={}] The options object.
+ * @param {boolean} [options.leading=false]
+ *  Specify invoking on the leading edge of the timeout.
+ * @param {number} [options.maxWait]
+ *  The maximum time `func` is allowed to be delayed before it's invoked.
+ * @param {boolean} [options.trailing=true]
+ *  Specify invoking on the trailing edge of the timeout.
+ * @returns {Function} Returns the new debounced function.
+ * @example
+ *
+ * // Avoid costly calculations while the window size is in flux.
+ * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+ *
+ * // Invoke `sendMail` when clicked, debouncing subsequent calls.
+ * jQuery(element).on('click', _.debounce(sendMail, 300, {
+ *   'leading': true,
+ *   'trailing': false
+ * }));
+ *
+ * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
+ * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
+ * var source = new EventSource('/stream');
+ * jQuery(source).on('message', debounced);
+ *
+ * // Cancel the trailing debounced invocation.
+ * jQuery(window).on('popstate', debounced.cancel);
+ */
+function debounce(func, wait, options) {
+  var lastArgs,
+      lastThis,
+      maxWait,
+      result,
+      timerId,
+      lastCallTime,
+      lastInvokeTime = 0,
+      leading = false,
+      maxing = false,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  wait = toNumber(wait) || 0;
+  if (isObject(options)) {
+    leading = !!options.leading;
+    maxing = 'maxWait' in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+
+  function invokeFunc(time) {
+    var args = lastArgs,
+        thisArg = lastThis;
+
+    lastArgs = lastThis = undefined;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+
+  function leadingEdge(time) {
+    // Reset any `maxWait` timer.
+    lastInvokeTime = time;
+    // Start the timer for the trailing edge.
+    timerId = setTimeout(timerExpired, wait);
+    // Invoke the leading edge.
+    return leading ? invokeFunc(time) : result;
+  }
+
+  function remainingWait(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime,
+        result = wait - timeSinceLastCall;
+
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+  }
+
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime;
+
+    // Either this is the first call, activity has stopped and we're at the
+    // trailing edge, the system time has gone backwards and we're treating
+    // it as the trailing edge, or we've hit the `maxWait` limit.
+    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
+      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
+  }
+
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
+    }
+    // Restart the timer.
+    timerId = setTimeout(timerExpired, remainingWait(time));
+  }
+
+  function trailingEdge(time) {
+    timerId = undefined;
+
+    // Only invoke if we have `lastArgs` which means `func` has been
+    // debounced at least once.
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    lastArgs = lastThis = undefined;
+    return result;
+  }
+
+  function cancel() {
+    if (timerId !== undefined) {
+      clearTimeout(timerId);
+    }
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = undefined;
+  }
+
+  function flush() {
+    return timerId === undefined ? result : trailingEdge(now());
+  }
+
+  function debounced() {
+    var time = now(),
+        isInvoking = shouldInvoke(time);
+
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time;
+
+    if (isInvoking) {
+      if (timerId === undefined) {
+        return leadingEdge(lastCallTime);
+      }
+      if (maxing) {
+        // Handle invocations in a tight loop.
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
+      }
+    }
+    if (timerId === undefined) {
+      timerId = setTimeout(timerExpired, wait);
+    }
+    return result;
+  }
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
+}
+
+/**
+ * Creates a throttled function that only invokes `func` at most once per
+ * every `wait` milliseconds. The throttled function comes with a `cancel`
+ * method to cancel delayed `func` invocations and a `flush` method to
+ * immediately invoke them. Provide `options` to indicate whether `func`
+ * should be invoked on the leading and/or trailing edge of the `wait`
+ * timeout. The `func` is invoked with the last arguments provided to the
+ * throttled function. Subsequent calls to the throttled function return the
+ * result of the last `func` invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is
+ * invoked on the trailing edge of the timeout only if the throttled function
+ * is invoked more than once during the `wait` timeout.
+ *
+ * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+ * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+ *
+ * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+ * for details over the differences between `_.throttle` and `_.debounce`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Function
+ * @param {Function} func The function to throttle.
+ * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+ * @param {Object} [options={}] The options object.
+ * @param {boolean} [options.leading=true]
+ *  Specify invoking on the leading edge of the timeout.
+ * @param {boolean} [options.trailing=true]
+ *  Specify invoking on the trailing edge of the timeout.
+ * @returns {Function} Returns the new throttled function.
+ * @example
+ *
+ * // Avoid excessively updating the position while scrolling.
+ * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
+ *
+ * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
+ * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
+ * jQuery(element).on('click', throttled);
+ *
+ * // Cancel the trailing throttled invocation.
+ * jQuery(window).on('popstate', throttled.cancel);
+ */
+function throttle(func, wait, options) {
+  var leading = true,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  if (isObject(options)) {
+    leading = 'leading' in options ? !!options.leading : leading;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+  return debounce(func, wait, {
+    'leading': leading,
+    'maxWait': wait,
+    'trailing': trailing
+  });
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = throttle;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -48018,9 +49064,9 @@ var Dropzone = function (_React$Component) {
         disabledStyle = _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].disabled;
       }
 
-      var appliedStyle = _extends({}, style);
+      var appliedStyle = _extends({ position: 'relative' }, style);
       if (activeStyle && isDragActive) {
-        appliedStyle = _extends({}, style, activeStyle);
+        appliedStyle = _extends({}, appliedStyle, activeStyle);
       }
       if (acceptStyle && isDragAccept) {
         appliedStyle = _extends({}, appliedStyle, acceptStyle);
@@ -48029,14 +49075,22 @@ var Dropzone = function (_React$Component) {
         appliedStyle = _extends({}, appliedStyle, rejectStyle);
       }
       if (disabledStyle && disabled) {
-        appliedStyle = _extends({}, style, disabledStyle);
+        appliedStyle = _extends({}, appliedStyle, disabledStyle);
       }
 
       var inputAttributes = {
         accept: accept,
         disabled: disabled,
         type: 'file',
-        style: { display: 'none' },
+        style: _extends({
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          opacity: 0.00001,
+          pointerEvents: 'none'
+        }, inputProps.style),
         multiple: _utils__WEBPACK_IMPORTED_MODULE_2__["supportMultiple"] && multiple,
         ref: this.setRefs,
         onChange: this.onDrop,
@@ -48248,6 +49302,7 @@ Dropzone.defaultProps = {
   disabled: false,
   disablePreview: false,
   disableClick: false,
+  inputProps: {},
   multiple: true,
   maxSize: Infinity,
   minSize: 0
@@ -50151,6 +51206,1270 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./dist/react-hot-loader.development.js */ "./node_modules/react-hot-loader/dist/react-hot-loader.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/react-image-gallery/build/image-gallery.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-image-gallery/build/image-gallery.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactSwipeable = __webpack_require__(/*! react-swipeable */ "./node_modules/react-swipeable/lib/Swipeable.js");
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+
+var _lodash = __webpack_require__(/*! lodash.throttle */ "./node_modules/lodash.throttle/index.js");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(/*! lodash.debounce */ "./node_modules/lodash.debounce/index.js");
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _resizeObserverPolyfill = __webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js");
+
+var _resizeObserverPolyfill2 = _interopRequireDefault(_resizeObserverPolyfill);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var screenChangeEvents = ['fullscreenchange', 'MSFullscreenChange', 'mozfullscreenchange', 'webkitfullscreenchange'];
+
+var ImageGallery = function (_React$Component) {
+  _inherits(ImageGallery, _React$Component);
+
+  function ImageGallery(props) {
+    _classCallCheck(this, ImageGallery);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ImageGallery).call(this, props));
+
+    _this.slideToIndex = function (index, event) {
+      var _this$state = _this.state;
+      var currentIndex = _this$state.currentIndex;
+      var isTransitioning = _this$state.isTransitioning;
+
+
+      if (!isTransitioning) {
+        if (event) {
+          if (_this._intervalId) {
+            // user triggered event while ImageGallery is playing, reset interval
+            _this.pause(false);
+            _this.play(false);
+          }
+        }
+
+        var slideCount = _this.props.items.length - 1;
+        var nextIndex = index;
+
+        if (index < 0) {
+          nextIndex = slideCount;
+        } else if (index > slideCount) {
+          nextIndex = 0;
+        }
+
+        _this.setState({
+          previousIndex: currentIndex,
+          currentIndex: nextIndex,
+          isTransitioning: nextIndex !== currentIndex,
+          offsetPercentage: 0,
+          style: {
+            transition: 'all ' + _this.props.slideDuration + 'ms ease-out'
+          }
+        }, _this._onSliding);
+      }
+    };
+
+    _this._onSliding = function () {
+      var isTransitioning = _this.state.isTransitioning;
+
+      _this._transitionTimer = window.setTimeout(function () {
+        if (isTransitioning) {
+          _this.setState({ isTransitioning: !isTransitioning });
+        }
+      }, _this.props.slideDuration + 50);
+    };
+
+    _this._handleScreenChange = function () {
+      /*
+        handles screen change events that the browser triggers e.g. esc key
+      */
+      var fullScreenElement = document.fullscreenElement || document.msFullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+
+      if (_this.props.onScreenChange) {
+        _this.props.onScreenChange(fullScreenElement);
+      }
+
+      _this.setState({ isFullscreen: !!fullScreenElement });
+    };
+
+    _this._toggleFullScreen = function () {
+      if (_this.state.isFullscreen) {
+        _this.exitFullScreen();
+      } else {
+        _this.fullScreen();
+      }
+    };
+
+    _this._togglePlay = function () {
+      if (_this._intervalId) {
+        _this.pause();
+      } else {
+        _this.play();
+      }
+    };
+
+    _this._initGalleryResizing = function (element) {
+      /*
+        When image-gallery-slide-wrapper unmounts and mounts when thumbnail bar position is changed
+        ref is called twice, once with null and another with the element.
+        Make sure element is available before calling observe.
+      */
+      if (element) {
+        _this._imageGallerySlideWrapper = element;
+        _this.resizeObserver = new _resizeObserverPolyfill2.default(_this._createResizeObserver);
+        _this.resizeObserver.observe(element);
+      }
+    };
+
+    _this._createResizeObserver = (0, _lodash4.default)(function (entries) {
+      entries.forEach(function () {
+        _this._handleResize();
+      });
+    }, 300);
+
+    _this._handleResize = function () {
+      var currentIndex = _this.state.currentIndex;
+
+      if (_this._imageGallery) {
+        _this.setState({
+          galleryWidth: _this._imageGallery.offsetWidth
+        });
+      }
+
+      if (_this._imageGallerySlideWrapper) {
+        _this.setState({
+          gallerySlideWrapperHeight: _this._imageGallerySlideWrapper.offsetHeight
+        });
+      }
+
+      if (_this._thumbnailsWrapper) {
+        if (_this._isThumbnailHorizontal()) {
+          _this.setState({ thumbnailsWrapperHeight: _this._thumbnailsWrapper.offsetHeight });
+        } else {
+          _this.setState({ thumbnailsWrapperWidth: _this._thumbnailsWrapper.offsetWidth });
+        }
+      }
+
+      // Adjust thumbnail container when thumbnail width or height is adjusted
+      _this._setThumbsTranslate(-_this._getThumbsTranslate(currentIndex));
+    };
+
+    _this._handleKeyDown = function (event) {
+      var LEFT_ARROW = 37;
+      var RIGHT_ARROW = 39;
+      var ESC_KEY = 27;
+      var key = parseInt(event.keyCode || event.which || 0);
+
+      switch (key) {
+        case LEFT_ARROW:
+          if (_this._canSlideLeft() && !_this._intervalId) {
+            _this._slideLeft();
+          }
+          break;
+        case RIGHT_ARROW:
+          if (_this._canSlideRight() && !_this._intervalId) {
+            _this._slideRight();
+          }
+          break;
+        case ESC_KEY:
+          if (_this.state.isFullscreen && !_this.props.useBrowserFullscreen) {
+            _this.exitFullScreen();
+          }
+      }
+    };
+
+    _this._handleImageError = function (event) {
+      if (_this.props.defaultImage && event.target.src.indexOf(_this.props.defaultImage) === -1) {
+        event.target.src = _this.props.defaultImage;
+      }
+    };
+
+    _this._handleOnSwiped = function (e, deltaX, deltaY, isFlick) {
+      var _this$state2 = _this.state;
+      var scrollingUpDown = _this$state2.scrollingUpDown;
+      var scrollingLeftRight = _this$state2.scrollingLeftRight;
+
+      if (scrollingUpDown) {
+        // user stopped scrollingUpDown
+        _this.setState({ scrollingUpDown: false });
+      }
+
+      if (scrollingLeftRight) {
+        // user stopped scrollingLeftRight
+        _this.setState({ scrollingLeftRight: false });
+      }
+
+      if (!scrollingUpDown) {
+        // don't swipe if user is scrolling
+        var side = deltaX > 0 ? 1 : -1;
+        _this._handleOnSwipedTo(side, isFlick);
+      }
+    };
+
+    _this._handleSwiping = function (e, deltaX, deltaY, delta) {
+      var _this$state3 = _this.state;
+      var galleryWidth = _this$state3.galleryWidth;
+      var isTransitioning = _this$state3.isTransitioning;
+      var scrollingUpDown = _this$state3.scrollingUpDown;
+      var swipingTransitionDuration = _this.props.swipingTransitionDuration;
+
+      _this._setScrollDirection(deltaX, deltaY);
+      if (!isTransitioning && !scrollingUpDown) {
+        var side = deltaX < 0 ? 1 : -1;
+
+        var offsetPercentage = delta / galleryWidth * 100;
+        if (Math.abs(offsetPercentage) >= 100) {
+          offsetPercentage = 100;
+        }
+
+        var swipingTransition = {
+          transition: 'transform ' + swipingTransitionDuration + 'ms ease-out'
+        };
+
+        _this.setState({
+          offsetPercentage: side * offsetPercentage,
+          style: swipingTransition
+        });
+      } else {
+        // don't move the slide
+        _this.setState({ offsetPercentage: 0 });
+      }
+    };
+
+    _this._slideLeft = function (event) {
+      _this.slideToIndex(_this.state.currentIndex - 1, event);
+    };
+
+    _this._slideRight = function (event) {
+      _this.slideToIndex(_this.state.currentIndex + 1, event);
+    };
+
+    _this._renderItem = function (item) {
+      var onImageError = _this.props.onImageError || _this._handleImageError;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'image-gallery-image' },
+        item.imageSet ? _react2.default.createElement(
+          'picture',
+          {
+            onLoad: _this.props.onImageLoad,
+            onError: onImageError
+          },
+          item.imageSet.map(function (source, index) {
+            return _react2.default.createElement('source', {
+              key: index,
+              media: source.media,
+              srcSet: source.srcSet
+            });
+          }),
+          _react2.default.createElement('img', {
+            alt: item.originalAlt,
+            src: item.original
+          })
+        ) : _react2.default.createElement('img', {
+          src: item.original,
+          alt: item.originalAlt,
+          srcSet: item.srcSet,
+          sizes: item.sizes,
+          title: item.originalTitle,
+          onLoad: _this.props.onImageLoad,
+          onError: onImageError
+        }),
+        item.description && _react2.default.createElement(
+          'span',
+          { className: 'image-gallery-description' },
+          item.description
+        )
+      );
+    };
+
+    _this._renderThumbInner = function (item) {
+      var onThumbnailError = _this.props.onThumbnailError || _this._handleImageError;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement('img', {
+          src: item.thumbnail,
+          alt: item.thumbnailAlt,
+          title: item.thumbnailTitle,
+          onError: onThumbnailError
+        }),
+        _react2.default.createElement(
+          'div',
+          { className: 'image-gallery-thumbnail-label' },
+          item.thumbnailLabel
+        )
+      );
+    };
+
+    _this._onThumbnailClick = function (event, index) {
+      _this.slideToIndex(index, event);
+      if (_this.props.onThumbnailClick) {
+        _this.props.onThumbnailClick(event, index);
+      }
+    };
+
+    _this.state = {
+      currentIndex: props.startIndex,
+      thumbsTranslate: 0,
+      offsetPercentage: 0,
+      galleryWidth: 0,
+      thumbnailsWrapperWidth: 0,
+      thumbnailsWrapperHeight: 0,
+      isFullscreen: false,
+      isPlaying: false
+    };
+
+    // Used to update the throttle if slideDuration changes
+    _this._unthrottledSlideToIndex = _this.slideToIndex;
+    _this.slideToIndex = (0, _lodash2.default)(_this._unthrottledSlideToIndex, props.slideDuration, { trailing: false });
+
+    if (props.lazyLoad) {
+      _this._lazyLoaded = [];
+    }
+    return _this;
+  }
+
+  _createClass(ImageGallery, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.disableArrowKeys !== nextProps.disableArrowKeys) {
+        if (nextProps.disableArrowKeys) {
+          window.removeEventListener('keydown', this._handleKeyDown);
+        } else {
+          window.addEventListener('keydown', this._handleKeyDown);
+        }
+      }
+
+      if (nextProps.lazyLoad && (!this.props.lazyLoad || this.props.items !== nextProps.items)) {
+        this._lazyLoaded = [];
+      }
+
+      if (this.state.currentIndex >= nextProps.items.length) {
+        this.slideToIndex(0);
+      }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      var itemsChanged = prevProps.items.length !== this.props.items.length;
+      if (itemsChanged) {
+        this._handleResize();
+      }
+      if (prevState.currentIndex !== this.state.currentIndex) {
+        if (this.props.onSlide) {
+          this.props.onSlide(this.state.currentIndex);
+        }
+
+        this._updateThumbnailTranslate(prevState.currentIndex);
+      }
+
+      if (prevProps.slideDuration !== this.props.slideDuration) {
+        this.slideToIndex = (0, _lodash2.default)(this._unthrottledSlideToIndex, this.props.slideDuration, { trailing: false });
+      }
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.autoPlay) {
+        this.play();
+      }
+      if (!this.props.disableArrowKeys) {
+        window.addEventListener('keydown', this._handleKeyDown);
+      }
+      this._onScreenChangeEvent();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (!this.props.disableArrowKeys) {
+        window.removeEventListener('keydown', this._handleKeyDown);
+      }
+
+      this._offScreenChangeEvent();
+
+      if (this._intervalId) {
+        window.clearInterval(this._intervalId);
+        this._intervalId = null;
+      }
+
+      if (this.resizeObserver && this._imageGallerySlideWrapper) {
+        this.resizeObserver.unobserve(this._imageGallerySlideWrapper);
+      }
+
+      if (this._transitionTimer) {
+        window.clearTimeout(this._transitionTimer);
+      }
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      var _this2 = this;
+
+      var callback = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+      if (!this._intervalId) {
+        var _props = this.props;
+        var slideInterval = _props.slideInterval;
+        var slideDuration = _props.slideDuration;
+
+        this.setState({ isPlaying: true });
+        this._intervalId = window.setInterval(function () {
+          if (!_this2.state.hovering) {
+            if (!_this2.props.infinite && !_this2._canSlideRight()) {
+              _this2.pause();
+            } else {
+              _this2.slideToIndex(_this2.state.currentIndex + 1);
+            }
+          }
+        }, Math.max(slideInterval, slideDuration));
+
+        if (this.props.onPlay && callback) {
+          this.props.onPlay(this.state.currentIndex);
+        }
+      }
+    }
+  }, {
+    key: 'pause',
+    value: function pause() {
+      var callback = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+      if (this._intervalId) {
+        window.clearInterval(this._intervalId);
+        this._intervalId = null;
+        this.setState({ isPlaying: false });
+
+        if (this.props.onPause && callback) {
+          this.props.onPause(this.state.currentIndex);
+        }
+      }
+    }
+  }, {
+    key: 'setModalFullscreen',
+    value: function setModalFullscreen(state) {
+      this.setState({ modalFullscreen: state });
+      // manually call because browser does not support screenchange events
+      if (this.props.onScreenChange) {
+        this.props.onScreenChange(state);
+      }
+    }
+  }, {
+    key: 'fullScreen',
+    value: function fullScreen() {
+      var gallery = this._imageGallery;
+
+      if (this.props.useBrowserFullscreen) {
+        if (gallery.requestFullscreen) {
+          gallery.requestFullscreen();
+        } else if (gallery.msRequestFullscreen) {
+          gallery.msRequestFullscreen();
+        } else if (gallery.mozRequestFullScreen) {
+          gallery.mozRequestFullScreen();
+        } else if (gallery.webkitRequestFullscreen) {
+          gallery.webkitRequestFullscreen();
+        } else {
+          // fallback to fullscreen modal for unsupported browsers
+          this.setModalFullscreen(true);
+        }
+      } else {
+        this.setModalFullscreen(true);
+      }
+
+      this.setState({ isFullscreen: true });
+    }
+  }, {
+    key: 'exitFullScreen',
+    value: function exitFullScreen() {
+      if (this.state.isFullscreen) {
+        if (this.props.useBrowserFullscreen) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          } else {
+            // fallback to fullscreen modal for unsupported browsers
+            this.setModalFullscreen(false);
+          }
+        } else {
+          this.setModalFullscreen(false);
+        }
+
+        this.setState({ isFullscreen: false });
+      }
+    }
+  }, {
+    key: 'getCurrentIndex',
+    value: function getCurrentIndex() {
+      return this.state.currentIndex;
+    }
+  }, {
+    key: '_onScreenChangeEvent',
+    value: function _onScreenChangeEvent() {
+      var _this3 = this;
+
+      screenChangeEvents.map(function (eventName) {
+        document.addEventListener(eventName, _this3._handleScreenChange);
+      });
+    }
+  }, {
+    key: '_offScreenChangeEvent',
+    value: function _offScreenChangeEvent() {
+      var _this4 = this;
+
+      screenChangeEvents.map(function (eventName) {
+        document.removeEventListener(eventName, _this4._handleScreenChange);
+      });
+    }
+  }, {
+    key: '_isThumbnailHorizontal',
+    value: function _isThumbnailHorizontal() {
+      var thumbnailPosition = this.props.thumbnailPosition;
+
+      return thumbnailPosition === 'left' || thumbnailPosition === 'right';
+    }
+  }, {
+    key: '_setScrollDirection',
+    value: function _setScrollDirection(deltaX, deltaY) {
+      var _state = this.state;
+      var scrollingUpDown = _state.scrollingUpDown;
+      var scrollingLeftRight = _state.scrollingLeftRight;
+
+      var x = Math.abs(deltaX);
+      var y = Math.abs(deltaY);
+
+      // If y > x the user is scrolling up and down
+      if (y > x && !scrollingUpDown && !scrollingLeftRight) {
+        this.setState({ scrollingUpDown: true });
+      } else if (!scrollingLeftRight && !scrollingUpDown) {
+        this.setState({ scrollingLeftRight: true });
+      }
+    }
+  }, {
+    key: '_handleOnSwipedTo',
+    value: function _handleOnSwipedTo(side, isFlick) {
+      var _state2 = this.state;
+      var currentIndex = _state2.currentIndex;
+      var isTransitioning = _state2.isTransitioning;
+
+      var slideTo = currentIndex;
+
+      if ((this._sufficientSwipeOffset() || isFlick) && !isTransitioning) {
+        slideTo += side;
+      }
+
+      if (side < 0) {
+        if (!this._canSlideLeft()) {
+          slideTo = currentIndex;
+        }
+      } else {
+        if (!this._canSlideRight()) {
+          slideTo = currentIndex;
+        }
+      }
+
+      this._unthrottledSlideToIndex(slideTo);
+    }
+  }, {
+    key: '_sufficientSwipeOffset',
+    value: function _sufficientSwipeOffset() {
+      return Math.abs(this.state.offsetPercentage) > this.props.swipeThreshold;
+    }
+  }, {
+    key: '_canNavigate',
+    value: function _canNavigate() {
+      return this.props.items.length >= 2;
+    }
+  }, {
+    key: '_canSlideLeft',
+    value: function _canSlideLeft() {
+      return this.props.infinite || this.state.currentIndex > 0;
+    }
+  }, {
+    key: '_canSlideRight',
+    value: function _canSlideRight() {
+      return this.props.infinite || this.state.currentIndex < this.props.items.length - 1;
+    }
+  }, {
+    key: '_updateThumbnailTranslate',
+    value: function _updateThumbnailTranslate(previousIndex) {
+      var _state3 = this.state;
+      var thumbsTranslate = _state3.thumbsTranslate;
+      var currentIndex = _state3.currentIndex;
+
+      if (this.state.currentIndex === 0) {
+        this._setThumbsTranslate(0);
+      } else {
+        var indexDifference = Math.abs(previousIndex - currentIndex);
+        var scroll = this._getThumbsTranslate(indexDifference);
+        if (scroll > 0) {
+          if (previousIndex < currentIndex) {
+            this._setThumbsTranslate(thumbsTranslate - scroll);
+          } else if (previousIndex > currentIndex) {
+            this._setThumbsTranslate(thumbsTranslate + scroll);
+          }
+        }
+      }
+    }
+  }, {
+    key: '_setThumbsTranslate',
+    value: function _setThumbsTranslate(thumbsTranslate) {
+      this.setState({ thumbsTranslate: thumbsTranslate });
+    }
+  }, {
+    key: '_getThumbsTranslate',
+    value: function _getThumbsTranslate(indexDifference) {
+      if (this.props.disableThumbnailScroll) {
+        return 0;
+      }
+
+      var _state4 = this.state;
+      var thumbnailsWrapperWidth = _state4.thumbnailsWrapperWidth;
+      var thumbnailsWrapperHeight = _state4.thumbnailsWrapperHeight;
+
+      var totalScroll = void 0;
+
+      if (this._thumbnails) {
+        // total scroll required to see the last thumbnail
+        if (this._isThumbnailHorizontal()) {
+          if (this._thumbnails.scrollHeight <= thumbnailsWrapperHeight) {
+            return 0;
+          }
+          totalScroll = this._thumbnails.scrollHeight - thumbnailsWrapperHeight;
+        } else {
+          if (this._thumbnails.scrollWidth <= thumbnailsWrapperWidth || thumbnailsWrapperWidth <= 0) {
+            return 0;
+          }
+          totalScroll = this._thumbnails.scrollWidth - thumbnailsWrapperWidth;
+        }
+
+        var totalThumbnails = this._thumbnails.children.length;
+        // scroll-x required per index change
+        var perIndexScroll = totalScroll / (totalThumbnails - 1);
+
+        return indexDifference * perIndexScroll;
+      }
+    }
+  }, {
+    key: '_getAlignmentClassName',
+    value: function _getAlignmentClassName(index) {
+      // LEFT, and RIGHT alignments are necessary for lazyLoad
+      var currentIndex = this.state.currentIndex;
+
+      var alignment = '';
+      var LEFT = 'left';
+      var CENTER = 'center';
+      var RIGHT = 'right';
+
+      switch (index) {
+        case currentIndex - 1:
+          alignment = ' ' + LEFT;
+          break;
+        case currentIndex:
+          alignment = ' ' + CENTER;
+          break;
+        case currentIndex + 1:
+          alignment = ' ' + RIGHT;
+          break;
+      }
+
+      if (this.props.items.length >= 3 && this.props.infinite) {
+        if (index === 0 && currentIndex === this.props.items.length - 1) {
+          // set first slide as right slide if were sliding right from last slide
+          alignment = ' ' + RIGHT;
+        } else if (index === this.props.items.length - 1 && currentIndex === 0) {
+          // set last slide as left slide if were sliding left from first slide
+          alignment = ' ' + LEFT;
+        }
+      }
+
+      return alignment;
+    }
+  }, {
+    key: '_isGoingFromFirstToLast',
+    value: function _isGoingFromFirstToLast() {
+      var _state5 = this.state;
+      var currentIndex = _state5.currentIndex;
+      var previousIndex = _state5.previousIndex;
+
+      var totalSlides = this.props.items.length - 1;
+      return previousIndex === 0 && currentIndex === totalSlides;
+    }
+  }, {
+    key: '_isGoingFromLastToFirst',
+    value: function _isGoingFromLastToFirst() {
+      var _state6 = this.state;
+      var currentIndex = _state6.currentIndex;
+      var previousIndex = _state6.previousIndex;
+
+      var totalSlides = this.props.items.length - 1;
+      return previousIndex === totalSlides && currentIndex === 0;
+    }
+  }, {
+    key: '_getTranslateXForTwoSlide',
+    value: function _getTranslateXForTwoSlide(index) {
+      // For taking care of infinite swipe when there are only two slides
+      var _state7 = this.state;
+      var currentIndex = _state7.currentIndex;
+      var offsetPercentage = _state7.offsetPercentage;
+      var previousIndex = _state7.previousIndex;
+
+      var baseTranslateX = -100 * currentIndex;
+      var translateX = baseTranslateX + index * 100 + offsetPercentage;
+
+      // keep track of user swiping direction
+      if (offsetPercentage > 0) {
+        this.direction = 'left';
+      } else if (offsetPercentage < 0) {
+        this.direction = 'right';
+      }
+
+      // when swiping make sure the slides are on the correct side
+      if (currentIndex === 0 && index === 1 && offsetPercentage > 0) {
+        translateX = -100 + offsetPercentage;
+      } else if (currentIndex === 1 && index === 0 && offsetPercentage < 0) {
+        translateX = 100 + offsetPercentage;
+      }
+
+      if (currentIndex !== previousIndex) {
+        // when swiped move the slide to the correct side
+        if (previousIndex === 0 && index === 0 && offsetPercentage === 0 && this.direction === 'left') {
+          translateX = 100;
+        } else if (previousIndex === 1 && index === 1 && offsetPercentage === 0 && this.direction === 'right') {
+          translateX = -100;
+        }
+      } else {
+        // keep the slide on the correct slide even when not a swipe
+        if (currentIndex === 0 && index === 1 && offsetPercentage === 0 && this.direction === 'left') {
+          translateX = -100;
+        } else if (currentIndex === 1 && index === 0 && offsetPercentage === 0 && this.direction === 'right') {
+          translateX = 100;
+        }
+      }
+
+      return translateX;
+    }
+  }, {
+    key: '_getThumbnailBarHeight',
+    value: function _getThumbnailBarHeight() {
+      if (this._isThumbnailHorizontal()) {
+        return {
+          height: this.state.gallerySlideWrapperHeight
+        };
+      }
+      return {};
+    }
+  }, {
+    key: '_shouldPushSlideOnInfiniteMode',
+    value: function _shouldPushSlideOnInfiniteMode(index) {
+      /*
+        Push(show) slide if slide is the current slide, and the next slide
+        OR
+        The slide is going more than 1 slide left, or right, but not going from
+        first to last and not going from last to first
+         There is an edge case where if you go to the first or last slide, when they're
+        not left, or right of each other they will try to catch up in the background
+        so unless were going from first to last or vice versa we don't want the first
+        or last slide to show up during our transition
+      */
+      return !this._slideIsTransitioning(index) || this._ignoreIsTransitioning() && !this._isFirstOrLastSlide(index);
+    }
+  }, {
+    key: '_slideIsTransitioning',
+    value: function _slideIsTransitioning(index) {
+      /*
+      returns true if the gallery is transitioning and the index is not the
+      previous or currentIndex
+      */
+      var _state8 = this.state;
+      var isTransitioning = _state8.isTransitioning;
+      var previousIndex = _state8.previousIndex;
+      var currentIndex = _state8.currentIndex;
+
+      var indexIsNotPreviousOrNextSlide = !(index === previousIndex || index === currentIndex);
+      return isTransitioning && indexIsNotPreviousOrNextSlide;
+    }
+  }, {
+    key: '_isFirstOrLastSlide',
+    value: function _isFirstOrLastSlide(index) {
+      var totalSlides = this.props.items.length - 1;
+      var isLastSlide = index === totalSlides;
+      var isFirstSlide = index === 0;
+      return isLastSlide || isFirstSlide;
+    }
+  }, {
+    key: '_ignoreIsTransitioning',
+    value: function _ignoreIsTransitioning() {
+      /*
+        Ignore isTransitioning because were not going to sibling slides
+        e.g. center to left or center to right
+      */
+      var _state9 = this.state;
+      var previousIndex = _state9.previousIndex;
+      var currentIndex = _state9.currentIndex;
+
+      var totalSlides = this.props.items.length - 1;
+      // we want to show the in between slides transition
+      var slidingMoreThanOneSlideLeftOrRight = Math.abs(previousIndex - currentIndex) > 1;
+      var notGoingFromFirstToLast = !(previousIndex === 0 && currentIndex === totalSlides);
+      var notGoingFromLastToFirst = !(previousIndex === totalSlides && currentIndex === 0);
+
+      return slidingMoreThanOneSlideLeftOrRight && notGoingFromFirstToLast && notGoingFromLastToFirst;
+    }
+  }, {
+    key: '_getSlideStyle',
+    value: function _getSlideStyle(index) {
+      var _state10 = this.state;
+      var currentIndex = _state10.currentIndex;
+      var offsetPercentage = _state10.offsetPercentage;
+      var _props2 = this.props;
+      var infinite = _props2.infinite;
+      var items = _props2.items;
+      var useTranslate3D = _props2.useTranslate3D;
+
+      var baseTranslateX = -100 * currentIndex;
+      var totalSlides = items.length - 1;
+
+      // calculates where the other slides belong based on currentIndex
+      var translateX = baseTranslateX + index * 100 + offsetPercentage;
+
+      if (infinite && items.length > 2) {
+        if (currentIndex === 0 && index === totalSlides) {
+          // make the last slide the slide before the first
+          translateX = -100 + offsetPercentage;
+        } else if (currentIndex === totalSlides && index === 0) {
+          // make the first slide the slide after the last
+          translateX = 100 + offsetPercentage;
+        }
+      }
+
+      // Special case when there are only 2 items with infinite on
+      if (infinite && items.length === 2) {
+        translateX = this._getTranslateXForTwoSlide(index);
+      }
+
+      var translate = 'translate(' + translateX + '%, 0)';
+
+      if (useTranslate3D) {
+        translate = 'translate3d(' + translateX + '%, 0, 0)';
+      }
+
+      return {
+        WebkitTransform: translate,
+        MozTransform: translate,
+        msTransform: translate,
+        OTransform: translate,
+        transform: translate
+      };
+    }
+  }, {
+    key: '_getThumbnailStyle',
+    value: function _getThumbnailStyle() {
+      var translate = void 0;
+      var useTranslate3D = this.props.useTranslate3D;
+
+
+      if (this._isThumbnailHorizontal()) {
+        translate = 'translate(0, ' + this.state.thumbsTranslate + 'px)';
+        if (useTranslate3D) {
+          translate = 'translate3d(0, ' + this.state.thumbsTranslate + 'px, 0)';
+        }
+      } else {
+        translate = 'translate(' + this.state.thumbsTranslate + 'px, 0)';
+        if (useTranslate3D) {
+          translate = 'translate3d(' + this.state.thumbsTranslate + 'px, 0, 0)';
+        }
+      }
+      return {
+        WebkitTransform: translate,
+        MozTransform: translate,
+        msTransform: translate,
+        OTransform: translate,
+        transform: translate
+      };
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this5 = this;
+
+      var _state11 = this.state;
+      var currentIndex = _state11.currentIndex;
+      var isFullscreen = _state11.isFullscreen;
+      var modalFullscreen = _state11.modalFullscreen;
+      var isPlaying = _state11.isPlaying;
+      var scrollingLeftRight = _state11.scrollingLeftRight;
+      var _props3 = this.props;
+      var infinite = _props3.infinite;
+      var preventDefaultTouchmoveEvent = _props3.preventDefaultTouchmoveEvent;
+
+
+      var thumbnailStyle = this._getThumbnailStyle();
+      var thumbnailPosition = this.props.thumbnailPosition;
+
+      var slideLeft = this._slideLeft;
+      var slideRight = this._slideRight;
+
+      var slides = [];
+      var thumbnails = [];
+      var bullets = [];
+
+      this.props.items.forEach(function (item, index) {
+        var alignment = _this5._getAlignmentClassName(index);
+        var originalClass = item.originalClass ? ' ' + item.originalClass : '';
+        var thumbnailClass = item.thumbnailClass ? ' ' + item.thumbnailClass : '';
+
+        var renderItem = item.renderItem || _this5.props.renderItem || _this5._renderItem;
+
+        var renderThumbInner = item.renderThumbInner || _this5.props.renderThumbInner || _this5._renderThumbInner;
+
+        var showItem = !_this5.props.lazyLoad || alignment || _this5._lazyLoaded[index];
+        if (showItem && _this5.props.lazyLoad) {
+          _this5._lazyLoaded[index] = true;
+        }
+
+        var slideStyle = _this5._getSlideStyle(index);
+
+        var slide = _react2.default.createElement(
+          'div',
+          {
+            key: index,
+            className: 'image-gallery-slide' + alignment + originalClass,
+            style: _extends(slideStyle, _this5.state.style),
+            onClick: _this5.props.onClick,
+            onTouchMove: _this5.props.onTouchMove,
+            onTouchEnd: _this5.props.onTouchEnd,
+            onTouchStart: _this5.props.onTouchStart,
+            onMouseOver: _this5.props.onMouseOver,
+            onMouseLeave: _this5.props.onMouseLeave,
+            role: _this5.props.onClick && 'button'
+          },
+          showItem ? renderItem(item) : _react2.default.createElement('div', { style: { height: '100%' } })
+        );
+
+        if (infinite) {
+          // don't add some slides while transitioning to avoid background transitions
+          if (_this5._shouldPushSlideOnInfiniteMode(index)) {
+            slides.push(slide);
+          }
+        } else {
+          slides.push(slide);
+        }
+
+        if (_this5.props.showThumbnails) {
+          thumbnails.push(_react2.default.createElement(
+            'a',
+            {
+              key: index,
+              role: 'button',
+              'aria-pressed': currentIndex === index ? 'true' : 'false',
+              'aria-label': 'Go to Slide ' + (index + 1),
+              className: 'image-gallery-thumbnail' + (currentIndex === index ? ' active' : '') + thumbnailClass,
+              onClick: function onClick(event) {
+                return _this5._onThumbnailClick(event, index);
+              }
+            },
+            renderThumbInner(item)
+          ));
+        }
+
+        if (_this5.props.showBullets) {
+          var bulletOnClick = function bulletOnClick(event) {
+            if (item.bulletOnClick) {
+              item.bulletOnClick({ item: item, itemIndex: index, currentIndex: currentIndex });
+            }
+            return _this5.slideToIndex.call(_this5, index, event);
+          };
+          bullets.push(_react2.default.createElement('button', {
+            key: index,
+            type: 'button',
+            className: ['image-gallery-bullet', currentIndex === index ? 'active' : '', item.bulletClass || ''].join(' '),
+            onClick: bulletOnClick,
+            'aria-pressed': currentIndex === index ? 'true' : 'false',
+            'aria-label': 'Go to Slide ' + (index + 1)
+          }));
+        }
+      });
+
+      var slideWrapper = _react2.default.createElement(
+        'div',
+        {
+          ref: this._initGalleryResizing,
+          className: 'image-gallery-slide-wrapper ' + thumbnailPosition
+        },
+        this.props.renderCustomControls && this.props.renderCustomControls(),
+        this.props.showFullscreenButton && this.props.renderFullscreenButton(this._toggleFullScreen, isFullscreen),
+        this.props.showPlayButton && this.props.renderPlayPauseButton(this._togglePlay, isPlaying),
+        this._canNavigate() ? [this.props.showNav && _react2.default.createElement(
+          'span',
+          { key: 'navigation' },
+          this.props.renderLeftNav(slideLeft, !this._canSlideLeft()),
+          this.props.renderRightNav(slideRight, !this._canSlideRight())
+        ), _react2.default.createElement(
+          _reactSwipeable2.default,
+          {
+            className: 'image-gallery-swipe',
+            disabled: this.props.disableSwipe,
+            key: 'swipeable',
+            delta: 0,
+            flickThreshold: this.props.flickThreshold,
+            onSwiping: this._handleSwiping,
+            onSwiped: this._handleOnSwiped,
+            stopPropagation: this.props.stopPropagation,
+            preventDefaultTouchmoveEvent: preventDefaultTouchmoveEvent || scrollingLeftRight
+          },
+          _react2.default.createElement(
+            'div',
+            { className: 'image-gallery-slides' },
+            slides
+          )
+        )] : _react2.default.createElement(
+          'div',
+          { className: 'image-gallery-slides' },
+          slides
+        ),
+        this.props.showBullets && _react2.default.createElement(
+          'div',
+          { className: 'image-gallery-bullets' },
+          _react2.default.createElement(
+            'div',
+            {
+              className: 'image-gallery-bullets-container',
+              role: 'navigation',
+              'aria-label': 'Bullet Navigation'
+            },
+            bullets
+          )
+        ),
+        this.props.showIndex && _react2.default.createElement(
+          'div',
+          { className: 'image-gallery-index' },
+          _react2.default.createElement(
+            'span',
+            { className: 'image-gallery-index-current' },
+            this.state.currentIndex + 1
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'image-gallery-index-separator' },
+            this.props.indexSeparator
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'image-gallery-index-total' },
+            this.props.items.length
+          )
+        )
+      );
+
+      var classNames = ['image-gallery', this.props.additionalClass, modalFullscreen ? 'fullscreen-modal' : ''].filter(function (name) {
+        return typeof name === 'string';
+      }).join(' ');
+
+      return _react2.default.createElement(
+        'div',
+        {
+          ref: function ref(i) {
+            return _this5._imageGallery = i;
+          },
+          className: classNames,
+          'aria-live': 'polite'
+        },
+        _react2.default.createElement(
+          'div',
+          {
+            className: 'image-gallery-content' + (isFullscreen ? ' fullscreen' : '')
+          },
+          (thumbnailPosition === 'bottom' || thumbnailPosition === 'right') && slideWrapper,
+          this.props.showThumbnails && _react2.default.createElement(
+            'div',
+            {
+              className: 'image-gallery-thumbnails-wrapper ' + thumbnailPosition,
+              style: this._getThumbnailBarHeight()
+            },
+            _react2.default.createElement(
+              'div',
+              {
+                className: 'image-gallery-thumbnails',
+                ref: function ref(i) {
+                  return _this5._thumbnailsWrapper = i;
+                }
+              },
+              _react2.default.createElement(
+                'div',
+                {
+                  ref: function ref(t) {
+                    return _this5._thumbnails = t;
+                  },
+                  className: 'image-gallery-thumbnails-container',
+                  style: thumbnailStyle,
+                  'aria-label': 'Thumbnail Navigation'
+                },
+                thumbnails
+              )
+            )
+          ),
+          (thumbnailPosition === 'top' || thumbnailPosition === 'left') && slideWrapper
+        )
+      );
+    }
+  }]);
+
+  return ImageGallery;
+}(_react2.default.Component);
+
+ImageGallery.propTypes = {
+  flickThreshold: _propTypes2.default.number,
+  items: _propTypes2.default.array.isRequired,
+  showNav: _propTypes2.default.bool,
+  autoPlay: _propTypes2.default.bool,
+  lazyLoad: _propTypes2.default.bool,
+  infinite: _propTypes2.default.bool,
+  showIndex: _propTypes2.default.bool,
+  showBullets: _propTypes2.default.bool,
+  showThumbnails: _propTypes2.default.bool,
+  showPlayButton: _propTypes2.default.bool,
+  showFullscreenButton: _propTypes2.default.bool,
+  disableThumbnailScroll: _propTypes2.default.bool,
+  disableArrowKeys: _propTypes2.default.bool,
+  disableSwipe: _propTypes2.default.bool,
+  useBrowserFullscreen: _propTypes2.default.bool,
+  preventDefaultTouchmoveEvent: _propTypes2.default.bool,
+  defaultImage: _propTypes2.default.string,
+  indexSeparator: _propTypes2.default.string,
+  thumbnailPosition: _propTypes2.default.string,
+  startIndex: _propTypes2.default.number,
+  slideDuration: _propTypes2.default.number,
+  slideInterval: _propTypes2.default.number,
+  swipeThreshold: _propTypes2.default.number,
+  swipingTransitionDuration: _propTypes2.default.number,
+  onSlide: _propTypes2.default.func,
+  onScreenChange: _propTypes2.default.func,
+  onPause: _propTypes2.default.func,
+  onPlay: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
+  onImageLoad: _propTypes2.default.func,
+  onImageError: _propTypes2.default.func,
+  onTouchMove: _propTypes2.default.func,
+  onTouchEnd: _propTypes2.default.func,
+  onTouchStart: _propTypes2.default.func,
+  onMouseOver: _propTypes2.default.func,
+  onMouseLeave: _propTypes2.default.func,
+  onThumbnailError: _propTypes2.default.func,
+  onThumbnailClick: _propTypes2.default.func,
+  renderCustomControls: _propTypes2.default.func,
+  renderLeftNav: _propTypes2.default.func,
+  renderRightNav: _propTypes2.default.func,
+  renderPlayPauseButton: _propTypes2.default.func,
+  renderFullscreenButton: _propTypes2.default.func,
+  renderItem: _propTypes2.default.func,
+  stopPropagation: _propTypes2.default.bool,
+  additionalClass: _propTypes2.default.string,
+  useTranslate3D: _propTypes2.default.bool
+};
+ImageGallery.defaultProps = {
+  items: [],
+  showNav: true,
+  autoPlay: false,
+  lazyLoad: false,
+  infinite: true,
+  showIndex: false,
+  showBullets: false,
+  showThumbnails: true,
+  showPlayButton: true,
+  showFullscreenButton: true,
+  disableThumbnailScroll: false,
+  disableArrowKeys: false,
+  disableSwipe: false,
+  useTranslate3D: true,
+  useBrowserFullscreen: true,
+  preventDefaultTouchmoveEvent: false,
+  flickThreshold: 0.4,
+  stopPropagation: false,
+  indexSeparator: ' / ',
+  thumbnailPosition: 'bottom',
+  startIndex: 0,
+  slideDuration: 450,
+  swipingTransitionDuration: 0,
+  slideInterval: 3000,
+  swipeThreshold: 30,
+  renderLeftNav: function renderLeftNav(onClick, disabled) {
+    return _react2.default.createElement('button', {
+      type: 'button',
+      className: 'image-gallery-left-nav',
+      disabled: disabled,
+      onClick: onClick,
+      'aria-label': 'Previous Slide'
+    });
+  },
+  renderRightNav: function renderRightNav(onClick, disabled) {
+    return _react2.default.createElement('button', {
+      type: 'button',
+      className: 'image-gallery-right-nav',
+      disabled: disabled,
+      onClick: onClick,
+      'aria-label': 'Next Slide'
+    });
+  },
+  renderPlayPauseButton: function renderPlayPauseButton(onClick, isPlaying) {
+    return _react2.default.createElement('button', {
+      type: 'button',
+      className: 'image-gallery-play-button' + (isPlaying ? ' active' : ''),
+      onClick: onClick,
+      'aria-label': 'Play or Pause Slideshow'
+    });
+  },
+  renderFullscreenButton: function renderFullscreenButton(onClick, isFullscreen) {
+    return _react2.default.createElement('button', {
+      type: 'button',
+      className: 'image-gallery-fullscreen-button' + (isFullscreen ? ' active' : ''),
+      onClick: onClick,
+      'aria-label': 'Open Fullscreen'
+    });
+  }
+};
+exports.default = ImageGallery;
 
 /***/ }),
 
@@ -55090,7 +57409,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774857
+      // 1530273546834
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55108,7 +57427,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774857
+      // 1530273546896
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55126,7 +57445,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774888
+      // 1530273546941
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55144,7 +57463,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774904
+      // 1530273547006
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55162,7 +57481,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774935
+      // 1530273546952
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55180,7 +57499,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774888
+      // 1530273546852
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55198,7 +57517,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774888
+      // 1530273547062
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55216,7 +57535,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774873
+      // 1530273546879
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55234,7 +57553,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774904
+      // 1530273547023
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55252,7 +57571,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774920
+      // 1530273547045
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55270,7 +57589,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774920
+      // 1530273547080
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55288,7 +57607,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774920
+      // 1530273547132
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55306,7 +57625,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774935
+      // 1530273547098
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55324,7 +57643,7 @@ exports.default = Sidebar;
 
 // extracted by extract-css-chunks-webpack-plugin
     if(true) {
-      // 1530201774935
+      // 1530273547145
       var cssReload = __webpack_require__(/*! ../../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -55530,6 +57849,762 @@ module.exports = {
   loadersCssSpinners: loadersCssSpinners,
   allSpinners: _extends({}, spinkitSpinners, loadersCssSpinners)
 };
+
+/***/ }),
+
+/***/ "./node_modules/react-swipeable/lib/Swipeable.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-swipeable/lib/Swipeable.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var PropTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+var DetectPassiveEvents = __webpack_require__(/*! detect-passive-events */ "./node_modules/detect-passive-events/lib/index.js").default;
+
+function getInitialState() {
+  return {
+    x: null,
+    y: null,
+    swiping: false,
+    start: 0
+  };
+}
+
+function getMovingPosition(e) {
+  return 'changedTouches' in e ? { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY } : { x: e.clientX, y: e.clientY };
+}
+function getPosition(e) {
+  return 'touches' in e ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY };
+}
+
+function rotateByAngle(pos, angle) {
+  if (angle === 0) {
+    return pos;
+  }
+
+  var x = pos.x,
+      y = pos.y;
+
+
+  var angleInRadians = Math.PI / 180 * angle;
+  var rotatedX = x * Math.cos(angleInRadians) + y * Math.sin(angleInRadians);
+  var rotatedY = y * Math.cos(angleInRadians) - x * Math.sin(angleInRadians);
+  return { x: rotatedX, y: rotatedY };
+}
+
+function calculatePos(e, state) {
+  var _rotateByAngle = rotateByAngle(getMovingPosition(e), state.rotationAngle),
+      x = _rotateByAngle.x,
+      y = _rotateByAngle.y;
+
+  var deltaX = state.x - x;
+  var deltaY = state.y - y;
+
+  var absX = Math.abs(deltaX);
+  var absY = Math.abs(deltaY);
+
+  var time = Date.now() - state.start;
+  var velocity = Math.sqrt(absX * absX + absY * absY) / time;
+
+  return { deltaX: deltaX, deltaY: deltaY, absX: absX, absY: absY, velocity: velocity };
+}
+
+var Swipeable = function (_React$Component) {
+  _inherits(Swipeable, _React$Component);
+
+  function Swipeable(props, context) {
+    _classCallCheck(this, Swipeable);
+
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
+
+    _this.swipeable = getInitialState();
+
+    _this.eventStart = _this.eventStart.bind(_this);
+    _this.eventMove = _this.eventMove.bind(_this);
+    _this.eventEnd = _this.eventEnd.bind(_this);
+    _this.mouseDown = _this.mouseDown.bind(_this);
+    _this.mouseMove = _this.mouseMove.bind(_this);
+    _this.mouseUp = _this.mouseUp.bind(_this);
+    _this.cleanupMouseListeners = _this.cleanupMouseListeners.bind(_this);
+    _this.setupMouseListeners = _this.setupMouseListeners.bind(_this);
+    _this.elementRef = _this.elementRef.bind(_this);
+    _this.setupTouchmoveEvent = _this.setupTouchmoveEvent.bind(_this);
+    _this.cleanupTouchmoveEvent = _this.cleanupTouchmoveEvent.bind(_this);
+
+    _this.hasPassiveSupport = DetectPassiveEvents.hasSupport;
+    return _this;
+  }
+
+  Swipeable.prototype.componentDidMount = function componentDidMount() {
+    if (this.props.preventDefaultTouchmoveEvent) {
+      this.setupTouchmoveEvent();
+    }
+  };
+
+  Swipeable.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
+    if (prevProps.disabled !== this.props.disabled) {
+      this.cleanupMouseListeners();
+
+      this.swipeable = getInitialState();
+    }
+
+    if (prevProps.preventDefaultTouchmoveEvent && !this.props.preventDefaultTouchmoveEvent) {
+      this.cleanupTouchmoveEvent();
+    } else if (!prevProps.preventDefaultTouchmoveEvent && this.props.preventDefaultTouchmoveEvent) {
+      this.setupTouchmoveEvent();
+    }
+  };
+
+  Swipeable.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.cleanupMouseListeners();
+  };
+
+  Swipeable.prototype.setupTouchmoveEvent = function setupTouchmoveEvent() {
+    if (this.element && this.hasPassiveSupport) {
+      this.element.addEventListener('touchmove', this.eventMove, { passive: false });
+    }
+  };
+
+  Swipeable.prototype.setupMouseListeners = function setupMouseListeners() {
+    document.addEventListener('mousemove', this.mouseMove);
+    document.addEventListener('mouseup', this.mouseUp);
+  };
+
+  Swipeable.prototype.cleanupTouchmoveEvent = function cleanupTouchmoveEvent() {
+    if (this.element && this.hasPassiveSupport) {
+      this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
+    }
+  };
+
+  Swipeable.prototype.cleanupMouseListeners = function cleanupMouseListeners() {
+    document.removeEventListener('mousemove', this.mouseMove);
+    document.removeEventListener('mouseup', this.mouseUp);
+  };
+
+  Swipeable.prototype.mouseDown = function mouseDown(e) {
+    if (!this.props.trackMouse || e.type !== 'mousedown') {
+      return;
+    }
+
+    if (typeof this.props.onMouseDown === 'function') this.props.onMouseDown(e);
+
+    this.setupMouseListeners();
+
+    this.eventStart(e);
+  };
+
+  Swipeable.prototype.mouseMove = function mouseMove(e) {
+    this.eventMove(e);
+  };
+
+  Swipeable.prototype.mouseUp = function mouseUp(e) {
+    this.cleanupMouseListeners();
+    this.eventEnd(e);
+  };
+
+  Swipeable.prototype.eventStart = function eventStart(e) {
+    if (e.touches && e.touches.length > 1) return;
+
+    var rotationAngle = this.props.rotationAngle;
+
+    var _rotateByAngle2 = rotateByAngle(getPosition(e), rotationAngle),
+        x = _rotateByAngle2.x,
+        y = _rotateByAngle2.y;
+
+    if (this.props.stopPropagation) e.stopPropagation();
+
+    this.swipeable = { start: Date.now(), x: x, y: y, swiping: false, rotationAngle: rotationAngle };
+  };
+
+  Swipeable.prototype.eventMove = function eventMove(e) {
+    var _props = this.props,
+        stopPropagation = _props.stopPropagation,
+        delta = _props.delta,
+        onSwiping = _props.onSwiping,
+        onSwiped = _props.onSwiped,
+        onSwipingLeft = _props.onSwipingLeft,
+        onSwipedLeft = _props.onSwipedLeft,
+        onSwipingRight = _props.onSwipingRight,
+        onSwipedRight = _props.onSwipedRight,
+        onSwipingUp = _props.onSwipingUp,
+        onSwipedUp = _props.onSwipedUp,
+        onSwipingDown = _props.onSwipingDown,
+        onSwipedDown = _props.onSwipedDown,
+        preventDefaultTouchmoveEvent = _props.preventDefaultTouchmoveEvent;
+
+
+    if (!this.swipeable.x || !this.swipeable.y || e.touches && e.touches.length > 1) {
+      return;
+    }
+
+    var pos = calculatePos(e, this.swipeable);
+
+    if (pos.absX < delta && pos.absY < delta && !this.swipeable.swiping) return;
+
+    if (stopPropagation) e.stopPropagation();
+
+    if (onSwiping) {
+      onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
+    }
+
+    var cancelablePageSwipe = false;
+    if (onSwiping || onSwiped) {
+      cancelablePageSwipe = true;
+    }
+
+    if (pos.absX > pos.absY) {
+      if (pos.deltaX > 0) {
+        if (onSwipingLeft || onSwipedLeft) {
+          onSwipingLeft && onSwipingLeft(e, pos.absX);
+          cancelablePageSwipe = true;
+        }
+      } else if (onSwipingRight || onSwipedRight) {
+        onSwipingRight && onSwipingRight(e, pos.absX);
+        cancelablePageSwipe = true;
+      }
+    } else if (pos.deltaY > 0) {
+      if (onSwipingUp || onSwipedUp) {
+        onSwipingUp && onSwipingUp(e, pos.absY);
+        cancelablePageSwipe = true;
+      }
+    } else if (onSwipingDown || onSwipedDown) {
+      onSwipingDown && onSwipingDown(e, pos.absY);
+      cancelablePageSwipe = true;
+    }
+
+    this.swipeable.swiping = true;
+
+    if (cancelablePageSwipe && preventDefaultTouchmoveEvent) e.preventDefault();
+  };
+
+  Swipeable.prototype.eventEnd = function eventEnd(e) {
+    var _props2 = this.props,
+        stopPropagation = _props2.stopPropagation,
+        flickThreshold = _props2.flickThreshold,
+        onSwiped = _props2.onSwiped,
+        onSwipedLeft = _props2.onSwipedLeft,
+        onSwipedRight = _props2.onSwipedRight,
+        onSwipedUp = _props2.onSwipedUp,
+        onSwipedDown = _props2.onSwipedDown,
+        onTap = _props2.onTap;
+
+
+    if (this.swipeable.swiping) {
+      var pos = calculatePos(e, this.swipeable);
+
+      if (stopPropagation) e.stopPropagation();
+
+      var isFlick = pos.velocity > flickThreshold;
+
+      onSwiped && onSwiped(e, pos.deltaX, pos.deltaY, isFlick, pos.velocity);
+
+      if (pos.absX > pos.absY) {
+        if (pos.deltaX > 0) {
+          onSwipedLeft && onSwipedLeft(e, pos.deltaX, isFlick);
+        } else {
+          onSwipedRight && onSwipedRight(e, pos.deltaX, isFlick);
+        }
+      } else if (pos.deltaY > 0) {
+        onSwipedUp && onSwipedUp(e, pos.deltaY, isFlick);
+      } else {
+        onSwipedDown && onSwipedDown(e, pos.deltaY, isFlick);
+      }
+    } else {
+      onTap && onTap(e);
+    }
+
+    this.swipeable = getInitialState();
+  };
+
+  Swipeable.prototype.elementRef = function elementRef(element) {
+    this.element = element;
+    this.props.innerRef && this.props.innerRef(element);
+  };
+
+  Swipeable.prototype.render = function render() {
+    var newProps = _extends({}, this.props);
+    if (!this.props.disabled) {
+      newProps.onTouchStart = this.eventStart;
+
+      if (!this.props.preventDefaultTouchmoveEvent || !this.hasPassiveSupport) {
+        newProps.onTouchMove = this.eventMove;
+      }
+
+      newProps.onTouchEnd = this.eventEnd;
+      newProps.onMouseDown = this.mouseDown;
+    }
+
+    newProps.ref = this.elementRef;
+
+    delete newProps.onSwiped;
+    delete newProps.onSwiping;
+    delete newProps.onSwipingUp;
+    delete newProps.onSwipingRight;
+    delete newProps.onSwipingDown;
+    delete newProps.onSwipingLeft;
+    delete newProps.onSwipedUp;
+    delete newProps.onSwipedRight;
+    delete newProps.onSwipedDown;
+    delete newProps.onSwipedLeft;
+    delete newProps.onTap;
+    delete newProps.flickThreshold;
+    delete newProps.delta;
+    delete newProps.preventDefaultTouchmoveEvent;
+    delete newProps.stopPropagation;
+    delete newProps.nodeName;
+    delete newProps.children;
+    delete newProps.trackMouse;
+    delete newProps.disabled;
+    delete newProps.innerRef;
+    delete newProps.rotationAngle;
+
+    return React.createElement(this.props.nodeName, newProps, this.props.children);
+  };
+
+  return Swipeable;
+}(React.Component);
+
+Swipeable.propTypes = {
+  onSwiped: PropTypes.func,
+  onSwiping: PropTypes.func,
+  onSwipingUp: PropTypes.func,
+  onSwipingRight: PropTypes.func,
+  onSwipingDown: PropTypes.func,
+  onSwipingLeft: PropTypes.func,
+  onSwipedUp: PropTypes.func,
+  onSwipedRight: PropTypes.func,
+  onSwipedDown: PropTypes.func,
+  onSwipedLeft: PropTypes.func,
+  onTap: PropTypes.func,
+  flickThreshold: PropTypes.number,
+  delta: PropTypes.number,
+  preventDefaultTouchmoveEvent: PropTypes.bool,
+  stopPropagation: PropTypes.bool,
+  nodeName: PropTypes.string,
+  trackMouse: PropTypes.bool,
+  disabled: PropTypes.bool,
+  innerRef: PropTypes.func,
+  children: PropTypes.node,
+  rotationAngle: PropTypes.number
+};
+
+Swipeable.defaultProps = {
+  flickThreshold: 0.6,
+  delta: 10,
+  preventDefaultTouchmoveEvent: false,
+  stopPropagation: false,
+  nodeName: 'div',
+  disabled: false,
+  rotationAngle: 0
+};
+
+module.exports = Swipeable;
+
+/***/ }),
+
+/***/ "./node_modules/react-toggle/dist/component/check.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-toggle/dist/component/check.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  return _react2.default.createElement(
+    'svg',
+    { width: '14', height: '11', viewBox: '0 0 14 11' },
+    _react2.default.createElement(
+      'title',
+      null,
+      'switch-check'
+    ),
+    _react2.default.createElement('path', { d: 'M11.264 0L5.26 6.004 2.103 2.847 0 4.95l5.26 5.26 8.108-8.107L11.264 0', fill: '#fff', fillRule: 'evenodd' })
+  );
+};
+
+/***/ }),
+
+/***/ "./node_modules/react-toggle/dist/component/index.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-toggle/dist/component/index.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _check = __webpack_require__(/*! ./check */ "./node_modules/react-toggle/dist/component/check.js");
+
+var _check2 = _interopRequireDefault(_check);
+
+var _x = __webpack_require__(/*! ./x */ "./node_modules/react-toggle/dist/component/x.js");
+
+var _x2 = _interopRequireDefault(_x);
+
+var _util = __webpack_require__(/*! ./util */ "./node_modules/react-toggle/dist/component/util.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Toggle = function (_PureComponent) {
+  _inherits(Toggle, _PureComponent);
+
+  function Toggle(props) {
+    _classCallCheck(this, Toggle);
+
+    var _this = _possibleConstructorReturn(this, (Toggle.__proto__ || Object.getPrototypeOf(Toggle)).call(this, props));
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    _this.handleTouchStart = _this.handleTouchStart.bind(_this);
+    _this.handleTouchMove = _this.handleTouchMove.bind(_this);
+    _this.handleTouchEnd = _this.handleTouchEnd.bind(_this);
+    _this.handleFocus = _this.handleFocus.bind(_this);
+    _this.handleBlur = _this.handleBlur.bind(_this);
+    _this.previouslyChecked = !!(props.checked || props.defaultChecked);
+    _this.state = {
+      checked: !!(props.checked || props.defaultChecked),
+      hasFocus: false
+    };
+    return _this;
+  }
+
+  _createClass(Toggle, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if ('checked' in nextProps) {
+        this.setState({ checked: !!nextProps.checked });
+      }
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick(event) {
+      var checkbox = this.input;
+      if (event.target !== checkbox && !this.moved) {
+        this.previouslyChecked = checkbox.checked;
+        event.preventDefault();
+        checkbox.focus();
+        checkbox.click();
+        return;
+      }
+
+      var checked = this.props.hasOwnProperty('checked') ? this.props.checked : checkbox.checked;
+
+      this.setState({ checked: checked });
+    }
+  }, {
+    key: 'handleTouchStart',
+    value: function handleTouchStart(event) {
+      this.startX = (0, _util.pointerCoord)(event).x;
+      this.activated = true;
+    }
+  }, {
+    key: 'handleTouchMove',
+    value: function handleTouchMove(event) {
+      if (!this.activated) return;
+      this.moved = true;
+
+      if (this.startX) {
+        var currentX = (0, _util.pointerCoord)(event).x;
+        if (this.state.checked && currentX + 15 < this.startX) {
+          this.setState({ checked: false });
+          this.startX = currentX;
+          this.activated = true;
+        } else if (currentX - 15 > this.startX) {
+          this.setState({ checked: true });
+          this.startX = currentX;
+          this.activated = currentX < this.startX + 5;
+        }
+      }
+    }
+  }, {
+    key: 'handleTouchEnd',
+    value: function handleTouchEnd(event) {
+      if (!this.moved) return;
+      var checkbox = this.input;
+      event.preventDefault();
+
+      if (this.startX) {
+        var endX = (0, _util.pointerCoord)(event).x;
+        if (this.previouslyChecked === true && this.startX + 4 > endX) {
+          if (this.previouslyChecked !== this.state.checked) {
+            this.setState({ checked: false });
+            this.previouslyChecked = this.state.checked;
+            checkbox.click();
+          }
+        } else if (this.startX - 4 < endX) {
+          if (this.previouslyChecked !== this.state.checked) {
+            this.setState({ checked: true });
+            this.previouslyChecked = this.state.checked;
+            checkbox.click();
+          }
+        }
+
+        this.activated = false;
+        this.startX = null;
+        this.moved = false;
+      }
+    }
+  }, {
+    key: 'handleFocus',
+    value: function handleFocus(event) {
+      var onFocus = this.props.onFocus;
+
+
+      if (onFocus) {
+        onFocus(event);
+      }
+
+      this.setState({ hasFocus: true });
+    }
+  }, {
+    key: 'handleBlur',
+    value: function handleBlur(event) {
+      var onBlur = this.props.onBlur;
+
+
+      if (onBlur) {
+        onBlur(event);
+      }
+
+      this.setState({ hasFocus: false });
+    }
+  }, {
+    key: 'getIcon',
+    value: function getIcon(type) {
+      var icons = this.props.icons;
+
+      if (!icons) {
+        return null;
+      }
+      return icons[type] === undefined ? Toggle.defaultProps.icons[type] : icons[type];
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          className = _props.className,
+          _icons = _props.icons,
+          inputProps = _objectWithoutProperties(_props, ['className', 'icons']);
+
+      var classes = (0, _classnames2.default)('react-toggle', {
+        'react-toggle--checked': this.state.checked,
+        'react-toggle--focus': this.state.hasFocus,
+        'react-toggle--disabled': this.props.disabled
+      }, className);
+
+      return _react2.default.createElement(
+        'div',
+        { className: classes,
+          onClick: this.handleClick,
+          onTouchStart: this.handleTouchStart,
+          onTouchMove: this.handleTouchMove,
+          onTouchEnd: this.handleTouchEnd },
+        _react2.default.createElement(
+          'div',
+          { className: 'react-toggle-track' },
+          _react2.default.createElement(
+            'div',
+            { className: 'react-toggle-track-check' },
+            this.getIcon('checked')
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'react-toggle-track-x' },
+            this.getIcon('unchecked')
+          )
+        ),
+        _react2.default.createElement('div', { className: 'react-toggle-thumb' }),
+        _react2.default.createElement('input', _extends({}, inputProps, {
+          ref: function ref(_ref) {
+            _this2.input = _ref;
+          },
+          onFocus: this.handleFocus,
+          onBlur: this.handleBlur,
+          className: 'react-toggle-screenreader-only',
+          type: 'checkbox' }))
+      );
+    }
+  }]);
+
+  return Toggle;
+}(_react.PureComponent);
+
+exports.default = Toggle;
+
+
+Toggle.displayName = 'Toggle';
+
+Toggle.defaultProps = {
+  icons: {
+    checked: _react2.default.createElement(_check2.default, null),
+    unchecked: _react2.default.createElement(_x2.default, null)
+  }
+};
+
+Toggle.propTypes = {
+  checked: _propTypes2.default.bool,
+  disabled: _propTypes2.default.bool,
+  defaultChecked: _propTypes2.default.bool,
+  onChange: _propTypes2.default.func,
+  onFocus: _propTypes2.default.func,
+  onBlur: _propTypes2.default.func,
+  className: _propTypes2.default.string,
+  name: _propTypes2.default.string,
+  value: _propTypes2.default.string,
+  id: _propTypes2.default.string,
+  'aria-labelledby': _propTypes2.default.string,
+  'aria-label': _propTypes2.default.string,
+  icons: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.shape({
+    checked: _propTypes2.default.node,
+    unchecked: _propTypes2.default.node
+  })])
+};
+
+/***/ }),
+
+/***/ "./node_modules/react-toggle/dist/component/util.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/react-toggle/dist/component/util.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.pointerCoord = pointerCoord;
+// Copyright 2015-present Drifty Co.
+// http://drifty.com/
+// from: https://github.com/driftyco/ionic/blob/master/src/util/dom.ts
+
+function pointerCoord(event) {
+  // get coordinates for either a mouse click
+  // or a touch depending on the given event
+  if (event) {
+    var changedTouches = event.changedTouches;
+    if (changedTouches && changedTouches.length > 0) {
+      var touch = changedTouches[0];
+      return { x: touch.clientX, y: touch.clientY };
+    }
+    var pageX = event.pageX;
+    if (pageX !== undefined) {
+      return { x: pageX, y: event.pageY };
+    }
+  }
+  return { x: 0, y: 0 };
+}
+
+/***/ }),
+
+/***/ "./node_modules/react-toggle/dist/component/x.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-toggle/dist/component/x.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  return _react2.default.createElement(
+    'svg',
+    { width: '10', height: '10', viewBox: '0 0 10 10' },
+    _react2.default.createElement(
+      'title',
+      null,
+      'switch-x'
+    ),
+    _react2.default.createElement('path', { d: 'M9.9 2.12L7.78 0 4.95 2.828 2.12 0 0 2.12l2.83 2.83L0 7.776 2.123 9.9 4.95 7.07 7.78 9.9 9.9 7.776 7.072 4.95 9.9 2.12', fill: '#fff', fillRule: 'evenodd' })
+  );
+};
+
+/***/ }),
+
+/***/ "./node_modules/react-toggle/style.css":
+/*!*********************************************!*\
+  !*** ./node_modules/react-toggle/style.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by extract-css-chunks-webpack-plugin
+    if(true) {
+      // 1530273545057
+      var cssReload = __webpack_require__(/*! ../extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js */ "./node_modules/extract-css-chunks-webpack-plugin/dist/hotModuleReplacement.js")(module.i, {"fileMap":"{fileName}"});
+      module.hot.dispose(cssReload);
+      module.hot.accept(undefined, cssReload);
+    }
+  
 
 /***/ }),
 
@@ -63790,6 +66865,1044 @@ if ("development" !== 'production' && typeof isCrushed.name === 'string' && isCr
 
 
 
+
+/***/ }),
+
+/***/ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * A collection of shims that provide minimal functionality of the ES6 collections.
+ *
+ * These implementations are not meant to be used outside of the ResizeObserver
+ * modules as they cover only a limited range of use cases.
+ */
+/* eslint-disable require-jsdoc, valid-jsdoc */
+var MapShim = (function () {
+    if (typeof Map !== 'undefined') {
+        return Map;
+    }
+
+    /**
+     * Returns index in provided array that matches the specified key.
+     *
+     * @param {Array<Array>} arr
+     * @param {*} key
+     * @returns {number}
+     */
+    function getIndex(arr, key) {
+        var result = -1;
+
+        arr.some(function (entry, index) {
+            if (entry[0] === key) {
+                result = index;
+
+                return true;
+            }
+
+            return false;
+        });
+
+        return result;
+    }
+
+    return (function () {
+        function anonymous() {
+            this.__entries__ = [];
+        }
+
+        var prototypeAccessors = { size: { configurable: true } };
+
+        /**
+         * @returns {boolean}
+         */
+        prototypeAccessors.size.get = function () {
+            return this.__entries__.length;
+        };
+
+        /**
+         * @param {*} key
+         * @returns {*}
+         */
+        anonymous.prototype.get = function (key) {
+            var index = getIndex(this.__entries__, key);
+            var entry = this.__entries__[index];
+
+            return entry && entry[1];
+        };
+
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @returns {void}
+         */
+        anonymous.prototype.set = function (key, value) {
+            var index = getIndex(this.__entries__, key);
+
+            if (~index) {
+                this.__entries__[index][1] = value;
+            } else {
+                this.__entries__.push([key, value]);
+            }
+        };
+
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+        anonymous.prototype.delete = function (key) {
+            var entries = this.__entries__;
+            var index = getIndex(entries, key);
+
+            if (~index) {
+                entries.splice(index, 1);
+            }
+        };
+
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+        anonymous.prototype.has = function (key) {
+            return !!~getIndex(this.__entries__, key);
+        };
+
+        /**
+         * @returns {void}
+         */
+        anonymous.prototype.clear = function () {
+            this.__entries__.splice(0);
+        };
+
+        /**
+         * @param {Function} callback
+         * @param {*} [ctx=null]
+         * @returns {void}
+         */
+        anonymous.prototype.forEach = function (callback, ctx) {
+            var this$1 = this;
+            if ( ctx === void 0 ) ctx = null;
+
+            for (var i = 0, list = this$1.__entries__; i < list.length; i += 1) {
+                var entry = list[i];
+
+                callback.call(ctx, entry[1], entry[0]);
+            }
+        };
+
+        Object.defineProperties( anonymous.prototype, prototypeAccessors );
+
+        return anonymous;
+    }());
+})();
+
+/**
+ * Detects whether window and document objects are available in current environment.
+ */
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document;
+
+// Returns global object of a current environment.
+var global$1 = (function () {
+    if (typeof global !== 'undefined' && global.Math === Math) {
+        return global;
+    }
+
+    if (typeof self !== 'undefined' && self.Math === Math) {
+        return self;
+    }
+
+    if (typeof window !== 'undefined' && window.Math === Math) {
+        return window;
+    }
+
+    // eslint-disable-next-line no-new-func
+    return Function('return this')();
+})();
+
+/**
+ * A shim for the requestAnimationFrame which falls back to the setTimeout if
+ * first one is not supported.
+ *
+ * @returns {number} Requests' identifier.
+ */
+var requestAnimationFrame$1 = (function () {
+    if (typeof requestAnimationFrame === 'function') {
+        // It's required to use a bounded function because IE sometimes throws
+        // an "Invalid calling object" error if rAF is invoked without the global
+        // object on the left hand side.
+        return requestAnimationFrame.bind(global$1);
+    }
+
+    return function (callback) { return setTimeout(function () { return callback(Date.now()); }, 1000 / 60); };
+})();
+
+// Defines minimum timeout before adding a trailing call.
+var trailingTimeout = 2;
+
+/**
+ * Creates a wrapper function which ensures that provided callback will be
+ * invoked only once during the specified delay period.
+ *
+ * @param {Function} callback - Function to be invoked after the delay period.
+ * @param {number} delay - Delay after which to invoke callback.
+ * @returns {Function}
+ */
+var throttle = function (callback, delay) {
+    var leadingCall = false,
+        trailingCall = false,
+        lastCallTime = 0;
+
+    /**
+     * Invokes the original callback function and schedules new invocation if
+     * the "proxy" was called during current request.
+     *
+     * @returns {void}
+     */
+    function resolvePending() {
+        if (leadingCall) {
+            leadingCall = false;
+
+            callback();
+        }
+
+        if (trailingCall) {
+            proxy();
+        }
+    }
+
+    /**
+     * Callback invoked after the specified delay. It will further postpone
+     * invocation of the original function delegating it to the
+     * requestAnimationFrame.
+     *
+     * @returns {void}
+     */
+    function timeoutCallback() {
+        requestAnimationFrame$1(resolvePending);
+    }
+
+    /**
+     * Schedules invocation of the original function.
+     *
+     * @returns {void}
+     */
+    function proxy() {
+        var timeStamp = Date.now();
+
+        if (leadingCall) {
+            // Reject immediately following calls.
+            if (timeStamp - lastCallTime < trailingTimeout) {
+                return;
+            }
+
+            // Schedule new call to be in invoked when the pending one is resolved.
+            // This is important for "transitions" which never actually start
+            // immediately so there is a chance that we might miss one if change
+            // happens amids the pending invocation.
+            trailingCall = true;
+        } else {
+            leadingCall = true;
+            trailingCall = false;
+
+            setTimeout(timeoutCallback, delay);
+        }
+
+        lastCallTime = timeStamp;
+    }
+
+    return proxy;
+};
+
+// Minimum delay before invoking the update of observers.
+var REFRESH_DELAY = 20;
+
+// A list of substrings of CSS properties used to find transition events that
+// might affect dimensions of observed elements.
+var transitionKeys = ['top', 'right', 'bottom', 'left', 'width', 'height', 'size', 'weight'];
+
+// Check if MutationObserver is available.
+var mutationObserverSupported = typeof MutationObserver !== 'undefined';
+
+/**
+ * Singleton controller class which handles updates of ResizeObserver instances.
+ */
+var ResizeObserverController = function() {
+    this.connected_ = false;
+    this.mutationEventsAdded_ = false;
+    this.mutationsObserver_ = null;
+    this.observers_ = [];
+
+    this.onTransitionEnd_ = this.onTransitionEnd_.bind(this);
+    this.refresh = throttle(this.refresh.bind(this), REFRESH_DELAY);
+};
+
+/**
+ * Adds observer to observers list.
+ *
+ * @param {ResizeObserverSPI} observer - Observer to be added.
+ * @returns {void}
+ */
+
+
+/**
+ * Holds reference to the controller's instance.
+ *
+ * @private {ResizeObserverController}
+ */
+
+
+/**
+ * Keeps reference to the instance of MutationObserver.
+ *
+ * @private {MutationObserver}
+ */
+
+/**
+ * Indicates whether DOM listeners have been added.
+ *
+ * @private {boolean}
+ */
+ResizeObserverController.prototype.addObserver = function (observer) {
+    if (!~this.observers_.indexOf(observer)) {
+        this.observers_.push(observer);
+    }
+
+    // Add listeners if they haven't been added yet.
+    if (!this.connected_) {
+        this.connect_();
+    }
+};
+
+/**
+ * Removes observer from observers list.
+ *
+ * @param {ResizeObserverSPI} observer - Observer to be removed.
+ * @returns {void}
+ */
+ResizeObserverController.prototype.removeObserver = function (observer) {
+    var observers = this.observers_;
+    var index = observers.indexOf(observer);
+
+    // Remove observer if it's present in registry.
+    if (~index) {
+        observers.splice(index, 1);
+    }
+
+    // Remove listeners if controller has no connected observers.
+    if (!observers.length && this.connected_) {
+        this.disconnect_();
+    }
+};
+
+/**
+ * Invokes the update of observers. It will continue running updates insofar
+ * it detects changes.
+ *
+ * @returns {void}
+ */
+ResizeObserverController.prototype.refresh = function () {
+    var changesDetected = this.updateObservers_();
+
+    // Continue running updates if changes have been detected as there might
+    // be future ones caused by CSS transitions.
+    if (changesDetected) {
+        this.refresh();
+    }
+};
+
+/**
+ * Updates every observer from observers list and notifies them of queued
+ * entries.
+ *
+ * @private
+ * @returns {boolean} Returns "true" if any observer has detected changes in
+ *  dimensions of it's elements.
+ */
+ResizeObserverController.prototype.updateObservers_ = function () {
+    // Collect observers that have active observations.
+    var activeObservers = this.observers_.filter(function (observer) {
+        return observer.gatherActive(), observer.hasActive();
+    });
+
+    // Deliver notifications in a separate cycle in order to avoid any
+    // collisions between observers, e.g. when multiple instances of
+    // ResizeObserver are tracking the same element and the callback of one
+    // of them changes content dimensions of the observed target. Sometimes
+    // this may result in notifications being blocked for the rest of observers.
+    activeObservers.forEach(function (observer) { return observer.broadcastActive(); });
+
+    return activeObservers.length > 0;
+};
+
+/**
+ * Initializes DOM listeners.
+ *
+ * @private
+ * @returns {void}
+ */
+ResizeObserverController.prototype.connect_ = function () {
+    // Do nothing if running in a non-browser environment or if listeners
+    // have been already added.
+    if (!isBrowser || this.connected_) {
+        return;
+    }
+
+    // Subscription to the "Transitionend" event is used as a workaround for
+    // delayed transitions. This way it's possible to capture at least the
+    // final state of an element.
+    document.addEventListener('transitionend', this.onTransitionEnd_);
+
+    window.addEventListener('resize', this.refresh);
+
+    if (mutationObserverSupported) {
+        this.mutationsObserver_ = new MutationObserver(this.refresh);
+
+        this.mutationsObserver_.observe(document, {
+            attributes: true,
+            childList: true,
+            characterData: true,
+            subtree: true
+        });
+    } else {
+        document.addEventListener('DOMSubtreeModified', this.refresh);
+
+        this.mutationEventsAdded_ = true;
+    }
+
+    this.connected_ = true;
+};
+
+/**
+ * Removes DOM listeners.
+ *
+ * @private
+ * @returns {void}
+ */
+ResizeObserverController.prototype.disconnect_ = function () {
+    // Do nothing if running in a non-browser environment or if listeners
+    // have been already removed.
+    if (!isBrowser || !this.connected_) {
+        return;
+    }
+
+    document.removeEventListener('transitionend', this.onTransitionEnd_);
+    window.removeEventListener('resize', this.refresh);
+
+    if (this.mutationsObserver_) {
+        this.mutationsObserver_.disconnect();
+    }
+
+    if (this.mutationEventsAdded_) {
+        document.removeEventListener('DOMSubtreeModified', this.refresh);
+    }
+
+    this.mutationsObserver_ = null;
+    this.mutationEventsAdded_ = false;
+    this.connected_ = false;
+};
+
+/**
+ * "Transitionend" event handler.
+ *
+ * @private
+ * @param {TransitionEvent} event
+ * @returns {void}
+ */
+ResizeObserverController.prototype.onTransitionEnd_ = function (ref) {
+        var propertyName = ref.propertyName; if ( propertyName === void 0 ) propertyName = '';
+
+    // Detect whether transition may affect dimensions of an element.
+    var isReflowProperty = transitionKeys.some(function (key) {
+        return !!~propertyName.indexOf(key);
+    });
+
+    if (isReflowProperty) {
+        this.refresh();
+    }
+};
+
+/**
+ * Returns instance of the ResizeObserverController.
+ *
+ * @returns {ResizeObserverController}
+ */
+ResizeObserverController.getInstance = function () {
+    if (!this.instance_) {
+        this.instance_ = new ResizeObserverController();
+    }
+
+    return this.instance_;
+};
+
+ResizeObserverController.instance_ = null;
+
+/**
+ * Defines non-writable/enumerable properties of the provided target object.
+ *
+ * @param {Object} target - Object for which to define properties.
+ * @param {Object} props - Properties to be defined.
+ * @returns {Object} Target object.
+ */
+var defineConfigurable = (function (target, props) {
+    for (var i = 0, list = Object.keys(props); i < list.length; i += 1) {
+        var key = list[i];
+
+        Object.defineProperty(target, key, {
+            value: props[key],
+            enumerable: false,
+            writable: false,
+            configurable: true
+        });
+    }
+
+    return target;
+});
+
+/**
+ * Returns the global object associated with provided element.
+ *
+ * @param {Object} target
+ * @returns {Object}
+ */
+var getWindowOf = (function (target) {
+    // Assume that the element is an instance of Node, which means that it
+    // has the "ownerDocument" property from which we can retrieve a
+    // corresponding global object.
+    var ownerGlobal = target && target.ownerDocument && target.ownerDocument.defaultView;
+
+    // Return the local global object if it's not possible extract one from
+    // provided element.
+    return ownerGlobal || global$1;
+});
+
+// Placeholder of an empty content rectangle.
+var emptyRect = createRectInit(0, 0, 0, 0);
+
+/**
+ * Converts provided string to a number.
+ *
+ * @param {number|string} value
+ * @returns {number}
+ */
+function toFloat(value) {
+    return parseFloat(value) || 0;
+}
+
+/**
+ * Extracts borders size from provided styles.
+ *
+ * @param {CSSStyleDeclaration} styles
+ * @param {...string} positions - Borders positions (top, right, ...)
+ * @returns {number}
+ */
+function getBordersSize(styles) {
+    var positions = [], len = arguments.length - 1;
+    while ( len-- > 0 ) positions[ len ] = arguments[ len + 1 ];
+
+    return positions.reduce(function (size, position) {
+        var value = styles['border-' + position + '-width'];
+
+        return size + toFloat(value);
+    }, 0);
+}
+
+/**
+ * Extracts paddings sizes from provided styles.
+ *
+ * @param {CSSStyleDeclaration} styles
+ * @returns {Object} Paddings box.
+ */
+function getPaddings(styles) {
+    var positions = ['top', 'right', 'bottom', 'left'];
+    var paddings = {};
+
+    for (var i = 0, list = positions; i < list.length; i += 1) {
+        var position = list[i];
+
+        var value = styles['padding-' + position];
+
+        paddings[position] = toFloat(value);
+    }
+
+    return paddings;
+}
+
+/**
+ * Calculates content rectangle of provided SVG element.
+ *
+ * @param {SVGGraphicsElement} target - Element content rectangle of which needs
+ *      to be calculated.
+ * @returns {DOMRectInit}
+ */
+function getSVGContentRect(target) {
+    var bbox = target.getBBox();
+
+    return createRectInit(0, 0, bbox.width, bbox.height);
+}
+
+/**
+ * Calculates content rectangle of provided HTMLElement.
+ *
+ * @param {HTMLElement} target - Element for which to calculate the content rectangle.
+ * @returns {DOMRectInit}
+ */
+function getHTMLElementContentRect(target) {
+    // Client width & height properties can't be
+    // used exclusively as they provide rounded values.
+    var clientWidth = target.clientWidth;
+    var clientHeight = target.clientHeight;
+
+    // By this condition we can catch all non-replaced inline, hidden and
+    // detached elements. Though elements with width & height properties less
+    // than 0.5 will be discarded as well.
+    //
+    // Without it we would need to implement separate methods for each of
+    // those cases and it's not possible to perform a precise and performance
+    // effective test for hidden elements. E.g. even jQuery's ':visible' filter
+    // gives wrong results for elements with width & height less than 0.5.
+    if (!clientWidth && !clientHeight) {
+        return emptyRect;
+    }
+
+    var styles = getWindowOf(target).getComputedStyle(target);
+    var paddings = getPaddings(styles);
+    var horizPad = paddings.left + paddings.right;
+    var vertPad = paddings.top + paddings.bottom;
+
+    // Computed styles of width & height are being used because they are the
+    // only dimensions available to JS that contain non-rounded values. It could
+    // be possible to utilize the getBoundingClientRect if only it's data wasn't
+    // affected by CSS transformations let alone paddings, borders and scroll bars.
+    var width = toFloat(styles.width),
+        height = toFloat(styles.height);
+
+    // Width & height include paddings and borders when the 'border-box' box
+    // model is applied (except for IE).
+    if (styles.boxSizing === 'border-box') {
+        // Following conditions are required to handle Internet Explorer which
+        // doesn't include paddings and borders to computed CSS dimensions.
+        //
+        // We can say that if CSS dimensions + paddings are equal to the "client"
+        // properties then it's either IE, and thus we don't need to subtract
+        // anything, or an element merely doesn't have paddings/borders styles.
+        if (Math.round(width + horizPad) !== clientWidth) {
+            width -= getBordersSize(styles, 'left', 'right') + horizPad;
+        }
+
+        if (Math.round(height + vertPad) !== clientHeight) {
+            height -= getBordersSize(styles, 'top', 'bottom') + vertPad;
+        }
+    }
+
+    // Following steps can't be applied to the document's root element as its
+    // client[Width/Height] properties represent viewport area of the window.
+    // Besides, it's as well not necessary as the <html> itself neither has
+    // rendered scroll bars nor it can be clipped.
+    if (!isDocumentElement(target)) {
+        // In some browsers (only in Firefox, actually) CSS width & height
+        // include scroll bars size which can be removed at this step as scroll
+        // bars are the only difference between rounded dimensions + paddings
+        // and "client" properties, though that is not always true in Chrome.
+        var vertScrollbar = Math.round(width + horizPad) - clientWidth;
+        var horizScrollbar = Math.round(height + vertPad) - clientHeight;
+
+        // Chrome has a rather weird rounding of "client" properties.
+        // E.g. for an element with content width of 314.2px it sometimes gives
+        // the client width of 315px and for the width of 314.7px it may give
+        // 314px. And it doesn't happen all the time. So just ignore this delta
+        // as a non-relevant.
+        if (Math.abs(vertScrollbar) !== 1) {
+            width -= vertScrollbar;
+        }
+
+        if (Math.abs(horizScrollbar) !== 1) {
+            height -= horizScrollbar;
+        }
+    }
+
+    return createRectInit(paddings.left, paddings.top, width, height);
+}
+
+/**
+ * Checks whether provided element is an instance of the SVGGraphicsElement.
+ *
+ * @param {Element} target - Element to be checked.
+ * @returns {boolean}
+ */
+var isSVGGraphicsElement = (function () {
+    // Some browsers, namely IE and Edge, don't have the SVGGraphicsElement
+    // interface.
+    if (typeof SVGGraphicsElement !== 'undefined') {
+        return function (target) { return target instanceof getWindowOf(target).SVGGraphicsElement; };
+    }
+
+    // If it's so, then check that element is at least an instance of the
+    // SVGElement and that it has the "getBBox" method.
+    // eslint-disable-next-line no-extra-parens
+    return function (target) { return target instanceof getWindowOf(target).SVGElement && typeof target.getBBox === 'function'; };
+})();
+
+/**
+ * Checks whether provided element is a document element (<html>).
+ *
+ * @param {Element} target - Element to be checked.
+ * @returns {boolean}
+ */
+function isDocumentElement(target) {
+    return target === getWindowOf(target).document.documentElement;
+}
+
+/**
+ * Calculates an appropriate content rectangle for provided html or svg element.
+ *
+ * @param {Element} target - Element content rectangle of which needs to be calculated.
+ * @returns {DOMRectInit}
+ */
+function getContentRect(target) {
+    if (!isBrowser) {
+        return emptyRect;
+    }
+
+    if (isSVGGraphicsElement(target)) {
+        return getSVGContentRect(target);
+    }
+
+    return getHTMLElementContentRect(target);
+}
+
+/**
+ * Creates rectangle with an interface of the DOMRectReadOnly.
+ * Spec: https://drafts.fxtf.org/geometry/#domrectreadonly
+ *
+ * @param {DOMRectInit} rectInit - Object with rectangle's x/y coordinates and dimensions.
+ * @returns {DOMRectReadOnly}
+ */
+function createReadOnlyRect(ref) {
+    var x = ref.x;
+    var y = ref.y;
+    var width = ref.width;
+    var height = ref.height;
+
+    // If DOMRectReadOnly is available use it as a prototype for the rectangle.
+    var Constr = typeof DOMRectReadOnly !== 'undefined' ? DOMRectReadOnly : Object;
+    var rect = Object.create(Constr.prototype);
+
+    // Rectangle's properties are not writable and non-enumerable.
+    defineConfigurable(rect, {
+        x: x, y: y, width: width, height: height,
+        top: y,
+        right: x + width,
+        bottom: height + y,
+        left: x
+    });
+
+    return rect;
+}
+
+/**
+ * Creates DOMRectInit object based on the provided dimensions and the x/y coordinates.
+ * Spec: https://drafts.fxtf.org/geometry/#dictdef-domrectinit
+ *
+ * @param {number} x - X coordinate.
+ * @param {number} y - Y coordinate.
+ * @param {number} width - Rectangle's width.
+ * @param {number} height - Rectangle's height.
+ * @returns {DOMRectInit}
+ */
+function createRectInit(x, y, width, height) {
+    return { x: x, y: y, width: width, height: height };
+}
+
+/**
+ * Class that is responsible for computations of the content rectangle of
+ * provided DOM element and for keeping track of it's changes.
+ */
+var ResizeObservation = function(target) {
+    this.broadcastWidth = 0;
+    this.broadcastHeight = 0;
+    this.contentRect_ = createRectInit(0, 0, 0, 0);
+
+    this.target = target;
+};
+
+/**
+ * Updates content rectangle and tells whether it's width or height properties
+ * have changed since the last broadcast.
+ *
+ * @returns {boolean}
+ */
+
+
+/**
+ * Reference to the last observed content rectangle.
+ *
+ * @private {DOMRectInit}
+ */
+
+
+/**
+ * Broadcasted width of content rectangle.
+ *
+ * @type {number}
+ */
+ResizeObservation.prototype.isActive = function () {
+    var rect = getContentRect(this.target);
+
+    this.contentRect_ = rect;
+
+    return rect.width !== this.broadcastWidth || rect.height !== this.broadcastHeight;
+};
+
+/**
+ * Updates 'broadcastWidth' and 'broadcastHeight' properties with a data
+ * from the corresponding properties of the last observed content rectangle.
+ *
+ * @returns {DOMRectInit} Last observed content rectangle.
+ */
+ResizeObservation.prototype.broadcastRect = function () {
+    var rect = this.contentRect_;
+
+    this.broadcastWidth = rect.width;
+    this.broadcastHeight = rect.height;
+
+    return rect;
+};
+
+var ResizeObserverEntry = function(target, rectInit) {
+    var contentRect = createReadOnlyRect(rectInit);
+
+    // According to the specification following properties are not writable
+    // and are also not enumerable in the native implementation.
+    //
+    // Property accessors are not being used as they'd require to define a
+    // private WeakMap storage which may cause memory leaks in browsers that
+    // don't support this type of collections.
+    defineConfigurable(this, { target: target, contentRect: contentRect });
+};
+
+var ResizeObserverSPI = function(callback, controller, callbackCtx) {
+    this.activeObservations_ = [];
+    this.observations_ = new MapShim();
+
+    if (typeof callback !== 'function') {
+        throw new TypeError('The callback provided as parameter 1 is not a function.');
+    }
+
+    this.callback_ = callback;
+    this.controller_ = controller;
+    this.callbackCtx_ = callbackCtx;
+};
+
+/**
+ * Starts observing provided element.
+ *
+ * @param {Element} target - Element to be observed.
+ * @returns {void}
+ */
+
+
+/**
+ * Registry of the ResizeObservation instances.
+ *
+ * @private {Map<Element, ResizeObservation>}
+ */
+
+
+/**
+ * Public ResizeObserver instance which will be passed to the callback
+ * function and used as a value of it's "this" binding.
+ *
+ * @private {ResizeObserver}
+ */
+
+/**
+ * Collection of resize observations that have detected changes in dimensions
+ * of elements.
+ *
+ * @private {Array<ResizeObservation>}
+ */
+ResizeObserverSPI.prototype.observe = function (target) {
+    if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+    }
+
+    // Do nothing if current environment doesn't have the Element interface.
+    if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+    }
+
+    if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+    }
+
+    var observations = this.observations_;
+
+    // Do nothing if element is already being observed.
+    if (observations.has(target)) {
+        return;
+    }
+
+    observations.set(target, new ResizeObservation(target));
+
+    this.controller_.addObserver(this);
+
+    // Force the update of observations.
+    this.controller_.refresh();
+};
+
+/**
+ * Stops observing provided element.
+ *
+ * @param {Element} target - Element to stop observing.
+ * @returns {void}
+ */
+ResizeObserverSPI.prototype.unobserve = function (target) {
+    if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+    }
+
+    // Do nothing if current environment doesn't have the Element interface.
+    if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+    }
+
+    if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+    }
+
+    var observations = this.observations_;
+
+    // Do nothing if element is not being observed.
+    if (!observations.has(target)) {
+        return;
+    }
+
+    observations.delete(target);
+
+    if (!observations.size) {
+        this.controller_.removeObserver(this);
+    }
+};
+
+/**
+ * Stops observing all elements.
+ *
+ * @returns {void}
+ */
+ResizeObserverSPI.prototype.disconnect = function () {
+    this.clearActive();
+    this.observations_.clear();
+    this.controller_.removeObserver(this);
+};
+
+/**
+ * Collects observation instances the associated element of which has changed
+ * it's content rectangle.
+ *
+ * @returns {void}
+ */
+ResizeObserverSPI.prototype.gatherActive = function () {
+        var this$1 = this;
+
+    this.clearActive();
+
+    this.observations_.forEach(function (observation) {
+        if (observation.isActive()) {
+            this$1.activeObservations_.push(observation);
+        }
+    });
+};
+
+/**
+ * Invokes initial callback function with a list of ResizeObserverEntry
+ * instances collected from active resize observations.
+ *
+ * @returns {void}
+ */
+ResizeObserverSPI.prototype.broadcastActive = function () {
+    // Do nothing if observer doesn't have active observations.
+    if (!this.hasActive()) {
+        return;
+    }
+
+    var ctx = this.callbackCtx_;
+
+    // Create ResizeObserverEntry instance for every active observation.
+    var entries = this.activeObservations_.map(function (observation) {
+        return new ResizeObserverEntry(observation.target, observation.broadcastRect());
+    });
+
+    this.callback_.call(ctx, entries, ctx);
+    this.clearActive();
+};
+
+/**
+ * Clears the collection of active observations.
+ *
+ * @returns {void}
+ */
+ResizeObserverSPI.prototype.clearActive = function () {
+    this.activeObservations_.splice(0);
+};
+
+/**
+ * Tells whether observer has active observations.
+ *
+ * @returns {boolean}
+ */
+ResizeObserverSPI.prototype.hasActive = function () {
+    return this.activeObservations_.length > 0;
+};
+
+// Registry of internal observers. If WeakMap is not available use current shim
+// for the Map collection as it has all required methods and because WeakMap
+// can't be fully polyfilled anyway.
+var observers = typeof WeakMap !== 'undefined' ? new WeakMap() : new MapShim();
+
+/**
+ * ResizeObserver API. Encapsulates the ResizeObserver SPI implementation
+ * exposing only those methods and properties that are defined in the spec.
+ */
+var ResizeObserver = function(callback) {
+    if (!(this instanceof ResizeObserver)) {
+        throw new TypeError('Cannot call a class as a function.');
+    }
+    if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+    }
+
+    var controller = ResizeObserverController.getInstance();
+    var observer = new ResizeObserverSPI(callback, controller, this);
+
+    observers.set(this, observer);
+};
+
+// Expose public methods of ResizeObserver.
+['observe', 'unobserve', 'disconnect'].forEach(function (method) {
+    ResizeObserver.prototype[method] = function () {
+        return (ref = observers.get(this))[method].apply(ref, arguments);
+        var ref;
+    };
+});
+
+var index = (function () {
+    // Export existing implementation if available.
+    if (typeof global$1.ResizeObserver !== 'undefined') {
+        return global$1.ResizeObserver;
+    }
+
+    return ResizeObserver;
+})();
+
+/* harmony default export */ __webpack_exports__["default"] = (index);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 

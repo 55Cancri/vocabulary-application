@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import Modal from '../Modal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { hideModal } from '../../actions/modal'
 import { startAddWord } from '../../actions/words'
 import { generateUuid } from '../../helpers/helpers'
@@ -41,12 +42,11 @@ export class NewWordModal extends Component<IProps, IState> {
   handleSubmit = e => {
     e.preventDefault()
 
-    // dark blue, sky blue, red, lime, turqouise, orange, violet
+    // dark blue, sky blue, red, turqouise, orange, violet
     const colors = [
       '#034182',
       '#118df0',
       '#ff4a68',
-      '#8eba43',
       '#02bd9d',
       '#f8aa27',
       '#ba69de'
@@ -79,37 +79,53 @@ export class NewWordModal extends Component<IProps, IState> {
     const { topics } = this.props
     return (
       <Modal onClose={this.onClose}>
-        <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
+        <div className="new-word-modal_header">
+          <h2 className="title">New word</h2>
+          <div className="close" onClick={this.onClose}>
+            <FontAwesomeIcon icon="times" />
+          </div>
+        </div>
+        <form
+          onSubmit={this.handleSubmit}
+          onChange={this.onFieldChange}
+          className="new-word-modal"
+        >
           <div className="input-group">
-            <label htmlFor="word">Name</label>
-            <input type="text" name="word" value={word} />
+            <label htmlFor="word" className="title">
+              Name
+            </label>
+            <input type="text" name="word" value={word} className="input" />
+          </div>
+          <div className="split-data">
+            <div className="input-group">
+              <label htmlFor="topic" className="title">
+                Topic
+              </label>
+              <input type="text" name="topic" value={topic} className="input" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="tags" className="title">
+                Tags
+              </label>
+              <input type="text" name="tags" value={tags} className="input" />
+              <p className="caption">Separate by comma</p>
+            </div>
           </div>
           <div className="input-group">
-            <label htmlFor="tags">Add tags</label>
-            <input type="text" name="tags" value={tags} />
+            <label htmlFor="definition" className="title">
+              Definition
+            </label>
+            <textarea
+              name="definition"
+              value={definition}
+              className="input textarea"
+              data-enable-grammarly="false"
+            />
           </div>
           <div className="input-group">
-            <label htmlFor="topic">Add topic</label>
-            <input type="text" name="topic" value={topic} />
-            {/* <select>
-              {topics !== undefined &&
-                topics.map(topic => (
-                  <option key={topic.uid} value={topic.topic}>
-                    {topic.topic}
-                  </option>
-                ))}
-            </select> */}
-          </div>
-          <div className="input-group">
-            <label htmlFor="definition">Definition</label>
-            <textarea name="definition" value={definition} />
-          </div>
-          <div className="input-group">
-            <input type="submit" name="submit" />
+            <input type="submit" name="submit" className="submit" />
           </div>
         </form>
-
-        <p onClick={this.onClose}>click to close modal</p>
       </Modal>
     )
   }

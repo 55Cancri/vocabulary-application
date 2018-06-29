@@ -88,9 +88,11 @@ export class Textbar extends Component<IProps, IState> {
         {match.path === '/dashboard' && (
           <div className="textbar">
             {topics !== undefined && <p className="title">Topics</p>}
-            {topics !== undefined && <p className="subhead">
-              {topics !== undefined && topics.length} topics
-            </p>}
+            {topics !== undefined && (
+              <p className="subhead">
+                {topics !== undefined && topics.length} topics
+              </p>
+            )}
             {words !== undefined &&
               words.length > 0 && (
                 <div>
@@ -145,27 +147,32 @@ export class Textbar extends Component<IProps, IState> {
                   </Link>
                   // </ScrollSpy>
                 ))}
-              
-              {!editing && topics !== undefined && (
-                <p onClick={this.handleAddTopic} className="add-topic-button">
-                  + Add topic
-                </p>
-              )}
-              {editing && topics !== undefined && (
-                <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-                  <input
-                    type="text"
-                    name="topicName"
-                    value={topicName}
-                    className="enter-topic-name"
-                    placeholder="Enter topic"
-                    onBlur={this.handleBlur}
-                    autoFocus={true}
-                    // 2. example typescript ref
-                    // ref={inputEl => (this.inputEl = inputEl)}
-                  />
-                </form>
-              )}
+
+              {!editing &&
+                topics !== undefined && (
+                  <p onClick={this.handleAddTopic} className="add-topic-button">
+                    + Add topic
+                  </p>
+                )}
+              {editing &&
+                topics !== undefined && (
+                  <form
+                    onSubmit={this.handleSubmit}
+                    onChange={this.handleChange}
+                  >
+                    <input
+                      type="text"
+                      name="topicName"
+                      value={topicName}
+                      className="enter-topic-name"
+                      placeholder="Enter topic"
+                      onBlur={this.handleBlur}
+                      autoFocus={true}
+                      // 2. example typescript ref
+                      // ref={inputEl => (this.inputEl = inputEl)}
+                    />
+                  </form>
+                )}
             </div>
           </div>
         )}
@@ -175,37 +182,38 @@ export class Textbar extends Component<IProps, IState> {
             <p className="subhead">
               {words !== undefined && words.length} words
             </p>
-            {words !== undefined && words.map((word, i) => (
-              <Link
-                to={`#${word.uid}`}
-                // href={`#${topic.uid}`}
-                key={word.uid}
-                className="topic-group-in-textbar"
-                smooth="true"
-                scroll={el =>
-                  el.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                  })
-                }
-              >
-                <p
-                  className={
-                    position === word.uid ? 'active topic-name' : 'topic-name'
+            {words !== undefined &&
+              words.map((word, i) => (
+                <Link
+                  to={`#${word.uid}`}
+                  // href={`#${topic.uid}`}
+                  key={word.uid}
+                  className="word-group-in-textbar"
+                  smooth="true"
+                  scroll={el =>
+                    el.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
                   }
                 >
-                  {word.word}
-                </p>
-              </Link>
-            ))}
+                  <p
+                    className={
+                      position === word.uid
+                        ? 'active glossary-word-name'
+                        : 'glossary-word-name'
+                    }
+                  >
+                    {word.word}
+                  </p>
+                </Link>
+              ))}
           </div>
         )}
         {match.path === '/tags' && (
           <div className="textbar">
             <p className="title">Tags</p>
-            <p className="subhead">
-              {tags !== undefined && tags.length} tags
-            </p>
+            <p className="subhead">{tags !== undefined && tags.length} tags</p>
 
             {tags !== undefined &&
               tags.map((tag, i) => (
@@ -220,7 +228,7 @@ export class Textbar extends Component<IProps, IState> {
                     })
                   }
                 >
-                  <p>{`${tag.tag} (${
+                  <p className="tag-name">{`${tag.tag} (${
                     words.filter(word => {
                       if (word.uid === tag.wordOwner) return word.word
                     }).length
@@ -231,10 +239,10 @@ export class Textbar extends Component<IProps, IState> {
         )}
         {match.path.includes('/word/') && (
           <div className="textbar">
-            <p className="title">word</p>
-            {/* <button>+ Add example</button>
-            <button>+ Add images</button>
-            <button>delete word</button> */}
+            <p className="title">Options</p>
+            <p className="word-page-subhead">+ Add tags</p>
+            <p className="word-page-subhead">+ Add usage</p>
+            <p className="word-page-subhead">+ Add images</p>
           </div>
         )}
       </div>
