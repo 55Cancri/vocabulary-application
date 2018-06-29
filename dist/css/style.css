@@ -4156,21 +4156,19 @@ a {
     width: 100vw;
     background-size: cover;
     background-position: 6%;
-    -webkit-filter: grayscale(100%) brightness(100%);
-    -moz-filter: grayscale(100%) brightness(100%);
-    -o-filter: grayscale(100%) brightness(100%);
-    -ms-filter: grayscale(100%) brightness(100%);
-    filter: grayscale(100%) brightness(100%);
     opacity: 1;
     z-index: -1; }
   .login-page .login-form {
+    display: grid;
+    grid-template-columns: 1fr;
     width: 35vw;
     max-width: 600px;
-    padding: 30px 55px 45px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.8); }
+    padding: 40px 55px;
+    border-radius: 3px;
+    background-color: white; }
     .login-page .login-form .input-group {
-      margin: 20px 0; }
+      display: grid;
+      margin: 10px 0; }
       .login-page .login-form .input-group .title {
         padding-bottom: 5px;
         text-transform: uppercase;
@@ -4181,10 +4179,11 @@ a {
         .login-page .login-form .input-group .title:last-of-type {
           padding: 10px 0 5px; }
       .login-page .login-form .input-group input {
-        height: 42px;
-        border-radius: 5px;
-        font-size: 24px;
-        background-color: #cccccc;
+        height: 35px;
+        padding: 10px 15px;
+        border-radius: 3px;
+        font-size: 21px;
+        background-color: #ededed;
         color: #212121;
         opacity: .8; }
     .login-page .login-form .global-errors {
@@ -4201,8 +4200,13 @@ a {
       color: #e87c7c;
       font-size: 18px; }
     .login-page .login-form .login-button {
-      margin: 15px 0 0;
+      padding: 8px 15px;
+      margin: 15px 0 5px;
       width: 100%;
+      border: none;
+      border-radius: 3px;
+      font: 500 22px montserrat, sans-serif;
+      color: #fff;
       background-color: #118df0; }
     .login-page .login-form .switch-auth-form {
       display: flex;
@@ -4241,6 +4245,7 @@ a {
     position: absolute;
     height: 100vh;
     width: 100vw;
+    background-color: red;
     background-size: cover;
     background-position: 6%;
     -webkit-filter: grayscale(100%) brightness(100%);
@@ -4251,13 +4256,16 @@ a {
     opacity: 1;
     z-index: -1; }
   .signup-page .signup-form {
+    display: grid;
+    grid-template-columns: 1fr;
     width: 35vw;
     max-width: 600px;
-    padding: 30px 55px 45px;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.9); }
+    padding: 40px 55px;
+    border-radius: 3px;
+    background-color: white; }
     .signup-page .signup-form .input-group {
-      margin: 20px 0; }
+      display: grid;
+      margin: 10px 0; }
       .signup-page .signup-form .input-group .title {
         padding-bottom: 5px;
         text-transform: uppercase;
@@ -4268,10 +4276,12 @@ a {
         .signup-page .signup-form .input-group .title:last-of-type {
           padding: 10px 0 5px; }
       .signup-page .signup-form .input-group input {
-        height: 42px;
-        border-radius: 5px;
-        font-size: 24px;
-        background-color: #cccccc;
+        height: 35px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        font-size: 21px;
+        background-color: #d7d7d7;
         color: #212121;
         opacity: .8; }
     .signup-page .signup-form .global-errors {
@@ -4288,9 +4298,14 @@ a {
       color: #e87c7c;
       font-size: 18px; }
     .signup-page .signup-form .signup-button {
-      margin: 25px 0 0;
+      padding: 8px 15px;
+      margin: 15px 0 5px;
       width: 100%;
-      background-color: #1fce6c; }
+      border: none;
+      border-radius: 3px;
+      font: 500 22px montserrat, sans-serif;
+      color: #fff;
+      background-color: #118df0; }
     .signup-page .signup-form .switch-auth-form {
       display: flex;
       align-items: center;
@@ -4301,6 +4316,60 @@ a {
     .signup-page .signup-form .login-link {
       margin: 0;
       color: #118df0; }
+
+.settings-page {
+  display: grid;
+  grid-template-columns: 1fr 3fr; }
+
+.settings-side-menu > p {
+  margin: 30px 0;
+  width: max-content; }
+  .settings-side-menu > p:hover {
+    cursor: pointer; }
+
+.settings-form {
+  display: grid;
+  grid-row-gap: 20px; }
+  .settings-form > .input-group {
+    display: grid;
+    position: relative;
+    align-items: center;
+    grid-template-columns: 1fr 5fr;
+    grid-column-gap: 10px; }
+    .settings-form > .input-group > input {
+      padding: 5px 15px; }
+    .settings-form > .input-group > .save {
+      justify-self: start;
+      grid-column: 2;
+      padding: 5px 15px;
+      border: none;
+      color: #fff;
+      background-color: #2d9cdb;
+      transition: 300ms all; }
+      .settings-form > .input-group > .save:hover {
+        background-color: #238fcc; }
+
+.photo-container {
+  position: relative;
+  width: max-content;
+  transition: 300ms all; }
+  .photo-container:hover {
+    cursor: pointer;
+    filter: brightness(80%); }
+  .photo-container > .photo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    text-align: center;
+    filter: brightness(50%); }
+  .photo-container > .text {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff; }
 
 .react-toggle {
   touch-action: pan-x;
