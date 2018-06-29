@@ -16,14 +16,19 @@ export class GlossaryPage extends Component<IProps> {
       <div className="glossary-page">
         <Textbar />
         <div>
-          {words === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+          {words === undefined && (
+            <Spinner
+              className="loading-indicator"
+              name="ball-spin-fade-loader"
+            />
+          )}
           {words !== undefined &&
             words.length === 0 && <p>You have not added any words yet.</p>}
           {words !== undefined &&
             words.map(word => (
               <Link to={`/word/${word.uid}`} key={word.uid}>
-                <h2>{word.word}</h2>
-                <p>{word.definition}</p>
+                <h2 className="title">{word.word}</h2>
+                <p className="definition">{word.definition}</p>
               </Link>
             ))}
         </div>

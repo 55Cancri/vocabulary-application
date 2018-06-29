@@ -14,6 +14,8 @@ interface IProps {
   words: any
   topics: any
   id: string
+  details: boolean
+  tags: any
   startEditTopic: (any) => any
   startDeleteTopic: (any) => any
   startUpdateTextbar: (any) => any
@@ -35,17 +37,8 @@ export class TopicsList extends Component<IProps> {
 
   private stepInput: React.RefObject<HTMLInputElement>
 
-  handleScroll = e => {
-    // this.getBoundingClientRect().top
-    // console.log('scroll', this.stepInput.current)
-    // const el = e.target
-    // console.log(el)
-    // const minPixel = el.offsetTop
-    // const maxPixel = minPixel + el.scrollHeight
-    // const value = document.body.scrollTop
-    // // respect bounds of element
-    // let percent = (value - minPixel) / (maxPixel - minPixel)
-    // percent = Math.min(1, Math.max(percent, 0)) * 100
+  handleKeyPress = e => {
+    if (e.key === 'ESCAPE' || e.keyCode === 27) this.setState({ editing: null })
   }
 
   // @ts-ignore
@@ -53,20 +46,21 @@ export class TopicsList extends Component<IProps> {
     this.props.topics !== undefined &&
       this.setState({ topics: this.props.topics })
 
-    window.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('keydown', this.handleKeyPress, true)
 
-    this.setState(this.state)
+    // need true to get scroll events
+    // window.addEventListener('scroll', this.handleScroll, true)
   }
 
   // @ts-ignore
   componentWillUnmount = () =>
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('keydown', this.handleKeyPress)
 
   handleTextbar = ({ currentTarget }) => {
     const { startUpdateTextbar } = this.props
     const uid = currentTarget.id
     // console.log('uid: ', uid)
-    startUpdateTextbar(uid)
+    // startUpdateTextbar(uid)
   }
 
   handleDrag = e => {
@@ -108,11 +102,13 @@ export class TopicsList extends Component<IProps> {
 
   // @ts-ignore
   render = () => {
-    const { words, topics } = this.props
+    const { words, topics, tags, details } = this.props
     const { editing, dragging } = this.state
     return (
       <div className="topics-list">
-        {topics === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+        {topics === undefined && (
+          <Spinner className="loading-indicator" name="ball-spin-fade-loader" />
+        )}
         {topics !== undefined &&
           topics.length === 0 && <p>You have not created any topics yet.</p>}
         {topics !== undefined &&
@@ -153,20 +149,24 @@ export class TopicsList extends Component<IProps> {
                   onChange={this.handleChange}
                   onKeyPress={this.handleSubmit}
                   style={{ fontSize: 24 }}
+                  className="editing-topic"
                 />
               )}
               {!words.some(word => word.topic === topic.uid) && (
                 <p className="word-empty">No words yet.</p>
               )}
-              {words.map(word => {
+              {words.map((word, i) => {
                 if (word.topic === topic.uid)
                   return (
                     <TopicsListWord
                       key={word.uid}
                       word={word}
+                      tags={tags}
+                      details={details}
                       draggable="true"
                       onDragStart={e => this.handleDrag(e)}
                       className={dragging ? 'drag' : ''}
+                      i={i}
                     />
                   )
               })}
@@ -185,7 +185,12 @@ export class TopicsList extends Component<IProps> {
             words.map(
               word =>
                 word.topic === 0 && (
-                  <TopicsListWord key={word.uid} word={word} />
+                  <TopicsListWord
+                    key={word.uid}
+                    word={word}
+                    details={details}
+                    tags={tags}
+                  />
                 )
             )}
         </div>
@@ -197,9 +202,11 @@ export class TopicsList extends Component<IProps> {
 const mapStateToProps = state => ({
   words: state.lexica.words,
   topics: state.lexica.topics,
+  tags: state.lexica.tags,
   activeTag: state.lexica.activeTag,
   results: state.lexica.results,
-  dataIsHere: state.app.dataIsHere
+  dataIsHere: state.app.dataIsHere,
+  details: state.app.details
 })
 
 export default connect(

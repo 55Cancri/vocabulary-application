@@ -9,6 +9,12 @@ export const updateTextbar = uid => ({
 export const startUpdateTextbar = uid => dispatch =>
   dispatch(updateTextbar(uid))
 
+export const setDetails = () => ({
+  type: 'SET_DETAILS'
+})
+
+export const startSetDetails = () => dispatch => dispatch(setDetails())
+
 export const deleteAccount = user => ({
   type: 'DELETE',
   user

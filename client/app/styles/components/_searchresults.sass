@@ -1,30 +1,44 @@
-.search-results
-    position: absolute
-    top: 100px
-    left: 50%
-    width: 40vw
-    height: max-content
-    min-height: 40px
-    max-height: max-content
-    padding: 25px
-    transform: translateX(-60%)
-    background-color: white
-    z-index: 1
-    
 
 .search-results-bg
-    position: absolute
-    top: 0
-    left: 0
-    width: 100vw
-    height: 100vh
-    background-color: rgba(0, 0, 0, 0.3)
-    z-index: -1
+  position: absolute
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  background-color: rgba(0, 0, 0, 0.3)
+  z-index: -1
+
+.search-results
+  position: absolute
+  top: 100px
+  left: 50%
+  width: 40vw
+  height: max-content
+  min-height: 40px
+  max-height: 300px
+  padding: 25px 0 40px
+  transform: translateX(-60%)
+  background-color: white
+  overflow-y: hidden
+    
+  .title
+    margin: 0 25px
+    font: 500 21px "Roboto Condensed", sans-serif
+    color: $sidebar-black
+
+  .word
+    margin: 0
+    padding: 5px 25px
+    font: 500 18px montserrat, sans-serif
+    color: $sidebar-black
+    transition: .4s all
+
+    &:hover
+      cursor: pointer
+      background-color: lighten(lightgrey, 13%)
 
 .focus
-    // opacity: 1
-    visibility: visible
+  visibility: visible
 
 .blur
-    // opacity: 0
-    visibility: hidden
+  visibility: hidden

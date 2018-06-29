@@ -3,18 +3,22 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { HashLink as Link } from 'react-router-hash-link'
 // import ScrollSpy from 'react-scrollspy'
+import Toggle from 'react-toggle'
 
 import { generateUuid } from '../helpers/helpers'
 import { startAddTopic } from '../actions/words'
+import { startSetDetails } from '../actions/app'
 
 interface IProps {
   words: any
   topics: any
-  tags: string[]
+  tags: any
   username: string
   startAddTopic: (any) => any
+  startSetDetails: () => any
   dataIsHere: boolean
   position: string
+  details: boolean
   match?: any
 }
 
@@ -30,7 +34,8 @@ export class Textbar extends Component<IProps, IState> {
     topics: [],
     numberOfTopics: 0,
     topicName: '',
-    editing: false
+    editing: false,
+    button: false
   }
 
   listenKeyboard = e => {
@@ -44,6 +49,9 @@ export class Textbar extends Component<IProps, IState> {
       [name]: value
     } as any)
   }
+
+  // this.setState({ button: !this.state.button })
+  handleDetailsChange = () => this.props.startSetDetails()
 
   handleAddTopic = () => {
     this.setState({ editing: true })
@@ -73,16 +81,31 @@ export class Textbar extends Component<IProps, IState> {
 
   // @ts-ignore
   render = () => {
-    const { words, topics, tags, match, position } = this.props
+    const { words, topics, tags, match, position, details } = this.props
     const { editing, topicName } = this.state
     return (
       <div className="textbar-container">
         {match.path === '/dashboard' && (
           <div className="textbar">
-            <p className="title">Topics</p>
-            <p className="subhead">
-              {topics !== undefined && topics.length} topics
-            </p>
+            {topics !== undefined && <p className="title">Topics</p>}
+            {topics !== undefined && (
+              <p className="subhead">
+                {topics !== undefined && topics.length} topics
+              </p>
+            )}
+            {words !== undefined &&
+              words.length > 0 && (
+                <div>
+                  <p className="detail-title">details</p>
+                  <Toggle
+                    defaultChecked={details}
+                    aria-label="No label tag"
+                    onChange={this.handleDetailsChange}
+                    className="detail-toggler"
+                  />
+                </div>
+              )}
+
             <div className="list">
               {topics !== undefined &&
                 // <ScrollSpy
@@ -124,26 +147,32 @@ export class Textbar extends Component<IProps, IState> {
                   </Link>
                   // </ScrollSpy>
                 ))}
-              {!editing && (
-                <p onClick={this.handleAddTopic} className="add-topic-button">
-                  + Add topic
-                </p>
-              )}
-              {editing && (
-                <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-                  <input
-                    type="text"
-                    name="topicName"
-                    value={topicName}
-                    className="enter-topic-name"
-                    placeholder="Enter topic"
-                    onBlur={this.handleBlur}
-                    autoFocus={true}
-                    // 2. example typescript ref
-                    // ref={inputEl => (this.inputEl = inputEl)}
-                  />
-                </form>
-              )}
+
+              {!editing &&
+                topics !== undefined && (
+                  <p onClick={this.handleAddTopic} className="add-topic-button">
+                    + Add topic
+                  </p>
+                )}
+              {editing &&
+                topics !== undefined && (
+                  <form
+                    onSubmit={this.handleSubmit}
+                    onChange={this.handleChange}
+                  >
+                    <input
+                      type="text"
+                      name="topicName"
+                      value={topicName}
+                      className="enter-topic-name"
+                      placeholder="Enter topic"
+                      onBlur={this.handleBlur}
+                      autoFocus={true}
+                      // 2. example typescript ref
+                      // ref={inputEl => (this.inputEl = inputEl)}
+                    />
+                  </form>
+                )}
             </div>
           </div>
         )}
@@ -153,20 +182,13 @@ export class Textbar extends Component<IProps, IState> {
             <p className="subhead">
               {words !== undefined && words.length} words
             </p>
-          </div>
-        )}
-        {match.path === '/tags' && (
-          <div className="textbar">
-            <p className="title">Tags</p>
-            <p className="subhead">
-              {words !== undefined && words.length} tags
-            </p>
-
-            {tags !== undefined &&
-              tags.map((tag, i) => (
+            {words !== undefined &&
+              words.map((word, i) => (
                 <Link
-                  to={`#${tag}`}
-                  key={tag}
+                  to={`#${word.uid}`}
+                  // href={`#${topic.uid}`}
+                  key={word.uid}
+                  className="word-group-in-textbar"
                   smooth="true"
                   scroll={el =>
                     el.scrollIntoView({
@@ -175,9 +197,40 @@ export class Textbar extends Component<IProps, IState> {
                     })
                   }
                 >
-                  <p>{`${tag} (${
+                  <p
+                    className={
+                      position === word.uid
+                        ? 'active glossary-word-name'
+                        : 'glossary-word-name'
+                    }
+                  >
+                    {word.word}
+                  </p>
+                </Link>
+              ))}
+          </div>
+        )}
+        {match.path === '/tags' && (
+          <div className="textbar">
+            <p className="title">Tags</p>
+            <p className="subhead">{tags !== undefined && tags.length} tags</p>
+
+            {tags !== undefined &&
+              tags.map((tag, i) => (
+                <Link
+                  to={`#${tag.uid}`}
+                  key={tag.uid}
+                  smooth="true"
+                  scroll={el =>
+                    el.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }
+                >
+                  <p className="tag-name">{`${tag.tag} (${
                     words.filter(word => {
-                      if (word.tags.includes(tag)) return word.word
+                      if (word.uid === tag.wordOwner) return word.word
                     }).length
                   })`}</p>
                 </Link>
@@ -186,10 +239,10 @@ export class Textbar extends Component<IProps, IState> {
         )}
         {match.path.includes('/word/') && (
           <div className="textbar">
-            <p className="title">word</p>
-            {/* <button>+ Add example</button>
-            <button>+ Add images</button>
-            <button>delete word</button> */}
+            <p className="title">Options</p>
+            <p className="word-page-subhead">+ Add tags</p>
+            <p className="word-page-subhead">+ Add usage</p>
+            <p className="word-page-subhead">+ Add images</p>
           </div>
         )}
       </div>
@@ -203,12 +256,13 @@ const mapStateToProps = state => ({
   tags: state.lexica.tags,
   username: state.auth.username,
   dataIsHere: state.app.dataIsHere,
-  position: state.app.position
+  position: state.app.position,
+  details: state.app.details
 })
 
 export default withRouter<any>(
   connect(
     mapStateToProps,
-    { startAddTopic }
+    { startAddTopic, startSetDetails }
   )(Textbar)
 )

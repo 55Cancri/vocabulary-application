@@ -1,4 +1,27 @@
 .tags-page
   display: grid
-  grid-template-columns: minmax(280px, max-content) 60vw
-  justify-content: space-between
+  grid-template-columns: minmax(280px, max-content) 60%
+  margin-top: 25px
+
+  .tag-group
+    margin: 0 0 50px 20px
+    color: lighten($sidebar-black, 10%)
+    font: normal 18px monsterrat, sans-serif
+
+    .tag-title
+      margin: 0
+      padding: 0 0 0 30px
+      font: bold 48px "Roboto Condensed", sans-serif
+
+    .word-group
+      margin: 10px 0 25px 30px
+
+      .word-title
+        margin: 0 0 10px
+        color: lighten($sidebar-black, 10%)
+        font: 700 28px montserrat, sans-serif
+
+      .word-definition
+        margin: 0 0 25px
+        color: $sidebar-black
+        font: normal 18px monsterrat, sans-serif

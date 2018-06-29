@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import Modal from '../Modal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { hideModal } from '../../actions/modal'
 import { startAddWord } from '../../actions/words'
 import { generateUuid } from '../../helpers/helpers'
@@ -54,62 +55,92 @@ export class NewWordModal extends Component<IProps, IState> {
 
   handleSubmit = e => {
     e.preventDefault()
-    const { word, definition, topic : stateTopic, tags: stateTags } = this.state
+
+    // dark blue, sky blue, red, turqouise, orange, violet
+    const colors = [
+      '#034182',
+      '#118df0',
+      '#ff4a68',
+      '#02bd9d',
+      '#f8aa27',
+      '#ba69de'
+    ]
+
+    const { word, definition, topic, tags: stateTags } = this.state
     const { username: owner, startAddWord } = this.props
-    // const defaultUid = this.props.topics.find(topic => topic.topic === 'uncategorized').uid
-    // const activeTopic = this.props.topics.find(topicItem => topicItem.topic === topic)
-    
-    // split tags by: [comma] / space
-    const tags = stateTags.split(',')
+
     const uid = generateUuid()
-    const topic = stateTopic.length === 0 ? 0 : stateTopic
-    // activeTopic ? topicUid = activeTopic.uid : topicUid = '0'
-    const nextWord = { uid, word, definition, tags, topic, owner }
-    console.log(nextWord)
+    const topicUid = generateUuid()
+
+    let wordTags = stateTags.split(',')
+
+    const tags = wordTags.map(tag => ({
+      tag,
+      wordOwner: uid,
+      uid: generateUuid(),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      deleted: false
+    }))
+
+    const nextWord = { uid, word, definition, tags, topic, topicUid, owner }
+
     startAddWord(nextWord).then(() => this.onClose())
   }
 
   // @ts-ignore
   render = () => {
     const { word, tags, topic, definition } = this.state
-    const topics = this.props.topics
+    const { topics } = this.props
     return (
       <Modal onClose={this.onClose}>
-        <form onSubmit={this.handleSubmit} onChange={this.onFieldChange}>
-          <h3>New Word</h3>
+        <div className="new-word-modal_header">
+          <h2 className="title">New word</h2>
+          <div className="close" onClick={this.onClose}>
+            <FontAwesomeIcon icon="times" />
+
+          </div>
+        </div>
+        <form
+          onSubmit={this.handleSubmit}
+          onChange={this.onFieldChange}
+          className="new-word-modal"
+        >
           <div className="input-group">
-            <label htmlFor="word">Name</label>
-            <input type="text" name="word" value={word} />
+            <label htmlFor="word" className="title">
+              Name
+            </label>
+            <input type="text" name="word" value={word} className="input" />
+          </div>
+          <div className="split-data">
+            <div className="input-group">
+              <label htmlFor="topic" className="title">
+                Topic
+              </label>
+              <input type="text" name="topic" value={topic} className="input" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="tags" className="title">
+                Tags
+              </label>
+              <input type="text" name="tags" value={tags} className="input" />
+              <p className="caption">Separate by comma</p>
+            </div>
           </div>
           <div className="input-group">
-            <label htmlFor="tags">Add tags. Use commas to separate them.</label>
-            <input type="text" name="tags" value={tags} />
-          </div>
-          {/* <div className="input-group">
-            <label htmlFor="topic">Add topic</label>
-            <input type="text" name="topic" value={topic} />
-          </div> */}
-          <div className="input-group">
-            <label htmlFor="topic">Select Topic</label>
-            <select name="topic-list" onChange={this.selectTopic} >
-              <option value={this.state.topic} ></option>
-              {
-                topics.map(topicItem =>
-                  topicItem.topic !== 'uncategorized' && <option key={topicItem.uid} value={topicItem.uid} >{topicItem.topic}</option>
-                )
-              }
-            </select>
+            <label htmlFor="definition" className="title">
+              Definition
+            </label>
+            <textarea
+              name="definition"
+              value={definition}
+              className="input textarea"
+              data-enable-grammarly="false"
+            />
           </div>
           <div className="input-group">
-            <label htmlFor="definition">Definition</label>
-            <textarea name="definition" value={definition} />
-          </div>
-          <div className="input-group">
-            <input type="submit" name="submit" />
+            <input type="submit" name="submit" className="submit" />
           </div>
         </form>
-
-        <p onClick={this.onClose}>click to close modal</p>
       </Modal>
     )
   }

@@ -37,6 +37,7 @@
     "react-scroll": "^1.7.9",
     "react-sidebar": "^2.3.2",
     "react-spinkit": "^3.0.0",
+    "react-toggle": "^4.0.2",
     "reactstrap": "latest",
     "redux": "latest",
     "redux-thunk": "latest",

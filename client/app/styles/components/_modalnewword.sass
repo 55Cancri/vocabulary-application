@@ -1,61 +1,80 @@
-.remaining-accounts
-  margin: 10px 0
-  text-align: center
 
-.buy-modal
-  padding: 25px
-
-.buy-modal_header
+.new-word-modal_header
   display: grid
-  grid-template-columns: 1fr
-  
+  grid-template-columns: 1fr 1fr
+  align-items: center
+  margin: 0
+
+  .title
+    margin: 25px 0 0 40px
+    justify-self: start
+    color: lighten($sidebar-black, 10%)
+    font: 600 36px "Roboto Condensed", sans-serif
+
   .close
     justify-self: end
-    color: $grey
+    margin: 0 25px 0 0
+    font-size: 24px
+    color: $subhead-grey
+    transition: .3s all
+
     &:hover
-      color: $darkgrey
+      cursor: pointer
+      color: $deny-red
 
-// form
-.buy-form
+.new-word-modal
   display: grid
+  grid-template-columns: 1fr
+  padding: 0 25px 25px
+  
+  .input-group
+    display: grid
+    position: relative
+    margin: 10px 15px
 
-  .annotation
-    justify-self: start
-    margin: 8px 0
-    font: italic 400 $s Amiko, Helvetica, sans-serif
-    color: darken($buttongrey, 5%)
+    .title
+      justify-self: start
+      margin-bottom: 10px
+      font: 500 21px "Roboto Condensed", sans-serif
+      color: $sidebar-black
 
-// percent and goal
-.split-card-data
-  display: grid
-  grid-template-columns: max-content 1fr
-  grid-column-gap: 30px
+    .caption
+      position: absolute
+      left: 10pxem
+      top: 65px
+      color: $subhead-grey
+      font: italic 500 14px monsterrat, sans-serif
 
+    .input
+      height: 40px
+      padding: 15px
+      border: none
+      border-radius: 3px
+      color: lighten($sidebar-black, 10%)
+      background-color: $hover-select-grey
 
-// buttons
-.buy-modal_buttons
-  display: grid
-  grid-template-columns: repeat(2, max-content)
-  grid-gap: 10px
-  justify-self: end
-  margin: 35px 0 0
+    .textarea
+      height: 120px
+      resize: none
 
-  > .cancel
-    border: none
-    background: none
-    color: $grey
-    &:hover
-      transition: 300ms
-      filter: brightness(80%)
+    .submit
+      justify-self: end
+      padding: 10px 50px
+      margin-top: 5px
+      border: none
+      border-radius: 2px
+      color: $white
+      font: 500 18px monsterrat, sans-serif
+      background-color: $create-blue
+      transition: .3s all
 
-  > .submit
-    padding: 5px 15px
-    border: none
-    color: $white
-    background: $need-blue-text
-    transition: 300ms all
-    &:hover
-      transition: 300ms
-      filter: brightness(95%)
-    &:disabled
-      background-color: $buttongrey
+      &:hover
+        cursor: pointer
+        background-color: darken($create-blue, 5%)
+        
+
+  .split-data
+    display: grid
+    grid-auto-flow: column
+    grid-template-columns: 1fr 1fr
+    grid-column-gap: 5px

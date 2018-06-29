@@ -25,6 +25,7 @@ interface IProps {
   word: string
   username: string
   history
+  tags
   startEditWord: (any) => any
   startDeleteWord: (any) => any
   startAddImageToWord: (any) => any
@@ -83,18 +84,6 @@ export class WordPage extends Component<IProps> {
 
     // send to dynamoDb
     startAddImageToWord(dynamoData)
-
-    // try {
-    //   const dynamoUpload = await axios
-    //     .post(
-    //       'https://njn4fv1tr6.execute-api.us-east-2.amazonaws.com/prod/update-user',
-    //       dynamoData
-    //     )
-    //     .then(res => res.data)
-    //     .then(user => startAddImageToWord(user))
-    // } catch (e) {
-    //   console.log('error uploading to lambda', e)
-    // }
   }
 
   handleDelete = async () => {
@@ -105,7 +94,6 @@ export class WordPage extends Component<IProps> {
       word: chosen.word,
       uid: chosen.uid
     }
-    console.log('deleting word: ', word)
 
     await startDeleteWord(word)
     this.props.history.push('/dashboard')
@@ -134,7 +122,7 @@ export class WordPage extends Component<IProps> {
 
   // @ts-ignore
   render = () => {
-    const { chosen } = this.props
+    const { chosen, tags } = this.props
     const { word, definition, editingWord, editingDefinition } = this.state
     const checkChosen = chosen !== undefined
     const checkDefinition =
@@ -143,7 +131,9 @@ export class WordPage extends Component<IProps> {
     return (
       <div className="word-page">
         <Textbar />
-        {word === undefined && <Spinner name="ball-scale-ripple-multiple" />}
+        {word === undefined && (
+          <Spinner className="loading-indicator" name="ball-spin-fade-loader" />
+        )}
         {word !== undefined && (
           <div>
             <div className="header">
@@ -206,8 +196,21 @@ export class WordPage extends Component<IProps> {
                 />
               )}
             </div>
-            <div className="tag-section">
-              {checkTags && chosen.tags.join(' ')}
+            <div className="tags">
+              {tags !== undefined &&
+                tags.filter(tag => tag.wordOwner === chosen.uid).map(tag => (
+                  <div
+                    key={tag.uid}
+                    style={{
+                      margin: 0,
+                      padding: `5px 10px`,
+                      borderRadius: 3,
+                      backgroundColor: tag.color
+                    }}
+                  >
+                    <p className="tag-text">{tag.tag}</p>
+                  </div>
+                ))}
               <FontAwesomeIcon icon="plus" className="add-tag" />
             </div>
             {!editingDefinition && (
@@ -225,23 +228,24 @@ export class WordPage extends Component<IProps> {
                 style={{ fontSize: 24 }}
               />
             )}
-            <Dropzone onDrop={this.handleDrop}>
-              <p>drop files here:</p>
+            {chosen !== undefined &&
+              chosen.images !== undefined &&
+              chosen.images.length > 0 && (
+                <ImageGallery
+                  items={
+                    chosen.images !== undefined &&
+                    chosen.images.map(image => ({
+                      original: image.url,
+                      thumbnail: image.url
+                    }))
+                  }
+                  showPlayButton={false}
+                  autoPlay={true}
+                />
+              )}
+            <Dropzone onDrop={this.handleDrop} className="dropzone">
+              <p className="add-images">+ add images</p>
             </Dropzone>
-            <ImageGallery
-              items={chosen.images.map(image => ({
-                original: image.url,
-                thumbnail: image.url
-              }))}
-            />
-            {/*  {chosen.images.map(image => (
-               <img
-               key={image.wordOwner}
-               src={image.url}
-               width={300}
-               height={300}
-             />
-            // ))}*/}
           </div>
         )}
       </div>
@@ -253,6 +257,7 @@ const mapStateToProps = (state, props) => ({
   chosen:
     state.lexica.words !== undefined &&
     state.lexica.words.find(word => word.uid === props.match.params.uid),
+  tags: state.lexica.tags,
   username: state.auth.username
 })
 

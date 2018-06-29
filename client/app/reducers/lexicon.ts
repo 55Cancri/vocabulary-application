@@ -6,13 +6,7 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
       return {
         words: action.user.words,
         topics: action.user.topics,
-        tags: [
-          ...new Set(
-            action.user.words
-              .map(word => word.tags)
-              .reduce((append, nextArray) => append.concat(nextArray), [])
-          )
-        ]
+        tags: action.user.tags
       }
 
     case 'LOGOUT':
@@ -22,14 +16,8 @@ export const lexiconReducer = (state = {}, action = {} as any) => {
       return {
         ...state,
         words: action.user.words,
-        topics: action.user.topics
-        // tags: [
-        //   ...new Set(
-        //     action.words
-        //       .map(word => word.tags)
-        //       .reduce((append, nextArray) => append.concat(nextArray), [])
-        //   )
-        // ]
+        topics: action.user.topics,
+        tags: action.user.tags
       }
 
     case 'UPDATED_WORD':
